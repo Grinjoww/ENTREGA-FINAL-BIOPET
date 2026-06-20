@@ -1,0 +1,18 @@
+digraph G {
+  graph [rankdir=LR, dpi=200, bgcolor="white", fontname="Arial", label="BIOPET - C4 Nivel 2: Contenedores", labelloc=t, fontsize=22];
+  node [shape=box, style="rounded,filled", fillcolor="#F8FAFC", color="#0F766E", fontname="Arial", fontsize=12];
+  edge [fontname="Arial", fontsize=10, color="#334155"];
+  vet [label="Veterinario", shape=oval, fillcolor="#ECFEFF"];
+  admin [label="Administrador", shape=oval, fillcolor="#ECFEFF"];
+  dueno [label="Dueño de Mascota", shape=oval, fillcolor="#ECFEFF"];
+  frontend [label="Frontend Angular 17 + Nginx\nPuerto 4200 -> 80\nSPA / HTTP", fillcolor="#DCFCE7"];
+  backend [label="Backend Spring Boot 3\nPuerto 8080\nREST JSON + JWT", fillcolor="#DBEAFE"];
+  postgres [label="PostgreSQL 16\nPuerto 5432\nJPA/Hibernate/Flyway", fillcolor="#FDE68A"];
+  redis [label="Redis 7\nPuerto 6379\nBlacklist JTI + Cache", fillcolor="#FECACA"];
+  swagger [label="Swagger UI\n/api/swagger-ui.html", fillcolor="#E9D5FF"];
+  vet -> frontend; admin -> frontend; dueno -> frontend;
+  frontend -> backend [label="REST JSON\nAuthorization: Bearer JWT"];
+  backend -> postgres [label="JDBC/JPA"];
+  backend -> redis [label="Redis protocol"];
+  backend -> swagger [label="OpenAPI"];
+}

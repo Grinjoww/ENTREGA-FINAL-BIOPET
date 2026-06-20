@@ -1,0 +1,21 @@
+@startuml
+!define RECTANGLE class
+skinparam packageStyle rectangle
+actor "Veterinario" as vet
+actor "Administrador" as admin
+actor "Dueño de Mascota" as dueno
+
+rectangle "Frontend Angular 17\nNginx :80 / http://localhost:4200" as frontend
+rectangle "Backend Spring Boot 3\nREST API :8080" as backend
+rectangle "PostgreSQL 16\nDB :5432" as postgres
+rectangle "Redis 7\nBlacklist JWT + Cache :6379" as redis
+rectangle "Swagger UI\n/api/swagger-ui.html" as swagger
+
+vet --> frontend : HTTPS/HTTP
+admin --> frontend : HTTPS/HTTP
+dueno --> frontend : HTTPS/HTTP
+frontend --> backend : REST JSON + Bearer JWT
+backend --> postgres : JDBC/JPA
+backend --> redis : Redis protocol
+backend --> swagger : OpenAPI
+@enduml
