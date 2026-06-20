@@ -1,0 +1,28 @@
+digraph Classes {
+  graph [rankdir=TB, dpi=200, bgcolor="white", fontname="Arial", label="BIOPET - Diagrama de Clases Backend Spring Boot", labelloc=t, fontsize=22, nodesep=0.6, ranksep=0.7];
+  node [shape=record, style="rounded,filled", fillcolor="#F8FAFC", color="#334155", fontname="Arial", fontsize=10];
+  edge [fontname="Arial", fontsize=9, color="#475569"];
+  Usuario [label="{entity.Usuario| - id: Long\l - nombre: String\l - email: String\l - passwordHash: String\l - rol: Rol\l - activo: boolean\l - creadoEn: Instant\l - actualizadoEn: Instant\l| + prePersist(): void\l + preUpdate(): void\l}", fillcolor="#ECFDF5"];
+  Mascota [label="{entity.Mascota| - id: Long\l - duenio: Usuario\l - nombre: String\l - especie: String\l - raza: String\l - fechaNacimiento: LocalDate\l - activo: boolean\l| + prePersist(): void\l + preUpdate(): void\l}", fillcolor="#ECFDF5"];
+  UsuarioRepo [label="{repository.UsuarioRepository| + findByEmail(email): Optional&lt;Usuario&gt;\l + findByEmailAndActivoTrue(email): Optional&lt;Usuario&gt;\l + existsByEmail(email): boolean\l}", fillcolor="#FEF3C7"];
+  MascotaRepo [label="{repository.MascotaRepository| + findAllByActivoTrue(pageable): Page&lt;Mascota&gt;\l + findByIdAndActivoTrue(id): Optional&lt;Mascota&gt;\l}", fillcolor="#FEF3C7"];
+  AuthService [label="{service.AuthService| - usuarioRepository\l - passwordEncoder\l - authenticationManager\l - jwtService\l - blacklistService\l| + registrar(request): UsuarioResponse\l + login(request): AuthResponse\l + refresh(request): AuthResponse\l + logout(token): void\l + perfil(email): UsuarioResponse\l}", fillcolor="#DBEAFE"];
+  MascotaService [label="{service.MascotaService| - mascotaRepository\l - usuarioRepository\l| + listar(pageable): Page&lt;MascotaResponse&gt;\l + buscar(id): MascotaResponse\l + crear(request): MascotaResponse\l + actualizar(id, request): MascotaResponse\l + eliminar(id): void\l}", fillcolor="#DBEAFE"];
+  JwtService [label="{security.JwtService| - key: SecretKey\l - expirationMs: long\l| + generateAccessToken(usuario): String\l + generateRefreshToken(usuario): String\l + extractClaims(token): Claims\l + extractJti(token): String\l}", fillcolor="#FEE2E2"];
+  JwtFilter [label="{security.JwtAuthenticationFilter| - jwtService\l - blacklistService\l - userDetailsService\l| + doFilterInternal(...): void\l}", fillcolor="#FEE2E2"];
+  Blacklist [label="{security.TokenBlacklistService| - redisTemplate\l| + revoke(jti, expiresAt): void\l + isRevoked(jti): boolean\l}", fillcolor="#FEE2E2"];
+  AuthController [label="{controller.AuthController| + registro(request)\l + login(request)\l + refresh(request)\l + logout(authHeader)\l}", fillcolor="#E0E7FF"];
+  MascotaController [label="{controller.MascotaController| + listar(pageable)\l + buscar(id)\l + crear(request)\l + actualizar(id, request)\l + eliminar(id)\l}", fillcolor="#E0E7FF"];
+  SecurityConfig [label="{config.SecurityConfig| + securityFilterChain(http)\l + corsConfigurationSource()\l + passwordEncoder()\l}", fillcolor="#F5D0FE"];
+  Usuario -> Mascota [label="1 dueño / 0..* mascotas"];
+  AuthController -> AuthService;
+  MascotaController -> MascotaService;
+  AuthService -> UsuarioRepo;
+  AuthService -> JwtService;
+  AuthService -> Blacklist;
+  MascotaService -> MascotaRepo;
+  MascotaService -> UsuarioRepo;
+  JwtFilter -> JwtService;
+  JwtFilter -> Blacklist;
+  SecurityConfig -> JwtFilter;
+}
