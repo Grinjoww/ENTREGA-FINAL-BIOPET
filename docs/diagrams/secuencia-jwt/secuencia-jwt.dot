@@ -1,0 +1,20 @@
+digraph Seq {
+  graph [rankdir=LR, dpi=200, bgcolor="white", fontname="Arial", label="BIOPET - Secuencia de Autenticación JWT (11 pasos)", labelloc=t, fontsize=22];
+  node [shape=box, style="rounded,filled", fillcolor="#F8FAFC", color="#334155", fontname="Arial", fontsize=10];
+  edge [fontname="Arial", fontsize=9, color="#475569"];
+  Angular -> AuthController [label="1 POST /api/auth/login"];
+  AuthController -> AuthenticationManager [label="2 authenticate()"];
+  AuthenticationManager -> UserDetailsService [label="3 loadUserByUsername()"];
+  UserDetailsService -> UsuarioRepository [label="4 findByEmail()"];
+  UsuarioRepository -> PostgreSQL [label="5 SELECT usuario"];
+  PostgreSQL -> UsuarioRepository [label="usuario"];
+  AuthenticationManager -> BCrypt [label="6 matches()"];
+  AuthController -> JwtService [label="7 generateToken() HS256"];
+  JwtService -> AuthController [label="JWT con jti"];
+  AuthController -> Angular [label="8 {accessToken, refreshToken, expiresIn}"];
+  Angular -> AngularMemory [label="9 accessToken en memoria"];
+  Angular -> JwtAuthFilter [label="10 Authorization: Bearer token"];
+  JwtAuthFilter -> JwtService [label="11 valida firma y exp"];
+  JwtAuthFilter -> Redis [label="11 consulta blacklist JTI"];
+  JwtAuthFilter -> SecurityContext [label="11 set Authentication"];
+}
