@@ -58,45 +58,27 @@ mvn test
 | PUT | `/api/mascotas/{id}` | JWT | Actualizar mascota |
 | DELETE | `/api/mascotas/{id}` | JWT | Soft delete |
 
-## Credenciales de prueba sugeridas
+## Credenciales de prueba
 
-Primero registra un usuario mediante `/api/auth/registro`:
+El sistema crea automáticamente un usuario administrador al arrancar. Úsalo para
+probar el CRUD completo (crear/editar/borrar requieren rol ADMIN/VETERINARIO/AUXILIAR):
 
-```json
+| Email             | Contraseña  | Rol          |
+|-------------------|-------------|--------------|
+| `admin@biopet.ec` | `Admin123*` | `ROLE_ADMIN` |
+
+También puedes registrar un usuario nuevo con `/api/auth/registro`. Por seguridad,
+todo registro público se asigna como `ROLE_DUENO` (el campo `rol` del JSON es
+obligatorio por validación, pero el servidor siempre asigna `ROLE_DUENO`):
+
+​```json
 {
   "nombre": "Jaime Mariscal",
   "email": "jaime@biopet.com",
   "password": "ClaveSegura123*",
-  "rol": "ROLE_ADMIN"
+  "rol": "ROLE_DUENO"
 }
-```
+​```
 
-Luego usa `/api/auth/login` con el mismo email y contraseña.
-
-## Estructura
-
-```text
-backend/                 API Spring Boot
-frontend/                SPA Angular 17 servida con Nginx
-database/migrations/     Copia documental de migraciones Flyway
-docs/                    Informe, diagramas, ADR, Postman y diccionario de datos
-.github/workflows/       CI básico
-```
-
-## Git requerido para la entrega
-
-```bash
-git checkout -b develop
-git checkout -b feature/autenticacion-jwt
-# commits: feat: implementar autenticación JWT, test: cubrir login, docs: documentar JWT
-
-git checkout develop
-git merge feature/autenticacion-jwt
-
-git checkout -b feature/crud-mascotas
-# commits: feat: implementar CRUD mascotas, test: cubrir acceso protegido
-
-git checkout develop
-git merge feature/crud-mascotas
-git tag v0.1.0-entrega-1b
-```
+Un usuario `ROLE_DUENO` puede consultar mascotas, pero crear, actualizar o eliminar
+requiere el usuario administrador de arriba.
