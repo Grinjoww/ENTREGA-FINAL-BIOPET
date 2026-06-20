@@ -1,0 +1,161 @@
+@startuml
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+
+package entity {
+  enum Rol { ROLE_ADMIN; ROLE_VETERINARIO; ROLE_DUENO; ROLE_AUXILIAR }
+  class Usuario <<Entity>> {
+    - Long id
+    - String nombre
+    - String email
+    - String passwordHash
+    - Rol rol
+    - boolean activo
+    - Instant creadoEn
+    - Instant actualizadoEn
+    + prePersist(): void
+    + preUpdate(): void
+  }
+  class Mascota <<Entity>> {
+    - Long id
+    - Usuario duenio
+    - String nombre
+    - String especie
+    - String raza
+    - LocalDate fechaNacimiento
+    - boolean activo
+    - Instant creadoEn
+    - Instant actualizadoEn
+    + prePersist(): void
+    + preUpdate(): void
+  }
+}
+
+package dto {
+  record LoginRequest
+  record RegistroRequest
+  record AuthResponse
+  record RefreshRequest
+  record UsuarioResponse
+  record MascotaRequest
+  record MascotaResponse
+  record ApiError
+}
+
+package repository {
+  interface UsuarioRepository {
+    + findByEmail(email: String): Optional<Usuario>
+    + findByEmailAndActivoTrue(email: String): Optional<Usuario>
+    + existsByEmail(email: String): boolean
+  }
+  interface MascotaRepository {
+    + findAllByActivoTrue(pageable: Pageable): Page<Mascota>
+    + findByIdAndActivoTrue(id: Long): Optional<Mascota>
+  }
+}
+
+package service {
+  class AuthService {
+    - UsuarioRepository usuarioRepository
+    - PasswordEncoder passwordEncoder
+    - AuthenticationManager authenticationManager
+    - JwtService jwtService
+    - TokenBlacklistService blacklistService
+    + registrar(request: RegistroRequest): UsuarioResponse
+    + login(request: LoginRequest): AuthResponse
+    + refresh(request: RefreshRequest): AuthResponse
+    + logout(bearerToken: String): void
+    + perfil(email: String): UsuarioResponse
+  }
+  class MascotaService {
+    - MascotaRepository mascotaRepository
+    - UsuarioRepository usuarioRepository
+    + listar(pageable: Pageable): Page<MascotaResponse>
+    + buscar(id: Long): MascotaResponse
+    + crear(request: MascotaRequest): MascotaResponse
+    + actualizar(id: Long, request: MascotaRequest): MascotaResponse
+    + eliminar(id: Long): void
+  }
+  class UserDetailsServiceImpl {
+    - UsuarioRepository usuarioRepository
+    + loadUserByUsername(email: String): UserDetails
+  }
+}
+
+package security {
+  class JwtService {
+    - SecretKey key
+    - long expirationMs
+    - long refreshExpirationMs
+    + generateAccessToken(usuario: Usuario): String
+    + generateRefreshToken(usuario: Usuario): String
+    + extractClaims(token: String): Claims
+    + extractEmail(token: String): String
+    + extractJti(token: String): String
+    + extractExpiration(token: String): Instant
+    + isAccessToken(token: String): boolean
+    + isRefreshToken(token: String): boolean
+  }
+  class JwtAuthenticationFilter {
+    - JwtService jwtService
+    - TokenBlacklistService blacklistService
+    - UserDetailsServiceImpl userDetailsService
+    + doFilterInternal(request, response, filterChain): void
+  }
+  class TokenBlacklistService {
+    - StringRedisTemplate redisTemplate
+    + revoke(jti: String, expiresAt: Instant): void
+    + isRevoked(jti: String): boolean
+  }
+}
+
+package controller {
+  class AuthController {
+    - AuthService authService
+    + registro(request: RegistroRequest): ResponseEntity<UsuarioResponse>
+    + login(request: LoginRequest): ResponseEntity<AuthResponse>
+    + refresh(request: RefreshRequest): ResponseEntity<AuthResponse>
+    + logout(authorization: String): ResponseEntity<Void>
+  }
+  class UsuarioController {
+    - AuthService authService
+    + me(userDetails: UserDetails): UsuarioResponse
+  }
+  class MascotaController {
+    - MascotaService mascotaService
+    + listar(pageable: Pageable): Page<MascotaResponse>
+    + buscar(id: Long): MascotaResponse
+    + crear(request: MascotaRequest): ResponseEntity<MascotaResponse>
+    + actualizar(id: Long, request: MascotaRequest): MascotaResponse
+    + eliminar(id: Long): ResponseEntity<Void>
+  }
+}
+
+package config {
+  class SecurityConfig {
+    + securityFilterChain(http: HttpSecurity): SecurityFilterChain
+    + corsConfigurationSource(): CorsConfigurationSource
+    + authenticationProvider(): AuthenticationProvider
+    + authenticationManager(configuration: AuthenticationConfiguration): AuthenticationManager
+    + passwordEncoder(): PasswordEncoder
+  }
+}
+
+Usuario "1" <-- "0..*" Mascota : duenio
+UsuarioRepository ..|> JpaRepository
+MascotaRepository ..|> JpaRepository
+UserDetailsServiceImpl ..|> UserDetailsService
+JwtAuthenticationFilter --|> OncePerRequestFilter
+AuthController --> AuthService
+MascotaController --> MascotaService
+UsuarioController --> AuthService
+AuthService --> UsuarioRepository
+AuthService --> JwtService
+AuthService --> TokenBlacklistService
+MascotaService --> MascotaRepository
+MascotaService --> UsuarioRepository
+JwtAuthenticationFilter --> JwtService
+JwtAuthenticationFilter --> TokenBlacklistService
+JwtAuthenticationFilter --> UserDetailsServiceImpl
+SecurityConfig --> JwtAuthenticationFilter
+@enduml
