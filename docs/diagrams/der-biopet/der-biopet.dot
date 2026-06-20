@@ -1,0 +1,31 @@
+digraph ERD {
+  graph [rankdir=LR, dpi=200, bgcolor="white", fontname="Arial", label="BIOPET - Diagrama Entidad-Relación Entrega 1B", labelloc=t, fontsize=22];
+  node [shape=plaintext, fontname="Arial"];
+  usuarios [label=<
+  <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6">
+    <TR><TD BGCOLOR="#0F766E"><FONT COLOR="white"><B>usuarios</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT">PK id BIGSERIAL</TD></TR>
+    <TR><TD ALIGN="LEFT">nombre VARCHAR(100) NOT NULL</TD></TR>
+    <TR><TD ALIGN="LEFT">email VARCHAR(255) UNIQUE NOT NULL</TD></TR>
+    <TR><TD ALIGN="LEFT">password_hash VARCHAR(255) NOT NULL</TD></TR>
+    <TR><TD ALIGN="LEFT">rol VARCHAR(30) CHECK</TD></TR>
+    <TR><TD ALIGN="LEFT">activo BOOLEAN DEFAULT TRUE</TD></TR>
+    <TR><TD ALIGN="LEFT">creado_en TIMESTAMPTZ</TD></TR>
+    <TR><TD ALIGN="LEFT">actualizado_en TIMESTAMPTZ</TD></TR>
+  </TABLE>>];
+  mascotas [label=<
+  <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6">
+    <TR><TD BGCOLOR="#2563EB"><FONT COLOR="white"><B>mascotas</B></FONT></TD></TR>
+    <TR><TD ALIGN="LEFT">PK id BIGSERIAL</TD></TR>
+    <TR><TD ALIGN="LEFT">FK duenio_id BIGINT</TD></TR>
+    <TR><TD ALIGN="LEFT">nombre VARCHAR(50) NOT NULL</TD></TR>
+    <TR><TD ALIGN="LEFT">especie VARCHAR(30) NOT NULL</TD></TR>
+    <TR><TD ALIGN="LEFT">raza VARCHAR(50) NOT NULL</TD></TR>
+    <TR><TD ALIGN="LEFT">fecha_nacimiento DATE NOT NULL</TD></TR>
+    <TR><TD ALIGN="LEFT">activo BOOLEAN DEFAULT TRUE</TD></TR>
+    <TR><TD ALIGN="LEFT">creado_en TIMESTAMPTZ</TD></TR>
+    <TR><TD ALIGN="LEFT">actualizado_en TIMESTAMPTZ</TD></TR>
+  </TABLE>>];
+  usuarios -> mascotas [label="1 a N\nusuarios.id = mascotas.duenio_id", color="#334155"];
+}
+
