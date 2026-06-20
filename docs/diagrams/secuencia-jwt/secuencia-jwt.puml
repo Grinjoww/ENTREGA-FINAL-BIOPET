@@ -1,0 +1,32 @@
+@startuml
+actor Cliente as Angular
+participant "AuthController" as AC
+participant "AuthenticationManager" as AM
+participant "UserDetailsServiceImpl" as UDS
+participant "UsuarioRepository" as UR
+participant "PostgreSQL" as PG
+participant "PasswordEncoder BCrypt" as BC
+participant "JwtService" as JWT
+participant "JwtAuthFilter" as F
+participant "Redis Blacklist" as R
+participant "SecurityContext" as SC
+
+Angular -> AC: 1. POST /api/auth/login {email,password}
+AC -> AM: 2. authenticate(email,password)
+AM -> UDS: 3. loadUserByUsername(email)
+UDS -> UR: 4. findByEmailAndActivoTrue(email)
+UR -> PG: 5. SELECT usuarios WHERE email=?
+PG --> UR: usuario
+UR --> UDS: entidad Usuario
+AM -> BC: 6. matches(password, password_hash)
+BC --> AM: válido
+AC -> JWT: 7. generateAccessToken() + generateRefreshToken()
+JWT --> AC: JWT HS256 con jti
+AC --> Angular: 8. {accessToken, refreshToken, expiresIn}
+Angular -> Angular: 9. accessToken en memoria y refreshToken en cookie HttpOnly
+Angular -> F: 10. Authorization: Bearer [token]
+F -> JWT: 11. validar firma, expiración y claims
+F -> R: consultar jti en blacklist
+R --> F: no revocado
+F -> SC: establecer UsernamePasswordAuthenticationToken
+@enduml
