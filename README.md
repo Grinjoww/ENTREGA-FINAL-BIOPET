@@ -351,6 +351,64 @@ para poder ejecutarse también en Windows con Git Bash en el `PATH`.
 
 ---
 
+## Compilación del informe académico (LaTeX)
+
+El informe final (`informe-final-v1.0.0.pdf`, 88 páginas) se compila desde
+`docs/informe/` con **TeX Live** o **MiKTeX** (BibTeX clásico, sin
+`shell-escape` ni `minted`).
+
+### Opción recomendada: `latexmk`
+
+```bash
+cd docs/informe
+latexmk -pdf -interaction=nonstopmode -halt-on-error informe-final-v1.0.0.tex
+```
+
+### Alternativa: `pdflatex` + `bibtex` manual (4 pasos)
+
+```bash
+cd docs/informe
+pdflatex -interaction=nonstopmode informe-final-v1.0.0.tex
+bibtex informe-final-v1.0.0
+pdflatex -interaction=nonstopmode informe-final-v1.0.0.tex
+pdflatex -interaction=nonstopmode informe-final-v1.0.0.tex
+```
+
+El PDF resultante se copia a la raíz de `docs/informe/` como
+`informe-final-v1.0.0.pdf`. El archivo `informe-entrega-3.tex` (Tercera
+Entrega) se conserva sin modificar como registro histórico.
+
+---
+
+## Aclaración sobre datos SUS (usabilidad)
+
+El script `scripts/analisis-sus.py` declara en su docstring `SEED = 42`
+para "generación de datos sintéticos didácticos"; **esa redacción es
+heredada de la plantilla de la Tercera Entrega y no refleja la Entrega
+Final**.
+
+En la Entrega Final:
+- `docs/mediciones/sus/sus-raw.csv` contiene **18 participantes reales**
+  (códigos P01–P18), recolectados en cuatro fechas distintas
+  (2026-07-18, 2026-07-28, 2026-07-29, 2026-07-30) con datos
+  demográficos variados (edad 19–61, sexo F/M, experiencia
+  ninguna/básica/intermedia/avanzada, dispositivos laptop/escritorio/
+  tablet/celular).
+- La semilla `SEED = 42` en el script **solo fija el desempate
+  determinista en el cálculo de percentiles (interpolación lineal) y la
+  selección del valor t-crítico tabulado** cuando los grados de libertad
+  no están en la tabla; **no genera datos sintéticos**.
+- La plantilla de consentimiento informado está en
+  `docs/etica/consentimientos/plantilla.md`; los formularios firmados se
+  archivan fuera del repositorio público (referenciados solo por código de
+  participante), conforme a la Guía de la Tercera Entrega y a la ética de
+  investigación con sujetos humanos.
+
+El reporte generado (`docs/mediciones/sus/REPORT.md`) reporta n=18, media
+74.44, IC95% [63.33, 85.56], clasificación "Bueno".
+
+---
+
 ## Licencia / citación
 
 Este proyecto se distribuye bajo licencia **MIT** — ver [`LICENSE`](LICENSE).
