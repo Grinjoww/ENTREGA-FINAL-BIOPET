@@ -1,16 +1,17 @@
 # Reporte de usabilidad — System Usability Scale (SUS)
 
 **Sistema evaluado:** BIOPET — Sistema Integral de Gestión Veterinaria
-**Fecha del análisis:** 2026-08-17
+**Fecha del análisis:** 2026-08-31
 **Fuente de datos:** `docs/mediciones/sus/sus-raw.csv`
-**Script de análisis:** `scripts/analisis-sus.py` (semilla fija SEED=42)
+**Script de análisis:** `scripts/analisis-sus.py` — calcula el puntaje SUS de cada participante desde sus respuestas Q1-Q10 (fórmula de Brooke) y lo valida contra `sus_score`; determinista, sin generación de datos ni aleatoriedad.
 **Instrumento:** System Usability Scale de Brooke (1996), 10 ítems, escala Likert de 5 puntos, sin modificar.
-**Tamaño de muestra:** n = 18 participantes externos al equipo del PFC.
+**Tamaño de muestra:** n = 18 registros (códigos P01–P18).
 
-## Protocolo aplicado
+## Procedencia y estado de la evidencia
 
-- Consentimiento informado firmado por cada participante previo a la prueba, según la plantilla en `docs/etica/consentimientos/plantilla.md`.
-- Participantes codificados de P01 a P18; los formularios firmados se conservan fuera del repositorio público.
+- **Hecho técnicamente verificable:** existen 18 registros (P01–P18) en `sus-raw.csv`, con sus 10 respuestas Q1-Q10 archivadas; el puntaje `sus_score` de cada registro es matemáticamente reproducible desde esas respuestas (verificado por este mismo script, que se detiene con error si alguno no coincide); las estadísticas agregadas de este reporte se calculan de forma determinista a partir de esos puntajes.
+- **Declaración del equipo:** los registros corresponden a participantes reales a quienes se aplicó la evaluación durante el desarrollo del proyecto.
+- **Limitación documental:** actualmente no se dispone de evidencia verificable de los formularios individuales de consentimiento informado que la documentación original de este proyecto afirmaba conservar fuera del repositorio. Esta situación se documentó mediante una constancia de regularización firmada por los responsables del proyecto (`docs/etica/regularizacion-sus/CONSTANCIA-REGULARIZACION-SUS-BIOPET-2026-08-31.pdf`), la cual **no sustituye** consentimientos individuales — ver `docs/etica/regularizacion-sus/README.md` y `docs/etica/ETHICS.md`.
 - Tarea común de onboarding realizada por cada participante: inicio de sesión, alta de una mascota, edición de sus datos, eliminación lógica y cierre de sesión.
 - Cuestionario SUS de 10 preguntas originales aplicado inmediatamente después de completar la tarea.
 
@@ -70,3 +71,4 @@ El participante con menor puntaje (P08, 22.5) declaró experiencia web 'ninguna'
 - Tamaño de muestra n=18, por encima del mínimo de 15 recomendado para la Entrega Final; el margen de error del intervalo de confianza se redujo respecto a la muestra inicial (n=10) de la Tercera Entrega.
 - Participantes reclutados por conveniencia (círculo cercano al equipo), no aleatorizados; posible sesgo de complacencia.
 - Prueba realizada en un único entorno controlado; no se evaluó variabilidad de red o dispositivos de gama baja.
+- La procedencia de los participantes como personas reales es una declaración del equipo, no un hecho verificable de forma independiente desde el repositorio; los formularios individuales de consentimiento informado mencionados en la documentación original no están actualmente disponibles como evidencia — ver `docs/etica/regularizacion-sus/`.

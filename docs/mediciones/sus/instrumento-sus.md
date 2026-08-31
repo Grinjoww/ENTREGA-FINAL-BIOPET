@@ -34,4 +34,22 @@ español utilizada en la aplicación del instrumento:
 - Se suman las diez contribuciones (rango 0–40) y se multiplica por 2.5,
   obteniendo un puntaje final en el rango 0–100.
 
-Este cálculo está implementado en `scripts/analisis-sus.py`, función `sus_score()`.
+Este cálculo está implementado en `scripts/analisis-sus.py`, función
+`calcular_puntaje_sus()`. El flujo real del script es:
+
+1. Lee las 10 respuestas Q1–Q10 de cada fila de `sus-raw.csv`.
+2. Calcula el puntaje SUS de esa fila con la fórmula de arriba
+   (`calcular_puntaje_sus`).
+3. Valida ese puntaje calculado contra el valor `sus_score` ya
+   almacenado en la misma fila del CSV; si no coincide, el script se
+   detiene con un error que identifica el código de participante
+   afectado, en vez de continuar con un dato sin validar.
+4. Usa el puntaje calculado (ya validado) para las estadísticas
+   agregadas del reporte (`docs/mediciones/sus/REPORT.md`).
+
+Una versión anterior de este documento afirmaba que existía una función
+llamada `sus_score()` que realizaba este cálculo; esa función nunca
+existió en el script (que hasta esta corrección solo leía el valor ya
+almacenado en el CSV, sin recalcularlo). Esta sección se actualiza para
+describir el comportamiento real, verificado por auditoría el
+2026-08-31.

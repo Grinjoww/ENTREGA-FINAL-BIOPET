@@ -964,7 +964,12 @@ ambos ya actualizados con las cifras vigentes). Cobertura final verificada:
 LINE 91.80 % (885/964), BRANCH 79.39 % (181/228) — el valor de BRANCH subió
 de 74.12 % a 79.39 % en una corrección posterior de esta misma fase, al
 cubrir la capa de dominio (`com.biopet.entity`), que estaba en 50 % de
-BRANCH y quedó en 100 % — con 189 pruebas en verde (0 fallos, 0 errores).
+BRANCH y quedó en 100 % — con 189 pruebas en verde (0 fallos, 0 errores)
+**en el commit de esta fase (`bb43baa`, 2026-08-16)**. Nota agregada en
+auditoría posterior (2026-08-31): dos clases de integración añadidas
+poco después de esta fase (16 pruebas) ya forman parte del commit del
+tag `v1.0.0`; el total verificado por reproducción sobre ese commit es
+205 — ver [`docs/mediciones/TEST-COUNT-PROVENANCE.md`](../mediciones/TEST-COUNT-PROVENANCE.md).
 El umbral de `jacoco:check` en `Backend/pom.xml` se elevó de `0.60` a `0.70`
 para LINE y BRANCH tras confirmar que la suite ampliada lo cumple con
 margen en las tres capas relevantes (dominio, servicios, controladores).

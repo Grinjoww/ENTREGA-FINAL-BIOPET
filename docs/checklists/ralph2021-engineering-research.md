@@ -161,7 +161,7 @@ entorno de desarrollo local con Docker.
 |---|---|---|
 | Q1 | ¿La suite de pruebas automatizadas del backend pasa consistentemente y qué proporción del código se ejercita? | JaCoCo LINE/BRANCH, resultado de `mvn clean verify` |
 | Q2 | ¿Cuál es la latencia y la tasa de error del endpoint cacheado de mascotas bajo carga moderada, en frío y en caliente? | k6: p50/p90/p95/p99, tasa de error, throughput |
-| Q3 | ¿Qué tan usable perciben participantes reales al frontend de BIOPET? | Puntaje medio SUS (0–100), IC 95% |
+| Q3 | ¿Qué nivel de usabilidad percibida presenta el frontend de BIOPET según los registros de la evaluación SUS? | Puntaje medio SUS (0–100), IC 95% |
 | Q4 | ¿El frontend cumple umbrales base de accesibilidad y rendimiento web automatizado? | Puntajes Lighthouse (Performance, Accessibility, Best Practices, SEO) |
 | Q5 | ¿Existen hallazgos de seguridad de severidad alta detectables por escaneo dinámico automatizado? | Alertas ZAP Baseline por nivel de riesgo (`riskcode`) |
 | Q6 | ¿El análisis estático detecta patrones de código propensos a inyección SQL u otras vulnerabilidades? | Hallazgos SpotBugs/Find Security Bugs (total y subconjunto `SQL_*`) |

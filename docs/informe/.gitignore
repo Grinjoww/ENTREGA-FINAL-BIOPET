@@ -1,6 +1,7 @@
 # Auxiliares de compilacion LaTeX (locales, no versionados).
-# El PDF final SI se versiona, pero en docs/informe-entrega-3.pdf
-# (un nivel arriba de esta carpeta), no aqui.
+# Los PDF finales SI se versionan, directamente en esta carpeta:
+# docs/informe/informe-final-v1.0.0.pdf (vigente) y
+# docs/informe/informe-entrega-3.pdf (historico, Tercera Entrega).
 *.aux
 *.log
 *.out
