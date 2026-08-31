@@ -169,6 +169,17 @@ Fuentes: ejecución real de `make all` sobre este repositorio;
 [`docs/mediciones/sus/REPORT.md`](docs/mediciones/sus/REPORT.md);
 [`docs/mediciones/lighthouse/`](docs/mediciones/lighthouse/) (`lhci-20260818-0538-*.json`).
 
+**Tests backend — 205/205 verificado por reproducción sobre el tag `v1.0.0`**
+(commit `0d5cd52`): `mvn clean verify` → `BUILD SUCCESS`, confirmado por
+consola Maven, suma por clase y los 22 XML de Surefire — ver
+[`docs/mediciones/sec/reproduccion-v1.0.0/`](docs/mediciones/sec/reproduccion-v1.0.0/).
+El log histórico de agosto (`docs/mediciones/sec/raw/mvn-clean-verify.txt`,
+189/189) corresponde a un commit anterior a la adición de dos clases de
+prueba de integración (16 pruebas) que sí forman parte del tag final;
+se conserva sin modificar como evidencia histórica de ese punto del
+proyecto — detalle completo en
+[`docs/mediciones/TEST-COUNT-PROVENANCE.md`](docs/mediciones/TEST-COUNT-PROVENANCE.md).
+
 ---
 
 ## Seguridad
@@ -353,7 +364,7 @@ para poder ejecutarse también en Windows con Git Bash en el `PATH`.
 
 ## Compilación del informe académico (LaTeX)
 
-El informe final (`informe-final-v1.0.0.pdf`, 88 páginas) se compila desde
+El informe final (`informe-final-v1.0.0.pdf`, 89 páginas) se compila desde
 `docs/informe/` con **TeX Live** o **MiKTeX** (BibTeX clásico, sin
 `shell-escape` ni `minted`).
 
@@ -382,30 +393,27 @@ Entrega) se conserva sin modificar como registro histórico.
 
 ## Aclaración sobre datos SUS (usabilidad)
 
-El script `scripts/analisis-sus.py` declara en su docstring `SEED = 42`
-para "generación de datos sintéticos didácticos"; **esa redacción es
-heredada de la plantilla de la Tercera Entrega y no refleja la Entrega
-Final**.
+`scripts/analisis-sus.py` no genera datos ni usa aleatoriedad: calcula el
+puntaje SUS de cada participante directamente desde sus respuestas
+Q1–Q10 (fórmula de Brooke) y lo valida contra `sus_score`; una redacción
+anterior del docstring hablaba de una semilla `SEED=42` para "datos
+sintéticos", lo cual no correspondía al comportamiento real del script y
+fue corregido.
 
-En la Entrega Final:
-- `docs/mediciones/sus/sus-raw.csv` contiene **18 participantes reales**
-  (códigos P01–P18), recolectados en cuatro fechas distintas
-  (2026-07-18, 2026-07-28, 2026-07-29, 2026-07-30) con datos
-  demográficos variados (edad 19–61, sexo F/M, experiencia
-  ninguna/básica/intermedia/avanzada, dispositivos laptop/escritorio/
-  tablet/celular).
-- La semilla `SEED = 42` en el script **solo fija el desempate
-  determinista en el cálculo de percentiles (interpolación lineal) y la
-  selección del valor t-crítico tabulado** cuando los grados de libertad
-  no están en la tabla; **no genera datos sintéticos**.
-- La plantilla de consentimiento informado está en
-  `docs/etica/consentimientos/plantilla.md`; los formularios firmados se
-  archivan fuera del repositorio público (referenciados solo por código de
-  participante), conforme a la Guía de la Tercera Entrega y a la ética de
-  investigación con sujetos humanos.
+Los 18 registros (`docs/mediciones/sus/sus-raw.csv`, códigos P01–P18)
+se conservan anonimizados y, según declaración del equipo, corresponden
+a participantes reales. La documentación original afirmaba que existían
+formularios de consentimiento individuales firmados y archivados fuera
+del repositorio; una auditoría posterior constató que actualmente no se
+dispone de esa evidencia de forma verificable, y esa situación se
+rectificó mediante una constancia de regularización firmada por los
+integrantes del equipo
+([`docs/etica/regularizacion-sus/`](docs/etica/regularizacion-sus/)),
+que **no sustituye** consentimientos individuales.
 
-El reporte generado (`docs/mediciones/sus/REPORT.md`) reporta n=18, media
-74.44, IC95% [63.33, 85.56], clasificación "Bueno".
+El reporte (`docs/mediciones/sus/REPORT.md`) es reproducible desde
+`sus-raw.csv`: n=18, media 74.44, IC95% [63.33, 85.56], clasificación
+"Bueno".
 
 ---
 

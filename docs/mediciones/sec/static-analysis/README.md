@@ -22,8 +22,11 @@ como plugin adicional (`effort=Max`, `threshold=Low` — el nivel más
 exhaustivo, para no ocultar hallazgos bajando la sensibilidad), **sin
 enlazarlo a ninguna fase del ciclo de vida** (`<executions>` vacío
 deliberadamente): así `mvn clean verify` sigue comportándose exactamente
-igual que antes de esta fase (mismos 189 tests, mismo JaCoCo, mismo
-resultado), y el análisis estático se ejecuta solo cuando se invoca
+igual que antes de esta fase (mismos 189 tests que en el commit de esa
+fecha — 2026-08-16 —, mismo JaCoCo, mismo resultado; el total verificado
+para el commit del tag `v1.0.0` es 205, ver
+[`docs/mediciones/TEST-COUNT-PROVENANCE.md`](../../TEST-COUNT-PROVENANCE.md)),
+y el análisis estático se ejecuta solo cuando se invoca
 explícitamente. Esto es intencional: introducir un nuevo gate en el build
 por defecto es una decisión de CI, que esta fase tiene prohibido tocar
 todavía (`.github/workflows/` queda para la Fase 3).

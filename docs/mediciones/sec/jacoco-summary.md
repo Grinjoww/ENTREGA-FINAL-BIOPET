@@ -5,15 +5,29 @@ evidencia de las Fases 8A/8B: la suite de pruebas que sustenta todos los
 documentos `A0X-*.md` de esta carpeta está verificada automáticamente por
 JaCoCo, no solo ejecutada manualmente.
 
-## Ejecución verificada (Entrega Final, v1.0.0)
+## Ejecución archivada el 2026-08-16 (histórica — anterior al commit del tag `v1.0.0`)
+
+> **Nota de conciliación (agregada en auditoría posterior, 2026-08-31):**
+> este bloque documenta, sin editar, la salida real de una ejecución de
+> `mvn clean verify` del 2026-08-16 (commit `bb43baa`). Ese commit es
+> anterior a dos clases de prueba de integración con Testcontainers
+> (`BiopetAppRolMinimoPrivilegiosIntegrationTest`,
+> `ProcedimientosBiopetIntegrationTest`, 16 pruebas en total) que ya
+> forman parte del commit del tag `v1.0.0`. El resultado verificado por
+> reproducción directa sobre el commit del tag es **205** pruebas, no
+> 189 — ver
+> [`docs/mediciones/sec/reproduccion-v1.0.0/`](reproduccion-v1.0.0/) y
+> [`docs/mediciones/TEST-COUNT-PROVENANCE.md`](../TEST-COUNT-PROVENANCE.md).
+> Este bloque se conserva intacto como evidencia histórica de ese commit
+> específico.
 
 ```bash
 cd Backend
 mvn clean verify
 ```
 
-Resultado real de la ejecución final de la Entrega Final (Fase 1, Jaime
-Mariscal), con Docker activo para los dos tests de Testcontainers:
+Resultado real de esa ejecución (Fase 1, Jaime Mariscal), con Docker
+activo para los dos tests de Testcontainers existentes en ese momento:
 
 ```text
 [INFO] Tests run: 189, Failures: 0, Errors: 0, Skipped: 0
@@ -24,7 +38,7 @@ Mariscal), con Docker activo para los dos tests de Testcontainers:
 [INFO] BUILD SUCCESS
 ```
 
-- **189** pruebas ejecutadas
+- **189** pruebas ejecutadas (en el commit `bb43baa`, 2026-08-16 — no es la cifra final del tag `v1.0.0`, ver nota arriba)
 - **0** fallos
 - **0** errores
 - **0** omitidas
@@ -150,7 +164,7 @@ Fuentes verificadas para este documento:
 - `Backend/target/site/jacoco/jacoco.xml` — contadores `LINE`/`BRANCH`/`COMPLEXITY` a nivel de reporte completo y por paquete, usados para calcular los porcentajes globales y por capa.
 - `Backend/target/site/jacoco/jacoco.csv` — filas por clase analizada, usadas para identificar las clases con ramas sin cubrir antes de esta fase.
 - `Backend/pom.xml` — configuración de `jacoco-maven-plugin` (ejecuciones `prepare-agent`, `report`, `check`) y de la regla `BUNDLE` con `minimum=0.70` para `LINE` y `BRANCH`, `minimum=0.60` para `COMPLEXITY`.
-- `Backend/target/surefire-reports/*.txt` — reportes individuales de JUnit por clase de prueba, agregados para confirmar el total de 189 pruebas, 0 fallos, 0 errores, 0 omitidas.
+- `Backend/target/surefire-reports/*.txt` — reportes individuales de JUnit por clase de prueba, agregados para confirmar el total de 189 pruebas, 0 fallos, 0 errores, 0 omitidas **en el commit `bb43baa` (2026-08-16); ver nota de conciliación arriba — el total verificado para el commit del tag `v1.0.0` es 205**.
 - [`docs/mediciones/jacoco/METRICS.md`](../jacoco/METRICS.md) y [`docs/mediciones/jacoco/jacoco.xml`](../jacoco/jacoco.xml) — copia archivada de esta misma ejecución, generada con `scripts/archive-jacoco-evidence.sh`.
 
 **`Backend/target/` no se versiona** (excluido en `.gitignore` bajo el
