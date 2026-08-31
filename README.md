@@ -5,7 +5,7 @@ Proyecto Fin de Curso — Aplicaciones Web
 **Entrega Final — `v1.0.0`**
 
 > Estado: Entrega Final publicada. El tag `v1.0.0` fue creado y publicado
-> (commit `ba41e11`, ver [Historial de entregas / tags](#historial-de-entregas--tags)).
+> (commit `0d5cd52`, ver [Historial de entregas / tags](#historial-de-entregas--tags)).
 
 ---
 
@@ -259,7 +259,7 @@ Lighthouse **no** forma parte de CI todavía (ver [Lighthouse](#lighthouse)).
 | `v0.7.0` | Entrega previa |
 | `v0.7.1` | Entrega previa |
 | `v0.9.0-rc` | Tercera Entrega (release candidate) |
-| `v1.0.0` | **Entrega Final publicada** (commit `ba41e11`) |
+| `v1.0.0` | **Entrega Final publicada** (commit `0d5cd52`) |
 
 ---
 
@@ -307,7 +307,7 @@ Imagen del backend publicada en GitHub Container Registry:
 docker pull ghcr.io/grinjoww/entregafinal-biopet-backend@sha256:ef1e857a95a307a115ebe01599a41506eab824808b70a3c8e317dcc55bef5163
 ```
 
-El tag Git `v1.0.0` ya fue publicado (commit `ba41e11`), lo que dispara
+El tag Git `v1.0.0` ya fue publicado (commit `0d5cd52`), lo que dispara
 automáticamente (`.github/workflows/ghcr-publish.yml`, disparador
 `push: tags: v*`) la publicación de las etiquetas `1.0.0` y `latest` en
 GHCR. No hay evidencia local de que esa corrida de GitHub Actions ya haya
