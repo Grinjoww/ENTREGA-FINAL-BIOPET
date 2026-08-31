@@ -57,21 +57,44 @@ datos que ya existen en el repositorio, verificado contra su origen real.
 |---|---|
 | Generado por | `mvn clean verify` (fase `verify`, plugin `jacoco-maven-plugin`, regla `BUNDLE` con umbral ≥60% en LINE/BRANCH/COMPLEXITY) |
 | Responsable | Jaime Mariscal Cabrera |
-| Entrada | Suite de 166 pruebas JUnit 5 + MockMvc reales (`Backend/src/test/java/com/biopet/**`) |
+| Entrada | Suite de pruebas JUnit 5 + MockMvc/Testcontainers reales (`Backend/src/test/java/com/biopet/**`). **Total canónico para la Entrega Final (tag `v1.0.0`): 205 pruebas, 0 fallos, 0 errores, 0 omitidas** — verificado por reproducción independiente de `mvn clean verify` sobre el commit exacto del tag (`0d5cd525ce648cca7219da204e16fa622e671a87`), archivada en [`docs/mediciones/sec/reproduccion-v1.0.0/`](sec/reproduccion-v1.0.0/) y detallada en [`TEST-COUNT-PROVENANCE.md`](TEST-COUNT-PROVENANCE.md). **Nota histórica:** esta fila decía "166 pruebas" (cifra narrativa, sin log crudo localizado que la respalde — ver clasificación en `TEST-COUNT-PROVENANCE.md`); el log crudo archivado el mismo día que se generó `jacoco-summary.md` (commit `bb43baa`, 2026-08-16) reportaba 189, correcto para ese commit pero anterior a dos clases de prueba (16 casos) que ya forman parte del tag `v1.0.0` — ese log de 189 se conserva sin modificar como evidencia histórica de ese punto exacto del proyecto, no como el resultado final. |
 | Transformación aplicada | Ninguna manual — `jacoco-summary.md` resume el reporte HTML/XML que genera JaCoCo en `Backend/target/site/jacoco/`, no versionado por ser artefacto regenerable en cada build |
-| Reproducibilidad | Se regenera localmente ejecutando `cd Backend && mvn clean verify`; el resultado citado (87.45% LINE, 67.98% BRANCH, 71.81% COMPLEXITY) corresponde a la corrida más reciente documentada |
+| Reproducibilidad | Se regenera localmente ejecutando `cd Backend && mvn clean verify`. La cobertura vigente de la Entrega Final (91.80% LINE / 79.39% BRANCH) está en `docs/mediciones/sec/jacoco-summary.md`, sección "Cobertura actual (real, Entrega Final)". El baseline histórico (87.45% LINE, 67.98% BRANCH, 71.81% COMPLEXITY) corresponde a la Tercera Entrega y **ya no describe el estado actual**; se conserva en `jacoco-summary.md` solo como referencia histórica |
 
 ## 5. Usabilidad SUS — `docs/mediciones/sus/`
 
 | Campo | Detalle |
 |---|---|
-| Generado por | Instrumento SUS (Brooke, 1996) aplicado directamente a 18 participantes externos al equipo (P01–P18), según `docs/mediciones/sus/instrumento-sus.md` |
+| Generado por | Instrumento SUS (Brooke, 1996), según `docs/mediciones/sus/instrumento-sus.md` |
 | Responsable | Zaida Taipe Mora |
 | Fecha de recolección | Muestra inicial P01–P10 (Tercera Entrega), ampliada con P11–P18 (Entrega Final) para cumplir n≥15 |
-| Entrada | Respuestas Likert 1–5 de cada participante a los 10 ítems estándar del SUS, sobre el frontend Angular real de BIOPET |
-| Transformación aplicada | Cálculo del puntaje agregado por participante (`sus_score`, método estándar de Brooke: suma de contribuciones × 2.5), realizado por `scripts/analisis-sus.py` sobre `sus-raw.csv`, volcado a `REPORT.md` |
+| Entrada | Respuestas Likert 1–5 de cada participante a los 10 ítems estándar del SUS |
+| Transformación aplicada | El puntaje por participante (`sus_score`) se **calcula** desde las respuestas Q1–Q10 con la fórmula de Brooke (suma de contribuciones × 2.5) en `scripts/analisis-sus.py` (`calcular_puntaje_sus`), y se valida contra el valor ya almacenado en `sus-raw.csv`; el script se detiene con error si no coincide. El resultado se vuelca a `REPORT.md` |
 | Archivo crudo sin transformar | `docs/mediciones/sus/sus-raw.csv` — respuestas individuales anonimizadas (código de participante, no nombre) |
-| Consentimiento/anonimización | Participantes identificados solo por código (P01–P18); sin datos que permitan reidentificación individual, más allá de edad/sexo/experiencia declarados de forma agregada |
+| Anonimización | Participantes identificados solo por código (P01–P18); sin datos que permitan reidentificación individual, más allá de edad/sexo/experiencia declarados de forma agregada |
+
+**Distinción de procedencia (auditoría 2026-08-31):**
+
+- **Evidencia reproducible:** `sus-raw.csv` contiene 18 filas (P01–P18)
+  con sus 10 respuestas Q1–Q10; el puntaje `sus_score` de cada fila es
+  matemáticamente reproducible desde esas respuestas (verificado por
+  `scripts/analisis-sus.py`); `REPORT.md` es reproducible de forma
+  determinista a partir de `sus-raw.csv` (n=18, media 74.44, DE 22.35,
+  IC95% [63.33, 85.56], mediana 82.50, mínimo 22.50, máximo 97.50).
+- **Declaración del equipo:** los 18 registros proceden de participantes
+  reales evaluados durante el desarrollo del proyecto. Esta es una
+  declaración del equipo, no un hecho verificable de forma independiente
+  desde el repositorio.
+- **Limitación documental:** actualmente no existe evidencia verificable,
+  en poder del equipo, de los formularios individuales de consentimiento
+  informado que la documentación original del proyecto afirmaba
+  conservar fuera del repositorio. Esta situación se documentó mediante
+  una constancia de regularización firmada por los tres integrantes del
+  proyecto
+  ([`docs/etica/regularizacion-sus/CONSTANCIA-REGULARIZACION-SUS-BIOPET-2026-08-31.pdf`](../etica/regularizacion-sus/CONSTANCIA-REGULARIZACION-SUS-BIOPET-2026-08-31.pdf)),
+  que **no sustituye** esos formularios individuales — ver
+  [`docs/etica/regularizacion-sus/README.md`](../etica/regularizacion-sus/README.md)
+  y [`docs/etica/ETHICS.md`](../etica/ETHICS.md) (sección iii).
 
 ## 6. Lighthouse (calidad web) — `docs/mediciones/lighthouse/`
 
@@ -111,6 +134,15 @@ mismo criterio ya aplicado en `docs/mediciones/lighthouse/README.md`.
 
 ## 9. Pendientes de procedencia (no se inventa lo que falta)
 
+- **Número total de pruebas del backend — RESUELTO (2026-08-31):** el
+  repositorio contiene cuatro cifras distintas a lo largo del tiempo
+  (109, 166, 189, 205), clasificadas por fecha, commit y evidencia en
+  [`TEST-COUNT-PROVENANCE.md`](TEST-COUNT-PROVENANCE.md). La cifra 205,
+  usada como resultado final en `docs/informe/secciones-final/*.tex`,
+  quedó verificada mediante reproducción independiente de
+  `mvn clean verify` sobre el commit exacto del tag `v1.0.0`, archivada
+  en [`docs/mediciones/sec/reproduccion-v1.0.0/`](sec/reproduccion-v1.0.0/).
+  Ya no es una cifra pendiente.
 - **Hit ratio de Redis:** no hay todavía una captura de `INFO stats`
   (`keyspace_hits`/`keyspace_misses`) con procedencia documentada; solo
   existe evidencia de TTL y `DBSIZE`. Sigue siendo la única brecha real

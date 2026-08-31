@@ -97,7 +97,7 @@ el plan gratuito de Render~\cite{vansolingen2002gqm}.
     Mantenibilidad & \textquestiondown Qu\'e proporci\'on del c\'odigo se ejercita? & LINE 91{,}80\,\% / BRANCH 79{,}39\,\%, umbral 70\,\% (\texttt{docs/mediciones/jacoco/METRICS.md}) \\
     Mantenibilidad & \textquestiondown El proceso de build es reproducible y automatizado? & CI con 6 jobs verdes (\texttt{.github/workflows/ci.yml}) \\
     Rendimiento & \textquestiondown Latencia y error del endpoint cacheado bajo carga? & p95 6{,}4--21{,}1~ms (caliente/fr\'io), error 0{,}0\,\% en 10 corridas (\texttt{docs/mediciones/perf/REPORT.md}) \\
-    Usabilidad & \textquestiondown Qu\'e tan usable perciben participantes reales el frontend? & SUS media 74{,}44/100, IC95\,\% $[63{,}33,85{,}56]$, n=18 (\texttt{docs/mediciones/sus/REPORT.md}) \\
+    Usabilidad & \textquestiondown Qu\'e nivel de usabilidad percibida presenta el frontend seg\'un los registros de la evaluaci\'on SUS? & SUS media 74{,}44/100, IC95\,\% $[63{,}33,85{,}56]$, n=18 (\texttt{docs/mediciones/sus/REPORT.md}) \\
     Calidad web & \textquestiondown El frontend cumple umbrales base de calidad web? & Performance/Accessibility/Best Practices/SEO cumplidos en las 12 corridas mobile+desktop del 2026-08-18 (\texttt{docs/mediciones/lighthouse/}) \\
     Seguridad (din\'amica) & \textquestiondown Hay hallazgos de severidad alta por escaneo din\'amico? & 0 alertas altas, 1 informativa, ZAP Baseline (\texttt{docs/mediciones/sec/zap/README.md}) \\
     Seguridad (est\'atica) & \textquestiondown El an\'alisis est\'atico detecta patrones de inyecci\'on SQL? & 66 hallazgos totales, 0 de tipo \texttt{SQL\_*} (\rutalarga{docs/mediciones/sec/static-analysis/README.md}) \\
@@ -125,8 +125,12 @@ cap\'itulos~\ref{cap:pruebas-calidad} y \ref{cap:seguridad}):
     distribuci\'on t de Student; prueba de Wilcoxon pareada entre
     condiciones fr\'ia/caliente.
   \item \textbf{Usabilidad (SUS):} cuestionario de Brooke (1996) sin
-    modificar, aplicado a 18 participantes externos al equipo, con
-    consentimiento informado previo.
+    modificar, aplicado a 18 participantes (P01--P18) que, seg\'un
+    declaraci\'on del equipo, son externos al equipo; la disponibilidad
+    de consentimiento informado individual firmado para cada
+    participante no pudo confirmarse documentalmente durante una
+    auditor\'ia posterior (ver secci\'on~\ref{sec:sus-final} y
+    \texttt{docs/etica/regularizacion-sus/}).
   \item \textbf{Calidad web (Lighthouse):} \texttt{npx @lhci/cli autorun}
     contra el frontend servido por contenedor real, perfiles m\'ovil
     simulado y escritorio, 3 corridas por ruta y por perfil (12 corridas

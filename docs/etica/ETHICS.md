@@ -77,9 +77,10 @@ PFC. Para esa actividad, el equipo aplica el siguiente mecanismo:
 2. El consentimiento informa el propósito de la prueba, la tarea a realizar,
    el carácter voluntario de la participación, el tratamiento anonimizado de
    los datos y el derecho a retirarse en cualquier momento sin consecuencias.
-3. Los formularios firmados se archivan fuera del repositorio público y se
-   referencian únicamente por código de participante (P01, P02, ...),
-   conforme al bloque C.3 de la Guía.
+3. Los formularios firmados debían archivarse fuera del repositorio
+   público y referenciarse únicamente por código de participante (P01,
+   P02, ...), conforme al bloque C.3 de la Guía — ver la rectificación
+   sobre este punto más abajo.
 4. Los resultados agregados (matriz cruda `docs/mediciones/sus/sus-raw.csv` y
    reporte con media, desviación típica e IC 95 %) se vinculan al código de
    participante, nunca a su nombre, correo o cualquier otro dato identificable.
@@ -87,16 +88,37 @@ PFC. Para esa actividad, el equipo aplica el siguiente mecanismo:
 **Estado a la fecha de esta entrega:** la prueba SUS se ejecutó inicialmente
 con diez participantes externos al equipo (P01–P10, Tercera Entrega) y se
 amplió para la Entrega Final con ocho participantes adicionales (P11–P18),
-alcanzando n=18 (por encima del mínimo de 15 exigido), siguiendo el mismo
-mecanismo de consentimiento descrito arriba para cada participante nuevo.
-Los datos crudos y el reporte agregado están disponibles en
-`docs/mediciones/sus/sus-raw.csv` y `docs/mediciones/sus/REPORT.md`,
-respectivamente.
+alcanzando n=18 (por encima del mínimo de 15 exigido). Los datos crudos y
+el reporte agregado están disponibles en `docs/mediciones/sus/sus-raw.csv`
+y `docs/mediciones/sus/REPORT.md`, respectivamente; el puntaje SUS de cada
+registro es matemáticamente reproducible desde sus respuestas Q1–Q10
+(`scripts/analisis-sus.py`).
+
+**Rectificación (2026-08-31):** según declaración del equipo, los 18
+registros P01–P18 corresponden a participantes reales. Durante la
+auditoría documental posterior de la Entrega Final se constató que
+actualmente no se dispone de evidencia verificable de los formularios
+individuales de consentimiento mencionados en el punto 3 de arriba y en
+la versión original de esta sección, que afirmaba su existencia y
+custodia fuera del repositorio. Esta situación se documentó mediante una
+constancia de regularización firmada por los tres integrantes del
+proyecto —
+[`docs/etica/regularizacion-sus/CONSTANCIA-REGULARIZACION-SUS-BIOPET-2026-08-31.pdf`](regularizacion-sus/CONSTANCIA-REGULARIZACION-SUS-BIOPET-2026-08-31.pdf),
+ver también [`docs/etica/regularizacion-sus/README.md`](regularizacion-sus/README.md) —,
+**la cual no sustituye consentimientos individuales, no incorpora firmas
+de participantes y no fue generada como evidencia retrospectiva de que
+esos consentimientos existieron.** Su único propósito es dejar constancia
+transparente de la situación documental encontrada.
 
 ## iv. Ausencia de datos identificables en el repositorio público
 
-- Los formularios de consentimiento firmados **no se suben** al repositorio
-  público; solo la plantilla vacía (`docs/etica/consentimientos/plantilla.md`).
+- Los formularios de consentimiento firmados individuales, si existen,
+  no se suben al repositorio público bajo ninguna circunstancia; en el
+  repositorio solo está la plantilla vacía
+  (`docs/etica/consentimientos/plantilla.md`). Ver la rectificación de
+  la sección iii: actualmente no se dispone de esos formularios firmados
+  como evidencia verificable — no se trata solo de que no se publiquen,
+  sino de que el equipo no puede exhibirlos hoy.
 - Los datos crudos de usabilidad que se archiven en
   `docs/mediciones/sus/sus-raw.csv` deben identificar a cada participante
   únicamente por su código (P01, P02, ...), nunca por nombre, correo u otro
