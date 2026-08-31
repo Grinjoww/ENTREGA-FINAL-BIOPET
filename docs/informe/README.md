@@ -1,91 +1,136 @@
-# Informe final --- Tercera Entrega de BIOPET
+# Informe académico — BIOPET (Entrega Final, `v1.0.0`)
 
-Este directorio contiene el código fuente LaTeX editable del informe
-final académico conjunto de BIOPET (equipo BMT). El PDF compilado se
-publica en `docs/informe-entrega-3.pdf` (un nivel arriba de esta carpeta),
-**únicamente cuando se compiló realmente**.
+Este directorio contiene el código fuente LaTeX editable de **dos**
+informes:
+
+| Informe | `.tex` | `.pdf` | Estado |
+|---|---|---|---|
+| **Informe Final (canónico)** | `informe-final-v1.0.0.tex` | `informe-final-v1.0.0.pdf` (**89 páginas**, verificado con `pdfinfo`) | Vigente — es el que se evalúa en la Entrega Final |
+| Tercera Entrega (histórico) | `informe-entrega-3.tex` | `informe-entrega-3.pdf` (50 páginas) | Congelado — se conserva sin modificar como registro histórico, ver [sección dedicada](#histórico--tercera-entrega) |
+
+**Este README documenta, en primer lugar, cómo compilar el Informe
+Final.** Las instrucciones equivalentes de la Tercera Entrega se
+conservan más abajo, claramente separadas, porque ese `.tex` histórico
+sigue existiendo en el repositorio y alguien podría necesitar
+recompilarlo — pero no son el procedimiento vigente.
 
 ## Requisitos
 
 - Una instalación de **TeX Live** o **MiKTeX** con BibTeX clásico.
   No se usa ningún paquete experimental ni que requiera herramientas
   externas (no hay `minted`/Pygments, no hay `shell-escape`).
-- Todos los paquetes usados (`babel`, `geometry`, `graphicx`, `float`,
-  `booktabs`, `longtable`, `hyperref`, `fancyhdr`, `underscore`,
-  `pdflscape`, `amsmath`/`amssymb`, `enumitem`) son estándar y vienen
-  incluidos en cualquier instalación completa de TeX Live o se
-  instalan automáticamente bajo demanda en MiKTeX.
+- Paquetes usados por `informe-final-v1.0.0.tex` (todos estándar,
+  incluidos en cualquier instalación completa de TeX Live o instalados
+  automáticamente bajo demanda en MiKTeX): `babel`, `geometry`,
+  `underscore`, `graphicx`, `float`, `booktabs`, `longtable`, `array`,
+  `caption`, `enumitem`, `textcomp`, `amsmath`/`amssymb`, `pdflscape`,
+  `xcolor`, `microtype`, `listings`, `fancyhdr`, `hyperref`.
 
-## Compilación
+---
+
+## Compilación del Informe Final (`informe-final-v1.0.0.tex`)
 
 ### Opción recomendada: `latexmk`
 
 ```bash
 cd docs/informe
-latexmk -pdf -interaction=nonstopmode -halt-on-error informe-entrega-3.tex
+latexmk -pdf -interaction=nonstopmode -halt-on-error informe-final-v1.0.0.tex
 ```
 
-### Alternativa: `pdflatex` + `bibtex` manual
+### Alternativa: `pdflatex` + `bibtex` manual (4 pasos)
 
 ```bash
 cd docs/informe
-pdflatex -interaction=nonstopmode informe-entrega-3.tex
-bibtex informe-entrega-3
-pdflatex -interaction=nonstopmode informe-entrega-3.tex
-pdflatex -interaction=nonstopmode informe-entrega-3.tex
+pdflatex -interaction=nonstopmode informe-final-v1.0.0.tex
+bibtex informe-final-v1.0.0
+pdflatex -interaction=nonstopmode informe-final-v1.0.0.tex
+pdflatex -interaction=nonstopmode informe-final-v1.0.0.tex
 ```
 
 (Se ejecuta `pdflatex` dos veces al final para resolver referencias
-cruzadas, índice y citas de forma estable, además de la primera
-pasada.)
+cruzadas, índice de contenidos/figuras/tablas/listados y citas de forma
+estable, además de la primera pasada.)
 
-### Copiar el resultado final
+El resultado (`informe-final-v1.0.0.pdf`) se genera **directamente en
+`docs/informe/`** — a diferencia del flujo de la Tercera Entrega, aquí
+no hace falta copiarlo a ningún otro nivel del árbol de directorios.
+
+### Limpieza de auxiliares
 
 ```bash
-cp informe-entrega-3.pdf ../informe-entrega-3.pdf
+cd docs/informe
+latexmk -c informe-final-v1.0.0.tex
 ```
 
-El PDF esperado por la Tercera Entrega vive en `docs/informe-entrega-3.pdf`
-(no dentro de `docs/informe/`).
+Borra `.aux`/`.log`/`.toc`/`.lof`/`.lot`/`.bbl`/`.blg`/`.out`/etc. (ver
+`.gitignore` de esta carpeta); no toca `informe-final-v1.0.0.pdf` ni
+ningún `.tex`.
 
-## Organización de las secciones
+### Comprobación del PDF generado
+
+El Informe Final esperado tiene **89 páginas**. Para comprobarlo tras
+compilar (requiere `pdfinfo`, incluido en TeX Live/MiKTeX):
+
+```bash
+pdfinfo informe-final-v1.0.0.pdf | grep Pages
+```
+
+Salida esperada: `Pages:           89`. Esta cifra fue verificada
+directamente sobre el PDF versionado en este repositorio (no es una
+estimación).
+
+---
+
+## Organización de las secciones (Informe Final)
 
 ```
 docs/informe/
-├── informe-entrega-3.tex      # documento maestro (portada, preambulo, \input de cada capitulo)
-├── referencias.bib            # bibliografia IEEE (BibTeX clasico, bibliographystyle{ieeetr})
+├── informe-final-v1.0.0.tex   # documento maestro vigente
+├── informe-entrega-3.tex      # documento maestro histórico (Tercera Entrega, no modificar)
+├── referencias.bib            # bibliografia IEEE compartida por ambos documentos (BibTeX clasico, bibliographystyle{ieeetr})
 ├── README.md                  # este archivo
 ├── .gitignore                 # auxiliares de compilacion (.aux/.log/.toc/...), no el PDF final
-├── secciones/
-│   ├── 01-resumen-ejecutivo.tex
-│   ├── 02-estado-sistema.tex
-│   ├── 03-arquitectura-c4.tex
-│   ├── 04-trazabilidad.tex
-│   ├── 05-protocolo-experimental.tex
-│   ├── 06-resultados-jaime.tex
-│   ├── 07-resultados-fred.tex
-│   ├── 08-resultados-zaida.tex
-│   ├── 09-amenazas-validez.tex
-│   ├── 10-etica.tex
-│   ├── 11-credit.tex
-│   ├── 12-conclusiones.tex
-│   └── 13-anexos.tex
-└── figuras/
-    ├── compartidas/   # evidencia compartida por el equipo (ej. C4 Nivel 2)
+├── secciones-final/           # capitulos del Informe Final (18 archivos, ver tabla)
+├── secciones/                 # capitulos historicos de la Tercera Entrega (13 archivos)
+└── figuras/                   # evidencia compartida por ambos documentos
+    ├── compartidas/
     ├── jaime/
     ├── fred/
     └── zaida/
 ```
 
-Cada capítulo del PDF corresponde a exactamente un archivo de
-`secciones/`, incluido en `informe-entrega-3.tex` mediante `\input`. Para
-editar el contenido de un integrante, edita **solo** el archivo de
-`secciones/` que le corresponde; no es necesario tocar el documento
+`informe-final-v1.0.0.tex` incluye, en este orden, cada capítulo de
+`secciones-final/` mediante `\input`:
+
+| Capítulo | Archivo |
+|---|---|
+| Resumen / Abstract | `00-resumen-abstract.tex` |
+| Introducción | `01-introduccion.tex` |
+| Marco teórico | `01b-marco-teorico.tex` |
+| Trabajos relacionados | `02-trabajos-relacionados.tex` |
+| Metodología | `03-metodologia.tex` |
+| Requisitos | `04-requisitos.tex` |
+| Arquitectura | `05-arquitectura.tex` |
+| Implementación | `06-implementacion.tex` |
+| Pruebas y calidad | `07-pruebas-calidad.tex` |
+| Seguridad | `08-seguridad.tex` |
+| Despliegue y reproducibilidad | `09-despliegue-reproducibilidad.tex` |
+| Trazabilidad | `10-trazabilidad.tex` |
+| Resultados | `11-resultados.tex` |
+| Discusión | `12-discusion.tex` |
+| Amenazas y limitaciones | `13-amenazas-limitaciones.tex` |
+| Conclusiones | `14-conclusiones.tex` |
+| Declaraciones | `15-declaraciones.tex` |
+| Anexos | `16-anexos.tex` |
+
+Para editar el contenido de un capítulo, edita **solo** el archivo de
+`secciones-final/` correspondiente; no es necesario tocar el documento
 maestro para cambios de contenido.
 
 ## Cómo funcionan las evidencias (`\IfFileExists`)
 
-El documento maestro define un comando auxiliar:
+Ambos documentos maestros (`informe-final-v1.0.0.tex` e
+`informe-entrega-3.tex`) definen el mismo comando auxiliar:
 
 ```latex
 \newcommand{\evidencia}[3]{%
@@ -102,125 +147,107 @@ El documento maestro define un comando auxiliar:
 
 `\IfFileExists` es un comando nativo del núcleo de LaTeX (no requiere
 ningún paquete). Si el archivo de la ruta indicada **no existe**, no se
-imprime absolutamente nada: ni un hueco, ni un marcador visible, ni texto
-de "captura pendiente". Si el archivo **sí existe** (porque ya copiaste tu
-captura ahí), la figura aparece automáticamente con su caption y su label,
-sin que sea necesario editar el texto de la sección.
+imprime absolutamente nada: ni un hueco, ni un marcador visible, ni
+texto de "captura pendiente". Si el archivo **sí existe**, la figura
+aparece automáticamente con su caption y su label.
 
-Cada uso de `\evidencia{ruta}{caption}{label}` está precedido, en el
-`.tex`, por un comentario interno con el formato:
-
-```latex
-% EVIDENCIA-<RESPONSABLE>-<NUMERO>
-% Captura: <descripcion breve>
-% Ruta esperada: figuras/<responsable>/<NN>-<slug>.png
-```
-
-Esos comentarios **no aparecen en el PDF** (son comentarios de LaTeX,
-ignorados por el compilador); solo son visibles editando el `.tex`. Sirven
-como índice de qué captura falta, dónde debe colocarse y con qué nombre
-exacto de archivo.
-
-## Convención de nombres de evidencias
-
-| Responsable | Prefijo de carpeta | Ejemplo |
-|---|---|---|
-| Compartida (equipo) | `figuras/compartidas/` | `c4-contenedores.png` |
-| Jaime | `figuras/jaime/` | `01-maven-verify.png` |
-| Fred | `figuras/fred/` | `01-docker-healthy.png` |
-| Zaida | `figuras/zaida/` | `01-frontend-login.png` |
-
-El nombre de archivo debe coincidir **exactamente** (mayúsculas, guiones,
-extensión `.png`) con la ruta indicada en el comentario
-`% Ruta esperada: ...` que precede a cada `\evidencia{...}` en el `.tex`
-correspondiente. Si el nombre no coincide, `\IfFileExists` no la
-encontrará y la figura seguirá sin aparecer.
-
-## Lista de evidencias pendientes de incorporación
-
-### Compartidas
-| # | Ruta esperada | Descripción |
-|---|---|---|
-| C4-L2 | `figuras/compartidas/c4-contenedores.png` | Diagrama C4 Nivel 2 (contenedores). Ya existe una imagen renderizada en `docs/diagrams/c4-contenedores/c4-contenedores.png`; solo falta copiarla a esta ruta. |
-
-### Jaime
-| # | Ruta esperada | Descripción |
-|---|---|---|
-| 01 | `figuras/jaime/01-maven-verify.png` | `mvn clean verify` con 109 pruebas y `BUILD SUCCESS`. |
-| 02 | `figuras/jaime/02-jacoco-resumen.png` | Resumen HTML de JaCoCo. |
-| 03 | `figuras/jaime/03-tls-openssl.png` | OpenSSL mostrando TLSv1.3 y `TLS_AES_256_GCM_SHA384`. |
-| 04 | `figuras/jaime/04-security-headers.png` | `curl` HTTPS con HSTS y cabeceras de seguridad. |
-| 05 | `figuras/jaime/05-postman-401.png` | Postman con respuesta 401 ProblemDetail. |
-| 06 | `figuras/jaime/06-postman-403.png` | Postman con respuesta 403 ProblemDetail. |
-| 07 | `figuras/jaime/07-rate-limit-429.png` | Sexto intento de login con 429 y `Retry-After`. |
-| 08 | `figuras/jaime/08-cookie-attributes.png` | Atributos de cookies, sin exponer valores. |
-| 09 | `figuras/jaime/09-auth-audit.png` | Log `AUTH_AUDIT` sin secretos. |
-| 10 | `figuras/jaime/10-c4-nivel-3.png` | C4 Nivel 3 renderizado. Ya existe una imagen renderizada en `docs/diagrams/c4-componentes-backend/c4-componentes-backend.png`; solo falta copiarla a esta ruta. |
-
-### Fred
-| # | Ruta esperada | Descripción |
-|---|---|---|
-| 01 | `figuras/fred/01-docker-healthy.png` | Los 4 servicios en estado `healthy` tras `make up`. |
-| 02 | `figuras/fred/02-postgresql-procedimiento.png` | Ejecución de `fn_resumen_mascotas_por_especie` como `biopet_app`. |
-| 03 | `figuras/fred/03-k6-cold.png` | Salida de consola de una corrida de k6 en frío. |
-| 04 | `figuras/fred/04-k6-warm.png` | Salida de consola de una corrida de k6 en caliente. |
-| 05 | `figuras/fred/05-redis-stats.png` | `redis-cli DBSIZE` de la clave de caché. |
-| 06 | `figuras/fred/06-performance-report.png` | Vista del reporte agregado de rendimiento. |
-
-### Zaida
-| # | Ruta esperada | Descripción |
-|---|---|---|
-| 01 | `figuras/zaida/01-frontend-login.png` | Pantalla de login del frontend. |
-| 02 | `figuras/zaida/02-crud-mascotas.png` | CRUD de mascotas en el frontend. |
-| 03 | `figuras/zaida/03-responsive.png` | Vista responsive del frontend. |
-| 04 | `figuras/zaida/04-lighthouse.png` | Reporte Lighthouse (cuando se ejecute). |
-| 05 | `figuras/zaida/05-sus-resultados.png` | Resultados agregados de SUS (cuando se ejecute). |
-| 06 | `figuras/zaida/06-accesibilidad.png` | Detalle de accesibilidad automática (cuando se ejecute). |
-
-## Instrucciones para Fred y Zaida
-
-1. **No es necesario instalar nada nuevo para revisar el contenido**: los
-   archivos `.tex` de `secciones/` son texto plano legible; puedes revisar
-   tu capítulo (`07-resultados-fred.tex` o `08-resultados-zaida.tex`)
-   directamente en tu editor.
-2. Si detectas una cifra, ruta o afirmación de tu bloque que no coincide
-   con la evidencia real (por ejemplo, un archivo renombrado o una nueva
-   medición ya ejecutada), edita **solo** tu archivo de sección
-   correspondiente; no es necesario ni recomendable editar
-   `informe-entrega-3.tex` para eso.
-3. Para agregar tus capturas de pantalla, guárdalas con el nombre exacto
-   indicado en la tabla de arriba, dentro de tu carpeta
-   (`figuras/fred/` o `figuras/zaida/`). No necesitas editar ningún
-   `.tex`: la figura aparecerá automáticamente en la siguiente
-   compilación gracias a `\IfFileExists`.
-4. Si necesitas una figura adicional no listada aquí, agrega un nuevo
-   bloque `% EVIDENCIA-<TU NOMBRE>-NN` + `\evidencia{...}` en tu propia
-   sección, siguiendo el mismo patrón que las ya existentes.
+Las rutas de evidencia usadas actualmente por `secciones-final/` viven
+en `figuras/compartidas/`, `figuras/jaime/`, `figuras/fred/` y
+`figuras/zaida/` (mismas carpetas que la Tercera Entrega; algunos
+archivos son compartidos entre ambos informes, otros son exclusivos del
+Informe Final).
 
 ## No escribir secretos en el informe
 
-**Nunca** incluyas en el `.tex`, en el `.bib`, en el README ni en ninguna
-captura de `figuras/`: contraseñas con valor, JSON Web Tokens completos
-(`eyJ...`), valores de cookies, el encabezado `Authorization: Bearer` con
-valor real, claves privadas, ni el identificador `jti` de un token real.
-Cuando una captura de pantalla deba mostrar una cookie o un token, recorta
-o difumina el valor antes de guardarla; el texto del informe ya está
-escrito para describir únicamente los **atributos** (`HttpOnly`, `Secure`,
-`SameSite`), nunca el valor.
+**Nunca** incluyas en ningún `.tex`, en el `.bib`, en este README ni en
+ninguna captura de `figuras/`: contraseñas con valor, JSON Web Tokens
+completos (`eyJ...`), valores de cookies, el encabezado
+`Authorization: Bearer` con valor real, claves privadas, ni el
+identificador `jti` de un token real. Cuando una captura de pantalla
+deba mostrar una cookie o un token, recorta o difumina el valor antes de
+guardarla.
 
-## Añadir capturas en la fase final sin editar las secciones
+---
 
-El flujo previsto es:
+## Histórico — Tercera Entrega
 
-1. Ejecutar la evidencia real (comando, request de Postman, medición).
-2. Guardar la captura con el nombre exacto de la tabla de arriba, en la
-   carpeta de figuras que corresponda.
-3. Recompilar (`latexmk -pdf ...` o el flujo manual de `pdflatex`/`bibtex`).
-4. La figura aparece automáticamente, con su caption y su label ya
-   redactados: **no hace falta editar ningún archivo `.tex`** solo para
-   incorporar una captura que ya tiene su bloque `\evidencia{...}`
-   preparado.
+> **Esta sección describe `informe-entrega-3.tex`, el documento maestro
+> de la Tercera Entrega (`v0.9.0-rc`). Se conserva sin modificar como
+> registro histórico y NO es el procedimiento de compilación del
+> Informe Final** (ver [arriba](#compilación-del-informe-final-informe-final-v100tex)).
+> Las cifras y capturas mencionadas en esta sección (por ejemplo,
+> "109 pruebas" en la evidencia de Jaime) corresponden al estado del
+> proyecto en la Tercera Entrega, no al estado final — ver
+> [`docs/mediciones/TEST-COUNT-PROVENANCE.md`](../mediciones/TEST-COUNT-PROVENANCE.md)
+> para la trazabilidad completa de las distintas cifras de pruebas que
+> han existido en el proyecto.
 
-Solo se necesita editar un `.tex` si el número de capturas cambia (por
-ejemplo, se necesita una evidencia adicional no prevista), no para las ya
-listadas en este README.
+### Compilación de `informe-entrega-3.tex`
+
+#### Opción recomendada: `latexmk`
+
+```bash
+cd docs/informe
+latexmk -pdf -interaction=nonstopmode -halt-on-error informe-entrega-3.tex
+```
+
+#### Alternativa: `pdflatex` + `bibtex` manual
+
+```bash
+cd docs/informe
+pdflatex -interaction=nonstopmode informe-entrega-3.tex
+bibtex informe-entrega-3
+pdflatex -interaction=nonstopmode informe-entrega-3.tex
+pdflatex -interaction=nonstopmode informe-entrega-3.tex
+```
+
+El PDF resultante (`informe-entrega-3.pdf`) se genera directamente en
+`docs/informe/`, junto al `.tex` (el propio repositorio ya lo tiene
+así versionado; una versión anterior de este README afirmaba
+incorrectamente que debía copiarse un nivel arriba, a
+`docs/informe-entrega-3.pdf` — eso no refleja la estructura real y fue
+corregido aquí).
+
+### Organización de las secciones (Tercera Entrega)
+
+```
+docs/informe/
+├── informe-entrega-3.tex      # documento maestro historico (Tercera Entrega)
+├── secciones/
+│   ├── 01-resumen-ejecutivo.tex
+│   ├── 02-estado-sistema.tex
+│   ├── 03-arquitectura-c4.tex
+│   ├── 04-trazabilidad.tex
+│   ├── 05-protocolo-experimental.tex
+│   ├── 06-resultados-jaime.tex
+│   ├── 07-resultados-fred.tex
+│   ├── 08-resultados-zaida.tex
+│   ├── 09-amenazas-validez.tex
+│   ├── 10-etica.tex
+│   ├── 11-credit.tex
+│   ├── 12-conclusiones.tex
+│   └── 13-anexos.tex
+```
+
+Cada capítulo del PDF histórico corresponde a exactamente un archivo de
+`secciones/`, incluido en `informe-entrega-3.tex` mediante `\input`.
+
+### Lista de evidencias históricas de la Tercera Entrega
+
+Las tablas de evidencias por integrante (rutas `figuras/<nombre>/NN-*.png`
+y su descripción) que este README documentaba para la Tercera Entrega se
+conservan sin cambios en el propio `.tex` histórico (comentarios
+`% EVIDENCIA-<RESPONSABLE>-<NUMERO>` que preceden a cada
+`\evidencia{...}` en `secciones/`); no se duplican aquí para evitar que
+este README tenga dos fuentes de verdad sobre las mismas rutas. Para
+consultarlas, revisa directamente `informe-entrega-3.tex` y los archivos
+de `secciones/`.
+
+**Nota sobre la cifra "109 pruebas" en `figuras/jaime/01-maven-verify.png`
+(Tercera Entrega):** esa captura y su caption corresponden a la corrida
+de `mvn clean verify` archivada como histórica en
+[`docs/mediciones/sec/raw/historical-2026-08-01/mvn-clean-verify.txt`](../mediciones/sec/raw/historical-2026-08-01/mvn-clean-verify.txt).
+No se actualizó para la Entrega Final porque pertenece al documento
+histórico congelado; el Informe Final (`secciones-final/07-pruebas-calidad.tex`
+y otros) usa una cifra distinta — ver
+[`docs/mediciones/TEST-COUNT-PROVENANCE.md`](../mediciones/TEST-COUNT-PROVENANCE.md).

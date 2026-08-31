@@ -219,11 +219,11 @@ ejecutado en un entorno de desarrollo local con Docker.
 | Dimensión | Pregunta | Métrica(s) | Valor de evidencia (fecha de esta revisión) | Fuente |
 |---|---|---|---|---|
 | Calidad funcional | ¿Los requisitos funcionales declarados están respaldados por al menos una historia, caso de uso o prueba automatizada? | Resultado de `scripts/validate-traceability.sh`; # requisitos vs. # filas en matriz | 38 requisitos, 38 filas consistentes | `docs/trazabilidad/matriz.csv`, `scripts/validate-traceability.sh` |
-| Calidad funcional | ¿La suite de pruebas automatizadas del backend pasa consistentemente? | Resultado de `mvn clean verify` (pruebas totales, fallos, errores) | 189 pruebas, 0 fallos, 0 errores (evidencia de `docs/mediciones/sec/raw/mvn-clean-verify.txt`) | `docs/mediciones/sec/raw/mvn-clean-verify.txt` |
+| Calidad funcional | ¿La suite de pruebas automatizadas del backend pasa consistentemente? | Resultado de `mvn clean verify` (pruebas totales, fallos, errores) | 205 pruebas, 0 fallos, 0 errores — verificado por reproducción sobre el commit exacto del tag `v1.0.0` (`docs/mediciones/sec/reproduccion-v1.0.0/`); el log de 189 archivado en `docs/mediciones/sec/raw/mvn-clean-verify.txt` es evidencia histórica de un commit anterior (`bb43baa`, 2026-08-16), previo a dos clases de prueba de integración que ya forman parte del tag final | `docs/mediciones/sec/reproduccion-v1.0.0/`, `docs/mediciones/TEST-COUNT-PROVENANCE.md` |
 | Mantenibilidad | ¿Qué proporción del código backend se ejercita por la suite de pruebas? | JaCoCo LINE / BRANCH (%), umbral configurado | LINE 91.80 % / BRANCH 79.39 %, umbral `pom.xml` ≥ 70 % ambos | `docs/mediciones/jacoco/METRICS.md` |
 | Mantenibilidad | ¿El proceso de construcción/verificación es reproducible y automatizado? | Existencia y jobs del pipeline de CI | Workflow con jobs `backend-test`, `frontend-build`, `traceability`, `sql-audit`, `security-static`, `zap-baseline` | `.github/workflows/ci.yml` (no modificado en esta fase; solo citado como evidencia) |
 | Rendimiento | ¿Cuál es la latencia y tasa de error del endpoint cacheado de mascotas bajo carga moderada? | k6: p50/p90/p95/p99 (ms), tasa de error (%), throughput (req/s) | Ejemplo (corrida 3, caliente): p95 = 10.62 ms, error 0.0 %, ~92.34 req/s — **valor actual de evidencia; sujeto a actualización en cierre final** (mediciones de rendimiento a cargo de Fred) | `docs/mediciones/perf/REPORT.md` |
-| Usabilidad | ¿Qué tan usable perciben participantes reales el frontend de BIOPET? | Puntaje medio SUS (0–100), n de participantes | Media 74.44/100, IC95% [63.33, 85.56], n = 18 — **valor actual de evidencia** (actualizado desde `main` con la muestra ampliada de Zaida; ver nota de actualización al inicio de este documento) | `docs/mediciones/sus/REPORT.md` |
+| Usabilidad | ¿Qué nivel de usabilidad percibida presenta el frontend de BIOPET según los registros de la evaluación SUS? | Puntaje medio SUS (0–100), n de participantes | Media 74.44/100, IC95% [63.33, 85.56], n = 18 registros P01–P18 (según declaración del equipo, corresponden a participantes reales; ver `docs/etica/regularizacion-sus/`) — **valor actual de evidencia** (actualizado desde `main` con la muestra ampliada de Zaida; ver nota de actualización al inicio de este documento) | `docs/mediciones/sus/REPORT.md` |
 | Calidad web | ¿El frontend cumple umbrales base de rendimiento, accesibilidad y buenas prácticas web? | Puntajes Lighthouse (Performance, Accessibility, Best Practices, SEO) | Accessibility 91/100 (cumple ≥90); SEO 82/100 (no cumple ≥90 en la corrida registrada) — **valor actual de evidencia; sujeto a actualización en cierre final** (Lighthouse a cargo de Zaida) | `docs/mediciones/lighthouse/README.md` |
 | Seguridad | ¿Existen hallazgos de seguridad de severidad alta detectables por escaneo dinámico? | Alertas ZAP Baseline por `riskcode` | 0 alertas de riesgo alto, 1 informativa | `docs/mediciones/sec/zap/README.md` |
 | Seguridad | ¿El análisis estático detecta patrones propensos a inyección SQL u otras vulnerabilidades? | Hallazgos SpotBugs/Find Security Bugs, total y subconjunto `SQL_*` | 66 hallazgos totales, 0 de tipo `SQL_*` | `docs/mediciones/sec/static-analysis/README.md` |
@@ -250,11 +250,15 @@ estimaron.
 - **Unidad evaluada:** clases de controlador, servicio y seguridad del
   backend Spring Boot (`com.biopet.**`).
 - **Procedimiento:** `cd Backend && mvn clean verify`, que ejecuta JUnit 5
-  + MockMvc, incluidas 2 pruebas de integración reales con Testcontainers
-  contra PostgreSQL.
+  + MockMvc, incluidas 4 pruebas de integración reales con Testcontainers
+  contra PostgreSQL (repartidas en 4 clases).
 - **Métrica principal:** número de pruebas, fallos, errores.
-- **Evidencia:** 189 pruebas, 0 fallos, 0 errores
-  (`docs/mediciones/sec/raw/mvn-clean-verify.txt`).
+- **Evidencia:** 205 pruebas, 0 fallos, 0 errores, verificado por
+  reproducción sobre el commit exacto del tag `v1.0.0`
+  (`docs/mediciones/sec/reproduccion-v1.0.0/mvn-clean-verify.txt`). El log
+  de 189 archivado el 2026-08-16
+  (`docs/mediciones/sec/raw/mvn-clean-verify.txt`) es evidencia histórica
+  de un commit anterior a dos de esas clases de integración.
 - **Limitación:** cubrir una línea/rama con una prueba no implica ausencia
   de defectos lógicos no contemplados por esa prueba (ver Amenazas a la
   validez de constructo).
@@ -299,13 +303,19 @@ estimaron.
 ### 4.4. Usabilidad (SUS)
 
 - **Propósito:** medir la percepción subjetiva de usabilidad del frontend
-  por parte de participantes reales, con un instrumento estandarizado.
+  por parte de participantes que, según declaración del equipo, son
+  reales, con un instrumento estandarizado.
 - **Unidad evaluada:** frontend Angular, sobre una tarea de referencia
   (login, alta, edición, eliminación lógica, logout).
 - **Procedimiento:** cuestionario SUS de 10 preguntas (Brooke, 1996), sin
-  modificar la escala de 5 puntos; consentimiento informado por
-  participante antes de la tarea.
-- **Métrica principal:** puntaje SUS por participante (0–100) y su media.
+  modificar la escala de 5 puntos; el protocolo declarado
+  (`docs/etica/ETHICS.md`) exige consentimiento informado firmado por
+  participante, pero una auditoría documental posterior constató que
+  esos formularios individuales no están actualmente disponibles como
+  evidencia verificable — ver `docs/etica/regularizacion-sus/` (la
+  constancia allí archivada no sustituye consentimientos individuales).
+- **Métrica principal:** puntaje SUS por participante (0–100), calculado
+  desde Q1–Q10 (`scripts/analisis-sus.py`) y su media.
 - **Evidencia:** n = 18 participantes, media 74.44/100, IC 95 %
   [63.33, 85.56] (categoría "Bueno" en la escala de adjetivos SUS); el
   intervalo incluye el umbral de referencia de 68 puntos (Bangor et al.,
@@ -447,7 +457,7 @@ inventar amenazas nuevas desconectadas de BIOPET.
 | El tamaño de muestra de cada corrida de k6 (~3 200 peticiones) corresponde a una única ventana de tiempo corta (~30–35 s) | Los intervalos de confianza al 95 % (distribución t de Student) son válidos para esa ventana, pero no capturan tendencias en periodos prolongados (horas/días) | IC 95 % calculado y reportado explícitamente por corrida (`docs/mediciones/perf/REPORT.md`) | Medio: el cálculo estadístico dentro de cada corrida es correcto; la ausencia de mediciones de largo plazo es una limitación de alcance, no un error estadístico |
 | El tamaño muestral de SUS (n=18, ampliado desde n=10) sigue limitando la potencia estadística de cualquier comparación entre subgrupos | No es posible detectar de forma confiable diferencias pequeñas entre subgrupos demográficos con este tamaño de muestra | Se reporta la media y el IC 95 % del puntaje agregado (ahora con un margen más estrecho, ± 11.12 frente al valor previo), sin forzar comparaciones entre subgrupos que la muestra no puede sostener | Medio-Alto: n=18 mejora el margen del intervalo de confianza agregado respecto a n=10, pero sigue siendo insuficiente para dividir en subgrupos (edad, experiencia web, dispositivo) con potencia estadística adecuada |
 | No existe diseño experimental (sin grupos de control ni asignación aleatoria) en ninguna de las mediciones | Cualquier mejora observada entre versiones del sistema no puede atribuirse causalmente a un cambio específico mediante estas mediciones | Este mismo documento evita explícitamente afirmar causalidad en cualquier resultado reportado | Bajo (por diseño): el riesgo se mitiga evitando la afirmación, no eliminando la limitación metodológica de fondo |
-| Las 189 pruebas automatizadas y la cobertura JaCoCo se ejecutan en un único ambiente de prueba (H2 en memoria para la mayoría de pruebas, PostgreSQL real solo en 2 pruebas de integración con Testcontainers) | El comportamiento verificado con H2 podría no ser idéntico al de PostgreSQL real para funciones nativas PL/pgSQL | La función nativa `fn_resumen_mascotas_por_especie` se probó explícitamente con Testcontainers/PostgreSQL real en vez de H2, precisamente por esta amenaza conocida | Bajo para esa función específica; medio para el resto de la suite, que sigue dependiendo de H2 |
+| Las 205 pruebas automatizadas y la cobertura JaCoCo se ejecutan en un único ambiente de prueba (H2 en memoria para la mayoría de pruebas, PostgreSQL real solo en 4 pruebas de integración con Testcontainers) | El comportamiento verificado con H2 podría no ser idéntico al de PostgreSQL real para funciones nativas PL/pgSQL | La función nativa `fn_resumen_mascotas_por_especie` se probó explícitamente con Testcontainers/PostgreSQL real en vez de H2, precisamente por esta amenaza conocida | Bajo para esa función específica; medio para el resto de la suite, que sigue dependiendo de H2 |
 
 ---
 

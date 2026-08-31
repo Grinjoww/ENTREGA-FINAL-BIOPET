@@ -1,0 +1,637 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------< com.biopet:biopet-backend >----------------------
+[INFO] Building BIOPET Backend 0.1.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.3.2:clean (default-clean) @ biopet-backend ---
+[INFO] 
+[INFO] --- jacoco:0.8.12:prepare-agent (prepare-agent) @ biopet-backend ---
+[INFO] argLine set to -javaagent:C:\\Users\\jaime\\.m2\\repository\\org\\jacoco\\org.jacoco.agent\\0.8.12\\org.jacoco.agent-0.8.12-runtime.jar=destfile=C:\\Users\\jaime\\Desktop\\BiopetCorrecciones\\BIOPET-v1.0.0-audit\\Backend\\target\\jacoco.exec,excludes=com/biopet/BiopetApplication.class:com/biopet/dto/**:com/biopet/entity/Rol.class:com/biopet/repository/ResumenEspecie.class:com/biopet/config/OpenApiConfig.class
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ biopet-backend ---
+[INFO] Copying 2 resources from src\main\resources to target\classes
+[INFO] Copying 7 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ biopet-backend ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 70 source files with javac [debug release 21] to target\classes
+[INFO] Annotation processing is enabled because one or more processors were found
+  on the class path. A future release of javac may disable annotation processing
+  unless at least one processor is specified by name (-processor), or a search
+  path is specified (--processor-path, --processor-module-path), or annotation
+  processing is enabled explicitly (-proc:only, -proc:full).
+  Use -Xlint:-options to suppress this message.
+  Use -proc:none to disable annotation processing.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ biopet-backend ---
+[INFO] Copying 1 resource from src\test\resources to target\test-classes
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ biopet-backend ---
+[INFO] Changes detected - recompiling the module! :dependency
+[INFO] Compiling 22 source files with javac [debug release 21] to target\test-classes
+[INFO] Annotation processing is enabled because one or more processors were found
+  on the class path. A future release of javac may disable annotation processing
+  unless at least one processor is specified by name (-processor), or a search
+  path is specified (--processor-path, --processor-module-path), or annotation
+  processing is enabled explicitly (-proc:only, -proc:full).
+  Use -Xlint:-options to suppress this message.
+  Use -proc:none to disable annotation processing.
+[INFO] 
+[INFO] --- surefire:3.1.2:test (default-test) @ biopet-backend ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.biopet.AuthControllerTest
+15:19:54.742 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.biopet.AuthControllerTest]: AuthControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+15:19:54.981 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.biopet.BiopetApplication for test class com.biopet.AuthControllerTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::               (v3.2.12)
+
+2026-08-31T15:19:55.759-05:00  INFO 9408 --- [           main] com.biopet.AuthControllerTest            : Starting AuthControllerTest using Java 21.0.11 with PID 9408 (started by jaime in C:\Users\jaime\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend)
+2026-08-31T15:19:55.761-05:00  INFO 9408 --- [           main] com.biopet.AuthControllerTest            : The following 1 profile is active: "test"
+2026-08-31T15:19:57.675-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-08-31T15:19:57.681-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-31T15:19:57.977-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 284 ms. Found 6 JPA repository interfaces.
+2026-08-31T15:19:57.999-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-08-31T15:19:58.001-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-08-31T15:19:58.025-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.CitaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:19:58.025-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.ConsultaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:19:58.027-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.MascotaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:19:58.027-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.ProcedimientoBiopetRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:19:58.027-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.UsuarioRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:19:58.027-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.VacunaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:19:58.027-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11 ms. Found 0 Redis repository interfaces.
+OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (C:\Users\jaime\.m2\repository\net\bytebuddy\byte-buddy-agent\1.14.19\byte-buddy-agent-1.14.19.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+2026-08-31T15:20:00.885-05:00  INFO 9408 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-31T15:20:01.035-05:00  INFO 9408 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.10.Final
+2026-08-31T15:20:01.112-05:00  INFO 9408 --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-08-31T15:20:01.391-05:00  INFO 9408 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-31T15:20:01.452-05:00  INFO 9408 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-08-31T15:20:02.017-05:00  INFO 9408 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:biopet_test user=SA
+2026-08-31T15:20:02.020-05:00  INFO 9408 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-08-31T15:20:03.807-05:00  INFO 9408 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-31T15:20:03.946-05:00  INFO 9408 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-31T15:20:06.983-05:00  INFO 9408 --- [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 3 endpoint(s) beneath base path '/actuator'
+2026-08-31T15:20:07.140-05:00  INFO 9408 --- [           main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@49e825a8, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@65382d45, org.springframework.security.web.context.SecurityContextHolderFilter@526d1fa, org.springframework.security.web.header.HeaderWriterFilter@5bc91e62, org.springframework.web.filter.CorsFilter@252b5b13, org.springframework.security.web.authentication.logout.LogoutFilter@67552892, com.biopet.security.JwtAuthenticationFilter@2d55df70, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7c35e98f, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7fab9649, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@f4922e9, org.springframework.security.web.session.SessionManagementFilter@547bdcf8, org.springframework.security.web.access.ExceptionTranslationFilter@692a3f8c, org.springframework.security.web.access.intercept.AuthorizationFilter@3b1cf9ff]
+2026-08-31T15:20:08.106-05:00  INFO 9408 --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-08-31T15:20:08.107-05:00  INFO 9408 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-08-31T15:20:08.108-05:00  INFO 9408 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-08-31T15:20:08.191-05:00  INFO 9408 --- [           main] com.biopet.AuthControllerTest            : Started AuthControllerTest in 12.96 seconds (process running for 14.918)
+[INFO] Tests run: 27, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 34.11 s -- in com.biopet.AuthControllerTest
+[INFO] Running com.biopet.CitaControllerTest
+2026-08-31T15:20:28.543-05:00  INFO 9408 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.biopet.CitaControllerTest]: CitaControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-31T15:20:28.546-05:00  INFO 9408 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.biopet.BiopetApplication for test class com.biopet.CitaControllerTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::               (v3.2.12)
+
+2026-08-31T15:20:28.587-05:00  INFO 9408 --- [           main] com.biopet.CitaControllerTest            : Starting CitaControllerTest using Java 21.0.11 with PID 9408 (started by jaime in C:\Users\jaime\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend)
+2026-08-31T15:20:28.587-05:00  INFO 9408 --- [           main] com.biopet.CitaControllerTest            : The following 1 profile is active: "test"
+2026-08-31T15:20:28.964-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-08-31T15:20:28.964-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-31T15:20:28.988-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 21 ms. Found 6 JPA repository interfaces.
+2026-08-31T15:20:28.989-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-08-31T15:20:28.989-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-08-31T15:20:28.995-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.CitaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:20:28.995-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.ConsultaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:20:28.995-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.MascotaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:20:28.997-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.ProcedimientoBiopetRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:20:28.997-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.UsuarioRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:20:28.997-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.VacunaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:20:28.997-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 6 ms. Found 0 Redis repository interfaces.
+2026-08-31T15:20:29.148-05:00  INFO 9408 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-31T15:20:29.152-05:00  INFO 9408 --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-08-31T15:20:29.156-05:00  INFO 9408 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-31T15:20:29.159-05:00  INFO 9408 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2026-08-31T15:20:29.159-05:00  INFO 9408 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection conn10: url=jdbc:h2:mem:biopet_test user=SA
+2026-08-31T15:20:29.159-05:00  INFO 9408 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2026-08-31T15:20:29.299-05:00  INFO 9408 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-31T15:20:29.324-05:00  INFO 9408 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-31T15:20:29.866-05:00  INFO 9408 --- [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 3 endpoint(s) beneath base path '/actuator'
+2026-08-31T15:20:29.906-05:00  INFO 9408 --- [           main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@7fa04793, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@51272af9, org.springframework.security.web.context.SecurityContextHolderFilter@693977b5, org.springframework.security.web.header.HeaderWriterFilter@2b6bcf16, org.springframework.web.filter.CorsFilter@59ec18d5, org.springframework.security.web.authentication.logout.LogoutFilter@65bee7b3, com.biopet.security.JwtAuthenticationFilter@4070bcb, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@c2de367, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@43ff1989, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7b9e7c2c, org.springframework.security.web.session.SessionManagementFilter@2d51ce06, org.springframework.security.web.access.ExceptionTranslationFilter@b07ea0c, org.springframework.security.web.access.intercept.AuthorizationFilter@15b773c5]
+2026-08-31T15:20:30.263-05:00  INFO 9408 --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-08-31T15:20:30.263-05:00  INFO 9408 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-08-31T15:20:30.263-05:00  INFO 9408 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-08-31T15:20:30.283-05:00  INFO 9408 --- [           main] com.biopet.CitaControllerTest            : Started CitaControllerTest in 1.734 seconds (process running for 37.012)
+2026-08-31T15:20:31.880-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:31.880029400Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=dueno.principal@biopet.com
+2026-08-31T15:20:32.848-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:32.848941200Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:20:33.785-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:33.785283100Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:20:34.699-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:34.699370500Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:20:35.624-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:35.624523900Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=vet.principal@biopet.com
+2026-08-31T15:20:36.547-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:36.547154100Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:20:37.470-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:37.470381700Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:20:38.372-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:38.372596200Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:20:39.275-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:39.275529Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:20:40.404-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:40.404643400Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=dueno.principal@biopet.com
+2026-08-31T15:20:41.528-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:41.528558400Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=aux.crea@biopet.com
+2026-08-31T15:20:42.442-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:42.442728400Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=dueno.principal@biopet.com
+2026-08-31T15:20:43.580-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:43.580480200Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=aux.elimina@biopet.com
+2026-08-31T15:20:45.153-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:45.153208900Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=dueno.principal@biopet.com
+2026-08-31T15:20:46.050-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:46.050561500Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:20:46.956-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:46.956210Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:20:47.880-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:47.880550900Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=dueno.principal@biopet.com
+2026-08-31T15:20:49.024-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:49.024217500Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:20:49.922-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:49.922079700Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:20:51.036-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:51.036955100Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=vet.principal@biopet.com
+2026-08-31T15:20:51.944-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:51.944825100Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=vet.principal@biopet.com
+2026-08-31T15:20:52.841-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:52.841029500Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:20:53.735-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:53.735626300Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 25.21 s -- in com.biopet.CitaControllerTest
+[INFO] Running com.biopet.config.TomcatDualConnectorConfigTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.626 s -- in com.biopet.config.TomcatDualConnectorConfigTest
+[INFO] Running com.biopet.ConsultaControllerTest
+2026-08-31T15:20:54.378-05:00  INFO 9408 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.biopet.ConsultaControllerTest]: ConsultaControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-31T15:20:54.380-05:00  INFO 9408 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.biopet.BiopetApplication for test class com.biopet.ConsultaControllerTest
+2026-08-31T15:20:55.271-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:55.271660200Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:20:56.184-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:56.184167200Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=dueno@biopet.com
+2026-08-31T15:20:57.087-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:57.087700500Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:20:57.547-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:57.547281100Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=otro.dueno@biopet.com
+2026-08-31T15:20:58.436-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:58.436983100Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:20:59.339-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:20:59.339348800Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:00.228-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:00.228025Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.866 s -- in com.biopet.ConsultaControllerTest
+[INFO] Running com.biopet.entity.EntityLifecycleCallbacksTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s -- in com.biopet.entity.EntityLifecycleCallbacksTest
+[INFO] Running com.biopet.integration.ExternalApiServiceTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.602 s -- in com.biopet.integration.ExternalApiServiceTest
+[INFO] Running com.biopet.JwtCookieAuthenticationTest
+2026-08-31T15:21:03.851-05:00  INFO 9408 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.biopet.JwtCookieAuthenticationTest]: JwtCookieAuthenticationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-31T15:21:03.853-05:00  INFO 9408 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.biopet.BiopetApplication for test class com.biopet.JwtCookieAuthenticationTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.723 s -- in com.biopet.JwtCookieAuthenticationTest
+[INFO] Running com.biopet.MascotaControllerTest
+2026-08-31T15:21:06.576-05:00  INFO 9408 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.biopet.MascotaControllerTest]: MascotaControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-31T15:21:06.578-05:00  INFO 9408 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.biopet.BiopetApplication for test class com.biopet.MascotaControllerTest
+2026-08-31T15:21:07.528-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:07.528375Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:08.500-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:08.500126600Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:08.737-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:08.737679900Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=listado.dueno1@biopet.com
+2026-08-31T15:21:09.206-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:09.206392500Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:09.876-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:09.876432800Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:10.329-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:10.329573100Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:11.011-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:11.011184700Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:11.689-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:11.689155600Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:12.610-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:12.608268400Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:12.848-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:12.848984800Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=cache.dueno1@biopet.com
+2026-08-31T15:21:13.072-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:13.072402Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=cache.dueno2@biopet.com
+2026-08-31T15:21:13.764-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:13.764127Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:14.464-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:14.464592500Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=dueno@biopet.com
+2026-08-31T15:21:15.151-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:15.151033500Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:15.597-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:15.597546800Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=veterinario@biopet.com
+2026-08-31T15:21:16.494-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:16.494294800Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:16.946-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:16.946539600Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=auxiliar.listado@biopet.com
+2026-08-31T15:21:17.626-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:17.626318600Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:17.856-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:17.856263400Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=eliminar.dueno@biopet.com
+2026-08-31T15:21:18.522-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:18.522330200Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:19.203-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:19.201763500Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:19.435-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:19.435854900Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=propia.dueno@biopet.com
+2026-08-31T15:21:20.336-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:20.336506800Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:20.570-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:20.570450400Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=ajena.dueno1@biopet.com
+2026-08-31T15:21:21.261-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:21.261138900Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:22.162-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:22.162703600Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:22.852-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:22.852505400Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:23.081-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:23.081137100Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=actualizar.dueno@biopet.com
+2026-08-31T15:21:23.749-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:23.749697600Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:24.423-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:24.423156800Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:25.316-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:25.316949600Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+[INFO] Tests run: 22, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 18.76 s -- in com.biopet.MascotaControllerTest
+[INFO] Running com.biopet.repository.BiopetAppRolMinimoPrivilegiosIntegrationTest
+2026-08-31T15:21:25.400-05:00  INFO 9408 --- [           main] org.testcontainers.images.PullPolicy     : Image pull policy will be performed by: DefaultPullPolicy()
+2026-08-31T15:21:25.404-05:00  INFO 9408 --- [           main] o.t.utility.ImageNameSubstitutor         : Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+2026-08-31T15:21:25.414-05:00  INFO 9408 --- [           main] org.testcontainers.DockerClientFactory   : Testcontainers version: 1.21.4
+2026-08-31T15:21:25.776-05:00  INFO 9408 --- [           main] o.t.d.DockerClientProviderStrategy       : Loaded org.testcontainers.dockerclient.NpipeSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+2026-08-31T15:21:26.244-05:00  INFO 9408 --- [           main] o.t.d.DockerClientProviderStrategy       : Found Docker environment with local Npipe socket (npipe:////./pipe/docker_engine)
+2026-08-31T15:21:26.247-05:00  INFO 9408 --- [           main] org.testcontainers.DockerClientFactory   : Docker host IP address is localhost
+2026-08-31T15:21:26.267-05:00  INFO 9408 --- [           main] org.testcontainers.DockerClientFactory   : Connected to docker: 
+  Server Version: 29.6.2
+  API Version: 1.55
+  Operating System: Docker Desktop
+  Total Memory: 7622 MB
+  Labels: 
+    com.docker.desktop.address=npipe://\\.\pipe\docker_cli
+2026-08-31T15:21:26.410-05:00  INFO 9408 --- [           main] tc.testcontainers/ryuk:0.12.0            : Creating container for image: testcontainers/ryuk:0.12.0
+2026-08-31T15:21:26.503-05:00  INFO 9408 --- [           main] o.t.utility.RegistryAuthLocator          : Credential helper/store (docker-credential-desktop) does not have credentials for https://index.docker.io/v1/
+2026-08-31T15:21:26.689-05:00  INFO 9408 --- [           main] tc.testcontainers/ryuk:0.12.0            : Container testcontainers/ryuk:0.12.0 is starting: fc494d039bc12caa22838cf5a1d80a47d4ccf8a5394bf5b7f8fdb3f83206f044
+2026-08-31T15:21:27.198-05:00  INFO 9408 --- [           main] tc.testcontainers/ryuk:0.12.0            : Container testcontainers/ryuk:0.12.0 started in PT0.787548S
+2026-08-31T15:21:27.206-05:00  INFO 9408 --- [           main] o.t.utility.RyukResourceReaper           : Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+2026-08-31T15:21:27.206-05:00  INFO 9408 --- [           main] org.testcontainers.DockerClientFactory   : Checking the system...
+2026-08-31T15:21:27.207-05:00  INFO 9408 --- [           main] org.testcontainers.DockerClientFactory   : ?? Docker server version should be at least 1.6.0
+2026-08-31T15:21:27.208-05:00  INFO 9408 --- [           main] tc.postgres:16-alpine                    : Creating container for image: postgres:16-alpine
+2026-08-31T15:21:27.332-05:00  INFO 9408 --- [           main] tc.postgres:16-alpine                    : Container postgres:16-alpine is starting: 1a850d0d0278c435cbbd92adb8379e4012502ef93dd3c72eed64556d0637b6d9
+2026-08-31T15:21:29.315-05:00  INFO 9408 --- [           main] tc.postgres:16-alpine                    : Container postgres:16-alpine started in PT2.1076905S
+2026-08-31T15:21:29.316-05:00  INFO 9408 --- [           main] tc.postgres:16-alpine                    : Container is started (JDBC URL: jdbc:postgresql://localhost:59173/biopet_test?loggerLevel=OFF)
+2026-08-31T15:21:29.320-05:00  INFO 9408 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.biopet.repository.BiopetAppRolMinimoPrivilegiosIntegrationTest]: BiopetAppRolMinimoPrivilegiosIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-31T15:21:29.333-05:00  INFO 9408 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.biopet.BiopetApplication for test class com.biopet.repository.BiopetAppRolMinimoPrivilegiosIntegrationTest
+2026-08-31T15:21:30.062-05:00  INFO 9408 --- [           main] o.f.c.internal.license.VersionPrinter    : Flyway Community Edition 9.22.3 by Redgate
+2026-08-31T15:21:30.063-05:00  INFO 9408 --- [           main] o.f.c.internal.license.VersionPrinter    : See release notes here: https://rd.gt/416ObMi
+2026-08-31T15:21:30.063-05:00  INFO 9408 --- [           main] o.f.c.internal.license.VersionPrinter    : 
+2026-08-31T15:21:31.023-05:00  INFO 9408 --- [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:59173/biopet_test (PostgreSQL 16.14)
+2026-08-31T15:21:31.033-05:00  WARN 9408 --- [           main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: PostgreSQL 16.14 is newer than this version of Flyway and support has not been tested. The latest supported version of PostgreSQL is 15.
+2026-08-31T15:21:31.097-05:00  INFO 9408 --- [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+2026-08-31T15:21:31.101-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbValidate     : Successfully validated 6 migrations (execution time 00:00.052s)
+2026-08-31T15:21:31.119-05:00  INFO 9408 --- [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" ...
+2026-08-31T15:21:31.178-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": << Empty Schema >>
+2026-08-31T15:21:31.192-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "1 - schema inicial"
+2026-08-31T15:21:31.216-05:00  INFO 9408 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: trigger "trg_usuarios_actualizado_en" for relation "usuarios" does not exist, skipping
+2026-08-31T15:21:31.218-05:00  INFO 9408 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: trigger "trg_mascotas_actualizado_en" for relation "mascotas" does not exist, skipping
+2026-08-31T15:21:31.241-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "2 - citas"
+2026-08-31T15:21:31.252-05:00  INFO 9408 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: trigger "trg_citas_actualizado_en" for relation "citas" does not exist, skipping
+2026-08-31T15:21:31.267-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "3 - consultas"
+2026-08-31T15:21:31.293-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "4 - vacunas"
+2026-08-31T15:21:31.303-05:00  INFO 9408 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: trigger "trg_vacunas_actualizado_en" for relation "vacunas" does not exist, skipping
+2026-08-31T15:21:31.322-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "5 - procedimientos biopet"
+2026-08-31T15:21:31.346-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "6 - formalizar procedimientos jpa"
+2026-08-31T15:21:31.362-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 6 migrations to schema "public", now at version v6 (execution time 00:00.093s)
+2026-08-31T15:21:31.381-05:00  INFO 9408 --- [           main] o.f.c.i.c.SqlScriptCallbackFactory       : Executing SQL callback: afterMigrate - 
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::               (v3.2.12)
+
+2026-08-31T15:21:31.463-05:00  INFO 9408 --- [           main] etAppRolMinimoPrivilegiosIntegrationTest : Starting BiopetAppRolMinimoPrivilegiosIntegrationTest using Java 21.0.11 with PID 9408 (started by jaime in C:\Users\jaime\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend)
+2026-08-31T15:21:31.463-05:00  INFO 9408 --- [           main] etAppRolMinimoPrivilegiosIntegrationTest : No active profile set, falling back to 1 default profile: "default"
+2026-08-31T15:21:31.797-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-08-31T15:21:31.798-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-31T15:21:31.820-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 22 ms. Found 6 JPA repository interfaces.
+2026-08-31T15:21:31.822-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-08-31T15:21:31.824-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-08-31T15:21:31.830-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.CitaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:31.831-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.ConsultaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:31.831-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.MascotaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:31.831-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.ProcedimientoBiopetRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:31.831-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.UsuarioRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:31.831-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.VacunaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:31.831-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 6 ms. Found 0 Redis repository interfaces.
+2026-08-31T15:21:32.049-05:00  INFO 9408 --- [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:59173/biopet_test (PostgreSQL 16.14)
+2026-08-31T15:21:32.054-05:00  WARN 9408 --- [           main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: PostgreSQL 16.14 is newer than this version of Flyway and support has not been tested. The latest supported version of PostgreSQL is 15.
+2026-08-31T15:21:32.067-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbValidate     : Successfully validated 6 migrations (execution time 00:00.010s)
+2026-08-31T15:21:32.084-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 6
+2026-08-31T15:21:32.086-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
+2026-08-31T15:21:32.100-05:00  INFO 9408 --- [           main] o.f.c.i.c.SqlScriptCallbackFactory       : Executing SQL callback: afterMigrate - 
+2026-08-31T15:21:32.141-05:00  INFO 9408 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-31T15:21:32.144-05:00  INFO 9408 --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-08-31T15:21:32.149-05:00  INFO 9408 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-31T15:21:32.150-05:00  INFO 9408 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
+2026-08-31T15:21:32.167-05:00  INFO 9408 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-3 - Added connection org.postgresql.jdbc.PgConnection@2bf55455
+2026-08-31T15:21:32.167-05:00  INFO 9408 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
+2026-08-31T15:21:32.496-05:00  INFO 9408 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-31T15:21:32.541-05:00  INFO 9408 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-31T15:21:32.991-05:00  INFO 9408 --- [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 3 endpoint(s) beneath base path '/actuator'
+2026-08-31T15:21:33.018-05:00  INFO 9408 --- [           main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@5ea8c1c2, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7b79fefd, org.springframework.security.web.context.SecurityContextHolderFilter@7c6c33a2, org.springframework.security.web.header.HeaderWriterFilter@936abdb, org.springframework.web.filter.CorsFilter@2982fa0b, org.springframework.security.web.authentication.logout.LogoutFilter@4b0ef422, com.biopet.security.JwtAuthenticationFilter@57610ce5, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@b5dc118, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2a0ecfd8, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@70dae9d5, org.springframework.security.web.session.SessionManagementFilter@3af88cc9, org.springframework.security.web.access.ExceptionTranslationFilter@7b52e8d4, org.springframework.security.web.access.intercept.AuthorizationFilter@975902a]
+2026-08-31T15:21:33.343-05:00  INFO 9408 --- [           main] etAppRolMinimoPrivilegiosIntegrationTest : Started BiopetAppRolMinimoPrivilegiosIntegrationTest in 1.906 seconds (process running for 100.072)
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.128 s -- in com.biopet.repository.BiopetAppRolMinimoPrivilegiosIntegrationTest
+[INFO] Running com.biopet.repository.ProcedimientosBiopetIntegrationTest
+2026-08-31T15:21:34.486-05:00  INFO 9408 --- [           main] tc.postgres:16-alpine                    : Creating container for image: postgres:16-alpine
+2026-08-31T15:21:34.624-05:00  INFO 9408 --- [           main] tc.postgres:16-alpine                    : Container postgres:16-alpine is starting: fc7cae03395745e765b1b1390ce0623ad3507ca3fabe97fd10bb1e84262f8f7d
+2026-08-31T15:21:36.146-05:00  INFO 9408 --- [           main] tc.postgres:16-alpine                    : Container postgres:16-alpine started in PT1.6598483S
+2026-08-31T15:21:36.147-05:00  INFO 9408 --- [           main] tc.postgres:16-alpine                    : Container is started (JDBC URL: jdbc:postgresql://localhost:64356/biopet_test?loggerLevel=OFF)
+2026-08-31T15:21:36.148-05:00  INFO 9408 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.biopet.repository.ProcedimientosBiopetIntegrationTest]: ProcedimientosBiopetIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-31T15:21:36.149-05:00  INFO 9408 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.biopet.BiopetApplication for test class com.biopet.repository.ProcedimientosBiopetIntegrationTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::               (v3.2.12)
+
+2026-08-31T15:21:36.172-05:00  INFO 9408 --- [           main] .b.r.ProcedimientosBiopetIntegrationTest : Starting ProcedimientosBiopetIntegrationTest using Java 21.0.11 with PID 9408 (started by jaime in C:\Users\jaime\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend)
+2026-08-31T15:21:36.172-05:00  INFO 9408 --- [           main] .b.r.ProcedimientosBiopetIntegrationTest : No active profile set, falling back to 1 default profile: "default"
+2026-08-31T15:21:36.400-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-08-31T15:21:36.400-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-31T15:21:36.414-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 13 ms. Found 6 JPA repository interfaces.
+2026-08-31T15:21:36.416-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-08-31T15:21:36.416-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-08-31T15:21:36.419-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.CitaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:36.419-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.ConsultaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:36.419-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.MascotaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:36.419-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.ProcedimientoBiopetRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:36.419-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.UsuarioRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:36.419-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.VacunaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:36.421-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 5 ms. Found 0 Redis repository interfaces.
+2026-08-31T15:21:36.552-05:00  INFO 9408 --- [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:64356/biopet_test (PostgreSQL 16.14)
+2026-08-31T15:21:36.556-05:00  WARN 9408 --- [           main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: PostgreSQL 16.14 is newer than this version of Flyway and support has not been tested. The latest supported version of PostgreSQL is 15.
+2026-08-31T15:21:36.566-05:00  INFO 9408 --- [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+2026-08-31T15:21:36.567-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbValidate     : Successfully validated 6 migrations (execution time 00:00.007s)
+2026-08-31T15:21:36.577-05:00  INFO 9408 --- [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" ...
+2026-08-31T15:21:36.603-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": << Empty Schema >>
+2026-08-31T15:21:36.608-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "1 - schema inicial"
+2026-08-31T15:21:36.626-05:00  INFO 9408 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: trigger "trg_usuarios_actualizado_en" for relation "usuarios" does not exist, skipping
+2026-08-31T15:21:36.628-05:00  INFO 9408 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: trigger "trg_mascotas_actualizado_en" for relation "mascotas" does not exist, skipping
+2026-08-31T15:21:36.640-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "2 - citas"
+2026-08-31T15:21:36.650-05:00  INFO 9408 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: trigger "trg_citas_actualizado_en" for relation "citas" does not exist, skipping
+2026-08-31T15:21:36.662-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "3 - consultas"
+2026-08-31T15:21:36.679-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "4 - vacunas"
+2026-08-31T15:21:36.688-05:00  INFO 9408 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: trigger "trg_vacunas_actualizado_en" for relation "vacunas" does not exist, skipping
+2026-08-31T15:21:36.700-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "5 - procedimientos biopet"
+2026-08-31T15:21:36.722-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "6 - formalizar procedimientos jpa"
+2026-08-31T15:21:36.736-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 6 migrations to schema "public", now at version v6 (execution time 00:00.073s)
+2026-08-31T15:21:36.750-05:00  INFO 9408 --- [           main] o.f.c.i.c.SqlScriptCallbackFactory       : Executing SQL callback: afterMigrate - 
+2026-08-31T15:21:36.778-05:00  INFO 9408 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-31T15:21:36.780-05:00  INFO 9408 --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-08-31T15:21:36.786-05:00  INFO 9408 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-31T15:21:36.787-05:00  INFO 9408 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Starting...
+2026-08-31T15:21:36.798-05:00  INFO 9408 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-4 - Added connection org.postgresql.jdbc.PgConnection@30c4393b
+2026-08-31T15:21:36.798-05:00  INFO 9408 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Start completed.
+2026-08-31T15:21:36.915-05:00  INFO 9408 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-31T15:21:36.939-05:00  INFO 9408 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-31T15:21:37.498-05:00  INFO 9408 --- [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 3 endpoint(s) beneath base path '/actuator'
+2026-08-31T15:21:37.552-05:00  INFO 9408 --- [           main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@21bf15b3, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2aaf64a9, org.springframework.security.web.context.SecurityContextHolderFilter@5c771407, org.springframework.security.web.header.HeaderWriterFilter@630e56b8, org.springframework.web.filter.CorsFilter@618736b4, org.springframework.security.web.authentication.logout.LogoutFilter@7e5d29a6, com.biopet.security.JwtAuthenticationFilter@28a9995e, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2b9b2565, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@af0c993, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@51adffcb, org.springframework.security.web.session.SessionManagementFilter@2c9d065d, org.springframework.security.web.access.ExceptionTranslationFilter@1273afe9, org.springframework.security.web.access.intercept.AuthorizationFilter@40a97643]
+2026-08-31T15:21:37.789-05:00  INFO 9408 --- [           main] .b.r.ProcedimientosBiopetIntegrationTest : Started ProcedimientosBiopetIntegrationTest in 1.637 seconds (process running for 104.518)
+2026-08-31T15:21:38.241-05:00  WARN 9408 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: P0001
+2026-08-31T15:21:38.241-05:00 ERROR 9408 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : ERROR: Estado nuevo invalido: ESTADO_INEXISTENTE (permitidos: PROGRAMADA, CANCELADA, COMPLETADA)
+  Where: PL/pgSQL function sp_actualizar_estado_citas_masivas(bigint,character varying,character varying,timestamp with time zone) line 7 at RAISE
+2026-08-31T15:21:38.246-05:00  WARN 9408 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: 25P02
+2026-08-31T15:21:38.246-05:00 ERROR 9408 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : ERROR: current transaction is aborted, commands ignored until end of transaction block
+2026-08-31T15:21:38.279-05:00  WARN 9408 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: P0001
+2026-08-31T15:21:38.279-05:00 ERROR 9408 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : ERROR: La mascota 999999 no existe
+  Where: PL/pgSQL function sp_registrar_consulta_validada(bigint,bigint,character varying,character varying,character varying,character varying) line 15 at RAISE
+2026-08-31T15:21:38.281-05:00  WARN 9408 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: 25P02
+2026-08-31T15:21:38.281-05:00 ERROR 9408 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : ERROR: current transaction is aborted, commands ignored until end of transaction block
+2026-08-31T15:21:38.302-05:00  WARN 9408 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: P0001
+2026-08-31T15:21:38.302-05:00 ERROR 9408 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : ERROR: El usuario 12 (rol ROLE_DUENO) no esta autorizado para registrar consultas
+  Where: PL/pgSQL function sp_registrar_consulta_validada(bigint,bigint,character varying,character varying,character varying,character varying) line 29 at RAISE
+2026-08-31T15:21:38.303-05:00  WARN 9408 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: 25P02
+2026-08-31T15:21:38.303-05:00 ERROR 9408 --- [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : ERROR: current transaction is aborted, commands ignored until end of transaction block
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.232 s -- in com.biopet.repository.ProcedimientosBiopetIntegrationTest
+[INFO] Running com.biopet.repository.ResumenEspeciesIntegrationTest
+2026-08-31T15:21:38.719-05:00  INFO 9408 --- [           main] tc.postgres:16-alpine                    : Creating container for image: postgres:16-alpine
+2026-08-31T15:21:38.845-05:00  INFO 9408 --- [           main] tc.postgres:16-alpine                    : Container postgres:16-alpine is starting: a1373c5a116769049d0d4f5950cbfd937070af8bc8fdcf382a3698e4aa8697e1
+2026-08-31T15:21:40.352-05:00  INFO 9408 --- [           main] tc.postgres:16-alpine                    : Container postgres:16-alpine started in PT1.6330033S
+2026-08-31T15:21:40.353-05:00  INFO 9408 --- [           main] tc.postgres:16-alpine                    : Container is started (JDBC URL: jdbc:postgresql://localhost:64375/biopet_test?loggerLevel=OFF)
+2026-08-31T15:21:40.354-05:00  INFO 9408 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.biopet.repository.ResumenEspeciesIntegrationTest]: ResumenEspeciesIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-31T15:21:40.355-05:00  INFO 9408 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.biopet.BiopetApplication for test class com.biopet.repository.ResumenEspeciesIntegrationTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::               (v3.2.12)
+
+2026-08-31T15:21:40.374-05:00  INFO 9408 --- [           main] c.b.r.ResumenEspeciesIntegrationTest     : Starting ResumenEspeciesIntegrationTest using Java 21.0.11 with PID 9408 (started by jaime in C:\Users\jaime\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend)
+2026-08-31T15:21:40.374-05:00  INFO 9408 --- [           main] c.b.r.ResumenEspeciesIntegrationTest     : No active profile set, falling back to 1 default profile: "default"
+2026-08-31T15:21:40.601-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-08-31T15:21:40.602-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-31T15:21:40.624-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 21 ms. Found 6 JPA repository interfaces.
+2026-08-31T15:21:40.627-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-08-31T15:21:40.627-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-08-31T15:21:40.632-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.CitaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:40.632-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.ConsultaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:40.632-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.MascotaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:40.632-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.ProcedimientoBiopetRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:40.632-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.UsuarioRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:40.632-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.VacunaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:40.632-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 5 ms. Found 0 Redis repository interfaces.
+2026-08-31T15:21:40.774-05:00  INFO 9408 --- [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:64375/biopet_test (PostgreSQL 16.14)
+2026-08-31T15:21:40.777-05:00  WARN 9408 --- [           main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: PostgreSQL 16.14 is newer than this version of Flyway and support has not been tested. The latest supported version of PostgreSQL is 15.
+2026-08-31T15:21:40.785-05:00  INFO 9408 --- [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+2026-08-31T15:21:40.786-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbValidate     : Successfully validated 6 migrations (execution time 00:00.005s)
+2026-08-31T15:21:40.795-05:00  INFO 9408 --- [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" ...
+2026-08-31T15:21:40.819-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": << Empty Schema >>
+2026-08-31T15:21:40.826-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "1 - schema inicial"
+2026-08-31T15:21:40.845-05:00  INFO 9408 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: trigger "trg_usuarios_actualizado_en" for relation "usuarios" does not exist, skipping
+2026-08-31T15:21:40.846-05:00  INFO 9408 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: trigger "trg_mascotas_actualizado_en" for relation "mascotas" does not exist, skipping
+2026-08-31T15:21:40.861-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "2 - citas"
+2026-08-31T15:21:40.870-05:00  INFO 9408 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: trigger "trg_citas_actualizado_en" for relation "citas" does not exist, skipping
+2026-08-31T15:21:40.883-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "3 - consultas"
+2026-08-31T15:21:40.903-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "4 - vacunas"
+2026-08-31T15:21:40.912-05:00  INFO 9408 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: trigger "trg_vacunas_actualizado_en" for relation "vacunas" does not exist, skipping
+2026-08-31T15:21:40.928-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "5 - procedimientos biopet"
+2026-08-31T15:21:40.948-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "6 - formalizar procedimientos jpa"
+2026-08-31T15:21:40.964-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 6 migrations to schema "public", now at version v6 (execution time 00:00.079s)
+2026-08-31T15:21:40.978-05:00  INFO 9408 --- [           main] o.f.c.i.c.SqlScriptCallbackFactory       : Executing SQL callback: afterMigrate - 
+2026-08-31T15:21:41.010-05:00  INFO 9408 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-31T15:21:41.014-05:00  INFO 9408 --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-08-31T15:21:41.020-05:00  INFO 9408 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-31T15:21:41.020-05:00  INFO 9408 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Starting...
+2026-08-31T15:21:41.032-05:00  INFO 9408 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-5 - Added connection org.postgresql.jdbc.PgConnection@1d6046cc
+2026-08-31T15:21:41.033-05:00  INFO 9408 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Start completed.
+2026-08-31T15:21:41.141-05:00  INFO 9408 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-31T15:21:41.162-05:00  INFO 9408 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-31T15:21:41.683-05:00  INFO 9408 --- [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 3 endpoint(s) beneath base path '/actuator'
+2026-08-31T15:21:41.720-05:00  INFO 9408 --- [           main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@2d17200a, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@542148bb, org.springframework.security.web.context.SecurityContextHolderFilter@4671b908, org.springframework.security.web.header.HeaderWriterFilter@693ee6e7, org.springframework.web.filter.CorsFilter@67239d8a, org.springframework.security.web.authentication.logout.LogoutFilter@17cbaa2e, com.biopet.security.JwtAuthenticationFilter@72ad9c7a, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@29caa7a7, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@26cc331c, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@19edf281, org.springframework.security.web.session.SessionManagementFilter@24569473, org.springframework.security.web.access.ExceptionTranslationFilter@1412ffac, org.springframework.security.web.access.intercept.AuthorizationFilter@c1eaa31]
+2026-08-31T15:21:42.000-05:00  INFO 9408 --- [           main] c.b.r.ResumenEspeciesIntegrationTest     : Started ResumenEspeciesIntegrationTest in 1.643 seconds (process running for 108.728)
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.999 s -- in com.biopet.repository.ResumenEspeciesIntegrationTest
+[INFO] Running com.biopet.repository.TriggerActualizadoEnIntegrationTest
+2026-08-31T15:21:42.719-05:00  INFO 9408 --- [           main] tc.postgres:16-alpine                    : Creating container for image: postgres:16-alpine
+2026-08-31T15:21:42.850-05:00  INFO 9408 --- [           main] tc.postgres:16-alpine                    : Container postgres:16-alpine is starting: cb7b7212d8f972122a7270f3c5f914302340c9f99d169ebef9fea7f204cc5319
+2026-08-31T15:21:44.460-05:00  INFO 9408 --- [           main] tc.postgres:16-alpine                    : Container postgres:16-alpine started in PT1.7410461S
+2026-08-31T15:21:44.460-05:00  INFO 9408 --- [           main] tc.postgres:16-alpine                    : Container is started (JDBC URL: jdbc:postgresql://localhost:64393/biopet_test?loggerLevel=OFF)
+2026-08-31T15:21:44.462-05:00  INFO 9408 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.biopet.repository.TriggerActualizadoEnIntegrationTest]: TriggerActualizadoEnIntegrationTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-31T15:21:44.463-05:00  INFO 9408 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.biopet.BiopetApplication for test class com.biopet.repository.TriggerActualizadoEnIntegrationTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::               (v3.2.12)
+
+2026-08-31T15:21:44.488-05:00  INFO 9408 --- [           main] .b.r.TriggerActualizadoEnIntegrationTest : Starting TriggerActualizadoEnIntegrationTest using Java 21.0.11 with PID 9408 (started by jaime in C:\Users\jaime\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend)
+2026-08-31T15:21:44.488-05:00  INFO 9408 --- [           main] .b.r.TriggerActualizadoEnIntegrationTest : No active profile set, falling back to 1 default profile: "default"
+2026-08-31T15:21:44.769-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-08-31T15:21:44.770-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-31T15:21:44.787-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 17 ms. Found 6 JPA repository interfaces.
+2026-08-31T15:21:44.790-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-08-31T15:21:44.790-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-08-31T15:21:44.797-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.CitaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:44.797-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.ConsultaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:44.797-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.MascotaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:44.797-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.ProcedimientoBiopetRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:44.797-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.UsuarioRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:44.797-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.VacunaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:44.798-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 7 ms. Found 0 Redis repository interfaces.
+2026-08-31T15:21:45.006-05:00  INFO 9408 --- [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:64393/biopet_test (PostgreSQL 16.14)
+2026-08-31T15:21:45.013-05:00  WARN 9408 --- [           main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: PostgreSQL 16.14 is newer than this version of Flyway and support has not been tested. The latest supported version of PostgreSQL is 15.
+2026-08-31T15:21:45.026-05:00  INFO 9408 --- [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "public"."flyway_schema_history" does not exist yet
+2026-08-31T15:21:45.028-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbValidate     : Successfully validated 6 migrations (execution time 00:00.010s)
+2026-08-31T15:21:45.043-05:00  INFO 9408 --- [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "public"."flyway_schema_history" ...
+2026-08-31T15:21:45.082-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": << Empty Schema >>
+2026-08-31T15:21:45.089-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "1 - schema inicial"
+2026-08-31T15:21:45.113-05:00  INFO 9408 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: trigger "trg_usuarios_actualizado_en" for relation "usuarios" does not exist, skipping
+2026-08-31T15:21:45.115-05:00  INFO 9408 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: trigger "trg_mascotas_actualizado_en" for relation "mascotas" does not exist, skipping
+2026-08-31T15:21:45.164-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "2 - citas"
+2026-08-31T15:21:45.192-05:00  INFO 9408 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: trigger "trg_citas_actualizado_en" for relation "citas" does not exist, skipping
+2026-08-31T15:21:45.215-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "3 - consultas"
+2026-08-31T15:21:45.245-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "4 - vacunas"
+2026-08-31T15:21:45.255-05:00  INFO 9408 --- [           main] o.f.c.i.s.DefaultSqlScriptExecutor       : DB: trigger "trg_vacunas_actualizado_en" for relation "vacunas" does not exist, skipping
+2026-08-31T15:21:45.267-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "5 - procedimientos biopet"
+2026-08-31T15:21:45.286-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "public" to version "6 - formalizar procedimientos jpa"
+2026-08-31T15:21:45.303-05:00  INFO 9408 --- [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 6 migrations to schema "public", now at version v6 (execution time 00:00.121s)
+2026-08-31T15:21:45.327-05:00  INFO 9408 --- [           main] o.f.c.i.c.SqlScriptCallbackFactory       : Executing SQL callback: afterMigrate - 
+2026-08-31T15:21:45.356-05:00  INFO 9408 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-31T15:21:45.358-05:00  INFO 9408 --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-08-31T15:21:45.362-05:00  INFO 9408 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-31T15:21:45.362-05:00  INFO 9408 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-6 - Starting...
+2026-08-31T15:21:45.374-05:00  INFO 9408 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-6 - Added connection org.postgresql.jdbc.PgConnection@4e110676
+2026-08-31T15:21:45.374-05:00  INFO 9408 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-6 - Start completed.
+2026-08-31T15:21:45.483-05:00  INFO 9408 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-31T15:21:45.505-05:00  INFO 9408 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-31T15:21:45.901-05:00  INFO 9408 --- [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 3 endpoint(s) beneath base path '/actuator'
+2026-08-31T15:21:45.931-05:00  INFO 9408 --- [           main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@2c10bf75, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2c955340, org.springframework.security.web.context.SecurityContextHolderFilter@45d31ff9, org.springframework.security.web.header.HeaderWriterFilter@25eab149, org.springframework.web.filter.CorsFilter@2b99fc5c, org.springframework.security.web.authentication.logout.LogoutFilter@610cac76, com.biopet.security.JwtAuthenticationFilter@5a948ae4, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@314f90d8, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@190b8989, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3f477fbe, org.springframework.security.web.session.SessionManagementFilter@651009c3, org.springframework.security.web.access.ExceptionTranslationFilter@7ada7b53, org.springframework.security.web.access.intercept.AuthorizationFilter@39a7345b]
+2026-08-31T15:21:46.178-05:00  INFO 9408 --- [           main] .b.r.TriggerActualizadoEnIntegrationTest : Started TriggerActualizadoEnIntegrationTest in 1.712 seconds (process running for 112.907)
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.158 s -- in com.biopet.repository.TriggerActualizadoEnIntegrationTest
+[INFO] Running com.biopet.security.AuthenticationAuditServiceTest
+2026-08-31T15:21:46.883-05:00  WARN 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:46.883325600Z event=TOKEN_REVOKED result=BLOCKED ip=203.0.113.23 subject=usuario@biopet.com
+2026-08-31T15:21:46.886-05:00  WARN 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:46.885994700Z event=LOGIN_FAILURE result=FAILURE ip=unknown subject=unknown
+2026-08-31T15:21:46.888-05:00  WARN 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:46.888102400Z event=LOGIN_FAILURE result=FAILURE ip=203.0.113.13AUTH_AUDIT event=LOGIN_SUCCESS result=SUCCESS subject=ataque@biopet.cominyectadovalor
+2026-08-31T15:21:46.890-05:00  WARN 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:46.890112Z event=REFRESH_FAILURE result=FAILURE ip=203.0.113.21 subject=unknown
+2026-08-31T15:21:46.892-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:46.892120Z event=LOGIN_SUCCESS result=SUCCESS ip=203.0.113.10 subject=usuario@biopet.com
+2026-08-31T15:21:46.894-05:00  WARN 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:46.894128900Z event=LOGIN_FAILURE result=FAILURE ip=203.0.113.14 subject=usuario@biopet.com
+2026-08-31T15:21:46.896-05:00  WARN 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:46.894128900Z event=LOGIN_RATE_LIMITED result=BLOCKED ip=203.0.113.12 subject=usuario@biopet.com
+2026-08-31T15:21:46.896-05:00  WARN 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:46.896136800Z event=LOGIN_FAILURE result=FAILURE ip=203.0.113.11 subject=usuario@biopet.com
+2026-08-31T15:21:46.897-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:46.897678600Z event=REFRESH_SUCCESS result=SUCCESS ip=203.0.113.20 subject=usuario@biopet.com
+2026-08-31T15:21:46.899-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:46.899686900Z event=LOGOUT_SUCCESS result=SUCCESS ip=203.0.113.22 subject=usuario@biopet.com
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.018 s -- in com.biopet.security.AuthenticationAuditServiceTest
+[INFO] Running com.biopet.security.JwtCookieServiceTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.019 s -- in com.biopet.security.JwtCookieServiceTest
+[INFO] Running com.biopet.security.JwtServiceTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.051 s -- in com.biopet.security.JwtServiceTest
+[INFO] Running com.biopet.security.LoginRateLimiterServiceTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 s -- in com.biopet.security.LoginRateLimiterServiceTest
+[INFO] Running com.biopet.security.TokenBlacklistServiceTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.017 s -- in com.biopet.security.TokenBlacklistServiceTest
+[INFO] Running com.biopet.SecurityHeadersTest
+2026-08-31T15:21:47.010-05:00  INFO 9408 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.biopet.SecurityHeadersTest]: SecurityHeadersTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-31T15:21:47.013-05:00  INFO 9408 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.biopet.BiopetApplication for test class com.biopet.SecurityHeadersTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::               (v3.2.12)
+
+2026-08-31T15:21:47.042-05:00  INFO 9408 --- [           main] com.biopet.SecurityHeadersTest           : Starting SecurityHeadersTest using Java 21.0.11 with PID 9408 (started by jaime in C:\Users\jaime\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend)
+2026-08-31T15:21:47.043-05:00  INFO 9408 --- [           main] com.biopet.SecurityHeadersTest           : The following 1 profile is active: "test"
+2026-08-31T15:21:47.339-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-08-31T15:21:47.339-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-31T15:21:47.363-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 23 ms. Found 6 JPA repository interfaces.
+2026-08-31T15:21:47.369-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-08-31T15:21:47.369-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-08-31T15:21:47.377-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.CitaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:47.378-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.ConsultaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:47.378-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.MascotaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:47.378-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.ProcedimientoBiopetRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:47.378-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.UsuarioRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:47.378-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.VacunaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-08-31T15:21:47.378-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 8 ms. Found 0 Redis repository interfaces.
+2026-08-31T15:21:47.496-05:00  INFO 9408 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-31T15:21:47.498-05:00  INFO 9408 --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-08-31T15:21:47.504-05:00  INFO 9408 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-31T15:21:47.504-05:00  INFO 9408 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-7 - Starting...
+2026-08-31T15:21:47.506-05:00  INFO 9408 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-7 - Added connection conn20: url=jdbc:h2:mem:biopet_test user=SA
+2026-08-31T15:21:47.506-05:00  INFO 9408 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-7 - Start completed.
+2026-08-31T15:21:47.594-05:00  INFO 9408 --- [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-31T15:21:47.624-05:00  INFO 9408 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-31T15:21:48.055-05:00  INFO 9408 --- [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 3 endpoint(s) beneath base path '/actuator'
+2026-08-31T15:21:48.092-05:00  INFO 9408 --- [           main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@28cc3019, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@18d96c36, org.springframework.security.web.context.SecurityContextHolderFilter@74085662, org.springframework.security.web.header.HeaderWriterFilter@6feb928f, org.springframework.web.filter.CorsFilter@3ee683cc, org.springframework.security.web.authentication.logout.LogoutFilter@5fe4a6c2, com.biopet.security.JwtAuthenticationFilter@2322f6d9, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@561de3d3, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@ffcf2, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@35893560, org.springframework.security.web.session.SessionManagementFilter@171ff4c, org.springframework.security.web.access.ExceptionTranslationFilter@2d12cfc4, org.springframework.security.web.access.intercept.AuthorizationFilter@dc7bc5a]
+2026-08-31T15:21:48.303-05:00  INFO 9408 --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-08-31T15:21:48.303-05:00  INFO 9408 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-08-31T15:21:48.303-05:00  INFO 9408 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-08-31T15:21:48.316-05:00  INFO 9408 --- [           main] com.biopet.SecurityHeadersTest           : Started SecurityHeadersTest in 1.3 seconds (process running for 115.043)
+2026-08-31T15:21:49.024-05:00  WARN 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:49.024943500Z event=LOGIN_FAILURE result=FAILURE ip=127.0.0.1 subject=nadie@biopet.com
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.029 s -- in com.biopet.SecurityHeadersTest
+[INFO] Running com.biopet.SqlInjectionSecurityTest
+2026-08-31T15:21:49.040-05:00  INFO 9408 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.biopet.SqlInjectionSecurityTest]: SqlInjectionSecurityTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-31T15:21:49.042-05:00  INFO 9408 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.biopet.BiopetApplication for test class com.biopet.SqlInjectionSecurityTest
+2026-08-31T15:21:49.738-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:49.738870300Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:50.221-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:50.221270600Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:50.681-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:50.681288600Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:51.152-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:51.152770200Z event=LOGIN_SUCCESS result=SUCCESS ip=203.0.113.202 subject=jaime@biopet.com
+2026-08-31T15:21:51.601-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:51.601226200Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:54.003-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:54.003221800Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.974 s -- in com.biopet.SqlInjectionSecurityTest
+[INFO] Running com.biopet.SwaggerUiTest
+2026-08-31T15:21:54.016-05:00  INFO 9408 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.biopet.SwaggerUiTest]: SwaggerUiTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-31T15:21:54.018-05:00  INFO 9408 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.biopet.BiopetApplication for test class com.biopet.SwaggerUiTest
+2026-08-31T15:21:55.103-05:00  INFO 9408 --- [           main] o.springdoc.api.AbstractOpenApiResource  : Init duration for springdoc-openapi is: 1070 ms
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.237 s -- in com.biopet.SwaggerUiTest
+[INFO] Running com.biopet.UsuarioControllerTest
+2026-08-31T15:21:55.255-05:00  INFO 9408 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.biopet.UsuarioControllerTest]: UsuarioControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-31T15:21:55.257-05:00  INFO 9408 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.biopet.BiopetApplication for test class com.biopet.UsuarioControllerTest
+2026-08-31T15:21:55.702-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:55.702942Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:56.167-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:56.167462500Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:56.621-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:56.621604100Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:57.535-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:57.535480100Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:58.001-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:58.001054500Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:21:58.676-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:58.676519900Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=rolno.veterinario@biopet.com
+2026-08-31T15:21:59.355-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:21:59.355718900Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:22:00.042-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:22:00.042876500Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:22:00.711-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:22:00.711585300Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:22:01.392-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:22:01.392545100Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:22:01.840-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:22:01.840532500Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:22:02.293-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:22:02.293554800Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:22:02.967-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:22:02.967078900Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=rolno.dueno@biopet.com
+2026-08-31T15:22:03.415-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:22:03.415076300Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+2026-08-31T15:22:03.866-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:22:03.866902Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=jaime@biopet.com
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.627 s -- in com.biopet.UsuarioControllerTest
+[INFO] Running com.biopet.VacunaControllerTest
+2026-08-31T15:22:03.882-05:00  INFO 9408 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.biopet.VacunaControllerTest]: VacunaControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-31T15:22:03.884-05:00  INFO 9408 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.biopet.BiopetApplication for test class com.biopet.VacunaControllerTest
+2026-08-31T15:22:04.778-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:22:04.778285500Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=admin.vacunas@biopet.com
+2026-08-31T15:22:05.053-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:22:05.053624200Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=vacuna.listado.dueno1@biopet.com
+2026-08-31T15:22:05.736-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:22:05.736391700Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=admin.vacunas@biopet.com
+2026-08-31T15:22:06.214-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:22:06.214365200Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=admin.vacunas@biopet.com
+2026-08-31T15:22:07.125-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:22:07.125323Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=admin.vacunas@biopet.com
+2026-08-31T15:22:07.383-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:22:07.383943300Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=vacuna.ajena.dueno1@biopet.com
+2026-08-31T15:22:08.072-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:22:08.072394500Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=admin.vacunas@biopet.com
+2026-08-31T15:22:08.301-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:22:08.301236500Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=vacuna.rol.dueno@biopet.com
+2026-08-31T15:22:08.973-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:22:08.973259800Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=admin.vacunas@biopet.com
+2026-08-31T15:22:09.664-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:22:09.664323600Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=admin.vacunas@biopet.com
+2026-08-31T15:22:10.359-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:22:10.359358300Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=admin.vacunas@biopet.com
+2026-08-31T15:22:10.837-05:00  INFO 9408 --- [           main] c.b.security.AuthenticationAuditService  : AUTH_AUDIT timestamp=2026-08-31T20:22:10.837330400Z event=LOGIN_SUCCESS result=SUCCESS ip=127.0.0.1 subject=admin.vacunas@biopet.com
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.967 s -- in com.biopet.VacunaControllerTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 205, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jacoco:0.8.12:report (report) @ biopet-backend ---
+[INFO] Loading execution data file C:\Users\jaime\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend\target\jacoco.exec
+[INFO] Analyzed bundle 'BIOPET Backend' with 45 classes
+[INFO] 
+[INFO] --- jar:3.3.0:jar (default-jar) @ biopet-backend ---
+[INFO] Building jar: C:\Users\jaime\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend\target\biopet-backend-0.1.0.jar
+[INFO] 
+[INFO] --- spring-boot:3.2.12:repackage (repackage) @ biopet-backend ---
+[INFO] Replacing main artifact C:\Users\jaime\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend\target\biopet-backend-0.1.0.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to C:\Users\jaime\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend\target\biopet-backend-0.1.0.jar.original
+[INFO] 
+[INFO] --- jacoco:0.8.12:check (check) @ biopet-backend ---
+[INFO] Loading execution data file C:\Users\jaime\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend\target\jacoco.exec
+[INFO] Analyzed bundle 'biopet-backend' with 45 classes
+[INFO] All coverage checks have been met.
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  02:36 min
+[INFO] Finished at: 2026-08-31T15:22:13-05:00
+[INFO] ------------------------------------------------------------------------
