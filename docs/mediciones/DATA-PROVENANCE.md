@@ -55,7 +55,7 @@ datos que ya existen en el repositorio, verificado contra su origen real.
 
 | Campo | Detalle |
 |---|---|
-| Generado por | `mvn clean verify` (fase `verify`, plugin `jacoco-maven-plugin`, regla `BUNDLE` con umbral ≥60% en LINE/BRANCH/COMPLEXITY) |
+| Generado por | `mvn clean verify` (fase `verify`, plugin `jacoco-maven-plugin`, regla `BUNDLE` con umbral LINE ≥70%, BRANCH ≥70%, COMPLEXITY ≥60%, según `Backend/pom.xml`) |
 | Responsable | Jaime Mariscal Cabrera |
 | Entrada | Suite de pruebas JUnit 5 + MockMvc/Testcontainers reales (`Backend/src/test/java/com/biopet/**`). **Total canónico para la Entrega Final (tag `v1.0.0`): 205 pruebas, 0 fallos, 0 errores, 0 omitidas** — verificado por reproducción independiente de `mvn clean verify` sobre el commit exacto del tag (`0d5cd525ce648cca7219da204e16fa622e671a87`), archivada en [`docs/mediciones/sec/reproduccion-v1.0.0/`](sec/reproduccion-v1.0.0/) y detallada en [`TEST-COUNT-PROVENANCE.md`](TEST-COUNT-PROVENANCE.md). **Nota histórica:** esta fila decía "166 pruebas" (cifra narrativa, sin log crudo localizado que la respalde — ver clasificación en `TEST-COUNT-PROVENANCE.md`); el log crudo archivado el mismo día que se generó `jacoco-summary.md` (commit `bb43baa`, 2026-08-16) reportaba 189, correcto para ese commit pero anterior a dos clases de prueba (16 casos) que ya forman parte del tag `v1.0.0` — ese log de 189 se conserva sin modificar como evidencia histórica de ese punto exacto del proyecto, no como el resultado final. |
 | Transformación aplicada | Ninguna manual — `jacoco-summary.md` resume el reporte HTML/XML que genera JaCoCo en `Backend/target/site/jacoco/`, no versionado por ser artefacto regenerable en cada build |
