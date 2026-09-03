@@ -173,7 +173,74 @@ def wilcoxon_pareado(duraciones_a, duraciones_b):
     p = float(resultado.pvalue)
     Z = float(resultado.zstatistic)
     r = Z / (n_pares ** 0.5)
-    return round(W, 2), round(p, 6), round(r, 4)
+    return round(W, 2), p, round(r, 4)
+
+
+def holm_correction(p_values, alpha=0.05):
+    """
+    Aplica corrección de Holm-Bonferroni para comparaciones múltiples.
+    
+    Devuelve lista de tuplas (p_original, p_ajustado, significativo, rechazar_H0)
+    ordenada por p_original ascendente.
+    """
+    if not p_values:
+        return []
+    
+    # Parear cada p-valor con su índice original
+    indexed = [(p, i) for i, p in enumerate(p_values)]
+    # Ordenar por p-valor ascendente
+    indexed.sort(key=lambda x: x[0])
+    
+    m = len(p_values)
+    resultados = []
+    
+    for rank, (p, orig_idx) in enumerate(indexed, 1):
+        # Holm: alpha / (m - rank + 1)
+        alpha_holm = alpha / (m - rank + 1)
+        p_adj = min(p * (m - rank + 1), 1.0)
+        significativo = p_adj < alpha
+        resultados.append({
+            'original_idx': orig_idx,
+            'p_original': p,
+            'p_ajustado': p_adj,
+            'alpha_holm': alpha_holm,
+            'significativo': significativo,
+            'rechazar_H0': p < alpha_holm
+        })
+    
+    # Reordenar por índice original
+    resultados.sort(key=lambda x: x['original_idx'])
+    return resultados
+
+
+def mannwhitney_independiente(duraciones_a, duraciones_b):
+    """
+    Test de Mann-Whitney U para muestras independientes (sensibilidad).
+    No asume pareo por índice.
+    """
+    n_a = len(duraciones_a)
+    n_b = len(duraciones_b)
+    if n_a < 3 or n_b < 3:
+        return None, None, None
+    
+    resultado = stats.mannwhitneyu(duraciones_a, duraciones_b, alternative='two-sided')
+    U = float(resultado.statistic)
+    p = float(resultado.pvalue)
+    
+    # Tamaño de efecto r = Z / sqrt(N)
+    # Z se calcula a partir de U usando la aproximación normal
+    # Media y desviación estándar de U bajo H0
+    mu_U = n_a * n_b / 2.0
+    sigma_U = ((n_a * n_b * (n_a + n_b + 1)) / 12.0) ** 0.5
+    
+    if sigma_U > 0:
+        Z = (U - mu_U) / sigma_U
+    else:
+        Z = 0.0
+    
+    r = Z / ((n_a + n_b) ** 0.5)
+    
+    return round(U, 2), p, round(r, 4)
 
 
 def generar_svg(ruta_svg, grupos):
@@ -369,10 +436,34 @@ def main():
             continue
         filas_wilcoxon.append((c["clave"], W, p, r))
 
+    # Corrección Holm para comparaciones múltiples
     if filas_wilcoxon:
+        p_values = [p for _, _, p, _ in filas_wilcoxon]
+        holm_results = holm_correction(p_values, alpha=0.05)
+        
         print("\n=== Wilcoxon pareado (caliente vs frio, por corrida) ===")
-        for clave, W, p, r in filas_wilcoxon:
-            print(f"  {clave}: W={W}, p={p}, r={r}")
+        for i, (clave, W, p, r) in enumerate(filas_wilcoxon):
+            h = holm_results[i]
+            p_str = f"{p:.2e}" if p > 0 else f"p < {float(np.finfo(float).tiny):.2e}"
+            p_adj_str = f"{h['p_ajustado']:.2e}" if h['p_ajustado'] > 0 else f"p < {float(np.finfo(float).tiny):.2e}"
+            print(f"  {clave}: W={W}, p={p_str}, p_adj(Holm)={p_adj_str}, r={r}")
+
+    # Análisis de sensibilidad: Mann-Whitney para muestras independientes
+    filas_mannwhitney = []
+    if filas_wilcoxon:
+        print("\n=== Sensibilidad: Mann-Whitney (muestras independientes, sin pareo) ===")
+        for c in corridas:
+            if not c["caliente"] or not c["frio"]:
+                continue
+            U, p, r = mannwhitney_independiente(
+                c["duraciones_caliente"],
+                c["duraciones_frio"],
+            )
+            if U is None:
+                continue
+            filas_mannwhitney.append((c["clave"], U, p, r))
+            p_str = f"{p:.2e}" if p > 0 else f"p < {float(np.finfo(float).tiny):.2e}"
+            print(f"  {c['clave']}: U={U}, p={p_str}, r={r}")
 
     if args.grafico:
         n_barras = generar_svg(args.grafico, corridas)
@@ -400,11 +491,29 @@ def main():
                 f.write("\n## Wilcoxon pareado (caliente vs frio)\n\n")
                 f.write(
                     "Pareo por indice de llegada (truncando al menor tamano de muestra). "
-                    "Tamano de efecto r de Rosenthal (r = Z / sqrt(n)).\n\n"
+                    "Tamano de efecto r de Rosenthal (r = Z / sqrt(n)).\n"
+                    "Correccion por comparaciones multiples: Holm-Bonferroni (alfa=0.05, m=5).\n"
+                    "Nota metodologica: las corridas son independientes; el pareo por indice de llegada "
+                    "no constituye un diseno pareado verdadero. Ver analisis de sensibilidad abajo.\n\n"
                 )
-                f.write("| Par | W | p | r |\n|---|---|---|---|\n")
-                for clave, W, p, r in filas_wilcoxon:
-                    f.write(f"| {clave} | {W} | {p} | {r} |\n")
+                f.write("| Par | W | p (original) | p (ajustado Holm) | Significativo (Holm) | r |\n|---|---|---|---|---|---|\n")
+                for i, (clave, W, p, r) in enumerate(filas_wilcoxon):
+                    h = holm_results[i]
+                    p_str = f"{p:.2e}" if p > 0 else f"p < {float(np.finfo(float).tiny):.2e}"
+                    p_adj_str = f"{h['p_ajustado']:.2e}" if h['p_ajustado'] > 0 else f"p < {float(np.finfo(float).tiny):.2e}"
+                    sig = "Si" if h['significativo'] else "No"
+                    f.write(f"| {clave} | {W} | {p_str} | {p_adj_str} | {sig} | {r} |\n")
+
+            if filas_mannwhitney:
+                f.write("\n## Sensibilidad: Mann-Whitney U (muestras independientes)\n\n")
+                f.write(
+                    "Analisis de sensibilidad sin asumir pareo por indice (corridas independientes). "
+                    "Tamano de efecto r = Z / sqrt(N).\n\n"
+                )
+                f.write("| Par | U | p | r |\n|---|---|---|---|\n")
+                for clave, U, p, r in filas_mannwhitney:
+                    p_str = f"{p:.2e}" if p > 0 else f"p < {float(np.finfo(float).tiny):.2e}"
+                    f.write(f"| {clave} | {U} | {p_str} | {r} |\n")
 
             if args.grafico:
                 f.write(f"\n## Grafico\n\n![Latencia por percentil]({Path(args.grafico).name})\n")
