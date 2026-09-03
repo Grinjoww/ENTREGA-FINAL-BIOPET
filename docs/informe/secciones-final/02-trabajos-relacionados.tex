@@ -50,6 +50,64 @@ figura~\ref{fig:prisma-flow}.
 {Diagrama de flujo PRISMA de identificaci\'on y selecci\'on de estudios (regenerado 2026-08-18). Bloque Zaida completamente cuantificado (15 identificados $\to$ 12 excluidos $\to$ 3 incluidos); bloque Fred completamente cuantificado (13 candidatos por DOI $\to$ 2 excluidos $\to$ 3 incluidos); bloque Jaime con el conteo final de incluidos (4), sin registro de candidatos excluidos (\'unico gap declarado que persiste en el diagrama, se\~nalado con l\'inea punteada).}%
 {fig:prisma-flow}
 
+\section{Cadena de búsqueda, fuentes y ventana temporal por bloque}
+\label{sec:cadena-busqueda-trabajos-relacionados}
+
+Los tres bloques usaron estrategias de búsqueda distintas entre sí ---
+diferencia declarada explícitamente aquí, no oculta detrás del checklist.
+A continuación, la cadena exacta (cuando existió), las bases/fuentes y la
+ventana temporal aplicada por cada uno, tal como quedaron registradas el
+2026-08-17 en \texttt{docs/informe/borradores/zaida/estudios-primarios-zaida.md},
+\texttt{docs/informe/borradores/jaime/trabajos-relacionados.md} y
+\texttt{docs/investigacion/handoff-fred-trabajos-relacionados.md}
+respectivamente (fuente primaria de cada bloque; el detalle completo,
+incluida la tabla de exclusiones, sigue disponible en
+\texttt{docs/checklists/prisma2020.md}, sección 4, ítems 6--7).
+
+\textbf{Bloque Zaida (requisitos, usabilidad, dominio veterinario).}
+Bases consultadas: IEEE Xplore, ACM Digital Library, Scopus, Google
+Scholar. Fecha de búsqueda: 2026-08-17. \textbf{Sin ventana temporal
+declarada} (no se aplicó filtro de año como criterio formal). Tres
+cadenas de búsqueda booleanas exactas, una por sub-tema:
+
+\begin{quote}
+\texttt{"requirements elicitation" AND "systematic literature review"} \\
+\texttt{"system usability scale" AND web application} \\
+\texttt{veterinary management system web application case study}
+\end{quote}
+
+Resultado: 15 candidatos revisados, 12 excluidos por no cumplir el
+criterio de elegibilidad de la sección anterior, 3 incluidos.
+
+\textbf{Bloque Jaime (arquitectura, seguridad, rendimiento, calidad).}
+\textbf{No usó una cadena booleana única.} Se auditó primero la
+bibliografía ya existente en \texttt{docs/informe/referencias.bib} (15
+entradas, todas normas/documentación oficial, ninguna un trabajo
+académico de \emph{related work}) y, al no encontrar ahí trabajos
+académicos pertinentes, se hizo verificación dirigida por tema
+(metodología ágil de gestión veterinaria, pruebas de rendimiento web,
+vulnerabilidades JWT, aplicación práctica de ISO/IEC~25010) contra
+Crossref (\texttt{api.crossref.org}) y páginas oficiales de
+editorial/conferencia. Fecha: 2026-08-17. \textbf{Sin ventana temporal
+declarada.} Esta es una diferencia metodológica real frente al bloque de
+Zaida, no un vacío de documentación: se trató de verificación de
+referencias ya identificadas por relevancia temática directa, no de una
+búsqueda exploratoria amplia que requiriera una cadena. Resultado: 4
+estudios incluidos; el conteo de candidatos evaluados y excluidos antes
+de esos 4 no fue registrado por Jaime (limitación declarada en la
+sección~\ref{sec:limitaciones-trabajos-relacionados} y en el diagrama de
+flujo, figura~\ref{fig:prisma-flow}).
+
+\textbf{Bloque Fred (arquitectura de datos, rendimiento).} Tampoco usó
+una cadena booleana: verificación dirigida de DOI reales, uno a uno,
+abriendo cada \texttt{https://doi.org/<DOI>} y confirmando título,
+autores y año contra Crossref/IEEE/ACM/IOP. Fecha: 2026-08-17.
+\textbf{Única ventana temporal explícita de los tres bloques: 2020--2026}
+(criterio propio de Fred, ``máx. 5--6 años''). Resultado: 13 candidatos
+por DOI, 2 descartados (Yang et al., ICSE 2018, DOI
+\texttt{10.1145/3180155.3180194} --- fuera del rango 2020--2026; un
+artículo de TURCOMAT --- inaccesible, HTTP~403), 3 incluidos.
+
 \section{Estudios incluidos}
 
 \subsection{Pacheco, Garc\'ia \& Reyes (2018) --- T\'ecnicas de elicitaci\'on de requisitos}
