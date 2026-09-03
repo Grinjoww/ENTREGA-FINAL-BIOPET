@@ -1,7 +1,13 @@
 \chapter{Declaraciones}
 \label{cap:declaraciones}
 
-\section{Contribuciones (taxonom\'ia CRediT)}
+Este cap\'itulo re\'une las nueve declaraciones obligatorias del informe,
+cada una con secci\'on propia: contribuciones de autor\'ia, \'etica,
+disponibilidad de datos, disponibilidad de c\'odigo, disponibilidad de
+materiales, financiamiento, conflicto de intereses, uso de asistentes
+autom\'aticos y agradecimientos.
+
+\section{Contribuciones de autor\'ia (CRediT)}
 
 La matriz completa de roles CRediT~\cite{credit-taxonomy}, verificada
 individuo por individuo contra commits, ramas de trabajo y archivos
@@ -23,8 +29,6 @@ concretos del repositorio (\texttt{git shortlog -sne --all}), vive en
     \bottomrule
   \end{tabular}
 \end{table}
-
-\section{Autores \'unicos de esta entrega}
 
 Los tres autores de BIOPET, con afiliaci\'on institucional \'unica, son:
 Fred Adri\'an Beltr\'an Montiel (\texttt{fbeltranm@uteq.edu.ec}), Jaime
@@ -77,7 +81,7 @@ Zenodo con DOI \texttt{\doidataset}, y disponible tambi\'en en
 \rutalarga{docs/mediciones/DATA-DICTIONARY.md}, siguiendo los principios
 FAIR (\rutalarga{docs/checklists/fair.md}).
 
-\section{Disponibilidad del c\'odigo}
+\section{Disponibilidad de c\'odigo}
 
 El c\'odigo fuente completo (backend, frontend, migraciones, scripts) est\'a
 disponible en \texttt{https://github.com/Grinjoww/ENTREGA-FINAL-BIOPET}
@@ -86,17 +90,76 @@ bajo licencia MIT, y archivado permanentemente en Zenodo con DOI
 en GHCR con referencia inmutable por \emph{digest}
 (cap\'itulo~\ref{cap:despliegue}).
 
+\textbf{Reproducibilidad.} Todos los resultados cuantitativos de este
+informe son reproducibles con los comandos documentados en el
+cap\'itulo~\ref{cap:despliegue} y en \texttt{docs/informe/README.md},
+contra el mismo commit citado en cada reporte de evidencia
+(\texttt{docs/mediciones/*/README.md} y \texttt{*.md} de reporte
+individuales).
+
+\section{Disponibilidad de materiales}
+
+Adem\'as del c\'odigo y los datos de medici\'on (secciones anteriores),
+este trabajo produjo materiales complementarios --- protocolos,
+instrumentos de evaluaci\'on y configuraciones de auditor\'ia --- que
+tambi\'en quedan versionados en el mismo repositorio y archivo Zenodo
+citados arriba (DOI \texttt{\doisoftware}), sin un identificador aparte
+porque forman parte del mismo commit archivado:
+
+\begin{itemize}
+  \item \textbf{Instrumento y protocolo SUS}: cuestionario de Brooke
+    (1996)~\cite{sus-brooke1996} sin modificar, plantilla de
+    consentimiento informado (\rutalarga{docs/etica/consentimientos/plantilla.md})
+    y protocolo \'etico (\rutalarga{docs/etica/ETHICS.md}).
+  \item \textbf{Configuraciones de auditor\'ia de calidad web}:
+    \texttt{lighthouserc.js}, \texttt{lighthouserc.desktop.js},
+    \texttt{lighthouserc.render.js} y \texttt{lighthouserc.render.desktop.js}
+    (perfiles m\'ovil/escritorio, contra \texttt{localhost} y contra el
+    despliegue p\'ublico de Render).
+  \item \textbf{Modelo de arquitectura C4}: fuente Structurizr DSL
+    versionada en \rutalarga{docs/diagrams/workspace.dsl}.
+  \item \textbf{Decisiones de arquitectura (ADR)} en \rutalarga{docs/adr/}
+    y especificaci\'on de despliegue reproducible
+    (\texttt{docker-compose.yml}, \texttt{render.yaml}, \texttt{Makefile}).
+  \item \textbf{Requisitos}: SRS versionado en \rutalarga{docs/requisitos/SRS.md}.
+\end{itemize}
+
+Ninguno de estos materiales incluye credenciales, secretos ni datos
+personales identificables de participantes (ver secci\'on de \'Etica).
+
+\section{Financiamiento}
+
+Este proyecto es exclusivamente acad\'emico, desarrollado como Entrega
+Final de la asignatura \asignatura{} en la Universidad T\'ecnica Estatal
+de Quevedo. No recibi\'o financiamiento externo de ninguna agencia,
+empresa ni entidad de fomento a la investigaci\'on (\texttt{CONTRIBUTORS.md},
+categor\'ia CRediT \emph{Funding acquisition}: no aplica para ning\'un
+integrante).
+
 \section{Conflicto de intereses}
 
 Ninguno de los tres autores declara conflicto de intereses en relaci\'on
-con este trabajo. El proyecto es exclusivamente acad\'emico, sin
-financiamiento externo (\texttt{CONTRIBUTORS.md}, categor\'ia \emph{Funding
-acquisition}: no aplica).
+con este trabajo.
 
-\section{Reproducibilidad}
+\section{Uso de asistentes autom\'aticos}
 
-Todos los resultados cuantitativos de este informe son reproducibles con
-los comandos documentados en el cap\'itulo~\ref{cap:despliegue} y en
-\texttt{docs/informe/README.md}, contra el mismo commit citado en cada
-reporte de evidencia (\texttt{docs/mediciones/*/README.md} y
-\texttt{*.md} de reporte individuales).
+El uso de herramientas de Inteligencia Artificial durante el desarrollo de 
+este proyecto se limitó exclusivamente a funciones de apoyo y orientaci\'on acad\'emica. 
+Estas herramientas fueron utilizadas como gu\'ia para la organizaci\'on y 
+distribuci\'on de tareas entre los integrantes del equipo, as\'i como para la 
+revisi\'on de avances y la identificaci\'on de posibles mejoras durante el proceso
+ de desarrollo. La Inteligencia Artificial no sustituy\'o el trabajo de los 
+ integrantes ni la toma de decisiones del equipo, siendo los autores responsables 
+ del dise\~no, implementaci\'on, validaci\'on y resultados finales del proyecto.
+
+
+\section{Agradecimientos}
+
+El equipo agradece al docente de la asignatura \asignatura{},
+\docente{} (\correodocente{}), por la gu\'ia acad\'emica y la
+retroalimentaci\'on de evaluaci\'on que orientaron las correcciones de
+esta entrega. Se agradece tambi\'en a la \universidad{} y a la
+\facultad{} por el acceso a la infraestructura acad\'emica utilizada
+durante el desarrollo del proyecto. No se recibi\'o apoyo, patrocinio ni
+colaboraci\'on de ninguna persona, instituci\'on o empresa externa al
+equipo de tres autores y al docente aqu\'i mencionados.
