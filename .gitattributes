@@ -1,2 +1,24 @@
 docs/mediciones/lighthouse/raw/** -text
 *.pdf binary
+
+# Evidencia ZAP autenticada local (Fase Jaime 2B): preservar LF en el
+# working tree tras checkout en Windows para que el SHA-256 documentado
+# en SHA256SUMS-AUTH-LOCAL.txt siga siendo reproducible (sin depender de
+# core.autocrlf del usuario). Reglas especificas por archivo, no un
+# patron global sobre el resto del repositorio.
+docs/mediciones/sec/zap/RUN-METADATA-AUTH-LOCAL.txt eol=lf
+docs/mediciones/sec/zap/SHA256SUMS-AUTH-LOCAL.txt eol=lf
+docs/mediciones/sec/zap/summary-authenticated-local.json eol=lf
+docs/mediciones/sec/zap/zap-authenticated-local.yaml eol=lf
+scripts/run-zap-authenticated-local.sh eol=lf
+
+# Reportes RAW generados automaticamente por OWASP ZAP (HTML/JSON/XML):
+# ademas de eol=lf, se desactiva la comprobacion de whitespace de
+# "git diff --check" (-whitespace) porque el whitespace final de linea
+# es parte del formato de salida propio de la herramienta, no un error
+# de estilo -- el contenido se conserva byte a byte (ver
+# SHA256SUMS-AUTH-LOCAL.txt) y no debe editarse manualmente para
+# "limpiarlo".
+docs/mediciones/sec/zap/zap-authenticated-local-report.html eol=lf -whitespace
+docs/mediciones/sec/zap/zap-authenticated-local-report.json eol=lf -whitespace
+docs/mediciones/sec/zap/zap-authenticated-local-report.xml eol=lf -whitespace

@@ -25,3 +25,8 @@ cookies.txt
 # Salida cruda de lhci autorun (se archiva ya procesada en docs/mediciones/lighthouse/)
 .lighthouseci/
 .lighthouseci-desktop/
+
+# Directorio temporal de scripts/run-zap-authenticated-local.sh (plan de
+# ZAP con credenciales ya sustituidas desde variables de entorno; se
+# borra automaticamente al terminar el script, nunca deberia commitearse)
+.zap-auth-local-tmp.*/
