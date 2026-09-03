@@ -25,3 +25,5 @@ cookies.txt
 # Salida cruda de lhci autorun (se archiva ya procesada en docs/mediciones/lighthouse/)
 .lighthouseci/
 .lighthouseci-desktop/
+.lighthouseci-render/
+.lighthouseci-render-desktop/
