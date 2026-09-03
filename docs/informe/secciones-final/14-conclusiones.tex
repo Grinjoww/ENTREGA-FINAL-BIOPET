@@ -58,10 +58,14 @@ plan gratuito de Render (con purgado de datos a los 30 d\'ias, sin
 verificaci\'on posible hoy de operaci\'on sostenida m\'as all\'a de ese
 horizonte), el rate limiting de login no es distribuido, no existe
 integraci\'on con un SIEM, y varios requisitos \emph{Should}/\emph{Could}
-heredados de la Entrega~1A permanecen pendientes. El tag Git \texttt{v1.0.0}
-y el GitHub Release correspondiente todav\'ia no se han creado a la fecha
-de cierre de este informe (fuera del alcance expl\'icito de esta tarea de
-redacci\'on).
+heredados de la Entrega~1A permanecen pendientes. El tag Git
+\texttt{v1.0.0} ya fue creado y publicado, apunta al commit
+\texttt{0d5cd52} (2026-08-18) y se conserva inmutable como referencia
+hist\'orica del cierre de la Entrega Final; las correcciones posteriores
+de retroalimentaci\'on/recalificaci\'on se realizan sobre \texttt{main},
+sin mover ese tag. El GitHub Release correspondiente --- artefacto
+distinto del tag Git --- todav\'ia no ha sido publicado a la fecha de
+cierre de este informe.
 
 \section{Trabajo futuro}
 
@@ -87,7 +91,8 @@ redacci\'on).
   \item Documentar el conteo de candidatos evaluados y excluidos del
     bloque de Jaime en la revisi\'on PRISMA, para homogeneizar el nivel de
     detalle entre los tres bloques (cap\'itulo~\ref{cap:trabajos-relacionados}).
-  \item Crear el tag Git \texttt{v1.0.0} y el GitHub Release
-    correspondiente, lo que activar\'a autom\'aticamente la publicaci\'on
-    de las etiquetas \texttt{1.0.0}/\texttt{latest} en GHCR.
+  \item Publicar un GitHub Release asociado al tag \texttt{v1.0.0} (ya
+    creado sobre el commit \texttt{0d5cd52}), lo que activar\'a
+    autom\'aticamente la publicaci\'on de las etiquetas
+    \texttt{1.0.0}/\texttt{latest} en GHCR.
 \end{itemize}

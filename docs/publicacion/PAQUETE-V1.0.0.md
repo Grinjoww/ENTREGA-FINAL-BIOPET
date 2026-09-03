@@ -68,14 +68,26 @@ automáticamente).
   guion entre "entrega" y "final" — nombre ya fijado en este documento
   antes de automatizar la publicación; no se cambió).
 - **Publicación automatizada (ya lista, workflow nuevo, `.github/workflows/ghcr-publish.yml`)**:
-  - **Antes del release** (mientras el tag `v1.0.0` no existe): disparo
-    manual desde GitHub → pestaña *Actions* → "Publicar imagen backend en
-    GHCR" → *Run workflow*. Publica solo una etiqueta técnica
-    `sha-<7 caracteres del commit>` (nunca `latest` ni un número de
-    versión, para no poder confundirse con un release real).
-  - **Release final** (cuando exista y se publique el tag `v1.0.0`, fuera
-    de alcance de esta tarea): el propio `git push --tags` dispara el
-    workflow automáticamente y publica además `1.0.0` y `latest`.
+  - **Estado actual (verificado):** el tag Git `v1.0.0` ya fue creado y
+    publicado, apunta al commit `0d5cd52` (creado el 2026-08-18) y se
+    conserva inmutable como referencia histórica del cierre de la Entrega
+    Final; las correcciones posteriores de retroalimentación/recalificación
+    se aplican sobre `main`, sin mover, borrar ni recrear ese tag. **No debe
+    confundirse con un GitHub Release**: a la fecha de esta nota, ningún
+    GitHub Release ha sido publicado en la página *Releases* del
+    repositorio — son dos artefactos distintos de GitHub.
+  - **Procedimiento previo a la creación del tag `v1.0.0`** (aplicable
+    durante la fase pre-release histórica, cuando el tag todavía no
+    existía): disparo manual desde GitHub → pestaña *Actions* →
+    "Publicar imagen backend en GHCR" → *Run workflow*. Publica solo una
+    etiqueta técnica `sha-<7 caracteres del commit>` (nunca `latest` ni un
+    número de versión, para no poder confundirse con un release real). Esta
+    instrucción se conserva únicamente como registro del flujo utilizado
+    antes de crear la etiqueta.
+  - **Procedimiento ante la publicación del tag** (ya aplicable, puesto que
+    el tag `v1.0.0` existe): el propio `git push --tags` dispara el
+    workflow automáticamente y publica además `1.0.0` y `latest` en GHCR
+    — esto es independiente de si existe o no un GitHub Release.
   - El workflow usa `GITHUB_TOKEN` (automático, sin secretos que
     configurar) con permisos `contents: read` + `packages: write`, ya
     declarados en el propio archivo del workflow.
@@ -92,7 +104,11 @@ automáticamente).
 
 ## 5. Datos necesarios para Zenodo
 
-- **Tag**: crear `v1.0.0` en git (el tag debe apuntar al commit publicado).
+- **Tag**: ya **creado y publicado** (`v1.0.0`, apunta al commit
+  `0d5cd52`, 2026-08-18); se conserva inmutable como referencia histórica
+  del cierre de la Entrega Final — no requiere ninguna acción adicional.
+  Nota: esto es distinto de un **GitHub Release**, que a la fecha de esta
+  actualización todavía no ha sido publicado.
 - **Conexión**: conectar `Grinjoww/ENTREGA-FINAL-BIOPET` a Zenodo
   (zenodo.org → GitHub → activar el repo). Lo hace el dueño del repo.
 - **Al archivar**, Zenodo toma `CITATION.cff` automáticamente y asigna el DOI.
@@ -109,12 +125,16 @@ Marcar TODOS antes de publicar (los 3 primeros son de esta rama y ya están):
 - [x] Paquete de release preparado (este documento, F18)
 - [x] `CITATION.cff` corregido: `version: 1.0.0`, `repository-code` =
       `https://github.com/Grinjoww/ENTREGA-FINAL-BIOPET`, 3 autores reales
-      con correo institucional (`date-released` deliberadamente sin valor
-      hasta que exista el tag real, ver el propio archivo)
+      con correo institucional, `orcid` de los tres, y `date-released:
+      2026-08-18` (fecha real de creación del tag `v1.0.0`, ver el propio
+      archivo)
 - [x] Workflow de publicación GHCR listo
       (`.github/workflows/ghcr-publish.yml`) — falta EJECUTARLO
       (disparo manual, ver sección 4) y copiar aquí el digest real
-- [ ] Tag `v1.0.0` creado y pusheado
+- [x] Tag `v1.0.0` creado y pusheado (apunta a `0d5cd52`, 2026-08-18;
+      verificable con `git rev-list -n 1 v1.0.0`). **Distinto de un
+      GitHub Release**, que sigue sin publicarse en la página *Releases*
+      del repositorio — ver ítem de abajo si corresponde gestionarlo.
 - [ ] CI en verde sobre el tag (6 jobs: backend-test, frontend-build,
       traceability, sql-audit, security-static, zap-baseline)
 - [ ] Repo conectado a Zenodo por el owner; release archivado; DOI obtenido
