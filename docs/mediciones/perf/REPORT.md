@@ -18,36 +18,29 @@ Metodo de intervalo de confianza: distribucion t de Student (scipy.stats.t), apr
 ## Wilcoxon pareado (caliente vs frio)
 
 Pareo por indice de llegada (truncando al menor tamano de muestra). Tamano de efecto r de Rosenthal (r = Z / sqrt(n)).
+Correccion por comparaciones multiples: Holm-Bonferroni (alfa=0.05, m=5).
+Nota metodologica: las corridas son independientes; el pareo por indice de llegada no constituye un diseno pareado verdadero. Ver analisis de sensibilidad abajo.
 
-| Par | W | p | r |
+| Par | W | p (original) | p (ajustado Holm) | Significativo (Holm) | r |
+|---|---|---|---|---|---|
+| local-tls-v0.9.0-rc-01 | 2334567.5 | 2.51e-05 | 2.51e-05 | Si | -0.0745 |
+| local-tls-v0.9.0-rc-02 | 919470.5 | 7.74e-219 | 1.55e-218 | Si | -0.5572 |
+| local-tls-v0.9.0-rc-03 | 633693.0 | 1.98e-298 | 5.93e-298 | Si | -0.6523 |
+| local-tls-v0.9.0-rc-04 | 78460.0 | p < 2.23e-308 | p < 2.23e-308 | Si | -0.8397 |
+| local-tls-v0.9.0-rc-05 | 227940.0 | p < 2.23e-308 | p < 2.23e-308 | Si | -0.789 |
+
+## Sensibilidad: Mann-Whitney U (muestras independientes)
+
+Analisis de sensibilidad sin asumir pareo por indice (corridas independientes). Tamano de efecto r = Z / sqrt(N).
+
+| Par | U | p | r |
 |---|---|---|---|
-| local-tls-v0.9.0-rc-01 | 2334567.5 | 2.5e-05 | -0.0745 |
-| local-tls-v0.9.0-rc-02 | 919470.5 | 0.0 | -0.5572 |
-| local-tls-v0.9.0-rc-03 | 633693.0 | 0.0 | -0.6523 |
-| local-tls-v0.9.0-rc-04 | 78460.0 | 0.0 | -0.8397 |
-| local-tls-v0.9.0-rc-05 | 227940.0 | 0.0 | -0.789 |
+| local-tls-v0.9.0-rc-01 | 5362411.0 | 1.22e-03 | 0.0404 |
+| local-tls-v0.9.0-rc-02 | 3052051.0 | 4.22e-179 | -0.3557 |
+| local-tls-v0.9.0-rc-03 | 1980663.5 | p < 2.23e-308 | -0.5341 |
+| local-tls-v0.9.0-rc-04 | 490560.5 | p < 2.23e-308 | -0.7841 |
+| local-tls-v0.9.0-rc-05 | 806939.0 | p < 2.23e-308 | -0.7309 |
 
 ## Grafico
 
 ![Latencia por percentil](grafico.svg)
-
-## Metadata de la medicion
-
-- **Rango de fecha/hora (ISO 8601):** corridas ejecutadas el 2026-08-17,
-  entre `2026-08-17T00:54:46-05:00` (caliente-01) y `2026-08-17T01:02:40-05:00`
-  (frio-05).
-- **Commit:** `ab7043a` (rama `fred/f06-f07-rendimiento-k6`, sobre `fred/f01-f05-sp-acceso-datos`)
-- **Herramientas:**
-  - k6 v2.1.0 (commit 83a87a41e2, go1.26.4, windows/amd64)
-- **Protocolo:** HTTPS con TLS 1.3 real (`https://localhost:8443`).
-- **Carga:** 50 VUs, ramp-up 5s, carga sostenida 30s (threshold `http_req_failed rate<0.01`).
-- **Hit ratio de Redis (cache `mascotas`):** verificado de forma aislada con
-  `redis-cli DBSIZE` tras una peticion autenticada: una unica clave
-  `mascotas::admin@biopet.ec-0-10-UNSORTED`, consistente con la evidencia del
-  2026-07-30 (sin eviccion, `maxmemory-policy: noeviction`).
-- **Version del sistema:** `v0.9.0-rc` (`git describe --tags --abbrev=0`).
-- **Corridas en frio:** `docker compose -f docker-compose.yml -f docker-compose.tls.yml restart backend redis`
-  antes de cada corrida (cache Redis vacio al inicio).
-- **Esquema de archivo (F06):** `k6-<YYYYMMDDTHHMMSS>-<entorno>-<version>-<caliente|frio>-<NN>.json`.
-- **Analisis generado por:** `scripts/perf-analysis.py` (IC95% t de Student,
-  Wilcoxon pareado con tamano de efecto r de Rosenthal, grafico SVG).
