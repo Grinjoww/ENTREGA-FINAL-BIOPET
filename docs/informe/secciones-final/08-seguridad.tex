@@ -24,7 +24,8 @@ completo o un encabezado \texttt{Authorization} llegue al logger.
 Autorizaci\'on combinada: por rol (\texttt{@PreAuthorize}) y por propiedad
 (\texttt{ROLE\_DUENO} solo accede a sus propias mascotas). 401 para
 autenticaci\'on ausente/inv\'alida, 403 para autenticaci\'on v\'alida sin
-autorizaci\'on, ambos como \texttt{ProblemDetail} sin \emph{stack trace}.
+autorizaci\'on, ambos como \texttt{ProblemDetail} sin \emph{stack trace}
+(figura~\ref{fig:postman-401-final}).
 
 % EVIDENCIA-JAIME-05
 % Ruta esperada: figuras/jaime/05-postman-401.png
@@ -40,7 +41,8 @@ cinco cabeceras en todas las respuestas: \texttt{X-Frame-Options: DENY},
 \texttt{Content-Security-Policy: default-src 'self'; frame-ancestors 'none'; object-src 'none'},
 \texttt{Referrer-Policy: no-referrer}, y \texttt{Strict-Transport-Security}
 solo sobre HTTPS. TLS~1.3 verificado en vivo
-(\texttt{TLS\_AES\_256\_GCM\_SHA384}) en el entorno de desarrollo; en
+(\texttt{TLS\_AES\_256\_GCM\_SHA384}, figura~\ref{fig:tls-openssl-final})
+en el entorno de desarrollo; en
 producci\'on, HTTPS es provisto autom\'aticamente por Render sobre el
 subdominio \texttt{*.onrender.com} (cap\'itulo~\ref{cap:despliegue}).
 
@@ -57,6 +59,10 @@ subdominio \texttt{*.onrender.com} (cap\'itulo~\ref{cap:despliegue}).
 {fig:security-headers-final}
 
 \section{Auditor\'ia OWASP Top~10 (resumen)}
+
+La tabla~\ref{tab:owasp-final} resume el resultado por control de la
+revisi\'on manual sobre los nueve controles OWASP Top~10 con evidencia
+real y verificable.
 
 \begin{table}[H]
   \centering
@@ -97,7 +103,8 @@ antes de alcanzar el repositorio, verificado en \texttt{SqlInjectionSecurityTest
 
 Ejecutada con \texttt{spotbugs-maven-plugin}~4.10.3.0 + Find Security
 Bugs~1.14.0, \texttt{effort=Max}, \texttt{threshold=Low} (m\'axima
-exhaustividad), sobre todas las clases compiladas del backend.
+exhaustividad), sobre todas las clases compiladas del backend; la
+tabla~\ref{tab:spotbugs-final} resume los hallazgos por severidad.
 
 \begin{table}[H]
   \centering
