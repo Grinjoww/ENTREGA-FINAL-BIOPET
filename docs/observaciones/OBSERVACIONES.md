@@ -57,19 +57,19 @@ recalculan ni se reinterpreta la rúbrica del docente.
 | Código | Entrega | Observación | Criterio original | Responsable recomendado | Estado actual | Commit de cierre |
 |---|---|---|---|---|---|---|
 | OBS-01 | 1A, Semana 5 | Repositorio no proporcionado o inaccesible (portada vacía, sección 9 sin URL) | A. Formato e identidad institucional / J. Repositorio Git | Jaime Mariscal (gestión del repositorio) | CERRADA | (ver evidencia en el bloque OBS-01; no hay commit único, ver justificación) |
-| OBS-02 | 1A, Semana 5 | Falta RF-07 en la lista consolidada (salta RF-06 → RF-08) | D1. Completitud y consistencia del conjunto | Jaime Mariscal (requisitos) | CERRADA | Commit de cierre: pendiente, commit de esta rama |
-| OBS-03 | 1A, Semana 5 | RF-WEB remapeados a RF-16/RF-17 sin matriz de trazabilidad explícita | D1. Completitud y consistencia del conjunto | Jaime Mariscal (requisitos) | CERRADA | Commit de cierre: pendiente, commit de esta rama |
-| OBS-04 | 1A, Semana 5 | Ambigüedad leve en RF-10 ("recomendaciones informativas") | D3. No ambigüedad y singularidad | Jaime Mariscal (requisitos) | CERRADA | Commit de cierre: pendiente, commit de esta rama |
-| OBS-05 | 1B, Semana 6 | DER entregado como `.dot`, no como exportación PNG de pgAdmin | C1. Diagramas UML, DER y diccionario | Jaime Mariscal (evidencia incorporada) | CERRADA | Commit de cierre: pendiente, commit de esta rama |
+| OBS-02 | 1A, Semana 5 | Falta RF-07 en la lista consolidada (salta RF-06 → RF-08) | D1. Completitud y consistencia del conjunto | Jaime Mariscal (requisitos) | CERRADA | `f9a75b2` |
+| OBS-03 | 1A, Semana 5 | RF-WEB remapeados a RF-16/RF-17 sin matriz de trazabilidad explícita | D1. Completitud y consistencia del conjunto | Jaime Mariscal (requisitos) | CERRADA | `f9a75b2` |
+| OBS-04 | 1A, Semana 5 | Ambigüedad leve en RF-10 ("recomendaciones informativas") | D3. No ambigüedad y singularidad | Jaime Mariscal (requisitos) | CERRADA | `f9a75b2` |
+| OBS-05 | 1B, Semana 6 | DER entregado como `.dot`, no como exportación PNG de pgAdmin | C1. Diagramas UML, DER y diccionario | Jaime Mariscal (evidencia incorporada) | CERRADA | `f9a75b2` |
 | OBS-06 | 1B, Semana 6 | Colección Postman no versionada (.json) | C5. Pruebas JUnit, Postman y métricas | Zaida Taipe / Jaime Mariscal (Postman) | CERRADA | `39a40a9`, `dcf8e16` |
 | OBS-07 | 1B, Semana 6 | Workflow CI ubicado en `./workflows/ci.yml` en vez de `.github/workflows/` | C6. Docker Compose e integración | Jaime Mariscal (CI/CD) | CERRADA | `eef268c` (PR #37) |
 | OBS-08 | 1B, Semana 6 | Tag `v0.1.0-entrega-1b` exigido no fue creado | C7. Repositorio Git | Jaime Mariscal (gestión del repositorio) | CERRADA | Tag anotado `v0.1.0-entrega-1b` → commit `058b1fe` |
 | OBS-09 | Entrega 3 | Tag `v0.9.0-rc` no creado (última etiqueta citada, `v0.7.1`, tampoco existía en el checkout original) | C7. Repositorio Git | Jaime Mariscal (gestión del repositorio) | CERRADA | Tag anotado `v0.9.0-rc` (publicado en `origin`) → commit `ffd3c073d026a1b1d9dbdf5f53c1316df5388fc3` |
 | OBS-10 | Entrega 3 | Software no archivado en Zenodo, DOI pendiente | E.2. Archivado/citabilidad | Equipo (por definir) | CERRADA | DOI real: software `10.5281/zenodo.21988746`, dataset `10.5281/zenodo.21988785` |
 | OBS-11 | Entrega 3 | Evidencia/reporte Lighthouse faltante | Calidad web automatizada | Jaime Mariscal (mediciones) | CERRADA | `9ea0ccb0b3f2a86996d2aa047f385dff7e5c1675` (verificado con `git show`, 34 archivos añadidos) |
-| OBS-12 | Entrega 3 | Calidad del sistema no enmarcada en ISO/IEC 25010 | Marco de calidad del informe | Jaime Mariscal | CERRADA | `docs/arquitectura/ISO-25010.md` (nuevo); commit de esta corrección: PENDIENTE |
-| OBS-13 | Entrega 3 | `CONTRIBUTORS.md` sin roles CRediT individuales | E. Reconocimiento de autoría | Equipo completo | CERRADA | `CONTRIBUTORS.md` — matriz CRediT individualizada por persona con evidencia real |
-| OBS-14 | Entrega 3 | Documentación afirma ausencia de historial Git pese a 270 commits | C7. Repositorio Git | Jaime Mariscal (verificación) / Equipo (corrección) | CERRADA | `CONTRIBUTORS.md` — afirmación falsa eliminada, reemplazada por referencia real al historial Git |
+| OBS-12 | Entrega 3 | Calidad del sistema no enmarcada en ISO/IEC 25010 | Marco de calidad del informe | Jaime Mariscal | CERRADA | `1c0fd98` |
+| OBS-13 | Entrega 3 | `CONTRIBUTORS.md` sin roles CRediT individuales | E. Reconocimiento de autoría | Equipo completo | CERRADA | `48f4d02`, `7c269f6` |
+| OBS-14 | Entrega 3 | Documentación afirma ausencia de historial Git pese a 270 commits | C7. Repositorio Git | Jaime Mariscal (verificación) / Equipo (corrección) | CERRADA | `48f4d02`, `7c269f6` |
 | OBS-15 | Entrega 3 | Correo institucional de Jaime en commits | C7. Repositorio Git | Jaime Mariscal | CERRADA | `479961e`, `6658892`, `53d4146`, entre otros (verificados con `git log`, autor `jmariscalc@uteq.edu.ec`) |
 
 Ver Parte 5 para el detalle completo de OBS-09 a OBS-15 (fuente: retroalimentación oficial de la Entrega 3, calificación individual de Jaime 7.80/10).
@@ -159,7 +159,7 @@ Ver Parte 5 para el detalle completo de OBS-09 a OBS-15 (fuente: retroalimentaci
   VALIDACION OK: 35 requisitos del SRS, 35 filas en matriz.csv, 21 historias
   y 21 casos de uso consistentes entre sí.
   ```
-- **Commit o commits:** Commit de cierre: pendiente, commit de esta rama (`jaime/cierre-observaciones-1a-1b`). No se inventa un hash porque el cambio aún no está commiteado en el momento de escribir este documento.
+- **Commit o commits:** `f9a75b2` (docs(requisitos): cierra observaciones de entregas 1A y 1B)
 - **Responsable:** Jaime Mariscal (cierre de requisitos en esta rama); Zaida Taipe permanece como responsable original de la consolidación de requisitos.
 - **Estado:** CERRADA
 - **Justificación del estado:** RF-07 ya no es un vacío sin explicar: se identificó con evidencia verificable ya presente en el repositorio (`C4-L1-contexto.md`), se formalizó como `REQ-F-022` sin duplicar `REQ-F-007`, y se le dotó de enunciado, criterio de aceptación verificable y trazabilidad completa de extremo a extremo (SRS → HU-021 → CU-21 → `matriz.csv`), verificada además por `scripts/validate-traceability.sh` (VALIDACION OK, sin errores).
@@ -200,7 +200,7 @@ Ver Parte 5 para el detalle completo de OBS-09 a OBS-15 (fuente: retroalimentaci
   VALIDACION OK: 35 requisitos del SRS, 35 filas en matriz.csv, 21 historias
   y 21 casos de uso consistentes entre sí.
   ```
-- **Commit o commits:** Commit de cierre: pendiente, commit de esta rama (`jaime/cierre-observaciones-1a-1b`).
+- **Commit o commits:** `f9a75b2` (docs(requisitos): cierra observaciones de entregas 1A y 1B)
 - **Responsable:** Jaime Mariscal (cierre en esta rama); Zaida Taipe permanece como responsable original de la consolidación de requisitos (`a1f83a1`).
 - **Estado:** CERRADA
 - **Justificación del estado:** La observación pedía literalmente "una tabla de trazabilidad con: identificador anterior, identificador actual, descripción, caso de uso, historia y estado"; esa tabla ahora existe, explícita y estructurada, dentro del SRS, y cubre no solo `RF-16/RF-17` sino la totalidad de los requisitos funcionales con origen en la Entrega 1A. Las tres filas correspondientes a `RF-WEB-01/02/04` en `docs/trazabilidad/matriz.csv` (`REQ-F-003`, `REQ-F-005`, `REQ-F-006`) ya tenían la historia y el caso de uso correctos, verificados contra la sección 4.1 del SRS; y la fila que faltaba en la matriz (`REQ-F-022`, cierre de OBS-02) se agregó en este mismo cierre. `scripts/validate-traceability.sh` confirma la consistencia completa (VALIDACION OK, sin errores).
@@ -231,7 +231,7 @@ Ver Parte 5 para el detalle completo de OBS-09 a OBS-15 (fuente: retroalimentaci
              Enunciado, Entradas, Resultado esperado y 3 Criterios de
              aceptación verificables.
   ```
-- **Commit o commits:** Commit de cierre: pendiente, commit de esta rama (`jaime/cierre-observaciones-1a-1b`).
+- **Commit o commits:** `f9a75b2` (docs(requisitos): cierra observaciones de entregas 1A y 1B)
 - **Responsable:** Jaime Mariscal (cierre en esta rama); Zaida Taipe permanece como responsable original de la consolidación de requisitos.
 - **Estado:** CERRADA
 - **Justificación del estado:** La observación era explícitamente "leve" y pedía eliminar la ambigüedad de la redacción, no implementar la funcionalidad. El nuevo enunciado usa "El sistema deberá...", especifica entradas, resultado esperado y tres criterios de aceptación verificables, cumpliendo las características INCOSE de *Unambiguous* y *Verifiable* sobre el enunciado, sin fingir que el requisito ya está implementado (permanece `pendiente`).
@@ -279,7 +279,7 @@ Ver Parte 5 para el detalle completo de OBS-09 a OBS-15 (fuente: retroalimentaci
   grep -n "pgAdmin-ERD-Tool" docs/requisitos/SRS.md docs/informe/secciones/13-anexos.tex
   (presente en ambos archivos, con enlace relativo funcional desde el SRS)
   ```
-- **Commit o commits:** Commit de cierre: pendiente, commit de esta rama (`jaime/cierre-observaciones-1a-1b`).
+- **Commit o commits:** `f9a75b2` (docs(requisitos): cierra observaciones de entregas 1A y 1B)
 - **Responsable:** Jaime Mariscal (incorporación de la evidencia y documentación); Fred Beltrán permanece como autor histórico del DER Graphviz original.
 - **Estado:** CERRADA
 - **Justificación del estado:** Existe ahora, verificado como PNG válido, el artefacto que el docente pidió explícitamente ("Exportar el DER desde pgAdmin 4 (ERD Tool) como PNG de alta resolución"), diferenciado sin ambigüedad del renderizado Graphviz preexistente, y enlazado desde la documentación de requisitos y desde el informe técnico, además de desde esta misma bitácora (sección 3.2).
@@ -500,7 +500,7 @@ Ver Parte 5 para el detalle completo de OBS-09 a OBS-15 (fuente: retroalimentaci
 
   Ambos DOI quedaron registrados en `CITATION.cff` (bloque `identifiers`), `README.md` (sección "DOI / Zenodo") y `docs/checklists/fair.md` (ítems F1, F3, F4).
 - **Archivos involucrados:** `CITATION.cff`, `README.md`, `docs/checklists/fair.md`, `docs/publicacion/PAQUETE-V1.0.0.md`, `docs/observaciones/OBSERVACIONES.md` (este archivo).
-- **Commit o commits:** PENDIENTE (cambio realizado en el árbol de trabajo de esta fase; no se ejecutó ningún commit).
+- **Commit o commits:** `20671b6` (docs: cerrar Zenodo DOI y observaciones finales)
 - **Responsable:** Dueño del repositorio (publicación en Zenodo); Jaime Mariscal (verificación y actualización documental).
 - **Estado:** CERRADA
 - **Justificación del estado:** Los dos DOI (software y dataset) son reales, fueron provistos por quien realizó el archivado en Zenodo (no inventados por esta tarea) y ya quedaron propagados de forma consistente a `CITATION.cff`, `README.md` y el checklist FAIR. La observación pedía exactamente el archivado en Zenodo con DOI asignado, y eso ya existe.
@@ -599,7 +599,7 @@ Ver Parte 5 para el detalle completo de OBS-09 a OBS-15 (fuente: retroalimentaci
   verificada con `[ -e "<ruta>" ]` contra el árbol de trabajo real antes de
   cerrar esta observación: todas las rutas citadas existen.
 - **Archivos involucrados:** `docs/arquitectura/ISO-25010.md` (nuevo).
-- **Commit o commits:** PENDIENTE (el commit de esta corrección lo realizará Jaime manualmente).
+- **Commit o commits:** `1c0fd98` (docs: cerrar observaciones ISO 25010 y trazabilidad institucional)
 - **Responsable:** Jaime Mariscal.
 - **Estado:** CERRADA
 - **Justificación del estado:** Existe ahora una sección documental clara
@@ -622,7 +622,7 @@ Ver Parte 5 para el detalle completo de OBS-09 a OBS-15 (fuente: retroalimentaci
 - **Verificación previa (Fase 1/4):** `CONTRIBUTORS.md` confirmaba la observación en su propio texto: la matriz de roles CRediT se aplicaba "a nivel de equipo" y no por persona, con la justificación explícita de que "el repositorio provisto no incluye historial de Git (`.git/`) ni metadatos de autoría por commit que permitan atribuir de forma verificable un rol a una persona específica" — justificación que, a su vez, contradecía el estado real del repositorio (ver OBS-14).
 - **Corrección realizada (esta fase, con autorización explícita para editar `CONTRIBUTORS.md`):** Se reescribió la "Matriz de roles CRediT" de `CONTRIBUTORS.md` para asignar cada uno de los 14 roles **por persona** (Fred Beltrán, Jaime Mariscal, Zaida Taipe), basándose exclusivamente en evidencia real verificable: autoría de commits (`git shortlog -sne --all`, `git log --all --author=<correo> --name-only`), nombres de ramas de trabajo (`fred/f01-f05-sp-acceso-datos`, `fred/f06-f07-rendimiento-k6`, `fred/f08-f11-produccion-despliegue`, `fred/f17-f19-fair-software-provenance`, `jaime/data-dictionary`, `jaime/fix-ci-github-actions`, `jaime/observaciones-1a-1b`, `zaida/mascotas-crud-accesible`, `zaida/problemdetail-409-accesibilidad-login`, entre otras) y archivos concretos del repositorio. Donde no se encontró evidencia diferenciada de que una persona ejerció un rol especifico, la celda se dejó en blanco (`—`) para esa persona en vez de marcarla por defecto — no se atribuyó ningún trabajo sin sustento. Se agregó además el correo institucional de cada integrante (`fbeltranm@uteq.edu.ec`, `jmariscalc@uteq.edu.ec`, `ztaipem@uteq.edu.ec`) junto a su nombre en la sección "Equipo". Johan Carvajal y Michael Fajardo, revisores cruzados históricos de Unidad IV (ver `README.md`, sección "Autoría e historial del repositorio"), no se incluyeron como autores, consistente con `git shortlog` (2-3 commits cada uno, fuera del equipo de PFC).
 - **Archivos involucrados:** `CONTRIBUTORS.md`.
-- **Commit o commits:** PENDIENTE (cambio realizado en el árbol de trabajo de esta fase; no se ejecutó ningún commit).
+- **Commit o commits:** `48f4d02` (docs: cerrar observaciones de autoria y actualizar citacion), `7c269f6` (docs: actualicé OBS-13 y OBS-14 a CERRADA)
 - **Responsable:** Equipo completo (Fred Beltrán, Jaime Mariscal, Zaida Taipe); Jaime coordina el cierre.
 - **Estado:** CERRADA
 - **Justificación del estado:** `CONTRIBUTORS.md` ya no asigna los 14 roles CRediT de forma colectiva e indiferenciada: cada rol se asigna ahora por persona, con evidencia real y verificable (commits, ramas, archivos) citada explícitamente por celda, y sin inventar ni exagerar ninguna atribución. La observación pedía exactamente eso ("asignar roles CRediT individualmente"), y ya está hecho.
@@ -670,7 +670,7 @@ Ver Parte 5 para el detalle completo de OBS-09 a OBS-15 (fuente: retroalimentaci
   historial de Git, exactamente lo contrario de lo que afirmaba la frase
   ya eliminada.
 - **Archivos involucrados:** `CONTRIBUTORS.md`.
-- **Commit o commits:** PENDIENTE (cambio realizado en el árbol de trabajo de esta fase; no se ejecutó ningún commit).
+- **Commit o commits:** `48f4d02` (docs: cerrar observaciones de autoria y actualizar citacion), `7c269f6` (docs: actualicé OBS-13 y OBS-14 a CERRADA)
 - **Responsable:** Jaime Mariscal (verificación); corrección de
   `CONTRIBUTORS.md` realizada por el equipo completo junto con OBS-13.
 - **Estado:** CERRADA
