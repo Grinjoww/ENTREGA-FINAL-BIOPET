@@ -99,7 +99,7 @@ el plan gratuito de Render~\cite{vansolingen2002gqm}.
     Rendimiento & \textquestiondown Latencia y error del endpoint cacheado bajo carga? & p95 6{,}4--21{,}1~ms (caliente/fr\'io), error 0{,}0\,\% en 10 corridas (\texttt{docs/mediciones/perf/REPORT.md}) \\
     Usabilidad & \textquestiondown Qu\'e nivel de usabilidad percibida presenta el frontend seg\'un los registros de la evaluaci\'on SUS? & SUS media 74{,}44/100, IC95\,\% $[63{,}33,85{,}56]$, n=18 (\texttt{docs/mediciones/sus/REPORT.md}) \\
     Calidad web & \textquestiondown El frontend cumple umbrales base de calidad web? & Performance/Accessibility/Best Practices/SEO cumplidos en las 12 corridas mobile+desktop del 2026-08-18 (\texttt{docs/mediciones/lighthouse/}) \\
-    Seguridad (din\'amica) & \textquestiondown Hay hallazgos de severidad alta por escaneo din\'amico? & 0 alertas altas, 1 informativa, ZAP Baseline (\texttt{docs/mediciones/sec/zap/README.md}) \\
+    Seguridad (din\'amica) & \textquestiondown Hay hallazgos de severidad alta por escaneo din\'amico? & 0 alertas altas; 2 tipos informativos (3 instancias); escaneo autenticado local TLS (\texttt{docs/mediciones/sec/zap/README.md}) \\
     Seguridad (est\'atica) & \textquestiondown El an\'alisis est\'atico detecta patrones de inyecci\'on SQL? & 66 hallazgos totales, 0 de tipo \texttt{SQL\_*} (\rutalarga{docs/mediciones/sec/static-analysis/README.md}) \\
     Seguridad (SQL din\'amico) & \textquestiondown Los procedimientos almacenados construyen SQL de forma segura? & 0 hallazgos, \texttt{exit 0} (\texttt{scripts/audit-sql-dynamic.sh}) \\
     \bottomrule

@@ -143,17 +143,30 @@ ante hallazgos \texttt{SQL\_*}; el hallazgo CSRF se archiva siempre como
 parte del reporte completo (sin filtros ni \texttt{@SuppressFBWarnings}),
 para que quede visible en cada corrida en vez de ocultarse.
 
-\section{Auditor\'ia din\'amica: OWASP ZAP Baseline}
+\section{Auditor\'ia din\'amica: OWASP ZAP}
 \label{sec:zap}
+
+Esta secci\'on documenta \textbf{dos} corridas de OWASP ZAP, claramente
+diferenciadas: (A) el \emph{baseline} hist\'orico sin autenticaci\'on
+(evidencia original de esta fase, conservada sin alterar), y (B) un
+escaneo pasivo \textbf{autenticado}, incorporado en la recalificaci\'on
+para cerrar la limitaci\'on que (A) ya declaraba expl\'icitamente. Ninguna
+de las dos corridas es un \emph{active scan}: ambas son \emph{baseline}/pasivas,
+sin intentos de explotaci\'on.
+
+\subsection{A. Baseline hist\'orico (sin autenticaci\'on)}
+\label{sec:zap-baseline-historico}
 
 Ejecutada con \texttt{zap-baseline.py} (imagen oficial
 \texttt{ghcr.io/zaproxy/zaproxy:stable}, versi\'on~2.17.0) contra el
-backend real, dentro de la red Docker Compose (\texttt{http://backend:8080}),
-en la fecha \texttt{2026-08-17T03:20:27Z}.
+backend real, dentro de la red Docker Compose (\texttt{http://backend:8080},
+\textbf{sin TLS}, \textbf{sin autenticaci\'on}), el
+\texttt{2026-08-18T02:53:21Z} (fuente:
+\texttt{docs/mediciones/sec/zap/RUN-METADATA.txt}).
 
 \begin{table}[H]
   \centering
-  \caption{Resumen ZAP Baseline (fuente: \texttt{docs/mediciones/sec/zap/README.md}).}
+  \caption{Resumen ZAP Baseline hist\'orico (fuente: \texttt{docs/mediciones/sec/zap/README.md}).}
   \label{tab:zap-final}
   \begin{tabular}{@{}lr@{}}
     \toprule
@@ -162,15 +175,131 @@ en la fecha \texttt{2026-08-17T03:20:27Z}.
     Alta & \textbf{0} \\
     Media & 0 \\
     Baja & 0 \\
-    Informativa & 1 (\texttt{Non-Storable Content}, 2 instancias) \\
+    Informativa & 1 (\texttt{Non-Storable Content}, 3 instancias) \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-C\'odigo de salida de \texttt{zap-baseline.py}: \texttt{0}. El objetivo de
-la Entrega Final (cero hallazgos de severidad alta) se cumple. El spider de
-ZAP no fue autenticado, por lo que no cubri\'o exhaustivamente endpoints
-protegidos por JWT (limitaci\'on declarada, no oculta).
+C\'odigo de salida de \texttt{zap-baseline.py}: \texttt{0}. La
+tabla~\ref{tab:zap-final} resume la severidad de las alertas; en t\'erminos
+de cobertura real, el \emph{spider} no autenticado solo alcanz\'o
+\textbf{3~URI} (\texttt{/}, \texttt{/robots.txt}, \texttt{/sitemap.xml} ---
+las tres instancias de \texttt{Non-Storable Content} de la tabla) sobre
+\textbf{2~endpoints \'unicos} seg\'un \texttt{insight.endpoint.total} del
+propio JSON de ZAP (m\'etrica de ZAP que deduplica por endpoint, distinta
+del conteo de URI), con \textbf{100\,\%} de las respuestas en \texttt{4xx}
+(\texttt{insight.code.4xx}). El objetivo de la Entrega Final (cero
+hallazgos de severidad alta) se cumple, pero esta corrida \textbf{no
+constituye evidencia representativa de la superficie protegida}: el
+spider de ZAP no fue autenticado y, por dise\~no, todo lo que no sea
+\texttt{/api/auth/**} responde \texttt{401} (limitaci\'on declarada
+expl\'icitamente en \texttt{docs/mediciones/sec/zap/README.md}, no
+oculta).
+
+\subsection{B. Recalificaci\'on --- escaneo pasivo autenticado (local, TLS)}
+\label{sec:zap-authenticated-local}
+
+Para cerrar la limitaci\'on de (A), se ejecut\'o un segundo escaneo con
+OWASP ZAP~2.17.0 (misma imagen), esta vez \textbf{autenticado} y sobre
+\textbf{HTTPS/TLS} real, contra el mismo backend pero levantado con el
+perfil TLS local del propio repositorio
+(\texttt{docker-compose.tls.yml}, \texttt{https://backend:8443}), el
+\texttt{2026-09-03T21:38:48Z} (fuente:
+\texttt{docs/mediciones/sec/zap/RUN-METADATA-AUTH-LOCAL.txt}). Sigue
+siendo un entorno \textbf{local}, del propio repositorio acad\'emico ---
+\textbf{no} se escane\'o el despliegue de Render ni ning\'un otro
+repositorio (BIOPET-V2 es un proyecto separado, fuera de alcance).
+
+La autenticaci\'on us\'o el m\'etodo \texttt{json} del \emph{Automation
+Framework} de ZAP contra \texttt{POST~/api/auth/login}, con gesti\'on de
+sesi\'on por \textbf{cookie} (m\'etodo nativo de ZAP, coincide con el
+mecanismo real de \texttt{JwtCookieService}) y verificaci\'on peri\'odica
+contra \texttt{GET~/api/usuarios/me}. El login y las siete rutas GET
+protegidas objetivo (\texttt{/api/usuarios/me}, \texttt{/api/mascotas},
+\texttt{/api/mascotas/resumen-especies}, \texttt{/api/citas},
+\texttt{/api/consultas}, \texttt{/api/vacunas}, \texttt{/api/usuarios})
+devolvieron exactamente \texttt{200}, verificado con la aserci\'on nativa
+\texttt{responseCode: 200} de ZAP AF en cada petici\'on, con \textbf{0
+diferencias} registradas.
+
+Seg\'un los \emph{insights} agregados del propio JSON de ZAP,
+\texttt{insight.endpoint.total = 9} (endpoints \'unicos, deduplicados);
+el resumen de consola de \texttt{outputSummary} reporta, por separado,
+``Total of 11 URLs'' --- un contador \textbf{distinto}, sin deduplicar
+(incluye la repetici\'on de \texttt{POST~/api/auth/login}, invocado dos
+veces por dise\~no del ciclo de verificaci\'on). \textbf{Estas dos cifras
+no deben sumarse ni tratarse como la misma m\'etrica.} De igual modo,
+\texttt{insight.code.2xx = 93} e \texttt{insight.code.4xx = 6} son
+estad\'isticas agregadas internas de ZAP, \textbf{no} un desglose por
+URL; ninguno de los reportes retenidos (HTML, XML ni JSON) expone el
+denominador exacto de ese porcentaje, por lo que este informe
+\textbf{no afirma} ``93\,\% de 11 peticiones'' ni ninguna fracci\'on
+literal equivalente. Lo que s\'i qued\'o verificado por partida doble es
+que ese \texttt{4xx} agregado \textbf{no corresponde a ninguna de las
+siete rutas objetivo ni al login} (ambos confirmados en \texttt{200} por
+la aserci\'on \texttt{responseCode} con 0 diferencias) y que una
+reconciliaci\'on adicional de solo lectura, exportando el historial HTTP
+real de una corrida equivalente, mostr\'o \textbf{0 respuestas 4xx} entre
+las nueve peticiones expl\'icitas del plan. La identidad exacta de la
+petici\'on individual que origin\'o ese \texttt{4xx} agregado no pudo
+reconstruirse a partir de los artefactos retenidos --- se documenta aqu\'i
+como \textbf{l\'imite de trazabilidad} de las plantillas de reporte de
+ZAP, no como un hecho supuesto.
+
+Alertas de esta corrida: \textbf{0} altas, \textbf{0} medias, \textbf{0}
+bajas, \textbf{2 tipos informativos} (\texttt{Authentication Request
+Identified} y \texttt{Session Management Response Identified}, 3
+instancias en total, ambas sobre \texttt{POST~/api/auth/login}) --- son
+ZAP reconociendo correctamente el propio flujo de autenticaci\'on, \textbf{no}
+vulnerabilidades.
+
+La tabla~\ref{tab:zap-comparativo} resume la comparaci\'on entre ambas
+corridas.
+
+\begin{table}[H]
+  \centering
+  \caption{Comparaci\'on entre el baseline hist\'orico sin autenticar y el escaneo pasivo autenticado local (TLS).}
+  \label{tab:zap-comparativo}
+  \begin{tabular}{@{}lll@{}}
+    \toprule
+    Criterio & A. Baseline hist\'orico & B. Autenticado local (TLS) \\
+    \midrule
+    Target & \texttt{http://backend:8080} & \texttt{https://backend:8443} \\
+    TLS & No & S\'i (autofirmado, local) \\
+    Autenticaci\'on & No & S\'i (\texttt{json}, cookie) \\
+    Rutas protegidas en \texttt{2xx} & 0 & 7/7 \\
+    Endpoints \'unicos & 2 & 9 \\
+    Alta & 0 & 0 \\
+    Media & 0 & 0 \\
+    Baja & 0 & 0 \\
+    Limitaci\'on principal & Sin cobertura autenticada & Solo GET, solo local \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\textbf{Alcance expl\'icito de esta corrida (B) --- lo que NO se hizo:}
+no se ejecut\'o ning\'un \emph{active scan}; no se atacaron rutas
+\texttt{POST}/\texttt{PUT}/\texttt{DELETE} (solo las siete rutas
+\texttt{GET} listadas); no se cubri\'o el 100\,\% de los endpoints de la
+API (quedan fuera, deliberadamente, todas las rutas de escritura y
+\texttt{/api/externa/**}, un proxy a una API externa real); no se
+escane\'o el despliegue de Render ni producci\'on; no se escane\'o
+BIOPET-V2. Esta corrida \textbf{no valida la seguridad completa del
+sistema}; mejora sustancialmente la representatividad del DAST porque
+verifica autenticaci\'on real y rutas protegidas reales, sobre un
+subconjunto acotado y deliberado de la superficie de la API. Extender
+este mismo mecanismo de autenticaci\'on a un escaneo m\'as amplio, o
+contra un entorno p\'ublico/de producci\'on, es una extensi\'on posible
+para trabajo futuro que requerir\'ia adem\'as control expl\'icito de
+credenciales y de la carga generada contra un servicio compartido.
+
+Evidencia completa, trazable y verificable por SHA-256 en
+\texttt{docs/mediciones/sec/zap/} (\texttt{zap-authenticated-local-report.json},
+\texttt{.html}, \texttt{.xml}, \texttt{RUN-METADATA-AUTH-LOCAL.txt},
+\texttt{zap-authenticated-local.yaml}, \texttt{SHA256SUMS-AUTH-LOCAL.txt})
+y en \texttt{scripts/run-zap-authenticated-local.sh} (script reproducible,
+sin credenciales hardcodeadas). Verificaci\'on:
+\texttt{sha256sum -c SHA256SUMS-AUTH-LOCAL.txt} $\to$ \textbf{7/7 OK}.
 
 \section{Auditor\'ia de SQL din\'amico en procedimientos almacenados}
 
@@ -199,9 +328,15 @@ exclusivamente en el \emph{cookie jar} autom\'atico de Postman.
     distribuido entre m\'ultiples r\'eplicas del backend.
   \item Los logs \texttt{AUTH\_AUDIT} se escriben \'unicamente en el log
     local del proceso; no existe integraci\'on con un SIEM centralizado.
-  \item El spider de ZAP no fue autenticado; no cubri\'o exhaustivamente
-    los endpoints protegidos por JWT ni los m\'odulos de citas/consultas/vacunas
-    m\'as all\'a de lo alcanzable sin sesi\'on.
+  \item El \emph{spider} del baseline hist\'orico de ZAP
+    (secci\'on~\ref{sec:zap-baseline-historico}) no fue autenticado; esa
+    limitaci\'on espec\'ifica qued\'o parcialmente cerrada por el escaneo
+    pasivo autenticado local (secci\'on~\ref{sec:zap-authenticated-local}),
+    que verific\'o en \texttt{200} siete rutas \texttt{GET} protegidas
+    reales de los m\'odulos de mascotas, citas, consultas, vacunas y
+    usuarios --- pero sigue sin cubrir las rutas de escritura
+    (\texttt{POST}/\texttt{PUT}/\texttt{DELETE}) de esos mismos m\'odulos,
+    ni el despliegue de Render, ni un \emph{active scan}.
   \item El an\'alisis est\'atico no sustituye una revisi\'on de seguridad
     din\'amica dirigida a la librer\'ia JWT subyacente (\texttt{jjwt}); ese
     tipo de an\'alisis (\emph{fuzzing} dirigido, ver
