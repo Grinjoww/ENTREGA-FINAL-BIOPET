@@ -24,10 +24,17 @@ en esta fase de cierre), reporta:
   \end{tabular}
 \end{table}
 
-% EVIDENCIA-JAIME-01
-% Ruta esperada: figuras/jaime/01-maven-verify.png
-\evidencia{figuras/jaime/01-maven-verify.png}%
-{Salida real de \texttt{mvn clean verify}: pruebas del backend con \texttt{BUILD SUCCESS}.}%
+La figura~\ref{fig:maven-verify-final} resume este resultado, regenerada
+autom\'aticamente desde ese mismo log crudo versionado mediante
+\texttt{docs/informe/scripts/generar-figuras-evidencia.py}, sin capturas
+manuales.
+
+% EVIDENCIA-JAIME-01 (regenerada automaticamente; sustituye a la figura
+% historica figuras/jaime/01-maven-verify.png, que se conserva en el
+% repositorio como artefacto historico pero ya no se referencia aqui)
+% Ruta esperada: figuras/jaime/07-maven-verify-final.png
+\evidencia{figuras/jaime/07-maven-verify-final.png}%
+{Resultado real de \texttt{mvn clean verify} sobre el commit del tag \texttt{v1.0.0}: 205 pruebas, 0 fallos, 0 errores, 0 omitidas, \texttt{BUILD SUCCESS} (regenerada por \texttt{docs/informe/scripts/generar-figuras-evidencia.py} desde el log crudo versionado).}%
 {fig:maven-verify-final}
 
 \section{Cobertura JaCoCo}
@@ -53,10 +60,17 @@ autom\'atico configurado en \texttt{Backend/pom.xml} se elev\'o de 60\,\%
   \end{tabular}
 \end{table}
 
-% EVIDENCIA-JAIME-02
-% Ruta esperada: figuras/jaime/02-jacoco-resumen.png
-\evidencia{figuras/jaime/02-jacoco-resumen.png}%
-{Resumen navegable de JaCoCo con la cobertura por paquete.}%
+La figura~\ref{fig:jacoco-resumen-final} muestra LINE y BRANCH frente al
+umbral de 70\,\% (COMPLEXITY, con umbral distinto de 60\,\%, no se
+incluye), regenerada autom\'aticamente desde \texttt{jacoco.csv} (45
+clases) mediante el mismo script.
+
+% EVIDENCIA-JAIME-02 (regenerada automaticamente; sustituye a la figura
+% historica figuras/jaime/02-jacoco-resumen.png, que se conserva en el
+% repositorio como artefacto historico pero ya no se referencia aqui)
+% Ruta esperada: figuras/jaime/08-jacoco-resumen-final.png
+\evidencia{figuras/jaime/08-jacoco-resumen-final.png}%
+{Cobertura JaCoCo real sobre las 45 clases del backend: LINE 91{,}80\,\% y BRANCH 79{,}39\,\%, ambas por encima del umbral de calidad de 70\,\% (regenerada por \texttt{docs/informe/scripts/generar-figuras-evidencia.py} desde \texttt{jacoco.csv}).}%
 {fig:jacoco-resumen-final}
 
 Los tres contadores superan con margen su umbral configurado. La cobertura
@@ -170,10 +184,20 @@ que \textbf{no sustituye} consentimientos individuales.
   \end{tabular}
 \end{table}
 
-% EVIDENCIA-ZAIDA-05
-% Ruta esperada: figuras/zaida/05-sus-resultados.png
-\evidencia{figuras/zaida/05-sus-resultados.png}%
-{Resultados agregados del instrumento SUS (n=18): media, desviaci\'on t\'ipica, IC 95\,\%.}%
+La figura~\ref{fig:sus-resultados-final} presenta la distribuci\'on de
+los 18 puntajes SUS reales (diagrama de caja con los puntos individuales
+superpuestos), regenerada autom\'aticamente desde \texttt{sus-raw.csv}
+mediante el mismo script, sin captura manual.
+
+% EVIDENCIA-JAIME-06 (regenerada automaticamente por Jaime a partir del
+% hallazgo del docente sobre esta figura; sustituye, solo en esta
+% referencia del informe, a la figura historica
+% figuras/zaida/05-sus-resultados.png -- que se conserva SIN modificar en
+% el repositorio como artefacto historico de Zaida, no se sobrescribe ni
+% se borra)
+% Ruta esperada: figuras/jaime/06-sus-resultados-final.png
+\evidencia{figuras/jaime/06-sus-resultados-final.png}%
+{Distribuci\'on de los 18 puntajes SUS reales: media 74{,}44, DT 22{,}35, mediana 82{,}50, IC 95\,\% $[63{,}33,\ 85{,}56]$ (regenerada por \texttt{docs/informe/scripts/generar-figuras-evidencia.py} desde \texttt{sus-raw.csv}).}%
 {fig:sus-resultados-final}
 
 \textbf{Interpretaci\'on.} La media obtenida (74{,}44) se ubica en la

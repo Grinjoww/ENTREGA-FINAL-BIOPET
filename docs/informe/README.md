@@ -157,6 +157,35 @@ en `figuras/compartidas/`, `figuras/jaime/`, `figuras/fred/` y
 archivos son compartidos entre ambos informes, otros son exclusivos del
 Informe Final).
 
+## Regeneración de figuras de evidencia
+
+Tres figuras del capítulo "Pruebas y calidad" (SUS, `mvn clean verify` y
+JaCoCo) se generan **automáticamente** desde evidencia cruda versionada,
+en vez de mediante capturas de pantalla manuales:
+
+```bash
+python docs/informe/scripts/generar-figuras-evidencia.py
+```
+
+(ejecutar desde la **raíz del repositorio**; requiere Python 3.9+ y
+`matplotlib`). El script falla con un mensaje explícito si falta alguna
+fuente o si los datos son inconsistentes; no contiene ninguna cifra de
+resultado hardcodeada. Fuentes que consume:
+
+- `docs/mediciones/sus/sus-raw.csv` (18 participantes SUS) →
+  `figuras/jaime/06-sus-resultados-final.png`
+- `docs/mediciones/sec/reproduccion-v1.0.0/mvn-clean-verify.txt` (log
+  crudo de `mvn clean verify` reproducido sobre el commit del tag
+  `v1.0.0`) → `figuras/jaime/07-maven-verify-final.png`
+- `docs/mediciones/jacoco/jacoco.csv` (reporte JaCoCo por clase) →
+  `figuras/jaime/08-jacoco-resumen-final.png`
+
+Las figuras históricas correspondientes (`figuras/jaime/01-maven-verify.png`,
+`figuras/jaime/02-jacoco-resumen.png`, `figuras/zaida/05-sus-resultados.png`)
+se conservan sin modificar como artefactos históricos; el informe ya no
+las referencia como evidencia vigente (ver
+`secciones-final/07-pruebas-calidad.tex`).
+
 ## No escribir secretos en el informe
 
 **Nunca** incluyas en ningún `.tex`, en el `.bib`, en este README ni en
