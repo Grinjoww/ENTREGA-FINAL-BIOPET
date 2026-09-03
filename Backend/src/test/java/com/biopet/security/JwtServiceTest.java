@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class JwtServiceTest {
 
-    private static final String SECRET = "9c8f9a7d6e5b4c3a2d1f0e9c8b7a6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c";
+    private static final String TEST_SECRET = "test-secret-key-for-unit-tests-only-not-for-production-use-min-32-chars";
     private static final String ISSUER = "biopet-test-api";
     private static final String AUDIENCE = "biopet-test-frontend";
     private static final long EXPIRATION_MS = 3_600_000L;
@@ -36,7 +36,7 @@ class JwtServiceTest {
 
     @BeforeEach
     void setUp() {
-        jwtService = new JwtService(SECRET, EXPIRATION_MS, REFRESH_EXPIRATION_MS, ISSUER, AUDIENCE);
+        jwtService = new JwtService(TEST_SECRET, EXPIRATION_MS, REFRESH_EXPIRATION_MS, ISSUER, AUDIENCE);
         usuario = Usuario.builder()
                 .id(1L)
                 .nombre("Jaime Mariscal")
@@ -138,7 +138,7 @@ class JwtServiceTest {
     }
 
     private String construirTokenFirmadoCon(String issuer, String audience) {
-        SecretKey key = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
+        SecretKey key = Keys.hmacShaKeyFor(TEST_SECRET.getBytes(StandardCharsets.UTF_8));
         Instant now = Instant.now();
         return Jwts.builder()
                 .issuer(issuer)

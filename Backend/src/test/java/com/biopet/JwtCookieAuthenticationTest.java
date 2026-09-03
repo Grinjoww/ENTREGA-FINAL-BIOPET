@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class JwtCookieAuthenticationTest {
 
     private static final String JWT_SECRET_DE_PRUEBA =
-            "9c8f9a7d6e5b4c3a2d1f0e9c8b7a6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c";
+            "test-secret-key-for-integration-tests-only-not-for-production-use-min-32-chars";
     private static final String JWT_ISSUER_DE_PRUEBA = "biopet-test-api";
     private static final String JWT_AUDIENCE_DE_PRUEBA = "biopet-test-frontend";
 
