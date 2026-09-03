@@ -2,10 +2,12 @@
 \label{cap:arquitectura}
 
 Este cap\'itulo integra la documentaci\'on arquitect\'onica versionada en
-\texttt{docs/diagrams/} (modelo C4~\cite{c4-model}) y las decisiones de
-arquitectura relevantes (\texttt{docs/adr/}), actualizada para reflejar el
-estado v1.0.0 (PostgreSQL~18/Valkey~8 en producci\'on, acceso JPA formal a
-procedimientos almacenados).
+\texttt{docs/diagrams/} (modelo C4~\cite{c4-model}, con
+\texttt{docs/diagrams/workspace.dsl} como fuente Structurizr DSL \'unica de
+los tres niveles) y las decisiones de arquitectura relevantes
+(\texttt{docs/adr/}), actualizada para reflejar el estado v1.0.0
+(PostgreSQL~18/Valkey~8 en producci\'on, acceso JPA formal a procedimientos
+almacenados).
 
 \section{Arquitectura general}
 
@@ -20,6 +22,23 @@ en producci\'on) usado tanto para la lista negra de tokens JWT revocados
 como para la cach\'e de lecturas de mascotas. Todo el sistema se
 levanta mediante Docker Compose y un \texttt{Makefile} con un \'unico
 comando reproducible (\texttt{make up}).
+
+\section{C4 Nivel 1 --- Contexto}
+\label{sec:c4-nivel-1}
+
+El diagrama de contexto (\texttt{docs/diagrams/c4-contexto/}) sit\'ua a
+BIOPET como una \'unica caja de software, frente a los cuatro roles reales
+del sistema (\texttt{ROLE\_ADMIN}, \texttt{ROLE\_VETERINARIO},
+\texttt{ROLE\_AUXILIAR}, \texttt{ROLE\_DUENO}) y al \'unico sistema externo
+real de v1.0.0: \emph{API Ninjas (Animals API)}, consumido desde
+\texttt{ExternalApiController}/\texttt{ExternalApiService} con cach\'e de
+respuesta en Redis/Valkey.
+
+% EVIDENCIA-COMPARTIDA-C4-L1
+% Ruta esperada: figuras/compartidas/c4-contexto.png
+\evidencia{figuras/compartidas/c4-contexto.png}%
+{Diagrama C4 Nivel 1 (contexto) de BIOPET: actores por rol y el sistema externo API Ninjas.}%
+{fig:c4-nivel-1-final}
 
 \section{C4 Nivel 2 --- Contenedores}
 \label{sec:c4-nivel-2}

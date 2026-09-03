@@ -1,18 +1,30 @@
 digraph G {
-  graph [rankdir=LR, dpi=200, bgcolor="white", fontname="Arial", label="BIOPET - C4 Nivel 2: Contenedores", labelloc=t, fontsize=22];
+  graph [rankdir=LR, dpi=200, bgcolor="white", fontname="Arial", label="BIOPET - C4 Level 2: Containers (v1.0.0)", labelloc=t, fontsize=22];
   node [shape=box, style="rounded,filled", fillcolor="#F8FAFC", color="#0F766E", fontname="Arial", fontsize=12];
   edge [fontname="Arial", fontsize=10, color="#334155"];
-  vet [label="Veterinario", shape=oval, fillcolor="#ECFEFF"];
-  admin [label="Administrador", shape=oval, fillcolor="#ECFEFF"];
-  dueno [label="Dueño de Mascota", shape=oval, fillcolor="#ECFEFF"];
-  frontend [label="Frontend Angular 17 + Nginx\nPuerto 4200 -> 80\nSPA / HTTP", fillcolor="#DCFCE7"];
-  backend [label="Backend Spring Boot 3\nPuerto 8080\nREST JSON + JWT", fillcolor="#DBEAFE"];
-  postgres [label="PostgreSQL 16\nPuerto 5432\nJPA/Hibernate/Flyway", fillcolor="#FDE68A"];
-  redis [label="Redis 7\nPuerto 6379\nBlacklist JTI + Cache", fillcolor="#FECACA"];
+  vet [label="Veterinarian", shape=oval, fillcolor="#ECFEFF"];
+  admin [label="Administrator", shape=oval, fillcolor="#ECFEFF"];
+  assistant [label="Assistant", shape=oval, fillcolor="#ECFEFF"];
+  owner [label="Pet Owner", shape=oval, fillcolor="#ECFEFF"];
+  frontend [label="Frontend\nAngular 17 + Nginx\nSingle-page application", fillcolor="#DCFCE7"];
+  backend [label="Backend API\nSpring Boot 3.2 / Java 21\nREST JSON + JWT", fillcolor="#DBEAFE"];
+  postgres [label="PostgreSQL\n16 (dev) / 18 (prod)\nSchema via Flyway V1-V6", fillcolor="#FDE68A", shape=cylinder];
+  redis [label="Redis / Valkey\n7 (dev) / 8 (prod)\nJTI blacklist + read cache", fillcolor="#FECACA", shape=cylinder];
   swagger [label="Swagger UI\n/api/swagger-ui.html", fillcolor="#E9D5FF"];
-  vet -> frontend; admin -> frontend; dueno -> frontend;
-  frontend -> backend [label="REST JSON\nAuthorization: Bearer JWT"];
+
+  subgraph cluster_external {
+    label="External system";
+    style="dashed";
+    color="#94A3B8";
+    fontcolor="#64748B";
+    node [style="rounded,dashed", fillcolor="#F1F5F9", color="#94A3B8", fontcolor="#64748B"];
+    animalApi [label="API Ninjas\n(Animals API)\n[External System]"];
+  }
+
+  vet -> frontend; admin -> frontend; assistant -> frontend; owner -> frontend;
+  frontend -> backend [label="REST JSON\nHttpOnly auth cookies"];
   backend -> postgres [label="JDBC/JPA"];
   backend -> redis [label="Redis protocol"];
   backend -> swagger [label="OpenAPI"];
+  backend -> animalApi [label="requests species data\n[HTTPS/JSON]", style=dashed, color="#64748B"];
 }
