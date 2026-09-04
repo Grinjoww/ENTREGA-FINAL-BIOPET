@@ -1,0 +1,60 @@
+// Fuente versionada del diagrama de flujo PRISMA (identificacion/seleccion
+// de estudios de trabajos relacionados), reconstruida 2026-09-04 tras
+// auditoria cruzada de Jaime que detecto una inconsistencia numerica en el
+// bloque Fred (13 candidatos - 2 excluidos - 3 incluidos dejaba 8 sin
+// categoria). Fred confirmo la trazabilidad real: 13 identificados -> 2
+// descartados -> 11 retenidos -> 3 trabajos relacionados (estado del arte,
+// incluidos en la sintesis de este capitulo) + 8 referencias de apoyo
+// metodologico/rendimiento (NO excluidas; citadas en otros capitulos del
+// informe -- ver docs/investigacion/handoff-fred-referencias.bib -- pero
+// fuera del alcance de la sintesis de "trabajos relacionados").
+//
+// Regenerar PNG: ver docs/diagramas/README.md o el mismo patron usado para
+// los diagramas C4 (Graphviz via @hpcc-js/wasm + @resvg/resvg-js).
+digraph PRISMA {
+  graph [rankdir=TB, bgcolor=white, fontname="Helvetica,sans-Serif", nodesep=0.35, ranksep=0.45, compound=true];
+  node [shape=box, style="rounded,filled", fontname="Helvetica,sans-Serif", fontsize=11, fillcolor="#f2f2f2", color="#888888"];
+  edge [fontname="Helvetica,sans-Serif", fontsize=9];
+
+  subgraph cluster_zaida {
+    label="Zaida block (requirements / usability / veterinary domain)";
+    fontname="Helvetica,sans-Serif"; fontsize=11; style=solid; color="#888888";
+    z_id [label="Records identified\n(IEEE Xplore, ACM DL, Scopus,\nGoogle Scholar) — n = 15"];
+    z_cr [label="Assessed against eligibility\ncriteria (full text) — n = 15"];
+    z_ex [label="Excluded — n = 12"];
+    z_in [label="Included — n = 3\nE1 Pacheco et al. (2018)\nE2 Bangor et al. (2008)\nE3 Cedeño Ochoa et al. (2021)", fillcolor="#d9ead3"];
+    z_id -> z_cr;
+    z_cr -> z_ex;
+    z_cr -> z_in;
+  }
+
+  subgraph cluster_jaime {
+    label="Jaime block (architecture / security / performance)";
+    fontname="Helvetica,sans-Serif"; fontsize=11; style=solid; color="#888888";
+    j_id [label="Records audited in\nexisting referencias.bib\n+ directed search (Crossref)"];
+    j_in [label="Included — n = 4\nRodríguez et al. (2024) OSCRUM\nPutri, Hadi & Ramdani (2017)\nYang et al. (2026)\nEstdale & Georgiadou (2018)", fillcolor="#d9ead3"];
+    j_note [label="Excluded/candidate count\nnot documented (declared gap)", shape=note, fillcolor="#fce5cd"];
+    j_id -> j_in;
+    j_id -> j_note [style=dashed];
+  }
+
+  subgraph cluster_fred {
+    label="Fred block (F20-F21, integrated 2026-08-18;\ntraceability corrected 2026-09-04, verified by Fred)";
+    fontname="Helvetica,sans-Serif"; fontsize=11; style=solid; color="#888888";
+    f_id [label="Identification\n13 candidates by DOI, range 2020–2026"];
+    f_ex [label="Discarded — n = 2\n1 outside 2020–2026 (Yang et al., 2018, ICSE)\n1 inaccessible, HTTP 403 (TURCOMAT article)"];
+    f_retained [label="Eligible / retained — n = 11\n(all with verified DOI)", fillcolor="#fff2cc"];
+    f_in [label="State of the art / related work — n = 3\nBucao et al. (2023) VETelgeuse\nLlaneta et al. (2022) TerraVet\nZmaranda et al. (2020) CRUD ORM", fillcolor="#d9ead3"];
+    f_support [label="Methodological & performance support — n = 8\n(cited in other chapters, not this synthesis;\nsee handoff-fred-referencias.bib)", fillcolor="#cfe2f3"];
+    f_id -> f_ex [label="Screening\n(17-08-2026)"];
+    f_id -> f_retained [label="Screening\n(17-08-2026)"];
+    f_retained -> f_in [label="Classification for\nthis report (not a\nPRISMA exclusion step)"];
+    f_retained -> f_support [label="Classification for\nthis report (not a\nPRISMA exclusion step)"];
+  }
+
+  total [label="Total included in the related-work synthesis (v1.0.0)\nn = 10 (Zaida 3 + Jaime 4 + Fred 3) — target ≥8-9 MET\n(the 8 Fred support references are cited elsewhere,\nnot counted in this n = 10)", shape=note, fillcolor="#cfe2f3"];
+
+  z_in -> total;
+  j_in -> total;
+  f_in -> total;
+}
