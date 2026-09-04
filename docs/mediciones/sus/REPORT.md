@@ -1,7 +1,7 @@
 # Reporte de usabilidad — System Usability Scale (SUS)
 
 **Sistema evaluado:** BIOPET — Sistema Integral de Gestión Veterinaria
-**Fecha del análisis:** 2026-08-31
+**Fecha del análisis:** 2026-09-03
 **Fuente de datos:** `docs/mediciones/sus/sus-raw.csv`
 **Script de análisis:** `scripts/analisis-sus.py` — calcula el puntaje SUS de cada participante desde sus respuestas Q1-Q10 (fórmula de Brooke) y lo valida contra `sus_score`; determinista, sin generación de datos ni aleatoriedad.
 **Instrumento:** System Usability Scale de Brooke (1996), 10 ítems, escala Likert de 5 puntos, sin modificar.

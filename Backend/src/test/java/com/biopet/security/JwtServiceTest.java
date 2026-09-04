@@ -120,7 +120,7 @@ class JwtServiceTest {
 
     @Test
     void tokenExpiradoEsRechazado() {
-        JwtService servicioConTokensExpirados = new JwtService(SECRET, -1000L, -1000L, ISSUER, AUDIENCE);
+        JwtService servicioConTokensExpirados = new JwtService(TEST_SECRET, -1000L, -1000L, ISSUER, AUDIENCE);
         String token = servicioConTokensExpirados.generateAccessToken(usuario);
 
         assertThrows(ExpiredJwtException.class, () -> jwtService.extractClaims(token));
