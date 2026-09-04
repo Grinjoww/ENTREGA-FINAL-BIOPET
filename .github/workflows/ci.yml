@@ -243,6 +243,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Generar .env efimero con JWT_SECRET aleatorio (solo para este stack Docker temporal)
+        run: |
+          set +x
+          cp .env.example .env
+          ZAP_JWT_SECRET="$(openssl rand -hex 32)"
+          sed -i "s|^JWT_SECRET=.*$|JWT_SECRET=${ZAP_JWT_SECRET}|" .env
+          unset ZAP_JWT_SECRET
+
       - name: Ejecutar OWASP ZAP Baseline Scan
         run: bash scripts/run-zap-baseline.sh --keep-stack
 
