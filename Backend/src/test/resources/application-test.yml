@@ -14,6 +14,22 @@ spring:
   cache:
     type: simple
 
+# El perfil "test" no dispone de un servidor Redis real (ni en CI ni en un
+# clon limpio sin "make up"): spring.cache.type=simple ya evita que la app
+# necesite Redis para cachear, pero el RedisHealthIndicator de Actuator
+# sigue registrado porque spring-boot-starter-data-redis esta en el
+# classpath, y por defecto intenta conectarse a localhost:6379 para el
+# endpoint /actuator/health. Sin ese servicio, el indicador reporta DOWN y
+# el estado agregado de /actuator/health pasa a 503, aunque la aplicacion
+# este perfectamente sana (HealthCheckTest). Se deshabilita EXCLUSIVAMENTE
+# el indicador de Redis en este perfil de pruebas -- no el health en
+# general, y no se toca application.yml productivo, donde Redis es un
+# componente real (cache) y su indicador de salud debe seguir activo.
+management:
+  health:
+    redis:
+      enabled: false
+
 security:
   jwt:
     secret: test-secret-key-for-integration-tests-only-not-for-production-use-min-32-chars
