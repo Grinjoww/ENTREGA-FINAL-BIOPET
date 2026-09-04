@@ -16,6 +16,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
+/**
+ * Low-level HTTP client for the api-ninjas animals API. Translates
+ * transport-level failures (timeouts, 4xx/5xx responses) into
+ * {@link ExternalApiException}; caching and BIOPET-specific response
+ * shaping live in {@link ExternalApiService}.
+ */
 @Component
 public class ExternalApiClient {
 
@@ -31,6 +37,13 @@ public class ExternalApiClient {
         this.restTemplate = externalApiRestTemplate;
     }
 
+    /**
+     * Queries the external animals API by species name.
+     *
+     * @param especie species name to search for
+     * @return matching animal records (possibly empty if none found)
+     * @throws ExternalApiException if the external API times out, rate-limits, or returns a client/server error
+     */
     public List<AnimalApiNinjasDto> buscarPorEspecie(String especie) {
         String url = UriComponentsBuilder.fromHttpUrl(baseUrl)
                 .queryParam("name", especie)

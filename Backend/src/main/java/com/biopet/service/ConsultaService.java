@@ -18,6 +18,18 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * CRUD for clinical consultation records. Access rules that depend on
+ * data (not just role) live here, mirroring the pattern used by
+ * {@link CitaService} and {@link MascotaService}:
+ * <ul>
+ *   <li>DUENO: only reads/writes consultations for their own pets.</li>
+ *   <li>ADMIN/VETERINARIO/AUXILIAR: no additional data restrictions.</li>
+ * </ul>
+ * The {@code listar}/{@code crear}/{@code actualizar}/{@code eliminar}
+ * results are cached in the {@code consultas} Redis cache and evicted on
+ * any write.
+ */
 @Service
 public class ConsultaService {
     private final ConsultaRepository consultaRepository;
@@ -32,6 +44,15 @@ public class ConsultaService {
         this.usuarioRepository = usuarioRepository;
     }
 
+    /**
+     * Lists active consultation records, cached by user email and page
+     * parameters.
+     *
+     * @param pageable pagination and sorting parameters
+     * @param email authenticated user's email
+     * @return page of consultations
+     * @throws com.biopet.exception.RecursoNoEncontradoException if the authenticated user cannot be resolved
+     */
     @Cacheable(value = "consultas", key = "#email + '-' + #pageable.pageNumber + '-' + #pageable.pageSize + '-' + #pageable.sort.toString()")
     @Transactional(readOnly = true)
     public Page<ConsultaResponse> listar(Pageable pageable, String email) {
@@ -44,6 +65,16 @@ public class ConsultaService {
         return consultaRepository.findAllByActivoTrue(pageable).map(this::toResponse);
     }
 
+    /**
+     * Retrieves a single consultation by id, enforcing the ownership rule
+     * described in the class documentation.
+     *
+     * @param id consultation identifier
+     * @param email authenticated user's email
+     * @return the requested consultation
+     * @throws com.biopet.exception.RecursoNoEncontradoException if no active consultation exists with the given id
+     * @throws org.springframework.security.access.AccessDeniedException if the user is not allowed to access this consultation
+     */
     @Transactional(readOnly = true)
     public ConsultaResponse buscar(Long id, String email) {
         Usuario usuario = usuarioActual(email);
@@ -53,6 +84,15 @@ public class ConsultaService {
         return toResponse(consulta);
     }
 
+    /**
+     * Creates a new clinical consultation record for the given pet and
+     * veterinarian, evicting the consultations cache.
+     *
+     * @param request consultation data to create
+     * @return the created consultation
+     * @throws com.biopet.exception.RecursoNoEncontradoException if the referenced pet or veterinarian does not exist
+     * @throws IllegalArgumentException if the referenced veterinarian does not have role ROLE_VETERINARIO
+     */
     @CacheEvict(value = "consultas", allEntries = true)
     @Transactional
     public ConsultaResponse crear(ConsultaRequest request) {
@@ -73,6 +113,19 @@ public class ConsultaService {
         return toResponse(consultaRepository.save(consulta));
     }
 
+    /**
+     * Updates an existing consultation record, enforcing the ownership
+     * rule described in the class documentation and evicting the
+     * consultations cache.
+     *
+     * @param id consultation identifier
+     * @param request updated consultation data
+     * @param email authenticated user's email
+     * @return the updated consultation
+     * @throws com.biopet.exception.RecursoNoEncontradoException if the consultation, pet or veterinarian does not exist
+     * @throws org.springframework.security.access.AccessDeniedException if the user is not allowed to modify this consultation
+     * @throws IllegalArgumentException if the referenced veterinarian does not have role ROLE_VETERINARIO
+     */
     @CacheEvict(value = "consultas", allEntries = true)
     @Transactional
     public ConsultaResponse actualizar(Long id, ConsultaRequest request, String email) {
@@ -95,6 +148,16 @@ public class ConsultaService {
         return toResponse(consultaRepository.save(consulta));
     }
 
+    /**
+     * Soft-deletes a consultation record (marks it inactive), enforcing
+     * the ownership rule described in the class documentation and
+     * evicting the consultations cache.
+     *
+     * @param id consultation identifier
+     * @param email authenticated user's email
+     * @throws com.biopet.exception.RecursoNoEncontradoException if no active consultation exists with the given id
+     * @throws org.springframework.security.access.AccessDeniedException if the user is not allowed to delete this consultation
+     */
     @CacheEvict(value = "consultas", allEntries = true)
     @Transactional
     public void eliminar(Long id, String email) {

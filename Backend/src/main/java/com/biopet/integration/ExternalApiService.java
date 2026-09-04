@@ -11,6 +11,11 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 
+/**
+ * Species-information lookup with a Redis-backed cache in front of
+ * {@link ExternalApiClient}, to avoid re-querying the external API for
+ * the same species within the configured TTL.
+ */
 @Service
 public class ExternalApiService {
 
@@ -31,6 +36,15 @@ public class ExternalApiService {
         this.objectMapper = objectMapper;
     }
 
+    /**
+     * Returns species information, serving a cached value when one
+     * exists within the TTL, or fetching from the external API and
+     * caching the result otherwise.
+     *
+     * @param especie species name to look up
+     * @return species information (taxonomy, habitat, diet), tagged with its source ("cache" or "api-ninjas")
+     * @throws ExternalApiException if no results are found, or the external API call fails
+     */
     public ExternalApiResponse obtenerInfoEspecie(String especie) {
         String claveNormalizada = especie.trim().toLowerCase();
         String cacheKey = CACHE_PREFIX + claveNormalizada;
