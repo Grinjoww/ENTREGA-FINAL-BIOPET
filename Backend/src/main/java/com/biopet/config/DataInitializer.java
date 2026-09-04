@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
@@ -14,13 +15,23 @@ public class DataInitializer {
 
     @Bean
     @ConditionalOnProperty(name = "app.seed-admin.enabled", havingValue = "true", matchIfMissing = false)
-    CommandLineRunner seedAdmin(UsuarioRepository repo, PasswordEncoder enc) {
+    CommandLineRunner seedAdmin(UsuarioRepository repo, PasswordEncoder enc, Environment env) {
         return args -> {
-            if (!repo.existsByEmail("admin@biopet.ec")) {
+            String email = env.getProperty("app.seed-admin.email");
+            String password = env.getProperty("app.seed-admin.password");
+
+            if (email == null || email.isBlank()) {
+                throw new IllegalStateException("app.seed-admin.email no configurado; no se crea usuario semilla");
+            }
+            if (password == null || password.isBlank()) {
+                throw new IllegalStateException("app.seed-admin.password no configurado; no se crea usuario semilla");
+            }
+
+            if (!repo.existsByEmail(email)) {
                 repo.save(Usuario.builder()
                         .nombre("Administrador BIOPET")
-                        .email("admin@biopet.ec")
-                        .passwordHash(enc.encode("Admin123*"))
+                        .email(email)
+                        .passwordHash(enc.encode(password))
                         .rol(Rol.ROLE_ADMIN)
                         .activo(true)
                         .build());
