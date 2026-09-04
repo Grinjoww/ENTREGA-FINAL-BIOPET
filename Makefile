@@ -34,7 +34,7 @@
 .PHONY: all up down clean reset-db \
 	backend test jacoco jacoco-report frontend traceability \
 	sql-audit security-static zap zap-scan zap-gate \
-	audit bench lighthouse pdf perf notebooks
+	audit bench lighthouse pdf perf stats
 
 .NOTPARALLEL:
 
@@ -49,13 +49,13 @@ BASH ?= bash
 # real de docker-compose). No borra volumenes ni datos persistentes.
 #
 # Orden (prerequisitos de Make, no llamadas "$(MAKE)"):
-#   1. backend           5. sql-audit
-#   2. frontend          6. security-static
-#   3. traceability      7. zap
-#   4. pdf               8. perf
-#   5. lighthouse
+#   1. backend           6. sql-audit
+#   2. frontend          7. security-static
+#   3. traceability      8. zap
+#   4. pdf               9. perf
+#   5. stats             10. lighthouse
 # =============================================================================
-all: backend frontend traceability pdf perf lighthouse sql-audit security-static zap
+all: backend frontend traceability pdf perf stats lighthouse sql-audit security-static zap
 	@echo ""
 	@echo "make all: TODAS las validaciones obligatorias pasaron."
 
@@ -236,8 +236,19 @@ reset-db:
 # El target compila el PDF siguiendo exactamente las instrucciones del README.
 pdf:
 	@echo "[pdf] Compilando informe con latexmk..."
-	cd docs/informe && latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
-	@echo "[pdf] PDF generado en docs/informe/main.pdf"
+	cd docs/informe && latexmk -pdf -interaction=nonstopmode -halt-on-error informe-final-v1.0.0.tex
+	@echo "[pdf] PDF generado en docs/informe/informe-final-v1.0.0.pdf"
+
+# =============================================================================
+# Lighthouse — ejecuta auditoría Lighthouse y valida umbrales
+# =============================================================================
+# Requiere: node, npx @lhci/cli, Chrome/Chromium, frontend servido (make up).
+# Ejecuta lighthouse contra el frontend real (Docker) y valida umbrales.
+# Falla si algún umbral no se cumple (exit != 0).
+lighthouse:
+	@echo "[lighthouse] Ejecutando auditoría Lighthouse..."
+	bash scripts/run-lighthouse.sh
+	@echo "[lighthouse] Auditoría completada."
 
 # =============================================================================
 # Performance (k6 + analisis) — target para generar/analizar evidencia k6
@@ -275,19 +286,26 @@ perf:
 	@echo "[perf] Evidencia generada en docs/mediciones/perf/"
 
 # =============================================================================
-# Notebooks execution — ejecuta notebooks y guarda outputs
+# Análisis estadístico (scripts Python) — ejecuta análisis de rendimiento y SUS
 # =============================================================================
-# Requiere: jupyter, python3, pandas, numpy, scipy, matplotlib, plotly.
-# Ejecuta los notebooks de performance y SUS, guardando outputs versionados.
-notebooks:
-	@echo "[notebooks] Ejecutando notebooks con outputs..."
-	@if command -v jupyter >/dev/null 2>&1; then \
-		cd notebooks && jupyter nbconvert --execute --to notebook --inplace performance.ipynb 2>/dev/null || echo "[notebooks] performance.ipynb no encontrado o fallo"; \
-		cd notebooks && jupyter nbconvert --execute --to notebook --inplace sus.ipynb 2>/dev/null || echo "[notebooks] sus.ipynb no encontrado o fallo"; \
-		echo "[notebooks] Notebooks ejecutados con outputs guardados"; \
-	else \
-		echo "[notebooks] ADVERTENCIA: jupyter no instalado, saltando"; \
-	fi
+# Requiere: python3, scipy, numpy, matplotlib, pandas.
+# Ejecuta los scripts de análisis reales (perf-analysis.py, analisis-sus.py)
+# que generan los reportes y gráficos versionados. Falla si algún script falla.
+stats:
+	@echo "[stats] Ejecutando análisis estadístico de rendimiento..."
+	python scripts/perf-analysis.py "docs/mediciones/perf/k6-*-local-tls-*-caliente-0*.json" "docs/mediciones/perf/k6-*-local-tls-*-frio-0*.json" \
+		--report docs/mediciones/perf/REPORT.md --grafico docs/mediciones/perf/grafico.svg
+	@echo "[stats] Ejecutando análisis SUS..."
+	python scripts/analisis-sus.py
+	@echo "[stats] Análisis completado. Reportes en docs/mediciones/perf/ y docs/mediciones/sus/"
+
+# =============================================================================
+# Notebooks execution — DEPRECADO: use 'make stats' para análisis reales
+# =============================================================================
+# Los análisis reales se ejecutan via scripts Python (make stats).
+# Este target existe por compatibilidad pero delega a stats.
+notebooks: stats
+	@echo "[notebooks] Use 'make stats' para análisis reproducibles via scripts Python."
 
 # =============================================================================
 # Prerequisites check — verifica que las herramientas necesarias estan instaladas
