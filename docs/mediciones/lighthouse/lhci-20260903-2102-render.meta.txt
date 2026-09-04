@@ -1,5 +1,5 @@
 fecha_iso8601: 2026-09-03T21:02:23Z
-commit_hash_corto: 12b1870
+commit_hash_corto: 4932368
 node_version: v24.18.0
 lighthouse_cli_version: 0.14.0
 url_publica_evaluada: https://biopet-frontend.onrender.com
