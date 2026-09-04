@@ -4,12 +4,14 @@
 \section{Pruebas automatizadas del backend}
 
 La suite completa del backend, ejecutada con \texttt{mvn clean verify}
-(verificado directamente contra \texttt{Backend/target/surefire-reports/}
-en esta fase de cierre), reporta:
+sobre el commit exacto del tag hist\'orico e inmutable \texttt{v1.0.0}
+(\texttt{0d5cd52}) y verificada directamente contra
+\texttt{Backend/target/surefire-reports/} de esa reproducci\'on
+(\texttt{docs/mediciones/sec/reproduccion-v1.0.0/}), reporta:
 
 \begin{table}[H]
   \centering
-  \caption{Resultado real de la suite de pruebas del backend.}
+  \caption{Resultado real de la suite de pruebas del backend sobre el commit del tag \texttt{v1.0.0} (evidencia hist\'orica; ver estado del \texttt{HEAD} actual m\'as abajo).}
   \label{tab:pruebas-final}
   \begin{tabular}{@{}ll@{}}
     \toprule
@@ -37,6 +39,17 @@ manuales.
 {Resultado real de \texttt{mvn clean verify} sobre el commit del tag \texttt{v1.0.0}: 205 pruebas, 0 fallos, 0 errores, 0 omitidas, \texttt{BUILD SUCCESS} (regenerada por \texttt{docs/informe/scripts/generar-figuras-evidencia.py} desde el log crudo versionado).}%
 {fig:maven-verify-final}
 
+Estas 205 pruebas corresponden al estado hist\'orico e inmutable del tag
+\texttt{v1.0.0}. Ejecutar \texttt{mvn clean verify} sobre el
+\texttt{HEAD} actual de la rama de recalificaci\'on -- que incorpora
+pruebas nuevas sobre esa misma base, sin sustituirla -- produce
+\textbf{217} pruebas (0 fallos, 0 errores, 0 omitidas),
+\texttt{BUILD SUCCESS}; ambas cifras son correctas dentro de su alcance
+temporal respectivo. Detalle de la diferencia (205~$\rightarrow$~217) y
+reproducci\'on de ambos estados en
+\texttt{docs/mediciones/TEST-COUNT-PROVENANCE.md} y en la tabla de
+\texttt{README.md} (secci\'on ``Estado t\'ecnico verificado'').
+
 \section{Cobertura JaCoCo}
 \label{sec:jacoco-final}
 
@@ -47,7 +60,7 @@ autom\'atico configurado en \texttt{Backend/pom.xml} se elev\'o de 60\,\%
 
 \begin{table}[H]
   \centering
-  \caption{Cobertura medida por \texttt{jacoco:check} (fuente: \texttt{docs/mediciones/jacoco/METRICS.md}).}
+  \caption{Cobertura medida por \texttt{jacoco:check} sobre el commit del tag \texttt{v1.0.0} (evidencia hist\'orica; fuente: \texttt{docs/mediciones/jacoco/METRICS.md}). Ver estado del \texttt{HEAD} actual m\'as abajo.}
   \label{tab:jacoco-final}
   \begin{tabular}{@{}lrrrr@{}}
     \toprule
@@ -77,6 +90,16 @@ Los tres contadores superan con margen su umbral configurado. La cobertura
 mide ejecuci\'on de pruebas, no ausencia de defectos: una l\'inea cubierta
 por una prueba no implica que est\'e libre de errores l\'ogicos no
 contemplados por la aserci\'on de esa prueba.
+
+Esta cobertura (LINE 91{,}80\,\%, BRANCH 79{,}39\,\%) corresponde al
+estado hist\'orico e inmutable del tag \texttt{v1.0.0}. Recalculada sobre
+el \texttt{HEAD} actual de la rama de recalificaci\'on, \texttt{jacoco.csv}
+arroja LINE~\textbf{90{,}22\,\%} (876/971) y BRANCH~\textbf{76{,}27\,\%}
+(180/236); ambas siguen superando con margen el umbral de 70\,\% del
+\texttt{pom.xml}. Las diferencias corresponden al estado actual del
+c\'odigo y de su suite de pruebas respecto del corte hist\'orico
+\texttt{v1.0.0} (detalle en \texttt{README.md}, secci\'on ``Estado
+t\'ecnico verificado'').
 
 \section{Rendimiento (k6)}
 \label{sec:rendimiento-final}

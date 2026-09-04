@@ -62,13 +62,23 @@ versionados en el repositorio; son artefacto regenerable, igual que en
 
 ## Archivo de esta carpeta
 
-| Archivo | Contenido | SHA-256 |
-|---|---|---|
-| `mvn-clean-verify.txt` | Salida completa de consola de `mvn clean verify`, copia exacta y sin edición manual de la ejecución real | `a322743d8587bf4e69332ffbb46ee0bef38e1c66d02984ac4f1ea95e3cb4b231` |
+`mvn-clean-verify.txt` es evidencia generada el 2026-08-31, **posterior**
+al tag `v1.0.0` (18-ago): no es un archivo que existiera dentro del
+commit `0d5cd52`, sino la salida de reproducir ese commit histórico
+después, en un `worktree` aparte (ver "Procedencia de esta reproducción"
+arriba). El commit `0d5cd52` es el estado de código reproducido; este
+archivo documenta esa reproducción, no forma parte de su árbol.
 
-SHA-256 calculado con `sha256sum` sobre el archivo tal como quedó
-versionado en esta carpeta; verificado además contra el archivo temporal
-de origen (`diff` sin diferencias) antes de copiarlo aquí.
+| Archivo | Contenido | SHA-256 (contenido versionado, terminación de línea LF) |
+|---|---|---|
+| `mvn-clean-verify.txt` | Salida completa de consola de `mvn clean verify`, copia exacta y sin edición manual de la ejecución real | `8de47f9dee17894314787d04033dea5b604d6c9cf0db59d31fefb98b15c30705` |
+
+SHA-256 calculado sobre los bytes tal como los almacena Git (blob, LF),
+con `git cat-file blob <id> | sha256sum` — no sobre el archivo del
+árbol de trabajo, que en un checkout de Windows con `core.autocrlf=true`
+puede convertir las terminaciones de línea a CRLF y producir un
+SHA-256 distinto para el mismo contenido lógico (ver
+`.gitattributes`, que fija `eol=lf` para esta ruta).
 
 ## Explicación de la diferencia con el log histórico de 189
 
