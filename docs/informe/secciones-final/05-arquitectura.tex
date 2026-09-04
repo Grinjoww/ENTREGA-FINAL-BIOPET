@@ -44,7 +44,9 @@ respuesta en Redis/Valkey.
 \section{C4 Nivel 2 --- Contenedores}
 \label{sec:c4-nivel-2}
 
-El diagrama de contenedores (\texttt{docs/diagrams/c4-contenedores/},
+A un nivel de detalle mayor que el de contexto
+(secci\'on~\ref{sec:c4-nivel-1}), el diagrama de contenedores
+(\texttt{docs/diagrams/c4-contenedores/},
 figura~\ref{fig:c4-nivel-2-final}) describe los cuatro contenedores del
 sistema: el frontend Angular, el backend Spring Boot, PostgreSQL y
 Redis/Valkey, junto con los protocolos reales entre ellos (HTTPS/JSON con
@@ -83,12 +85,14 @@ procedimientos almacenados.
 
 Las seis rutinas de \texttt{db/procs/} son objetos PostgreSQL de tipo
 \texttt{PROCEDURE}, invocadas desde el backend mediante
-\texttt{@Procedure}/\texttt{@NamedStoredProcedureQuery} de Spring Data JPA,
-en vez de \texttt{@Query(nativeQuery=true)} plano (usado en la Tercera
-Entrega solo para la primera rutina). Las cuatro rutinas con prefijo
-\texttt{fn\_*} originalmente eran \texttt{FUNCTION}; se reclasificaron a
+\texttt{@Procedure}/\texttt{@NamedStoredProcedureQuery} de Spring Data JPA
+(figura~\ref{fig:sp-acceso-hibrido-final}), en vez de
+\texttt{@Query(nativeQuery=true)} plano (usado en la Tercera Entrega solo
+para la primera rutina). Las cuatro rutinas con prefijo \texttt{fn\_*}
+originalmente eran \texttt{FUNCTION}; se reclasificaron a
 \texttt{PROCEDURE} (conservando el nombre por compatibilidad) para permitir
-esa invocaci\'on formal.
+esa invocaci\'on formal, formalizada como ADR-007 (secci\'on~\ref{sec:adr-relevantes-final}).
+La tabla~\ref{tab:catalogo-sp} cataloga las seis rutinas resultantes.
 
 \begin{table}[H]
   \centering
@@ -118,7 +122,12 @@ aplicado ya en bases persistentes: reescribirla habr\'ia producido
 FUNCTION IF EXISTS} de las cuatro rutinas creadas por \texttt{V5} y las
 vuelve a crear como \texttt{PROCEDURE} con su firma final. Flyway aplica
 \texttt{V1} a \texttt{V6} en orden sobre un checkout nuevo, y solo
-\texttt{V6} sobre una base que ya tenga \texttt{V1--V5} aplicadas.
+\texttt{V6} sobre una base que ya tenga \texttt{V1--V5} aplicadas (detalle
+completo de las seis migraciones en la
+secci\'on~\ref{sec:migraciones-flyway}). La invocaci\'on formal resultante
+se verific\'o adem\'as de forma manual
+contra una rutina almacenada real desde Postman
+(figura~\ref{fig:postman-sp-final}).
 
 % EVIDENCIA-FRED-STOREPROCEDURE
 % Ruta esperada: figuras/fred/StoreProceduro-AccesoHibrido.png

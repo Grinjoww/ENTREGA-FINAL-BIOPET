@@ -52,6 +52,12 @@ resultados sean universalmente generalizables.
 \section{Design Science Research: las seis actividades de Peffers et al.}
 \label{sec:dsr-peffers}
 
+La tabla~\ref{tab:peffers} mapea cada una de las seis actividades del
+marco de Peffers et al.~\cite{peffers2007dsrm} sobre la evidencia real
+producida por BIOPET; el cumplimiento del est\'andar Engineering Research
+correspondiente se audita en el anexo~E
+(secci\'on~\ref{sec:anexo-ralph}).
+
 \begin{table}[H]
   \centering
   \small
@@ -61,7 +67,7 @@ resultados sean universalmente generalizables.
     \toprule
     Actividad & Estado & Evidencia \\
     \midrule
-    1. Identificaci\'on del problema y motivaci\'on & Completada & 15 observaciones docentes reales registradas y cerradas (\texttt{docs/observaciones/OBSERVACIONES.md}); SRS \S1 \\
+    1. Identificaci\'on del problema y motivaci\'on & Completada & 15 observaciones docentes reales registradas y cerradas (\texttt{docs/observaciones/OBSERVACIONES.md}, detalladas en el anexo~A, secci\'on~\ref{sec:anexo-observaciones}); SRS \S1 \\
     2. Definici\'on de objetivos de la soluci\'on & Completada & Requisitos REQ-F/REQ-NF verificables, trazados a HU/CU (\texttt{docs/trazabilidad/matriz.csv}) \\
     3. Dise\~no y desarrollo & Completada & Modelo C4 (contexto/contenedores/componentes), 7 ADR, c\'odigo fuente real en \texttt{Backend/src/}, \texttt{frontend/src/} \\
     4. Demostraci\'on & Completada & \texttt{make up} de punta a punta; colecciones Postman; k6 contra el backend real; ZAP contra el contenedor real \\
@@ -95,7 +101,7 @@ el plan gratuito de Render~\cite{vansolingen2002gqm}.
     Calidad funcional & \textquestiondown Los requisitos declarados tienen respaldo trazable? & Matriz consistente frente al SRS (\texttt{scripts/validate-traceability.sh}) \\
     Calidad funcional & \textquestiondown La suite de pruebas pasa consistentemente? & 205 pruebas, 0 fallos, 0 errores (\texttt{Backend/target/surefire-reports/}) \\
     Mantenibilidad & \textquestiondown Qu\'e proporci\'on del c\'odigo se ejercita? & LINE 91{,}80\,\% / BRANCH 79{,}39\,\%, umbral 70\,\% (\texttt{docs/mediciones/jacoco/METRICS.md}) \\
-    Mantenibilidad & \textquestiondown El proceso de build es reproducible y automatizado? & CI con 6 jobs verdes (\texttt{.github/workflows/ci.yml}) \\
+    Mantenibilidad & \textquestiondown El proceso de build es reproducible y automatizado? & CI con 6 jobs verdes (\texttt{.github/workflows/ci.yml}, anexo~D, secci\'on~\ref{sec:anexo-ci}) \\
     Rendimiento & \textquestiondown Latencia y error del endpoint cacheado bajo carga? & p95 6{,}4--21{,}1~ms (caliente/fr\'io), error 0{,}0\,\% en 10 corridas (\texttt{docs/mediciones/perf/REPORT.md}) \\
     Usabilidad & \textquestiondown Qu\'e nivel de usabilidad percibida presenta el frontend seg\'un los registros de la evaluaci\'on SUS? & SUS media 74{,}44/100, IC95\,\% $[63{,}33,85{,}56]$, n=18 (\texttt{docs/mediciones/sus/REPORT.md}) \\
     Calidad web & \textquestiondown El frontend cumple umbrales base de calidad web? & Performance/Accessibility/Best Practices/SEO cumplidos en las 12 corridas mobile+desktop del 2026-08-18 (\texttt{docs/mediciones/lighthouse/}) \\
@@ -154,7 +160,9 @@ cifra de este informe se present\'o sin una fuente citada.
 \label{sec:muestreo-sus-metodologia}
 
 Los 18 participantes (P01--P18) de la evaluaci\'on SUS
-(secci\'on~\ref{sec:sus-final}) se reclutaron por \textbf{conveniencia,
+(secci\'on~\ref{sec:sus-final}), aplicada con el instrumento original de
+Brooke (1996) reproducido en el anexo~C
+(secci\'on~\ref{sec:anexo-sus}), se reclutaron por \textbf{conveniencia,
 dentro del c\'irculo cercano al equipo del proyecto}
 (\texttt{docs/mediciones/sus/REPORT.md}, secci\'on ``Amenazas a la
 validez''): no hubo aleatorizaci\'on, plataforma de reclutamiento pagada
