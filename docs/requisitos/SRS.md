@@ -823,15 +823,19 @@ almacenados)**
 - **Verificación:** `ResumenEspeciesIntegrationTest`, `ProcedimientosBiopetIntegrationTest`;
   `scripts/audit-sql-dynamic.sh` (ausencia de SQL dinámico por
   concatenación); `docs/basedatos/CATALOGO-SP.md`.
-- **Estado:** **pendiente de confirmación explícita (Must #2 de 2, ver
-  sección 7)**. Las clases de test y `CATALOGO-SP.md` sí existen y son
-  reales en el repositorio actual (verificado); lo que falta confirmar es
-  que `scripts/audit-sql-dynamic.sh` se haya ejecutado realmente sobre el
-  estado v1.0.0 del código (con las seis rutinas reclasificadas a
-  `PROCEDURE`, ver `V6__formalizar_procedimientos_jpa.sql`) y no solo
-  sobre el estado v0.9.0-rc anterior. Se solicitó a Fred (responsable de
-  procedimientos almacenados/acceso a datos) confirmar la corrida y el
-  commit exacto antes de volver a marcarla "verificado".
+- **Estado:** verificado. La confirmación pendiente en una versión
+  anterior de este documento (que `scripts/audit-sql-dynamic.sh` se
+  hubiera ejecutado realmente sobre el estado v1.0.0 del código, con las
+  rutinas ya reclasificadas a `PROCEDURE`, y no solo sobre el estado
+  v0.9.0-rc anterior) ya se realizó: la reproducción se generó
+  **posteriormente**, sobre el commit exacto del tag histórico `v1.0.0`
+  (`0d5cd525ce648cca7219da204e16fa622e671a87`), en un worktree aislado que
+  no modificó el árbol de trabajo principal — el código verificado es el
+  del tag; el log es evidencia generada después, no un artefacto que
+  existiera dentro del commit. Resultado: `audit-sql-dynamic: 0 hallazgos
+  en 7 archivo(s). PASA` (código de salida 0). Evidencia archivada en
+  `docs/mediciones/sec/audit-sql-dynamic-v1.0.0.txt`
+  (`docs/mediciones/sec/audit-sql-dynamic-v1.0.0.sha256`).
 
 ---
 
@@ -1107,14 +1111,20 @@ actualiza el estado real:
   (`ExternalApiServiceTest`, 6 pruebas). Se corrige el estado a
   "verificado".
 - **Conteo de Must — NO se declara 22/22.** De los 22 requisitos Must,
-  **20 están verificados con evidencia concreta** (test automatizado,
-  captura HTTP real, o corrida de medición archivada). **2 quedan
-  explícitamente "pendiente de confirmación explícita"**
-  (REQ-NF-007 — disponibilidad; REQ-NF-013 — estrategia híbrida de
-  acceso a datos), a la espera de que Fred confirme el artefacto/commit
-  exacto que los respalda. No se marcan "verificado" sin ese respaldo,
-  aunque una versión anterior de este documento sí los daba por
-  verificados sin evidencia suficiente.
+  **21 están verificados con evidencia concreta** (test automatizado,
+  captura HTTP real, o corrida de medición archivada). **1 queda
+  explícitamente "implementado" pero no verificado**
+  (REQ-NF-007 — disponibilidad durante evaluaciones académicas: el
+  mecanismo de healthcheck funciona y está probado, pero no existe
+  evidencia de disponibilidad sostenida durante una semana completa de
+  evaluación). REQ-NF-013 (estrategia híbrida de acceso a datos), que
+  también estuvo pendiente, ya se verificó: `scripts/audit-sql-dynamic.sh`
+  se reprodujo sobre el commit exacto del tag histórico `v1.0.0`
+  (`0d5cd525ce648cca7219da204e16fa622e671a87`) con resultado "0 hallazgos
+  en 7 archivos. PASA" (evidencia archivada en
+  `docs/mediciones/sec/audit-sql-dynamic-v1.0.0.txt`). No se marca
+  "verificado" sin ese respaldo, aunque una versión anterior de este
+  documento sí los daba por verificados sin evidencia suficiente.
 
 **Sigue como limitación declarada, no bloqueante para el cierre de esta
 entrega:**

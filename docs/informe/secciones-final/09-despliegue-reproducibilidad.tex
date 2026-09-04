@@ -5,7 +5,8 @@
 
 BIOPET est\'a desplegado en \textbf{Render} (\texttt{render.com}), definido
 declarativamente mediante \texttt{render.yaml} (patr\'on \emph{Blueprint}),
-con HTTPS autom\'atico sobre subdominios \texttt{*.onrender.com}.
+con HTTPS autom\'atico sobre subdominios \texttt{*.onrender.com}, seg\'un
+resume la tabla~\ref{tab:produccion-final}.
 
 \begin{table}[H]
   \centering
@@ -35,8 +36,9 @@ repositorio.
 \section{Continuous Integration}
 \label{sec:ci-jobs}
 
-\texttt{.github/workflows/ci.yml} define seis \emph{jobs}, todos en verde a
-la fecha de cierre de esta entrega:
+\texttt{.github/workflows/ci.yml} define seis \emph{jobs}
+(tabla~\ref{tab:ci-jobs}), todos en verde a la fecha de cierre de esta
+entrega:
 
 \begin{table}[H]
   \centering
@@ -66,7 +68,7 @@ de GitHub Actions.
 \section{GHCR (imagen de contenedor del backend)}
 
 La imagen del backend est\'a publicada realmente en GitHub Container
-Registry:
+Registry (tabla~\ref{tab:ghcr-final}):
 
 \begin{table}[H]
   \centering
@@ -100,8 +102,9 @@ al commit espec\'ifico de la imagen publicada.
 \section{Archivado permanente en Zenodo}
 
 El software y el conjunto de datos de evidencias emp\'iricas de BIOPET
-est\'an archivados en Zenodo con DOI reales, propagados a
-\texttt{CITATION.cff}, \texttt{README.md} y \texttt{docs/checklists/fair.md}:
+est\'an archivados en Zenodo con DOI reales (tabla~\ref{tab:zenodo-final}),
+propagados a \texttt{CITATION.cff}, \texttt{README.md} y
+\texttt{docs/checklists/fair.md}:
 
 \begin{table}[H]
   \centering
@@ -179,10 +182,12 @@ producci\'on ya activo.
 
 \begin{itemize}[nosep]
   \item \textbf{Arranque completo:} \texttt{make up} (o \texttt{docker
-    compose up --build -d}), sin pasos manuales adicionales.
+    compose up --build -d}), sin pasos manuales adicionales, con los
+    servicios reales en estado \texttt{healthy}
+    (figura~\ref{fig:docker-healthy-final}).
   \item \textbf{Im\'agenes de terceros fijadas por \emph{digest}
     \texttt{sha256}} (no solo \emph{tag}), para evitar derivas silenciosas
-    entre reconstrucciones.
+    entre reconstrucciones (figura~\ref{fig:docker-digest-final}).
   \item \textbf{Base de datos reproducible desde vac\'ia:} Flyway aplica
     \texttt{V1} a \texttt{V6} en orden en un checkout nuevo, verificado
     expl\'icitamente para esta entrega.

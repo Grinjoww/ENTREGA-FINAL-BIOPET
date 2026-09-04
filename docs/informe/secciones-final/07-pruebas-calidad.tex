@@ -4,12 +4,15 @@
 \section{Pruebas automatizadas del backend}
 
 La suite completa del backend, ejecutada con \texttt{mvn clean verify}
-(verificado directamente contra \texttt{Backend/target/surefire-reports/}
-en esta fase de cierre), reporta:
+sobre el commit exacto del tag hist\'orico e inmutable \texttt{v1.0.0}
+(\texttt{0d5cd52}) y verificada directamente contra
+\texttt{Backend/target/surefire-reports/} de esa reproducci\'on
+(\texttt{docs/mediciones/sec/reproduccion-v1.0.0/}), reporta el resultado
+que resume la tabla~\ref{tab:pruebas-final}:
 
 \begin{table}[H]
   \centering
-  \caption{Resultado real de la suite de pruebas del backend.}
+  \caption{Resultado real de la suite de pruebas del backend sobre el commit del tag \texttt{v1.0.0} (evidencia hist\'orica; ver estado del \texttt{HEAD} actual m\'as abajo).}
   \label{tab:pruebas-final}
   \begin{tabular}{@{}ll@{}}
     \toprule
@@ -37,17 +40,29 @@ manuales.
 {Resultado real de \texttt{mvn clean verify} sobre el commit del tag \texttt{v1.0.0}: 205 pruebas, 0 fallos, 0 errores, 0 omitidas, \texttt{BUILD SUCCESS} (regenerada por \texttt{docs/informe/scripts/generar-figuras-evidencia.py} desde el log crudo versionado).}%
 {fig:maven-verify-final}
 
+Estas 205 pruebas corresponden al estado hist\'orico e inmutable del tag
+\texttt{v1.0.0}. Ejecutar \texttt{mvn clean verify} sobre el
+\texttt{HEAD} actual de la rama de recalificaci\'on -- que incorpora
+pruebas nuevas sobre esa misma base, sin sustituirla -- produce
+\textbf{217} pruebas (0 fallos, 0 errores, 0 omitidas),
+\texttt{BUILD SUCCESS}; ambas cifras son correctas dentro de su alcance
+temporal respectivo. Detalle de la diferencia (205~$\rightarrow$~217) y
+reproducci\'on de ambos estados en
+\texttt{docs/mediciones/TEST-COUNT-PROVENANCE.md} y en la tabla de
+\texttt{README.md} (secci\'on ``Estado t\'ecnico verificado'').
+
 \section{Cobertura JaCoCo}
 \label{sec:jacoco-final}
 
 JaCoCo~\cite{jacoco-docs} mide y verifica autom\'aticamente la cobertura
 con una regla \texttt{BUNDLE} sobre todo el m\'odulo backend. El umbral
 autom\'atico configurado en \texttt{Backend/pom.xml} se elev\'o de 60\,\%
-(Tercera Entrega) a \textbf{70\,\%} para v1.0.0.
+(Tercera Entrega) a \textbf{70\,\%} para v1.0.0. La
+tabla~\ref{tab:jacoco-final} resume el resultado medido.
 
 \begin{table}[H]
   \centering
-  \caption{Cobertura medida por \texttt{jacoco:check} (fuente: \texttt{docs/mediciones/jacoco/METRICS.md}).}
+  \caption{Cobertura medida por \texttt{jacoco:check} sobre el commit del tag \texttt{v1.0.0} (evidencia hist\'orica; fuente: \texttt{docs/mediciones/jacoco/METRICS.md}). Ver estado del \texttt{HEAD} actual m\'as abajo.}
   \label{tab:jacoco-final}
   \begin{tabular}{@{}lrrrr@{}}
     \toprule
@@ -78,6 +93,16 @@ mide ejecuci\'on de pruebas, no ausencia de defectos: una l\'inea cubierta
 por una prueba no implica que est\'e libre de errores l\'ogicos no
 contemplados por la aserci\'on de esa prueba.
 
+Esta cobertura (LINE 91{,}80\,\%, BRANCH 79{,}39\,\%) corresponde al
+estado hist\'orico e inmutable del tag \texttt{v1.0.0}. Recalculada sobre
+el \texttt{HEAD} actual de la rama de recalificaci\'on, \texttt{jacoco.csv}
+arroja LINE~\textbf{90{,}22\,\%} (876/971) y BRANCH~\textbf{76{,}27\,\%}
+(180/236); ambas siguen superando con margen el umbral de 70\,\% del
+\texttt{pom.xml}. Las diferencias corresponden al estado actual del
+c\'odigo y de su suite de pruebas respecto del corte hist\'orico
+\texttt{v1.0.0} (detalle en \texttt{README.md}, secci\'on ``Estado
+t\'ecnico verificado'').
+
 \section{Rendimiento (k6)}
 \label{sec:rendimiento-final}
 
@@ -90,7 +115,8 @@ de negocio, en la l\'inea propuesta por Rempel~\cite{rempel2015webperf}.
 Para v1.0.0 se ampli\'o el n\'umero de corridas de 3+3 (Tercera Entrega) a
 \textbf{5 en fr\'io + 5 en caliente}, contra \texttt{GET /api/mascotas}
 sobre HTTPS/TLS~1.3 real, 50~VUs, \emph{ramp-up} de 5~s y carga sostenida
-de 30~s por corrida.
+de 30~s por corrida. La tabla~\ref{tab:k6-final} detalla el resultado de
+las diez corridas.
 
 \begin{table}[H]
   \centering
@@ -124,7 +150,11 @@ caliente (por \'indice de llegada), con tama\~no de efecto $r$ de
 Rosenthal: el efecto es peque\~no en la corrida~01 ($r=-0{,}07$) y grande en
 las corridas~03--04 ($r=-0{,}65$ a $-0{,}84$), consistente con una cach\'e
 que reduce la latencia de forma creciente conforme el sistema se estabiliza
-entre corridas consecutivas.
+entre corridas consecutivas. La figura~\ref{fig:performance-report-final}
+muestra la vista agregada de este reporte, y las
+figuras~\ref{fig:rendimiento-caliente-final}
+y~\ref{fig:rendimiento-frio-final} muestran la salida de consola real de
+una corrida representativa en cada condici\'on.
 
 % EVIDENCIA-FRED-06
 % Ruta esperada: figuras/fred/06-performance-report.png
@@ -164,7 +194,8 @@ actualmente disponibles como evidencia verificable; esta situaci\'on se
 document\'o mediante una constancia de regularizaci\'on firmada por los
 integrantes del proyecto
 (\texttt{docs/etica/regularizacion-sus/CONSTANCIA-REGULARIZACION-SUS-BIOPET-2026-08-31.pdf}),
-que \textbf{no sustituye} consentimientos individuales.
+que \textbf{no sustituye} consentimientos individuales. La
+tabla~\ref{tab:sus-final} resume los estad\'isticos agregados.
 
 \begin{table}[H]
   \centering
@@ -237,7 +268,9 @@ perfil (12~corridas totales) sobre las rutas \texttt{/login} y
 \texttt{scripts/run-lighthouse-render.sh} verifica, antes de auditar, que
 el despliegue responda \texttt{200} en ambas rutas (sin despliegue en
 curso), y valida el campo \texttt{requestedUrl} de cada JSON generado
-contra el dominio p\'ublico antes de archivarlo.
+contra el dominio p\'ublico antes de archivarlo. La
+tabla~\ref{tab:lighthouse-final} resume las medias por categor\'ia, perfil
+y ruta.
 
 \begin{table}[H]
   \centering
@@ -265,6 +298,9 @@ contra el dominio p\'ublico antes de archivarlo.
 {Reporte de Lighthouse CI del frontend de BIOPET contra el despliegue p\'ublico de Render (2026-09-03), por perfil y ruta.}%
 {fig:lighthouse-final}
 
+La figura~\ref{fig:lighthouse-final} muestra la vista del reporte
+Lighthouse~CI correspondiente.
+
 \textbf{Estado real para v1.0.0.} Las \textbf{cuatro} categor\'ias cumplen
 su umbral en las 12 corridas del 2026-09-03, en ambos perfiles y ambas
 rutas, contra el dominio p\'ublico real (\texttt{requestedUrl} y
@@ -286,7 +322,7 @@ contra el sistema realmente evaluable en producci\'on.
 Este informe distingue expl\'icitamente: rendimiento (k6, agregado por
 corrida, IC~95\,\% con distribuci\'on t), cach\'e (verificaci\'on aislada
 por clave con \texttt{redis-cli}), cobertura (JaCoCo, LINE/BRANCH/COMPLEXITY
-sobre el \texttt{BUNDLE} completo), usabilidad (SUS, ejecutada, $n=18$),
+sobre el \texttt{BUNDLE} completo, secci\'on~\ref{sec:jacoco-final}), usabilidad (SUS, ejecutada, $n=18$),
 calidad web (Lighthouse, ejecutada en ambos perfiles mobile y desktop, 12
 corridas, cuatro categor\'ias cumplidas), y seguridad (revisi\'on manual OWASP +
 an\'alisis din\'amico ZAP + an\'alisis est\'atico SpotBugs/Find Security

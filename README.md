@@ -162,16 +162,24 @@ Detiene los contenedores sin borrar los volúmenes de datos.
 make all
 ```
 
-Ejecuta, en orden y con parada inmediata ante el primer fallo:
+Ejecuta, en el orden real definido por el target `all` del `Makefile` y
+con parada inmediata ante el primer fallo:
 
-1. **Backend + JaCoCo** (`mvn clean verify`: pruebas, Testcontainers, Flyway, gate de cobertura ≥70% LINE/BRANCH)
-2. **Frontend** (build de producción Angular)
+1. **Frontend** (build de producción Angular; corre antes que el backend porque `FrontendResponsivenessTest` valida `frontend/dist/` real)
+2. **Backend + JaCoCo** (`mvn clean verify`: pruebas, Testcontainers, Flyway, gate de cobertura ≥70% LINE/BRANCH)
 3. **Trazabilidad** (SRS ↔ matriz de requisitos ↔ historias/casos de uso)
-4. **Auditoría SQL dinámica** (`db/procs/*.sql`)
-5. **Análisis estático de seguridad** (SpotBugs + Find Security Bugs)
-6. **OWASP ZAP Baseline Scan**
+4. **PDF del informe** (`latexmk` sobre `docs/informe/informe-final-v1.0.0.tex`)
+5. **Rendimiento (k6)** — genera evidencia nueva (5 corridas en frío + 5 en caliente); requiere `K6_ADMIN_EMAIL`/`K6_ADMIN_PASSWORD` (ver más abajo) y el stack levantado con `make up`
+6. **Análisis estadístico** (`make stats`: reportes de rendimiento y SUS)
+7. **Lighthouse** (`make lighthouse`; requiere `make up` previo)
+8. **Auditoría SQL dinámica** (`db/procs/*.sql`)
+9. **Análisis estático de seguridad** (SpotBugs + Find Security Bugs)
+10. **OWASP ZAP Baseline Scan**
 
-`make all` **no** incluye Lighthouse ni ningún paso de despliegue/GHCR/Zenodo (ver secciones correspondientes más abajo).
+`make all` **sí** incluye Lighthouse, la compilación del PDF y las
+corridas de k6 (`perf`) — no solo backend/frontend/trazabilidad/SQL/ZAP.
+No incluye ningún paso de despliegue/GHCR/Zenodo (ver secciones
+correspondientes más abajo).
 
 ---
 
@@ -192,14 +200,14 @@ base. Ninguna sustituye a la otra.
 | Skipped | 0 | 0 |
 | Resultado | `BUILD SUCCESS` | `BUILD SUCCESS` |
 | JaCoCo LINE | 91.80 % | **90.22 %** (876/971) |
-| JaCoCo BRANCH | 79.39 % | **75.85 %** (179/236) |
+| JaCoCo BRANCH | 79.39 % | **76.27 %** (180/236) |
 
 Ambas columnas superan el gate obligatorio de JaCoCo (≥ 70 % LINE y BRANCH,
-`Backend/pom.xml`). La cobertura del HEAD es algo menor que la del tag porque
-la recalificación incorporó código nuevo (validaciones y configuración) junto
-con sus pruebas, sin re-cubrir cada rama añadida; la diferencia está medida,
-no estimada. Las 12 pruebas adicionales (205 → 217) provienen de las clases
-incorporadas durante la recalificación. Reproducción exacta del HEAD:
+`Backend/pom.xml`). Las diferencias entre columnas corresponden al estado
+actual del código y de su suite de pruebas respecto del corte histórico
+del tag `v1.0.0`; la diferencia está medida, no estimada. Las 12 pruebas
+adicionales (205 → 217) provienen de las clases incorporadas durante la
+recalificación. Reproducción exacta del HEAD:
 `cd frontend && npm ci && npm run build` y después `cd Backend && mvn clean verify`
 (ese orden importa: ver [Reproducibilidad](#reproducibilidad)).
 
@@ -395,8 +403,8 @@ Nota histórica: la corrida inicial del 2026-08-01 (solo perfil móvil)
 había registrado SEO = 82, por debajo del umbral de 90; los fixes
 aplicados (`meta description`, `robots.txt`) se confirmaron efectivos en
 la corrida final del 2026-08-18. `make lighthouse` reproduce la auditoría
-(requiere `make up` previo); Lighthouse no está integrado en `make all` ni
-en CI.
+(requiere `make up` previo) y **sí** forma parte del target `all` del
+`Makefile`; no está integrado en CI (ver [CI/CD](#cicd)).
 
 ---
 
@@ -435,11 +443,20 @@ Las pruebas no requieren definir `JWT_SECRET`: toman el secreto de prueba de
 mientras que `application.yml` sigue exigiendo `${JWT_SECRET}` sin valor por
 defecto para ejecución real.
 
+El target `perf` de `make all` (corridas de rendimiento con k6 contra un
+endpoint autenticado) requiere las variables de entorno
+`K6_ADMIN_EMAIL` y `K6_ADMIN_PASSWORD` — credenciales de un usuario admin
+real del sistema local levantado con `make up`, provistas por quien
+reproduce la corrida (no se documentan ni versionan valores aquí; ver
+[`k6/README.md`](k6/README.md) para el detalle de uso). Sin ellas, `perf`
+falla explícitamente con `K6_ADMIN_EMAIL y K6_ADMIN_PASSWORD requeridos`
+en vez de continuar con datos incompletos.
+
 ---
 
 ## Compilación del informe académico (LaTeX)
 
-El informe final (`informe-final-v1.0.0.pdf`, 89 páginas) se compila desde
+El informe final (`informe-final-v1.0.0.pdf`, 101 páginas) se compila desde
 `docs/informe/` con **TeX Live** o **MiKTeX** (BibTeX clásico, sin
 `shell-escape` ni `minted`).
 

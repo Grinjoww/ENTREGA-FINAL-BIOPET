@@ -305,6 +305,41 @@ repositorio.
 | minimum_required_ratio | Decimal | proporción | 0.70 (LINE), 0.70 (BRANCH), 0.60 (COMPLEXITY) | Umbral mínimo configurado en la regla `BUNDLE` de `Backend/pom.xml` (Entrega Final); no existe umbral configurado para INSTRUCTION, METHOD ni CLASS. |
 | check_result | Texto (categórico) | — | {PASS, FAIL} | Resultado de `jacoco:check` para un contador con regla: PASS si `covered_ratio ≥ minimum_required_ratio`, FAIL en caso contrario (hace fallar `mvn verify` con el listado de clases incumplidoras). |
 
+### Columnas literales de `docs/mediciones/jacoco/jacoco.csv`
+
+La tabla `counter_type`/`covered`/`missed`/`total` de arriba documenta el
+modelo **conceptual** de JaCoCo (los atributos de cada `<counter>` en
+`jacoco.xml`, uno por tipo de contador y a nivel `BUNDLE`). El archivo
+`docs/mediciones/jacoco/jacoco.csv` versionado en este repositorio usa un
+formato **distinto**: una fila por clase analizada, con un contador de
+cada tipo desglosado en dos columnas (`*_MISSED`/`*_COVERED`). Estos son
+los nombres de columna **literales** de su encabezado real (verificado
+con `head -1 docs/mediciones/jacoco/jacoco.csv`), no una paráfrasis:
+
+| Columna | Tipo de dato | Unidad | Significado |
+|---|---|---|---|
+| GROUP | Texto | — | Nombre del "bundle" analizado por JaCoCo; siempre `BIOPET Backend` en este reporte. |
+| PACKAGE | Texto | — | Paquete Java de la clase (p. ej. `com.biopet.service`). |
+| CLASS | Texto | — | Nombre simple de la clase analizada (sin el paquete). |
+| INSTRUCTION_MISSED | Entero | instrucciones de bytecode | Instrucciones no ejercitadas por ninguna prueba, para esa clase. |
+| INSTRUCTION_COVERED | Entero | instrucciones de bytecode | Instrucciones ejercitadas por al menos una prueba, para esa clase. |
+| BRANCH_MISSED | Entero | ramas de decisión | Ramas (if/switch/etc.) no ejercitadas, para esa clase. |
+| BRANCH_COVERED | Entero | ramas de decisión | Ramas ejercitadas por al menos una prueba, para esa clase. |
+| LINE_MISSED | Entero | líneas de código fuente | Líneas fuente no ejercitadas, para esa clase. |
+| LINE_COVERED | Entero | líneas de código fuente | Líneas fuente ejercitadas por al menos una prueba, para esa clase. |
+| COMPLEXITY_MISSED | Entero | rutas de complejidad ciclomática | Rutas de complejidad (McCabe) no ejercitadas, para esa clase. |
+| COMPLEXITY_COVERED | Entero | rutas de complejidad ciclomática | Rutas de complejidad ejercitadas, para esa clase. |
+| METHOD_MISSED | Entero | métodos | Métodos sin ninguna línea ejercitada, para esa clase. |
+| METHOD_COVERED | Entero | métodos | Métodos con al menos una línea ejercitada, para esa clase. |
+
+Las cifras `covered`/`missed` de la tabla "Resultados medidos actuales"
+de más abajo, para LINE, BRANCH y COMPLEXITY, son la suma de las
+columnas `*_COVERED`/`*_MISSED` correspondientes de las 45 filas (clases)
+de este CSV. No existen columnas `CLASS_MISSED`/`CLASS_COVERED` en este
+archivo (a diferencia del `counter_type=CLASS` que sí reporta `jacoco.xml`
+a nivel `BUNDLE`); ese contador se deriva contando filas, no sumando una
+columna.
+
 ### Resultados medidos actuales (Entrega Final v1.0.0)
 
 Verificados directamente contra `Backend/target/site/jacoco/jacoco.xml`

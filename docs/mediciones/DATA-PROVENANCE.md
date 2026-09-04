@@ -170,6 +170,17 @@ archivo crudo, script/notebook de generación y commit de verificación.
 
 Todos los commits listados fueron verificados con `git cat-file -t <hash>` (devuelve `commit`). Los marcados como "histórico" corresponden a evidencia generada en fases anteriores del proyecto; los commits exactos se pueden rastrear mediante `git log --oneline -- <archivo>`.
 
+**Nota sobre la línea histórica del repositorio.** Determinadas
+referencias de commit de esta tabla (incluido `0d5cd52`, el commit del
+tag `v1.0.0`) documentan la línea histórica del historial de Git previa
+a una corrección posterior de sus metadatos, y se conservan aquí como
+referencias históricas mientras sigan siendo resolubles con
+`git cat-file -t <hash>` — no se sustituyen ni se reescriben. El
+estado actual verificable del proyecto debe contrastarse contra el
+`HEAD` de `main`/`origin/main`, no contra estas referencias históricas.
+El tag `v1.0.0` permanece como referencia histórica inmutable y no se
+mueve ni se recrea.
+
 ---
 
 ## 9. Procedencia de la re-corrida Lighthouse (2026-08-18)

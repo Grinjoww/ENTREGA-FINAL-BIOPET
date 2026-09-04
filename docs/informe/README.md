@@ -5,7 +5,7 @@ informes:
 
 | Informe | `.tex` | `.pdf` | Estado |
 |---|---|---|---|
-| **Informe Final (canónico)** | `informe-final-v1.0.0.tex` | `informe-final-v1.0.0.pdf` (**89 páginas**, verificado con `pdfinfo`) | Vigente — es el que se evalúa en la Entrega Final |
+| **Informe Final (canónico)** | `informe-final-v1.0.0.tex` | `informe-final-v1.0.0.pdf` (**101 páginas**, verificado con `pdfinfo`) | Vigente — es el que se evalúa en la Entrega Final |
 | Tercera Entrega (histórico) | `informe-entrega-3.tex` | `informe-entrega-3.pdf` (50 páginas) | Congelado — se conserva sin modificar como registro histórico, ver [sección dedicada](#histórico--tercera-entrega) |
 
 **Este README documenta, en primer lugar, cómo compilar el Informe
@@ -68,14 +68,14 @@ ningún `.tex`.
 
 ### Comprobación del PDF generado
 
-El Informe Final esperado tiene **89 páginas**. Para comprobarlo tras
+El Informe Final esperado tiene **101 páginas**. Para comprobarlo tras
 compilar (requiere `pdfinfo`, incluido en TeX Live/MiKTeX):
 
 ```bash
 pdfinfo informe-final-v1.0.0.pdf | grep Pages
 ```
 
-Salida esperada: `Pages:           89`. Esta cifra fue verificada
+Salida esperada: `Pages:           101`. Esta cifra fue verificada
 directamente sobre el PDF versionado en este repositorio (no es una
 estimación).
 

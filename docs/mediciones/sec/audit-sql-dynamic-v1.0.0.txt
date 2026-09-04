@@ -1,0 +1,50 @@
+Reproducción de auditoría SQL dinámica — tag `v1.0.0` (REQ-NF-013)
+====================================================================
+
+Esta es evidencia POSTERIOR, generada durante el cierre de la
+recalificación, que reproduce el estado histórico del tag `v1.0.0`. NO
+existía dentro del commit del tag: se generó ejecutando el script que ya
+estaba versionado en ese commit, en un worktree aislado creado
+posteriormente, sin modificar el árbol de trabajo principal del
+repositorio.
+
+--- METADATA ---
+fecha_utc=2026-09-04T22:39:18Z
+tag=v1.0.0
+commit=0d5cd525ce648cca7219da204e16fa622e671a87
+metodo=worktree aislado del tag (git worktree add --detach <ruta-temporal> v1.0.0), sin modificar el árbol principal
+comando=bash scripts/audit-sql-dynamic.sh
+codigo_salida=0
+
+Nota: la salida cruda de abajo se conserva byte a byte tal como la
+produjo el comando, sin ninguna edición, incluidas las rutas absolutas
+que el script imprime (derivadas de `find db/procs -maxdepth 1 ...`
+dentro del directorio del worktree temporal usado para esta
+reproducción, p. ej. `/c/Users/jaime/wt-v100-2/db/procs/...`). Ese
+prefijo absoluto es propio de esta única ejecución y de la máquina donde
+se hizo; no es parte del veredicto del script ni de la evidencia sobre
+`db/procs/*.sql`, que es el mismo contenido versionado en el commit del
+tag en cualquier checkout.
+
+--- stdout ---
+audit-sql-dynamic: analizando 7 archivo(s):
+  - /c/Users/jaime/wt-v100-2/db/procs/fn_historial_clinico_mascota.sql
+  - /c/Users/jaime/wt-v100-2/db/procs/fn_reporte_dashboard.sql
+  - /c/Users/jaime/wt-v100-2/db/procs/fn_resumen_mascotas_por_especie.sql
+  - /c/Users/jaime/wt-v100-2/db/procs/fn_siguiente_numero_ficha.sql
+  - /c/Users/jaime/wt-v100-2/db/procs/sp_actualizar_estado_citas_masivas.sql
+  - /c/Users/jaime/wt-v100-2/db/procs/sp_registrar_consulta_validada.sql
+  - /c/Users/jaime/wt-v100-2/db/procs/zz_grants_biopet_app.sql
+
+OK   C:/Users/jaime/wt-v100-2/db/procs/fn_historial_clinico_mascota.sql: sin patrones de SQL dinamico peligroso.
+OK   C:/Users/jaime/wt-v100-2/db/procs/fn_reporte_dashboard.sql: sin patrones de SQL dinamico peligroso.
+OK   C:/Users/jaime/wt-v100-2/db/procs/fn_resumen_mascotas_por_especie.sql: sin patrones de SQL dinamico peligroso.
+OK   C:/Users/jaime/wt-v100-2/db/procs/fn_siguiente_numero_ficha.sql: sin patrones de SQL dinamico peligroso.
+OK   C:/Users/jaime/wt-v100-2/db/procs/sp_actualizar_estado_citas_masivas.sql: sin patrones de SQL dinamico peligroso.
+OK   C:/Users/jaime/wt-v100-2/db/procs/sp_registrar_consulta_validada.sql: sin patrones de SQL dinamico peligroso.
+OK   C:/Users/jaime/wt-v100-2/db/procs/zz_grants_biopet_app.sql: sin patrones de SQL dinamico peligroso.
+
+audit-sql-dynamic: 0 hallazgos en 7 archivo(s). PASA.
+
+--- stderr ---
+(vacío)

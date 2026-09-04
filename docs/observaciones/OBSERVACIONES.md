@@ -739,7 +739,15 @@ Ver Parte 5 para el detalle completo de OBS-09 a OBS-15 (fuente: retroalimentaci
 - **Commit o commits:** Evidencia de cierre: `479961e`, `6658892`,
   `53d4146`, `c5f7c7c`, `deaf381`, `6e8f366`, `bb43baa`, `e2a4935`,
   `9a1afce`, `5a23cec` (ya existentes, autoría real verificada con
-  `git log`). Commit de esta actualización documental: PENDIENTE.
+  `git log`). Commit que introdujo esta actualización documental:
+  `48eaf6c` (`48eaf6c26c6a92dc7fc2f6da58df069a198f0793`, verificado con
+  `git cat-file -t` → `commit`; identificado por diff con `git log -S`
+  sobre este mismo archivo: ese commit escribió este bloque completo,
+  incluida la evidencia de cierre de los 10 hashes de arriba, con el
+  marcador `PENDIENTE` todavía sin resolver). La referencia se completó
+  posteriormente, durante el cierre de esta auditoría; no existe un
+  commit intermedio distinto que haya cerrado este marcador (`git log -S`
+  sobre el mismo texto no devuelve ningún otro resultado).
 - **Responsable:** Jaime Mariscal.
 - **Estado:** CERRADA
 - **Justificación del estado:** `git log` confirma, con hashes reales y
