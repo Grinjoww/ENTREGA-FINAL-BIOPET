@@ -4,6 +4,8 @@ import com.biopet.entity.Mascota;
 import com.biopet.entity.Rol;
 import com.biopet.entity.Usuario;
 import com.biopet.entity.Vacuna;
+import com.biopet.repository.CitaRepository;
+import com.biopet.repository.ConsultaRepository;
 import com.biopet.repository.MascotaRepository;
 import com.biopet.repository.UsuarioRepository;
 import com.biopet.repository.VacunaRepository;
@@ -43,12 +45,28 @@ class VacunaControllerTest {
     @Autowired UsuarioRepository usuarioRepository;
     @Autowired MascotaRepository mascotaRepository;
     @Autowired VacunaRepository vacunaRepository;
+    @Autowired CitaRepository citaRepository;
+    @Autowired ConsultaRepository consultaRepository;
     @Autowired PasswordEncoder passwordEncoder;
 
     @MockBean TokenBlacklistService tokenBlacklistService;
 
     @BeforeEach
     void setUp() {
+        // Este test comparte el ApplicationContext (y por tanto la misma BD
+        // H2 en memoria) con otras clases @SpringBootTest que mockean
+        // exactamente el mismo unico bean (TokenBlacklistService) bajo el
+        // perfil "test" -- Spring cachea el contexto por firma de
+        // configuracion, asi que Citas/Consultas creadas por otra clase
+        // (p. ej. CitaControllerTest, ConsultaControllerTest,
+        // MascotaControllerTest, SqlInjectionSecurityTest) pueden seguir
+        // referenciando una Mascota cuando le toca el turno a esta clase,
+        // segun el orden de ejecucion (no garantizado ni estable entre
+        // entornos). Por eso se limpian primero las entidades hijas que
+        // referencian mascotas por FK (consulta -> cita), igual que hacen
+        // esas otras clases, antes de borrar vacunas/mascotas/usuarios.
+        consultaRepository.deleteAll();
+        citaRepository.deleteAll();
         vacunaRepository.deleteAll();
         mascotaRepository.deleteAll();
         usuarioRepository.deleteAll();
