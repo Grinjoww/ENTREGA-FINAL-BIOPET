@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -31,6 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @Testcontainers
 @SpringBootTest
+@ActiveProfiles("test")
 @Transactional
 class ResumenEspeciesIntegrationTest {
 
@@ -46,6 +48,12 @@ class ResumenEspeciesIntegrationTest {
         registry.add("spring.datasource.url", postgres::getJdbcUrl);
         registry.add("spring.datasource.username", postgres::getUsername);
         registry.add("spring.datasource.password", postgres::getPassword);
+        // El perfil "test" (application-test.yml) fija H2 como driver por defecto;
+        // esta clase corre contra PostgreSQL real (Testcontainers), asi que el
+        // driver se reemplaza aqui. Del perfil "test" se toma unicamente la
+        // configuracion que no depende del motor, en particular
+        // security.jwt.secret, sin secreto productivo ni fallback en application.yml.
+        registry.add("spring.datasource.driver-class-name", () -> "org.postgresql.Driver");
 
         registry.add("spring.flyway.url", postgres::getJdbcUrl);
         registry.add("spring.flyway.user", postgres::getUsername);

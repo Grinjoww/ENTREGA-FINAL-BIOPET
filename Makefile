@@ -48,14 +48,20 @@ BASH ?= bash
 # Requiere Docker Desktop disponible (backend: Testcontainers; zap: stack
 # real de docker-compose). No borra volumenes ni datos persistentes.
 #
-# Orden (prerequisitos de Make, no llamadas "$(MAKE)"):
-#   1. backend           6. sql-audit
-#   2. frontend          7. security-static
+# Orden (prerequisitos de Make, no llamadas "$(MAKE)"). "frontend" va ANTES
+# que "backend" a proposito: la suite del backend incluye
+# FrontendResponsivenessTest, que valida el build real del frontend en
+# frontend/dist/biopet-frontend/browser/ (no versionado, .gitignore). En un
+# clon limpio ese directorio no existe todavia, asi que ejecutar "backend"
+# primero hacia fallar "make all". ".NOTPARALLEL" (arriba) garantiza que los
+# prerequisitos se ejecuten en este orden, sin condiciones de carrera.
+#   1. frontend          6. sql-audit
+#   2. backend           7. security-static
 #   3. traceability      8. zap
 #   4. pdf               9. perf
 #   5. stats             10. lighthouse
 # =============================================================================
-all: backend frontend traceability pdf perf stats lighthouse sql-audit security-static zap
+all: frontend backend traceability pdf perf stats lighthouse sql-audit security-static zap
 	@echo ""
 	@echo "make all: TODAS las validaciones obligatorias pasaron."
 
@@ -253,7 +259,8 @@ lighthouse:
 # =============================================================================
 # Performance (k6 + analisis) — target para generar/analizar evidencia k6
 # =============================================================================
-# Requiere: k6, python3, scipy, numpy, matplotlib.
+# Requiere: k6, python3 + tooling/requirements.txt (scipy, numpy, matplotlib);
+# instalar con: python -m pip install -r tooling/requirements.txt
 # Parametros:
 #   K6_VERSION   - version del sistema (default: git describe --tags --abbrev=0)
 #   K6_BASE_URL  - base URL del backend (default: https://localhost:8443)
@@ -288,12 +295,23 @@ perf:
 # =============================================================================
 # Análisis estadístico (scripts Python) — ejecuta análisis de rendimiento y SUS
 # =============================================================================
-# Requiere: python3, scipy, numpy, matplotlib, pandas.
+# Requiere: python3 + las librerías de tooling/requirements.txt
+# (scipy, numpy, matplotlib). Instalación reproducible:
+#   python -m pip install -r tooling/requirements.txt
 # Ejecuta los scripts de análisis reales (perf-analysis.py, analisis-sus.py)
 # que generan los reportes y gráficos versionados. Falla si algún script falla.
+#
+# PERF_VERSION fija el conjunto de evidencia FINAL que debe representar
+# REPORT.md: las 10 corridas de v1.0.0 (5 caliente + 5 frío) del 2026-09-03.
+# Es obligatorio filtrar por versión: docs/mediciones/perf/ conserva ademas
+# las 10 corridas historicas de v0.9.0-rc (2026-08-17), que NO se borran pero
+# tampoco deben mezclarse en el reporte final. Un comodin sin version
+# ("local-tls-*-caliente") capturaria las 20 y contaminaria la evidencia.
+PERF_VERSION ?= v1.0.0
+
 stats:
-	@echo "[stats] Ejecutando análisis estadístico de rendimiento..."
-	python scripts/perf-analysis.py "docs/mediciones/perf/k6-*-local-tls-*-caliente-0*.json" "docs/mediciones/perf/k6-*-local-tls-*-frio-0*.json" \
+	@echo "[stats] Ejecutando análisis estadístico de rendimiento ($(PERF_VERSION), 10 corridas)..."
+	python scripts/perf-analysis.py "docs/mediciones/perf/k6-*-local-tls-$(PERF_VERSION)-caliente-0*.json" "docs/mediciones/perf/k6-*-local-tls-$(PERF_VERSION)-frio-0*.json" \
 		--report docs/mediciones/perf/REPORT.md --grafico docs/mediciones/perf/grafico.svg
 	@echo "[stats] Ejecutando análisis SUS..."
 	python scripts/analisis-sus.py
@@ -319,6 +337,9 @@ check-prereqs:
 	@echo npm: && npm --version 2>&1 || echo NO ENCONTRADO
 	@echo k6: && k6 version 2>&1 | findstr /R /C:"k6" || echo NO ENCONTRADO
 	@echo Python 3: && python3 --version 2>&1 || echo NO ENCONTRADO
+	@echo Librerias Python de analisis \(scipy/numpy/matplotlib\): && \
+		python -c "import scipy, numpy, matplotlib; print('OK scipy', scipy.__version__, '| numpy', numpy.__version__, '| matplotlib', matplotlib.__version__)" 2>&1 || \
+		echo "NO ENCONTRADAS - instalar con: python -m pip install -r tooling/requirements.txt"
 	@echo latexmk: && latexmk -version 2>&1 | findstr /R /C:"Latexmk" || echo NO ENCONTRADO
 	@echo Docker: && docker --version 2>&1 || echo NO ENCONTRADO
 	@echo docker compose: && docker compose version 2>&1 || echo NO ENCONTRADO

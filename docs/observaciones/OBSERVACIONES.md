@@ -806,7 +806,7 @@ precisión explícita del docente: **"no afectan esta nota"**. Esa precisión se
 conserva aquí sin ocultarla.
 
 - Mover el pipeline a `.github/workflows/` para que GitHub Actions lo ejecute en cada push → corresponde a **OBS-07** (CERRADA).
-- Crear el tag anotado `v0.1.0-entrega-1b` sobre el commit de entrega → corresponde a **OBS-08** (ABIERTA).
+- Crear el tag anotado `v0.1.0-entrega-1b` sobre el commit de entrega → corresponde a **OBS-08** (CERRADA; tag anotado `v0.1.0-entrega-1b` → commit `058b1fe`, ver la tabla de la sección 3.2 y la ficha de OBS-08 más abajo). Esta línea decía "ABIERTA" por corresponder al estado en el momento de recibir la retroalimentación; se actualiza al estado real de cierre para no contradecir la tabla autoritativa.
 - Versionar la colección Postman (`.json`) → corresponde a **OBS-06** (CERRADA).
 - Exportar el DER desde pgAdmin 4 (ERD Tool) como PNG de alta resolución para el informe final → corresponde a **OBS-05** (CERRADA).
 - Mantener la participación equilibrada del equipo (advertencia de la Entrega 1B: *"El historial evidencia aportes de Beltrán, Mariscal y Taipe. Mantener este equilibrio en la Entrega 2."* — explícitamente **"no afecta esta nota"**, es una advertencia preventiva, no una observación con corrección de código asociada).

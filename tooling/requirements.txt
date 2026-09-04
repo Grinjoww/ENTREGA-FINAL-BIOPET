@@ -1,0 +1,28 @@
+# tooling/requirements.txt
+#
+# Dependencias Python necesarias para los targets de analisis del Makefile
+# ("make stats", "make perf") y para la regeneracion de figuras del informe.
+# NO son dependencias de la aplicacion BIOPET (backend Java / frontend
+# Angular): son exclusivamente herramientas de analisis y evidencia.
+#
+# Instalacion reproducible desde un clon limpio:
+#   python -m pip install -r tooling/requirements.txt
+#
+# Quien usa cada una (verificado por los imports reales de los scripts, no
+# por suposicion):
+#   - scipy       -> scripts/perf-analysis.py (distribucion t de Student para
+#                    los intervalos de confianza y las pruebas estadisticas)
+#   - numpy       -> scripts/perf-analysis.py (agregacion de metricas k6)
+#   - matplotlib  -> docs/informe/scripts/generar-figuras-evidencia.py
+#                    (figuras de evidencia regeneradas desde los datos crudos)
+#
+# pandas NO se incluye: ningun script del repositorio lo importa. Se retiro
+# de la lista de requisitos documentada para no declarar dependencias que la
+# reproduccion no necesita.
+#
+# Cotas minimas conservadoras (compatibles con Python 3.9+); no se fijan
+# versiones exactas para no romper la instalacion en distribuciones que ya
+# traen estas librerias empaquetadas.
+scipy>=1.10
+numpy>=1.24
+matplotlib>=3.7

@@ -67,9 +67,15 @@ server {
         #                               sin estilos.
         #   img-src 'self' data:    -- iconos/imagenes embebidas como data URI.
         #   font-src 'self' data:
-        #   connect-src 'self'      -- las llamadas a la API van a /api/ del MISMO
+        #   connect-src 'self' BACKEND_URL
+        #                            -- las llamadas a la API van a /api/ del MISMO
         #                               origen (proxy_pass de este nginx hacia el
-        #                               backend), nunca cross-origin desde el navegador.
+        #                               backend), por lo que 'self' es lo que se
+        #                               ejerce en la practica; BACKEND_URL se deja
+        #                               declarado de forma explicita para no romper
+        #                               un despliegue en el que el frontend tuviera
+        #                               que llamar al backend directamente, sin
+        #                               pasar por este proxy.
         #   frame-ancestors 'none'  -- equivalente moderno de X-Frame-Options DENY.
         #   object-src 'none'
         #   base-uri 'self'

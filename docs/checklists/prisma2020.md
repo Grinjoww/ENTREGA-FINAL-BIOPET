@@ -179,7 +179,12 @@ reportó dos hallazgos, ambos incorporados aquí:
    en otros capítulos). Se corrigió el ítem 16a arriba,
    `docs/diagramas/prisma-flow-diagram.dot` (fuente nueva, versionada,
    con las cuatro etapas rotuladas) y su render, y la narrativa/caption
-   de `02-trabajos-relacionados.tex`.
+   de `02-trabajos-relacionados.tex`. El script que regenera el diagrama
+   desde esa fuente `.dot` es
+   `docs/diagramas/render-06-prisma-flow-diagram.mjs` (se ejecuta desde la
+   raíz del repositorio; antes estaba en la raíz con el nombre temporal
+   `render-prisma2-tmp.mjs`, ahora renombrado y ubicado junto a su fuente
+   para dejar explícita la procedencia de la figura).
 
 Ninguna cadena de búsqueda nueva fue formulada ni ejecutada para cerrar
 estos hallazgos — de necesitarse una búsqueda adicional durante la
