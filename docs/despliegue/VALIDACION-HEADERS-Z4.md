@@ -24,7 +24,7 @@ Ejecutado **antes** de que Fred integre las cabeceras, sobre el frontend
 actual, para tener una referencia de que el build ya pasaba independiente
 del cambio de Fred.
 
-- **Fecha/hora (UTC-05:00):** 2026-09-03 16:16 (commit `9e03208`, rama
+- **Fecha/hora (UTC-05:00):** 2026-09-03 16:16 (commit `5543b62`, rama
   `fix/zaida-frontend-docs-recalificacion`).
 - **Comandos:** `npm ci` seguido de `npm run build` (`ng build --configuration production`) en `frontend/`.
 - **`npm ci`:** 803 paquetes instalados sin error (fallo de instalación =

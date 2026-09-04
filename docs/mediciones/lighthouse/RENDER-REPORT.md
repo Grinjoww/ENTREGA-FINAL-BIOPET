@@ -28,7 +28,7 @@ audita el **despliegue público real** en `https://biopet-frontend.onrender.com`
   [`lhci-20260903-2102-render.meta.txt`](lhci-20260903-2102-render.meta.txt) —
   `lighthouseVersion` real (motor) tomado de los JSON: **12.1.0**; `@lhci/cli`:
   **0.14.0**; fecha ISO 8601: **2026-09-03T21:02:23Z**; commit corto:
-  **12b1870**.
+  **4932368**.
 
 ## Medias por perfil/ruta (calculadas desde los JSON, no a mano)
 

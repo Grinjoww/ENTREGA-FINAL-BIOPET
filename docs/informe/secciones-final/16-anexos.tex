@@ -3,6 +3,9 @@
 
 \section{Glosario de siglas}
 
+La tabla~\ref{tab:glosario-final} recoge las siglas usadas a lo largo de
+este informe.
+
 \small
 \begin{longtable}{@{}ll@{}}
 \caption{Siglas usadas en este informe.}
@@ -55,6 +58,9 @@
 \normalsize
 
 \section{Endpoints principales de la API}
+
+La tabla~\ref{tab:endpoints-final} lista los endpoints reales expuestos
+por el backend v1.0.0.
 
 \begin{table}[H]
   \centering
@@ -125,7 +131,8 @@
 Las 15 observaciones formales recibidas a lo largo de las Entregas~1A,
 1B y Tercera Entrega est\'an \textbf{cerradas en su totalidad (15/15)},
 con evidencia de cierre verificable en
-\texttt{docs/observaciones/OBSERVACIONES.md}.
+\texttt{docs/observaciones/OBSERVACIONES.md}; la
+tabla~\ref{tab:anexo-observaciones} detalla cada una.
 
 \begin{longtable}{@{}p{1.6cm}p{1.6cm}p{8.4cm}p{2.6cm}@{}}
 \caption{Observaciones docentes acumuladas y su estado de cierre.}
@@ -162,7 +169,10 @@ OBS-15 & 3 & Correo institucional de Jaime en commits & Cerrada \\
 \label{sec:anexo-prisma-busqueda}
 
 Cadenas y criterios de b\'usqueda documentados por bloque en
-\texttt{docs/checklists/prisma2020.md} (\'item~7):
+\texttt{docs/checklists/prisma2020.md} (\'item~7); la versi\'on completa
+por bloque, con fuentes y ventana temporal, est\'a en la
+secci\'on~\ref{sec:cadena-busqueda-trabajos-relacionados} del
+cap\'itulo de trabajos relacionados:
 
 \begin{itemize}[nosep]
   \item \textbf{Zaida} (IEEE Xplore, ACM Digital Library, Scopus, Google
@@ -239,8 +249,9 @@ YAML, no una captura), en vez de inventar capturas inexistentes:
 \section{Anexo E --- Checklist Ralph et al. (Engineering Research)}
 \label{sec:anexo-ralph}
 
-Tabulaci\'on resumida del checklist completo
-(\texttt{docs/checklists/ralph2021-engineering-research.md}, 15~\'items):
+La tabla~\ref{tab:anexo-ralph} tabula de forma resumida el checklist
+completo (\texttt{docs/checklists/ralph2021-engineering-research.md},
+15~\'items):
 
 \begin{longtable}{@{}p{1.2cm}p{9.4cm}p{2.4cm}@{}}
 \caption{Resumen del checklist Ralph et al. (2021), est\'andar Engineering Research.}
@@ -260,7 +271,7 @@ E1 & Describe el artefacto propuesto con detalle adecuado & Cumple \\
 E2 & Justifica la necesidad/utilidad del artefacto & Cumple \\
 E3 & Eval\'ua conceptualmente el artefacto (fortalezas/debilidades/limitaciones) & Cumple \\
 E4 & Eval\'ua emp\'iricamente con un m\'etodo reconocido (\emph{benchmarking} + encuesta de usabilidad) & Cumple \\
-E5 & Indica claramente la metodolog\'ia emp\'irica usada & Cumple \\
+E5 & Indica claramente la metodolog\'ia emp\'irica usada (DSR, secci\'on~\ref{sec:dsr-peffers}; GQM, secci\'on~\ref{sec:gqm}) & Cumple \\
 E6 & Discute alternativas de estado del arte & Cumple parcialmente \\
 E7 & Compara emp\'iricamente con alternativas o \emph{benchmarks} & Cumple parcialmente \\
 E8 & Supuestos expl\'icitos, plausibles y consistentes & Cumple parcialmente \\
@@ -276,10 +287,11 @@ D6 & Eval\'ua en contexto relevante para la industria & No cumple (fuera de alca
 \section{Anexo F --- Matriz de trazabilidad completa}
 \label{sec:anexo-matriz-completa}
 
-Reproducci\'on \'integra de \texttt{docs/trazabilidad/matriz.csv}
-(38~requisitos), validada por \texttt{scripts/validate-traceability.sh}.
-Columnas de endpoint y evidencia emp\'irica cruda se omiten aqu\'i por
-espacio; est\'an disponibles en el CSV original.
+La tabla~\ref{tab:anexo-matriz-completa} reproduce \'integramente
+\texttt{docs/trazabilidad/matriz.csv} (38~requisitos), validada por
+\texttt{scripts/validate-traceability.sh}. Columnas de endpoint y
+evidencia emp\'irica cruda se omiten aqu\'i por espacio; est\'an
+disponibles en el CSV original.
 
 \begin{landscape}
 \small
@@ -381,10 +393,11 @@ cuenta en ``alto impacto'' pese a no ser un art\'iculo de revista); el
 total de entradas \'unicas en \texttt{referencias.bib} es 41.\normalsize
 
 \textbf{Resultado de la auditor\'ia (bloqueo declarado, no ocultado):} de
-las 41 referencias del informe, \textbf{16 cumplen verificablemente el
-criterio de alto impacto} definido arriba, por debajo del m\'inimo de 20
-exigido por la Gu\'ia Final. No se reclasificaron revistas regionales o
-peque\~nas como ``alto impacto'' \'unicamente para alcanzar el n\'umero
+las 41 referencias del informe (tabla~\ref{tab:anexo-referencias-impacto}),
+\textbf{16 cumplen verificablemente el criterio de alto impacto} definido
+arriba, por debajo del m\'inimo de 20 exigido por la Gu\'ia Final. No se
+reclasificaron revistas regionales o peque\~nas como ``alto impacto''
+\'unicamente para alcanzar el n\'umero
 --- ver la nota en el cap\'itulo de declaraciones sobre este bloqueo.
 
 \section{Evidencias pendientes de incorporaci\'on como figura}
