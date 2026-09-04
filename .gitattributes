@@ -30,3 +30,12 @@ docs/mediciones/sec/zap/zap-authenticated-local-report.xml eol=lf -whitespace
 # reproducible sin depender de core.autocrlf del usuario. Regla especifica
 # a este archivo, no un patron global.
 docs/mediciones/sec/reproduccion-v1.0.0/mvn-clean-verify.txt eol=lf
+
+# Evidencia de reproduccion de audit-sql-dynamic.sh sobre el commit exacto
+# del tag v1.0.0 (REQ-NF-013): mismo motivo que los dos bloques anteriores
+# -- preservar LF en el working tree tras checkout en Windows para que el
+# SHA-256 documentado en audit-sql-dynamic-v1.0.0.sha256 siga siendo
+# reproducible sin depender de core.autocrlf del usuario. Reglas
+# especificas a estos dos archivos, no un patron global.
+docs/mediciones/sec/audit-sql-dynamic-v1.0.0.txt eol=lf
+docs/mediciones/sec/audit-sql-dynamic-v1.0.0.sha256 eol=lf
