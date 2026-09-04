@@ -1,0 +1,96 @@
+% caratula-entrega-final.tex
+%
+% Caratula PDF independiente de UNA sola pagina para la Entrega Final /
+% Recalificacion de BIOPET. Documento AUTONOMO (no forma parte de
+% informe-final-v1.0.0.tex, no lo incluye ni lo modifica); reutiliza el
+% mismo idioma, fuente y estilo tipografico de la portada del informe
+% grande (docs/informe/informe-final-v1.0.0.tex), pero como archivo
+% separado, para servir como caratula de entrega de una sola pagina.
+%
+% Compilacion (desde docs/informe/):
+%   pdflatex -interaction=nonstopmode caratula-entrega-final.tex
+% (no requiere bibtex: no tiene citas ni bibliografia)
+%
+% Todos los datos aqui impresos ya estan documentados en otras partes del
+% repositorio (CITATION.cff, README.md, informe-final-v1.0.0.tex, tag Git
+% v1.0.0); este documento no introduce cifras ni identificadores nuevos.
+
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[spanish]{babel}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{underscore}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+  pdftitle={BIOPET -- Caratula de entrega: Entrega Final / Recalificacion},
+  pdfauthor={Mariscal Cabrera Jaime Josue; Beltran Montiel Fred Adrian; Taipe Mora Zaida Melissa},
+  pdfsubject={Caratula de entrega -- Entrega Final / Recalificacion}
+}
+
+% Sin numero de pagina: esta caratula es de una sola pagina.
+\pagestyle{empty}
+
+\begin{document}
+\shorthandoff{"}
+
+\begin{center}
+  \vspace*{0.2cm}
+
+  {\large Universidad T\'ecnica Estatal de Quevedo \par}
+  {\large Facultad de Ciencias de la Computaci\'on \par}
+  \vspace{0.25cm}
+  {\normalsize Carrera de Software \par}
+  {\normalsize Asignatura: Aplicaciones Web \par}
+
+  \vspace{1.2cm}
+  {\Huge \bfseries BIOPET \par}
+  \vspace{0.35cm}
+  {\Large Sistema web de gesti\'on veterinaria \par}
+  \vspace{0.5cm}
+  {\Large\itshape Entrega Final / Recalificaci\'on \par}
+
+  \vspace{1.3cm}
+  {\normalsize
+    \begin{tabular}{c}
+      Beltr\'an Montiel Fred Adri\'an \\
+      \texttt{fbeltranm@uteq.edu.ec} \quad --- \quad ORCID: 0009-0007-8303-2137 \\[0.35cm]
+      Mariscal Cabrera Jaime Josu\'e \\
+      \texttt{jmariscalc@uteq.edu.ec} \quad --- \quad ORCID: 0009-0007-2206-3941 \\[0.35cm]
+      Taipe Mora Zaida Melissa \\
+      \texttt{ztaipem@uteq.edu.ec} \quad --- \quad ORCID: 0009-0000-1227-3258 \\
+    \end{tabular}
+    \par
+  }
+
+  \vspace{1.1cm}
+  {\normalsize Docente: Dr.\ Gleiston Cicer\'on Guerrero Ulloa, Ph.D. \par}
+  {\normalsize Per\'iodo acad\'emico: Presencial 2026 -- 2027 \quad --- \quad Curso/paralelo: A \par}
+
+  \vspace{1.0cm}
+  {\footnotesize
+    \begin{tabular}{ll}
+      Repositorio & \texttt{https://github.com/\allowbreak Grinjoww/\allowbreak ENTREGA-FINAL-BIOPET} \\
+      Tag hist\'orico & \texttt{v1.0.0} \\
+      Commit asociado al tag & \texttt{0d5cd52} \\
+      DOI del software (Zenodo) & \texttt{10.5281/zenodo.21988746} \\
+      DOI del \emph{dataset} de evidencias (Zenodo) & \texttt{10.5281/zenodo.21988785} \\
+    \end{tabular}
+    \par
+  }
+
+  \vspace{0.4cm}
+  {\small
+    Imagen de contenedor (GHCR, digest \texttt{sha256}, inmutable):\\[0.1cm]
+    \ttfamily\footnotesize sha256:ef1e857a95a307a1\allowbreak15ebe01599a41506eab824808b70a3c8e317dcc55bef5163
+    \par
+  }
+
+  \vfill
+
+  {\normalsize Quevedo, 18 de agosto de 2026 \par}
+\end{center}
+
+\end{document}

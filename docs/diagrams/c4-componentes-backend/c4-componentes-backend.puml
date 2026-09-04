@@ -1,91 +1,127 @@
 @startuml
 !define RECTANGLE class
 skinparam packageStyle rectangle
-title BIOPET - C4 Nivel 3: Componentes del Backend
+title BIOPET - C4 Level 3: Backend Components (v1.0.0)
 
-rectangle "Frontend BIOPET\nAngular + Nginx :4200" as frontend
-rectangle "PostgreSQL 16 :5432" as postgres
-rectangle "Redis 7 :6379" as redis
-rectangle "Flyway 9.22.3\nclasspath:db/migration\nV1__schema_inicial.sql" as flyway
-rectangle "Logs locales del proceso" as logs
+rectangle "Frontend\nAngular 17 + Nginx" as frontend
+rectangle "PostgreSQL\n16 (dev) / 18 (prod)" as postgres
+rectangle "Redis / Valkey\n7 (dev) / 8 (prod)" as redis
+rectangle "Flyway\nclasspath:db/migration\nV1..V6" as flyway
+rectangle "Local process logs" as logs
+rectangle "API Ninjas (Animals API)\n[External System]" as animalApi
 
-package "API REST / Controladores" {
+package "REST API / Controllers" {
   rectangle "AuthController\n/api/auth/*" as AuthController
   rectangle "MascotaController\n/api/mascotas/*" as MascotaController
   rectangle "UsuarioController\n/api/usuarios/me" as UsuarioController
+  rectangle "CitaController\n/api/citas/*" as CitaController
+  rectangle "ConsultaController\n/api/consultas/*" as ConsultaController
+  rectangle "VacunaController\n/api/vacunas/*" as VacunaController
+  rectangle "ExternalApiController\n/api/externa/especies/*" as ExternalApiController
 }
 
-package "Servicios de aplicación" {
+package "Application services" {
   rectangle "AuthService" as AuthService
   rectangle "MascotaService" as MascotaService
+  rectangle "CitaService" as CitaService
+  rectangle "ConsultaService" as ConsultaService
+  rectangle "VacunaService" as VacunaService
+  rectangle "ExternalApiService\n(cache TTL)" as ExternalApiService
+  rectangle "ExternalApiClient" as ExternalApiClient
 }
 
-package "Seguridad y autenticación" {
+package "Security and authentication" {
   rectangle "SecurityConfig" as SecurityConfig
   rectangle "JwtAuthenticationFilter" as JwtAuthFilter
   rectangle "JwtService" as JwtService
   rectangle "JwtCookieService" as JwtCookieService
   rectangle "UserDetailsServiceImpl" as UserDetailsSvc
-  rectangle "LoginRateLimiterService\n(memoria, por IP)" as RateLimiter
+  rectangle "LoginRateLimiterService\n(in-memory, per IP)" as RateLimiter
   rectangle "TokenBlacklistService" as Blacklist
   rectangle "AuthenticationAuditService" as AuditService
   rectangle "ProblemAuthenticationEntryPoint (401)" as AuthEntryPoint
   rectangle "ProblemAccessDeniedHandler (403)" as AccessDeniedHandler
 }
 
-package "Manejo de errores" {
+package "Error handling" {
   rectangle "GlobalExceptionHandler" as GlobalExceptionHandler
   rectangle "ProblemDetailFactory" as ProblemDetailFactory
 }
 
-package "Persistencia (Spring Data JPA)" {
+package "Persistence (Spring Data JPA)" {
   rectangle "UsuarioRepository" as UsuarioRepo
-  rectangle "MascotaRepository\n(+ @Query nativa resumenPorEspecie)" as MascotaRepo
+  rectangle "MascotaRepository" as MascotaRepo
+  rectangle "CitaRepository" as CitaRepo
+  rectangle "ConsultaRepository" as ConsultaRepo
+  rectangle "VacunaRepository" as VacunaRepo
+  rectangle "ProcedimientoBiopetRepository\n(@Procedure /\n@NamedStoredProcedureQuery)" as ProcedimientoRepo
 }
 
-package "Infraestructura del servidor" {
-  rectangle "TomcatDualConnectorConfig\nperfil 'tls'" as TomcatDual
+package "Server infrastructure" {
+  rectangle "TomcatDualConnectorConfig\nprofile 'tls'" as TomcatDual
 }
 
 frontend --> AuthController : HTTPS/JSON + cookies\naccess_token, refresh_token
 frontend --> MascotaController : HTTPS/JSON + cookie access_token
 frontend --> UsuarioController : HTTPS/JSON + cookie access_token
-frontend --> TomcatDual : HTTPS :8443 (público)\nHTTP :8080 (interno)
+frontend --> CitaController : HTTPS/JSON + cookie access_token
+frontend --> ConsultaController : HTTPS/JSON + cookie access_token
+frontend --> VacunaController : HTTPS/JSON + cookie access_token
+frontend --> ExternalApiController : HTTPS/JSON + cookie access_token
+frontend --> TomcatDual : HTTPS :8443 (public)\nHTTP :8080 (internal)
 
-AuthController --> AuthService : registro/login/refresh/logout
-AuthController --> JwtCookieService : lee/escribe cookies
-MascotaController --> MascotaService : listar/buscar/crear/actualizar/eliminar
-UsuarioController --> AuthService : perfil(email)
+AuthController --> AuthService : register/login/refresh/logout
+AuthController --> JwtCookieService : reads/writes cookies
+MascotaController --> MascotaService : list/search/create/update/delete
+UsuarioController --> AuthService : profile (email)
+CitaController --> CitaService : CRUD / bulk status update
+ConsultaController --> ConsultaService : register/query consultations
+VacunaController --> VacunaService : CRUD vaccine records
+ExternalApiController --> ExternalApiService : get species info
 
-AuthService --> UsuarioRepo : consulta/crea usuario
-AuthService --> JwtService : genera/valida JWT
-AuthService --> RateLimiter : verificarPermitido / registrarFallo
+AuthService --> UsuarioRepo : finds/creates user
+AuthService --> JwtService : generates/validates JWT
+AuthService --> RateLimiter : checks/records login attempts
 AuthService --> AuditService : LOGIN_*/REFRESH_*/LOGOUT_SUCCESS
 AuthService --> Blacklist : revoke / isRevoked (refresh, logout)
 
 MascotaService --> MascotaRepo : CRUD
-MascotaService --> UsuarioRepo : valida dueño/rol
-MascotaService ..> redis : caché @Cacheable/@CacheEvict\n(Spring Cache Abstraction)
+MascotaService --> UsuarioRepo : validates owner/role
+MascotaService ..> redis : cache reads/writes\n(@Cacheable/@CacheEvict)
 
-JwtAuthFilter --> JwtCookieService : lee cookie access_token
-JwtAuthFilter --> JwtService : valida firma/claims/tipo
+CitaService --> CitaRepo : CRUD / bulk update
+CitaService --> UsuarioRepo : validates veterinarian role
+ConsultaService --> ConsultaRepo : CRUD
+ConsultaService --> UsuarioRepo : validates veterinarian/access
+VacunaService --> VacunaRepo : CRUD
+
+ExternalApiService --> ExternalApiClient : fetches species data
+ExternalApiService ..> redis : caches response (TTL)
+ExternalApiClient .down.> animalApi : GET species data\n[HTTPS/JSON]
+
+JwtAuthFilter --> JwtCookieService : reads access_token cookie
+JwtAuthFilter --> JwtService : validates signature/claims/type
 JwtAuthFilter --> Blacklist : isRevoked(jti)
 JwtAuthFilter --> AuditService : TOKEN_REVOKED
 JwtAuthFilter --> UserDetailsSvc : loadUserByUsername
 
-SecurityConfig --> JwtAuthFilter : registra en la cadena de filtros
-SecurityConfig --> AuthEntryPoint : entry point 401
-SecurityConfig --> AccessDeniedHandler : access denied handler 403
+SecurityConfig --> JwtAuthFilter : registers in the filter chain
+SecurityConfig --> AuthEntryPoint : 401 entry point
+SecurityConfig --> AccessDeniedHandler : 403 access-denied handler
 SecurityConfig --> UserDetailsSvc : DaoAuthenticationProvider
 
-AuthEntryPoint --> ProblemDetailFactory : construye 401
-AccessDeniedHandler --> ProblemDetailFactory : construye 403
-GlobalExceptionHandler --> ProblemDetailFactory : construye 4xx/429
+AuthEntryPoint --> ProblemDetailFactory : builds 401
+AccessDeniedHandler --> ProblemDetailFactory : builds 403
+GlobalExceptionHandler --> ProblemDetailFactory : builds 4xx/429
 
 Blacklist --> redis : StringRedisTemplate
 UsuarioRepo --> postgres : JDBC/JPA
 MascotaRepo --> postgres : JDBC/JPA
+CitaRepo --> postgres : JDBC/JPA
+ConsultaRepo --> postgres : JDBC/JPA
+VacunaRepo --> postgres : JDBC/JPA
+ProcedimientoRepo --> postgres : invokes stored procedures\n(@Procedure/@NamedStoredProcedureQuery)
 
 AuditService --> logs : AUTH_AUDIT timestamp/event/result/ip/subject
-flyway ..> postgres : aplica esquema al iniciar\n(una vez, antes de servir tráfico)
+flyway ..> postgres : applies schema on startup\n(once, before serving traffic)
 @enduml

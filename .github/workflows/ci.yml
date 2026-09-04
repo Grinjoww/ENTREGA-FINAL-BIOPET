@@ -27,7 +27,9 @@ on:
 
 jobs:
   # ---------------------------------------------------------------------
-  # Ya existia y funciona: compilacion + 189 pruebas + JaCoCo (gate real
+  # Ya existia y funciona: compilacion + suite completa de pruebas (189 en la
+  # evidencia historica de agosto, 205 reproducibles sobre el tag v1.0.0, 217
+  # en este HEAD de recalificacion) + JaCoCo (gate real
   # LINE >= 0.70 / BRANCH >= 0.70 / COMPLEXITY >= 0.60, configurado en
   # Backend/pom.xml -> jacoco-maven-plugin -> execution "check"). No se
   # reduce ninguna prueba para acelerar CI: "mvn clean verify" ejecuta la
@@ -37,6 +39,11 @@ jobs:
   # ---------------------------------------------------------------------
   backend-test:
     runs-on: ubuntu-latest
+    # Depende de "frontend-build" porque FrontendResponsivenessTest valida el
+    # build real del frontend (frontend/dist/, no versionado). Sin esta
+    # dependencia el job corria sobre un checkout limpio sin dist/ y ese test
+    # fallaba de forma determinista.
+    needs: frontend-build
     steps:
       - uses: actions/checkout@v4
 
@@ -46,6 +53,18 @@ jobs:
           java-version: '21'
           cache: maven
 
+      # Restaura el build publicado por "frontend-build" en la misma ruta que
+      # espera el test (Backend/../frontend/dist/biopet-frontend/browser/).
+      - name: Descargar build del frontend
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-dist
+          path: frontend/dist/
+
+      # No se define aqui ningun JWT_SECRET: las pruebas toman el secreto de
+      # prueba de Backend/src/test/resources/application-test.yml via
+      # @ActiveProfiles("test"), de modo que CI nunca necesita un secreto
+      # productivo y application.yml sigue exigiendo ${JWT_SECRET} sin fallback.
       - name: Verificar backend (tests + JaCoCo check >= 70% LINE/BRANCH)
         working-directory: Backend
         run: mvn -B clean verify
@@ -102,6 +121,17 @@ jobs:
       - name: Build de produccion
         working-directory: frontend
         run: npm run build
+
+      # El build se publica como artefacto porque el job "backend-test" lo
+      # necesita: FrontendResponsivenessTest valida el index.html y el CSS
+      # reales generados aqui. frontend/dist/ no esta versionado (.gitignore),
+      # asi que sin este artefacto ese test no tendria nada que validar.
+      - name: Publicar build del frontend para backend-test
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: frontend/dist/
+          retention-days: 1
 
   # ---------------------------------------------------------------------
   # Ya existia y funciona: valida que todo REQ-F-/REQ-NF- del SRS tenga

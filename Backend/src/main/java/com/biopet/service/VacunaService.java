@@ -16,6 +16,15 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * CRUD for vaccination records. Access rules that depend on data (not
+ * just role) mirror the pattern used by {@link CitaService} and
+ * {@link MascotaService}:
+ * <ul>
+ *   <li>DUENO: only reads/writes vaccination records for their own pets.</li>
+ *   <li>ADMIN/VETERINARIO/AUXILIAR: no additional data restrictions.</li>
+ * </ul>
+ */
 @Service
 public class VacunaService {
     private final VacunaRepository vacunaRepository;
@@ -30,6 +39,15 @@ public class VacunaService {
         this.usuarioRepository = usuarioRepository;
     }
 
+    /**
+     * Lists active vaccination records, scoped to the caller's own pets
+     * for DUENO and unrestricted for other roles.
+     *
+     * @param pageable pagination and sorting parameters
+     * @param email authenticated user's email
+     * @return page of vaccination records
+     * @throws com.biopet.exception.RecursoNoEncontradoException if the authenticated user cannot be resolved
+     */
     @Transactional(readOnly = true)
     public Page<VacunaResponse> listar(Pageable pageable, String email) {
         Usuario usuario = usuarioActivo(email);
@@ -40,6 +58,17 @@ public class VacunaService {
         return vacunaRepository.findAllByActivoTrue(pageable).map(this::toResponse);
     }
 
+    /**
+     * Lists active vaccination records for a specific pet, enforcing
+     * that the caller has access to that pet.
+     *
+     * @param mascotaId pet identifier
+     * @param pageable pagination and sorting parameters
+     * @param email authenticated user's email
+     * @return page of vaccination records for the given pet
+     * @throws com.biopet.exception.RecursoNoEncontradoException if the authenticated user or the pet cannot be resolved
+     * @throws org.springframework.security.access.AccessDeniedException if the user does not have access to this pet
+     */
     @Transactional(readOnly = true)
     public Page<VacunaResponse> listarPorMascota(Long mascotaId, Pageable pageable, String email) {
         Usuario usuario = usuarioActivo(email);
@@ -48,6 +77,16 @@ public class VacunaService {
         return vacunaRepository.findAllByMascotaIdAndActivoTrue(mascotaId, pageable).map(this::toResponse);
     }
 
+    /**
+     * Retrieves a single vaccination record by id, enforcing that the
+     * caller has access to the associated pet.
+     *
+     * @param id vaccination record identifier
+     * @param email authenticated user's email
+     * @return the requested vaccination record
+     * @throws com.biopet.exception.RecursoNoEncontradoException if no active vaccination record exists with the given id
+     * @throws org.springframework.security.access.AccessDeniedException if the user does not have access to the associated pet
+     */
     @Transactional(readOnly = true)
     public VacunaResponse buscar(Long id, String email) {
         Usuario usuario = usuarioActivo(email);
@@ -56,6 +95,15 @@ public class VacunaService {
         return toResponse(vacuna);
     }
 
+    /**
+     * Registers a new vaccination record for the given pet and
+     * veterinarian.
+     *
+     * @param request vaccination data to create
+     * @return the created vaccination record
+     * @throws com.biopet.exception.RecursoNoEncontradoException if the referenced pet or veterinarian does not exist
+     * @throws IllegalArgumentException if the referenced veterinarian does not have role ROLE_VETERINARIO
+     */
     @Transactional
     public VacunaResponse crear(VacunaRequest request) {
         Mascota mascota = mascotaActiva(request.mascotaId());
@@ -72,6 +120,18 @@ public class VacunaService {
         return toResponse(vacunaRepository.save(vacuna));
     }
 
+    /**
+     * Updates an existing vaccination record, enforcing that the caller
+     * has access to the associated pet.
+     *
+     * @param id vaccination record identifier
+     * @param request updated vaccination data
+     * @param email authenticated user's email
+     * @return the updated vaccination record
+     * @throws com.biopet.exception.RecursoNoEncontradoException if the vaccination record, pet or veterinarian does not exist
+     * @throws org.springframework.security.access.AccessDeniedException if the user does not have access to the associated pet
+     * @throws IllegalArgumentException if the referenced veterinarian does not have role ROLE_VETERINARIO
+     */
     @Transactional
     public VacunaResponse actualizar(Long id, VacunaRequest request, String email) {
         Usuario usuario = usuarioActivo(email);
@@ -90,6 +150,15 @@ public class VacunaService {
         return toResponse(vacunaRepository.save(vacuna));
     }
 
+    /**
+     * Soft-deletes a vaccination record (marks it inactive), enforcing
+     * that the caller has access to the associated pet.
+     *
+     * @param id vaccination record identifier
+     * @param email authenticated user's email
+     * @throws com.biopet.exception.RecursoNoEncontradoException if no active vaccination record exists with the given id
+     * @throws org.springframework.security.access.AccessDeniedException if the user does not have access to the associated pet
+     */
     @Transactional
     public void eliminar(Long id, String email) {
         Usuario usuario = usuarioActivo(email);

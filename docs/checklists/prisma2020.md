@@ -71,7 +71,7 @@ datos inventados.
 
 | Ítem | Qué exige | Estado | Dónde va en el informe |
 |---|---|---|---|
-| 16a | Resultados del proceso de búsqueda y selección, desde registros identificados hasta estudios incluidos, idealmente con diagrama de flujo. | ✅ Completo | **Diagrama de flujo regenerado 2026-08-18** con el bloque Fred incluido: `docs/informe/figuras/zaida/06-prisma-flow-diagram.png` (fuente editable: `docs/diagramas/prisma-flow-diagram.svg`). Bloque Zaida completamente cuantificado (15 identificados → 12 excluidos → 3 incluidos). Bloque Fred completamente cuantificado (13 candidatos por DOI → 2 excluidos [1 fuera de rango 2020–2026, 1 por HTTP 403] → 3 incluidos). Bloque Jaime solo reporta el conteo final de incluidos (4); su conteo de candidatos evaluados/excluidos **no fue documentado por Jaime** y se declara vacío en el diagrama (nota punteada), no se inventa. Total incluido: **10 de una meta de ≥8-9 — meta cumplida**. |
+| 16a | Resultados del proceso de búsqueda y selección, desde registros identificados hasta estudios incluidos, idealmente con diagrama de flujo. | ✅ Completo (corregido 2026-09-04, verificado por Fred) | **Diagrama de flujo regenerado 2026-09-04** con la trazabilidad completa del bloque Fred: `docs/informe/figuras/zaida/06-prisma-flow-diagram.png` (fuente editable versionada: `docs/diagramas/prisma-flow-diagram.dot`). Bloque Zaida completamente cuantificado (15 identificados → 12 excluidos → 3 incluidos). **Bloque Fred completamente cuantificado**, trazabilidad confirmada por Fred tras la auditoría cruzada de Jaime del 2026-09-04 — cuatro etapas: **identificación** (13 candidatos por DOI, rango 2020–2026) → **verificación**, 17-08-2026 (2 descartados: Yang et al. 2018 ICSE fuera de rango, artículo TURCOMAT inaccesible HTTP 403) → **elegibilidad** (11 retenidas, todas con DOI verificado) → **clasificación editorial para este informe, explícitamente NO un paso de exclusión PRISMA** (3 trabajos relacionados incluidos en la síntesis del capítulo + 8 de apoyo metodológico/rendimiento, citadas en otros capítulos, ver `docs/investigacion/handoff-fred-referencias.bib`). La versión anterior de este ítem (13 → 2 excluidos → 3 incluidos) dejaba 8 candidatos sin categoría explícita; ya corregido. Bloque Jaime solo reporta el conteo final de incluidos (4); su conteo de candidatos evaluados/excluidos **no fue documentado por Jaime** y se declara vacío en el diagrama (nota punteada), no se inventa. Total incluido en la síntesis de trabajos relacionados: **10 de una meta de ≥8-9 — meta cumplida** (Zaida 3 + Jaime 4 + Fred 3; no incluye los 8 de apoyo metodológico de Fred, que están fuera del alcance de esta síntesis). |
 | 16b | Citar estudios que parecían elegibles pero fueron excluidos, y explicar por qué. | 🟡 Parcial (bloque Jaime sin registro) | Del bloque Zaida: de 15 candidatos revisados, 12 se excluyeron por no tener DOI/enlace verificable, no ser revisados por pares, o no ser relevantes a requisitos/usabilidad/dominio veterinario (criterio del ítem 5). Los candidatos excluidos específicos no se listaron individualmente por nombre en el borrador original de Zaida (solo el conteo agregado); si se requiere el detalle ítem por ítem, debe solicitarse el registro de búsqueda completo. Del bloque Jaime: sin registro de excluidos (mismo gap del ítem 16a). Del bloque Fred (agregado 2026-08-18): 2 candidatos descartados documentados individualmente (Yang et al., ICSE 2018, DOI 10.1145/3180155.3180194 — fuera del rango temporal 2020–2026 fijado por Fred; artículo de TURCOMAT — fuente inaccesible, HTTP 403), ver notas de verificación en `docs/investigacion/handoff-fred-referencias.bib`. |
 | 17 | Citar cada estudio incluido y presentar sus características. | ✅ Completo | Tabla comparativa consolidada, 10 estudios: |
 
@@ -155,3 +155,39 @@ establecida por Zaida.
 
 Ningún ítem de este documento fue cerrado con estudios inventados,
 fuentes no verificables, ni conteos de ejemplo copiados de otra revisión.
+
+## Reapertura parcial — 2026-09-04 (auditoría cruzada de Jaime, recalificación)
+
+Jaime auditó este checklist y `02-trabajos-relacionados.tex` en su propia
+rama (sin commitear sobre este archivo, para no pisar la zona de Zaida) y
+reportó dos hallazgos, ambos incorporados aquí:
+
+1. **Cadenas booleanas históricas**: confirmadas las tres del bloque Zaida
+   (ya citadas en el ítem 7 y en `02-trabajos-relacionados.tex`,
+   sección "Cadena de búsqueda..."); confirmado que los bloques Jaime y
+   Fred **no** tienen una cadena booleana histórica documentada (usaron
+   verificación dirigida, no búsqueda exploratoria por cadena) — diferencia
+   ya declarada explícitamente, no un vacío nuevo.
+2. **Gap numérico del bloque Fred (ítem 16a) — CERRADO el mismo día,
+   trazabilidad verificada directamente por Fred.** 13 candidatos − 2
+   excluidos − 3 incluidos dejaba 8 candidatos sin categoría. Fred
+   confirmó la trazabilidad real, en cuatro etapas: identificación (13) →
+   verificación, 17-08-2026 (2 descartados) → elegibilidad (**11
+   retenidas**) → clasificación editorial para este informe, **no un
+   paso de exclusión PRISMA** (3 trabajos relacionados incluidos en la
+   síntesis + 8 de apoyo metodológico/rendimiento, no excluidos, citados
+   en otros capítulos). Se corrigió el ítem 16a arriba,
+   `docs/diagramas/prisma-flow-diagram.dot` (fuente nueva, versionada,
+   con las cuatro etapas rotuladas) y su render, y la narrativa/caption
+   de `02-trabajos-relacionados.tex`. El script que regenera el diagrama
+   desde esa fuente `.dot` es
+   `docs/diagramas/render-06-prisma-flow-diagram.mjs` (se ejecuta desde la
+   raíz del repositorio; antes estaba en la raíz con el nombre temporal
+   `render-prisma2-tmp.mjs`, ahora renombrado y ubicado junto a su fuente
+   para dejar explícita la procedencia de la figura).
+
+Ninguna cadena de búsqueda nueva fue formulada ni ejecutada para cerrar
+estos hallazgos — de necesitarse una búsqueda adicional durante la
+recalificación, se documentaría aparte, explícitamente como "búsqueda de
+recalificación" (cadena, fuente, fecha, resultados), nunca mezclada con
+las cadenas históricas de agosto de 2026.

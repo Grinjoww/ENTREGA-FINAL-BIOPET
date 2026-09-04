@@ -5,9 +5,9 @@ la taxonomía **CRediT (Contributor Roles Taxonomy)**.
 
 ## Equipo
 
-- **Beltrán Montiel, Fred Adrián** — Universidad Técnica Estatal de Quevedo — `fbeltranm@uteq.edu.ec`
-- **Mariscal Cabrera, Jaime Josué** — Universidad Técnica Estatal de Quevedo — `jmariscalc@uteq.edu.ec`
-- **Taipe Mora, Zaida Melissa** — Universidad Técnica Estatal de Quevedo — `ztaipem@uteq.edu.ec`
+- **Beltrán Montiel, Fred Adrián** — Universidad Técnica Estatal de Quevedo — `fbeltranm@uteq.edu.ec` — ORCID: [0009-0007-8303-2137](https://orcid.org/0009-0007-8303-2137)
+- **Mariscal Cabrera, Jaime Josué** — Universidad Técnica Estatal de Quevedo — `jmariscalc@uteq.edu.ec` — ORCID: [0009-0007-2206-3941](https://orcid.org/0009-0007-2206-3941)
+- **Taipe Mora, Zaida Melissa** — Universidad Técnica Estatal de Quevedo — `ztaipem@uteq.edu.ec` — ORCID: [0009-0000-1227-3258](https://orcid.org/0009-0000-1227-3258)
 
 Docente responsable (no contribuyente del software, rol de evaluación):
 Dr. Gleiston Cicerón Guerrero Ulloa, Ph.D.

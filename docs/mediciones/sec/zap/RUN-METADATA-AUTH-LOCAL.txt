@@ -1,0 +1,11 @@
+fecha_utc=2026-09-03T21:38:48Z
+imagen_zap=ghcr.io/zaproxy/zaproxy:stable
+target=https://backend:8443 (HTTPS/TLS local, docker-compose.tls.yml)
+red_docker=entrega-final-biopet_default
+tipo_scan=authenticated passive (sin active scan)
+endpoint_login=POST /api/auth/login
+endpoint_verificacion=GET /api/usuarios/me
+mecanismo_sesion=cookie (access_token, HttpOnly+Secure+SameSite=Strict)
+autenticacion_confirmada=SI, todas las peticiones autenticadas devolvieron 200
+codigo_salida_zap=0
+comando=ZAP_USERNAME=*** ZAP_PASSWORD=*** scripts/run-zap-authenticated-local.sh

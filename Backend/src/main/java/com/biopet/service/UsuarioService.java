@@ -30,11 +30,24 @@ public class UsuarioService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * Lists active user accounts.
+     *
+     * @param pageable pagination and sorting parameters
+     * @return page of user accounts
+     */
     @Transactional(readOnly = true)
     public Page<UsuarioResponse> listar(Pageable pageable) {
         return usuarioRepository.findAllByActivoTrue(pageable).map(this::toResponse);
     }
 
+    /**
+     * Retrieves a single user account by id.
+     *
+     * @param id user identifier
+     * @return the requested user account
+     * @throws com.biopet.exception.RecursoNoEncontradoException if no active user exists with the given id
+     */
     @Transactional(readOnly = true)
     public UsuarioResponse buscar(Long id) {
         Usuario usuario = usuarioRepository.findByIdAndActivoTrue(id)
@@ -42,6 +55,16 @@ public class UsuarioService {
         return toResponse(usuario);
     }
 
+    /**
+     * Creates a new user account with an administrator-chosen role. This
+     * is distinct from public self-registration, which always creates a
+     * ROLE_DUENO account.
+     *
+     * @param request user data to create, including email, password and role
+     * @return the created user account
+     * @throws com.biopet.exception.EmailDuplicadoException if the email is already registered
+     * @throws IllegalArgumentException if no password is provided
+     */
     @Transactional
     public UsuarioResponse crear(UsuarioRequest request) {
         String email = request.email().toLowerCase();
@@ -62,6 +85,18 @@ public class UsuarioService {
         return toResponse(usuarioRepository.save(usuario));
     }
 
+    /**
+     * Updates an existing user account. An administrator may not change
+     * their own role through this method.
+     *
+     * @param id user identifier
+     * @param request updated user data
+     * @param emailAutenticado authenticated administrator's email
+     * @return the updated user account
+     * @throws com.biopet.exception.RecursoNoEncontradoException if the user or the authenticated administrator cannot be resolved
+     * @throws org.springframework.security.access.AccessDeniedException if the administrator attempts to change their own role
+     * @throws com.biopet.exception.EmailDuplicadoException if the new email is already used by another account
+     */
     @Transactional
     public UsuarioResponse actualizar(Long id, UsuarioRequest request, String emailAutenticado) {
         Usuario usuario = usuarioRepository.findByIdAndActivoTrue(id)
@@ -89,6 +124,13 @@ public class UsuarioService {
         return toResponse(usuarioRepository.save(usuario));
     }
 
+    /**
+     * Soft-deletes a user account (marks it inactive; does not remove
+     * the row).
+     *
+     * @param id user identifier
+     * @throws com.biopet.exception.RecursoNoEncontradoException if no active user exists with the given id
+     */
     @Transactional
     public void eliminar(Long id) {
         Usuario usuario = usuarioRepository.findByIdAndActivoTrue(id)

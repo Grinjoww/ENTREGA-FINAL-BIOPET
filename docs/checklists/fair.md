@@ -125,8 +125,12 @@ Barker et al. 2022) — mapeo sobre la guía de publicación del proyecto.
 - **Estado: cumplido** — checklists existentes:
   - `docs/checklists/ralph2021-engineering-research.md` (estándar empírico).
   - `docs/checklists/prisma2020.md` y `docs/checklists/incose2023-req.md`.
-  - CI con 6 jobs en `.github/workflows/ci.yml` (tests 189+, JaCoCo ≥70%,
-    SpotBugs, ZAP, auditoría SQL).
+  - CI con 6 jobs en `.github/workflows/ci.yml` (suite de pruebas —189
+    en la evidencia histórica registrada, ampliada con las 16 pruebas
+    presentes en el tag final (`BiopetAppRolMinimoPrivilegiosIntegrationTest`
+    +4, `ProcedimientosBiopetIntegrationTest` +12) para un total
+    reproducible de 205 en `v1.0.0`, 0 fallos, 0 errores, 0 omitidas—,
+    JaCoCo ≥70%, SpotBugs, ZAP, auditoría SQL).
 
 ### R2. Repositorio documentado
 - **Estado: cumplido** — `README.md` (raíz), `docs/despliegue/DEPLOYMENT.md`,

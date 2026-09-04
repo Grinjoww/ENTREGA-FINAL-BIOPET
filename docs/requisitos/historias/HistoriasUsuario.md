@@ -1,17 +1,23 @@
 # Historias de Usuario — BIOPET
 
-**Tercera Entrega (v0.9.0-rc)** — Derivadas del SRS v0.9.0-rc.
+**Entrega Final (v1.0.0)** — Derivadas del SRS v1.0.0. Aplicación explícita
+de criterios INVEST por historia en `docs/requisitos/SRS.md`, sección 3.3.
 
 Documento generado exclusivamente a partir de los requisitos funcionales del
 SRS. No se han creado requisitos, roles ni funcionalidades adicionales a los
 descritos en dicho documento. Formato Connextra con criterios de aceptación
-en Gherkin, conforme al bloque A.3.2 de la Guía de la Tercera Entrega.
+en Gherkin, conforme al bloque A.3.2 de la Guía.
 
 > **Origen de este archivo:** convertido a Markdown a partir de
 > `HistoriasUsuario.pdf` (HU-001 a HU-019, contenido preservado sin
-> modificaciones de fondo) y ampliado con **HU-020**, nueva de esta entrega.
-> A partir de ahora este `.md` es la fuente editable; el PDF se regenera
-> desde aquí cuando el equipo lo necesite.
+> modificaciones de fondo) y ampliado con **HU-020** en la Tercera Entrega,
+> y con **HU-021 a HU-024** (Unidad IV: notificaciones recuperadas de RF-07,
+> gestión administrativa de usuarios, vacunas y consulta externa de
+> especies) en la Entrega Final. **HU-012 y HU-014** se revisaron en esta
+> entrega: pasan de "Pendiente" a "Parcial" porque la Unidad IV entregó
+> CRUD real de consultas y de citas respectivamente (detalle en cada
+> historia). A partir de ahora este `.md` es la fuente editable; el PDF se
+> regenera desde aquí cuando el equipo lo necesite.
 
 ---
 
@@ -386,7 +392,7 @@ Escenario: Baja lógica exitosa
 | **Identificador** | HU-012 |
 | **Requisitos SRS asociados** | REQ-F-013 |
 | **Prioridad (MoSCoW)** | Should |
-| **Estado** | Pendiente |
+| **Estado** | Parcial (revisado v1.0.0) |
 
 **Historia (Connextra)**
 > Como veterinario
@@ -394,21 +400,33 @@ Escenario: Baja lógica exitosa
 > para mantener un historial clínico cronológico de cada mascota.
 
 **Descripción:** actualiza los requisitos heredados RF-03 y RF-04 de la
-Entrega 1A. El modelo de datos (tabla `Historial_Clinico`) ya está diseñado,
-pero no existe código de este módulo.
+Entrega 1A. El registro de atención médica (diagnóstico, tratamiento,
+observaciones) sí existe en v1.0.0 vía `ConsultaController`/
+`ConsultaService` (Unidad IV). Lo que sigue sin existir es la **vista
+consolidada ordenada por fecha**: la proyección `HistorialClinico`
+(función `fn_historial_clinico_mascota`) vive a nivel de repositorio pero
+ningún controlador la expone como endpoint.
 
-**Criterios de aceptación (Gherkin)** — *comportamiento esperado, no
-implementado*
+**Criterios de aceptación (Gherkin)** — el escenario de registro ya es
+real (`ConsultaControllerTest`); el de consulta ordenada sigue sin
+implementar
 ```gherkin
-Escenario: Consulta de historial ordenado
+Escenario: Registro de una atención médica (implementado)
+  Given un veterinario autenticado y una mascota activa
+  When registra una consulta con diagnóstico, tratamiento y observaciones
+  Then el sistema responde 201 y la consulta queda persistida
+
+Escenario: Consulta de historial ordenado (no implementado)
   Given una mascota con atenciones médicas registradas
   When se consulta su historial clínico
   Then las atenciones se muestran ordenadas por fecha, cada una con su diagnóstico y tratamiento
 ```
 
 **Dependencias:** HU-007 (requiere que la mascota exista).
-**Observaciones:** sin código; se verificará por test de integración cuando
-el módulo exista.
+**Observaciones:** registro verificado con `ConsultaControllerTest`; la
+vista de historial consolidado sigue pendiente de un endpoint que
+exponga `fn_historial_clinico_mascota` (repositorio `HistorialClinico`
+ya existe).
 
 ---
 
@@ -450,28 +468,36 @@ Escenario: Prescripción vinculada
 | **Identificador** | HU-014 |
 | **Requisitos SRS asociados** | REQ-F-015 |
 | **Prioridad (MoSCoW)** | Should |
-| **Estado** | Pendiente |
+| **Estado** | Parcial (revisado v1.0.0) |
 
 **Historia (Connextra)**
 > Como auxiliar o veterinario
 > quiero registrar, modificar y consultar citas veterinarias en un calendario interactivo
 > para organizar la agenda de atenciones de cada mascota y veterinario.
 
-**Descripción:** actualiza el requisito heredado RF-06 de la Entrega 1A; el
-modelo de datos (tabla `Cita`) ya está diseñado.
+**Descripción:** actualiza el requisito heredado RF-06 de la Entrega 1A.
+El CRUD de citas (registrar, consultar, modificar, cancelar) sí existe en
+v1.0.0 vía `CitaController`/`CitaService` (Unidad IV). Lo que sigue sin
+existir es la **vista de calendario interactivo**: no hay componente de
+calendario en `frontend/src/app/features/`, solo la API.
 
-**Criterios de aceptación (Gherkin)** — *comportamiento esperado, no
-implementado*
+**Criterios de aceptación (Gherkin)** — el escenario de CRUD ya es real
+(`CitaControllerTest`); el de calendario visual sigue sin implementar
 ```gherkin
-Escenario: Cita creada y visible
+Escenario: Cita creada y consultable vía API (implementado)
   Given una mascota y un veterinario existentes
-  When se registra una cita
-  Then la cita aparece en el calendario
-  And puede modificarse o cancelarse posteriormente
+  When se registra una cita mediante POST /api/citas
+  Then la cita queda persistida y puede consultarse, modificarse o eliminarse
+
+Escenario: Cita visible en un calendario interactivo (no implementado)
+  Given citas ya registradas
+  When el usuario abre la vista de agenda
+  Then las citas se muestran en un calendario interactivo
 ```
 
 **Dependencias:** HU-007.
-**Observaciones:** sin código.
+**Observaciones:** CRUD verificado con `CitaControllerTest`; falta el
+componente de calendario en el frontend.
 
 ---
 

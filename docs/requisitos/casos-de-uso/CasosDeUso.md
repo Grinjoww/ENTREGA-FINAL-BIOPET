@@ -1,6 +1,6 @@
 # Casos de Uso — BIOPET
 
-**Tercera Entrega (v0.9.0-rc)** — Formato Cockburn, derivados de las
+**Entrega Final (v1.0.0)** — Formato Cockburn, derivados de las
 Historias de Usuario.
 
 Cada caso de uso representa exactamente las funcionalidades descritas en el
@@ -404,26 +404,32 @@ se elimina físicamente de la base de datos.
 | **Objetivo** | Almacenar una atención médica en el historial de la mascota |
 | **Actor principal** | Veterinario |
 | **Actores secundarios** | — |
-| **Disparador** | El veterinario registra una atención médica (interfaz no implementada). |
+| **Disparador** | El veterinario registra una atención médica vía `POST /api/consultas` (API real; sin interfaz propia). |
 | **Precondiciones** | La mascota existe (CU-07). |
 | **Postcondiciones** | Éxito esperado: la atención queda asociada cronológicamente al historial clínico de la mascota. |
 | **Requisitos relacionados** | REQ-F-013 |
 | **Historias relacionadas** | HU-012 |
-| **Estado** | Pendiente — diseño de datos disponible, sin código |
+| **Estado** | Parcial (revisado v1.0.0) — registro implementado vía `ConsultaController`; vista consolidada del historial cronológico sin endpoint todavía |
 
 **Descripción:** el sistema almacena diagnóstico, tratamiento y
-observaciones de una atención médica, asociándolos cronológicamente al
-historial clínico de la mascota. Módulo pendiente de implementación; el
-modelo de datos (tabla `Historial_Clinico`) ya está diseñado desde la
-Entrega 1A.
+observaciones de una atención médica, asociándolos a la mascota
+(`ConsultaController`/`ConsultaService`, Unidad IV, verificado con
+`ConsultaControllerTest`). La proyección `HistorialClinico`
+(`fn_historial_clinico_mascota`) que agruparía y ordenaría estas
+atenciones cronológicamente por mascota existe a nivel de repositorio,
+pero ningún controlador la expone todavía como endpoint consolidado.
 
 **Flujo principal**
 1. El veterinario ingresa diagnóstico, tratamiento y observaciones.
 2. El sistema asocia la atención a la mascota y a la fecha de registro.
-3. El sistema almacena la atención en el historial clínico.
+3. El sistema almacena la atención (implementado). La consulta
+   consolidada y ordenada cronológicamente del historial completo de una
+   mascota (paso adicional) sigue sin un endpoint que la exponga.
 
-**Flujos alternativos:** no especificados en el SRS (módulo pendiente).
-**Flujos de excepción:** no especificados en el SRS (módulo pendiente).
+**Flujos alternativos:** no especificados en el SRS (vista de historial
+consolidado pendiente).
+**Flujos de excepción:** cubiertos por `ConsultaControllerTest` para el
+registro (mascota o veterinario inválido/inactivo).
 
 **Reglas de negocio:** las atenciones se muestran ordenadas
 cronológicamente al consultar el historial.
@@ -468,26 +474,31 @@ asociados.
 | **Objetivo** | Registrar, modificar y consultar citas mediante calendario |
 | **Actor principal** | Auxiliar o Veterinario |
 | **Actores secundarios** | Dueño de mascota (consulta) |
-| **Disparador** | El actor registra, modifica o consulta una cita (interfaz no implementada). |
+| **Disparador** | El actor registra, modifica o consulta una cita vía `POST`/`PUT`/`GET /api/citas` (API real; sin calendario visual). |
 | **Precondiciones** | La mascota existe (CU-07). |
-| **Postcondiciones** | Éxito esperado: la cita queda visible en el calendario y puede modificarse o cancelarse. |
+| **Postcondiciones** | Éxito esperado: la cita queda persistida y puede consultarse, modificarse o eliminarse. |
 | **Requisitos relacionados** | REQ-F-015 |
 | **Historias relacionadas** | HU-014 |
-| **Estado** | Pendiente — diseño de datos disponible, sin código |
+| **Estado** | Parcial (revisado v1.0.0) — CRUD implementado vía `CitaController`; calendario interactivo sin implementar |
 
-**Descripción:** el sistema permite registrar, modificar y consultar citas
-veterinarias mediante un calendario interactivo, asociando cada cita a una
-mascota y a un veterinario. Módulo pendiente de implementación; el modelo
-de datos (tabla `Cita`) ya está diseñado.
+**Descripción:** el sistema permite registrar, modificar y consultar
+citas veterinarias, asociando cada cita a una mascota y a un veterinario
+(`CitaController`/`CitaService`, Unidad IV, verificado con
+`CitaControllerTest`). La **vista de calendario interactivo** que exige
+el enunciado original no existe: no hay componente de calendario en
+`frontend/src/app/features/`.
 
 **Flujo principal**
 1. El actor registra una cita indicando mascota, veterinario, fecha y hora.
-2. El sistema almacena la cita.
-3. La cita aparece en el calendario interactivo.
+2. El sistema almacena la cita (implementado).
+3. La cita aparece en un calendario interactivo (pendiente: no hay vista
+   de calendario en el frontend todavía).
 
-**Flujos alternativos:** modificación de una cita existente y cancelación
-de una cita existente (no detalladas en el SRS más allá de su mención).
-**Flujos de excepción:** no especificados en el SRS (módulo pendiente).
+**Flujos alternativos:** modificación de una cita existente y baja
+(`PUT`/`DELETE /api/citas/{id}`) — implementados y cubiertos por
+`CitaControllerTest`.
+**Flujos de excepción:** cubiertos por `CitaControllerTest` (veterinario
+inválido, mascota inexistente).
 
 **Reglas de negocio:** cada cita se asocia a exactamente una mascota y a un
 veterinario.

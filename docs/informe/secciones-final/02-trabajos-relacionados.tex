@@ -36,19 +36,101 @@ expl\'icitamente, no oculta.
 De un total de 15 candidatos revisados por Zaida (12 excluidos por no
 cumplir el criterio de elegibilidad), una verificaci\'on dirigida de 4
 candidatos por Jaime, y 13 candidatos por DOI verificados uno a uno por
-Fred (2 descartados: uno por fuera del rango temporal 2020--2026, otro por
-fuente inaccesible con HTTP~403), el conjunto final incluye \textbf{10
-estudios}, cumpliendo la meta original de $\geq$8--9. Los tres bloques
-(Zaida, Jaime, Fred) est\'an integrados en el checklist PRISMA cerrado
-(\texttt{docs/checklists/prisma2020.md}, cierre 2026-08-18) y en el
-diagrama de flujo regenerado que se muestra en la
-figura~\ref{fig:prisma-flow}.
+Fred, el conjunto final incluido en la \textbf{s\'intesis de trabajos
+relacionados de este cap\'itulo} suma \textbf{10 estudios} (Zaida~3 +
+Jaime~4 + Fred~3), cumpliendo la meta original de $\geq$8--9. Esos
+\textbf{10} son espec\'ificamente los estudios incluidos en esta
+s\'intesis narrativa --- no el total de referencias retenidas por los
+tres bloques en todo el informe.
+
+\textbf{Trazabilidad completa del bloque Fred (corregida 2026-09-04, tras
+auditor\'ia cruzada de Jaime y verificaci\'on de Fred).} La etapa de
+\emph{identificaci\'on} parti\'o de 13 candidatos por DOI (rango
+2020--2026). La etapa de \emph{verificaci\'on} (17-08-2026) descart\'o 2
+(Yang et al., 2018, ICSE --- fuera del rango temporal; un art\'iculo de
+TURCOMAT --- inaccesible, HTTP~403), dejando \textbf{11 referencias
+elegibles/retenidas}, las 11 con DOI verificado (ver
+\texttt{docs/investigacion/handoff-fred-referencias.bib}). Sobre esas 11,
+se aplic\'o una \textbf{clasificaci\'on editorial para este informe ---
+no un paso de exclusi\'on PRISMA}: \textbf{3} son trabajos relacionados
+de dominio/arquitectura y se incorporan a la s\'intesis de este cap\'itulo
+(Bucao et al., Llaneta et al., Zmaranda et al. ---
+secci\'on~\ref{sec:sintesis-trabajos-relacionados}); las otras
+\textbf{8 no fueron excluidas en ning\'un momento}: son referencias de
+apoyo metodol\'ogico/rendimiento citadas en otros cap\'itulos del informe
+(arquitectura de acceso a datos, cach\'e, despliegue contenerizado ---
+\texttt{nowicki2022comparative}, \texttt{zuchnik2021comparative},
+\texttt{siebyla2020impact}, \texttt{dhalla2021performance},
+\texttt{godinho2024performance}, \texttt{zulfa2020caching},
+\texttt{yang2021large}, \texttt{ghatrehsamani2020art}), fuera del alcance
+de la s\'intesis narrativa de trabajos relacionados pero citadas con
+funci\'on propia en el informe. Los tres bloques est\'an integrados en el
+checklist PRISMA (\texttt{docs/checklists/prisma2020.md}) y en el
+diagrama de flujo que se muestra en la figura~\ref{fig:prisma-flow}.
 
 % EVIDENCIA-COMPARTIDA-PRISMA
 % Ruta esperada: figuras/zaida/06-prisma-flow-diagram.png
 \evidencia{figuras/zaida/06-prisma-flow-diagram.png}%
-{Diagrama de flujo PRISMA de identificaci\'on y selecci\'on de estudios (regenerado 2026-08-18). Bloque Zaida completamente cuantificado (15 identificados $\to$ 12 excluidos $\to$ 3 incluidos); bloque Fred completamente cuantificado (13 candidatos por DOI $\to$ 2 excluidos $\to$ 3 incluidos); bloque Jaime con el conteo final de incluidos (4), sin registro de candidatos excluidos (\'unico gap declarado que persiste en el diagrama, se\~nalado con l\'inea punteada).}%
+{Diagrama de flujo PRISMA de identificaci\'on y selecci\'on de estudios (regenerado 2026-09-04, trazabilidad del bloque Fred corregida y verificada por Fred). Bloque Zaida completamente cuantificado (15 identificados $\to$ 12 excluidos $\to$ 3 incluidos); bloque Fred completamente cuantificado (identificaci\'on: 13 candidatos $\to$ verificaci\'on, 17-08-2026: 2 descartados $\to$ 11 elegibles/retenidos $\to$ clasificaci\'on editorial para este informe, no un paso de exclusi\'on PRISMA: 3 trabajos relacionados + 8 de apoyo metodol\'ogico/rendimiento, estos \'ultimos citados en otros cap\'itulos, no en la s\'intesis de n=10); bloque Jaime con el conteo final de incluidos (4), sin registro de candidatos excluidos (\'unico gap que persiste, se\~nalado con l\'inea punteada).}%
 {fig:prisma-flow}
+
+\section{Cadena de búsqueda, fuentes y ventana temporal por bloque}
+\label{sec:cadena-busqueda-trabajos-relacionados}
+
+Los tres bloques usaron estrategias de búsqueda distintas entre sí ---
+diferencia declarada explícitamente aquí, no oculta detrás del checklist.
+A continuación, la cadena exacta (cuando existió), las bases/fuentes y la
+ventana temporal aplicada por cada uno, tal como quedaron registradas el
+2026-08-17 en \texttt{docs/informe/borradores/zaida/estudios-primarios-zaida.md},
+\texttt{docs/informe/borradores/jaime/trabajos-relacionados.md} y
+\texttt{docs/investigacion/handoff-fred-trabajos-relacionados.md}
+respectivamente (fuente primaria de cada bloque; el detalle completo,
+incluida la tabla de exclusiones, sigue disponible en
+\texttt{docs/checklists/prisma2020.md}, sección 4, ítems 6--7).
+
+\textbf{Bloque Zaida (requisitos, usabilidad, dominio veterinario).}
+Bases consultadas: IEEE Xplore, ACM Digital Library, Scopus, Google
+Scholar. Fecha de búsqueda: 2026-08-17. \textbf{Sin ventana temporal
+declarada} (no se aplicó filtro de año como criterio formal). Tres
+cadenas de búsqueda booleanas exactas, una por sub-tema:
+
+\begin{quote}
+\texttt{"requirements elicitation" AND "systematic literature review"} \\
+\texttt{"system usability scale" AND web application} \\
+\texttt{veterinary management system web application case study}
+\end{quote}
+
+Resultado: 15 candidatos revisados, 12 excluidos por no cumplir el
+criterio de elegibilidad de la sección anterior, 3 incluidos.
+
+\textbf{Bloque Jaime (arquitectura, seguridad, rendimiento, calidad).}
+\textbf{No usó una cadena booleana única.} Se auditó primero la
+bibliografía ya existente en \texttt{docs/informe/referencias.bib} (15
+entradas, todas normas/documentación oficial, ninguna un trabajo
+académico de \emph{related work}) y, al no encontrar ahí trabajos
+académicos pertinentes, se hizo verificación dirigida por tema
+(metodología ágil de gestión veterinaria, pruebas de rendimiento web,
+vulnerabilidades JWT, aplicación práctica de ISO/IEC~25010) contra
+Crossref (\texttt{api.crossref.org}) y páginas oficiales de
+editorial/conferencia. Fecha: 2026-08-17. \textbf{Sin ventana temporal
+declarada.} Esta es una diferencia metodológica real frente al bloque de
+Zaida, no un vacío de documentación: se trató de verificación de
+referencias ya identificadas por relevancia temática directa, no de una
+búsqueda exploratoria amplia que requiriera una cadena. Resultado: 4
+estudios incluidos; el conteo de candidatos evaluados y excluidos antes
+de esos 4 no fue registrado por Jaime (limitación declarada en la
+sección~\ref{sec:limitaciones-trabajos-relacionados} y en el diagrama de
+flujo, figura~\ref{fig:prisma-flow}).
+
+\textbf{Bloque Fred (arquitectura de datos, rendimiento).} Tampoco usó
+una cadena booleana: verificación dirigida de DOI reales, uno a uno,
+abriendo cada \texttt{https://doi.org/<DOI>} y confirmando título,
+autores y año contra Crossref/IEEE/ACM/IOP. Fecha: 2026-08-17.
+\textbf{Única ventana temporal explícita de los tres bloques: 2020--2026}
+(criterio propio de Fred, ``máx. 5--6 años''). Resultado: 13 candidatos
+por DOI, 2 descartados (Yang et al., ICSE 2018, DOI
+\texttt{10.1145/3180155.3180194} --- fuera del rango 2020--2026; un
+artículo de TURCOMAT --- inaccesible, HTTP~403), 3 incluidos.
 
 \section{Estudios incluidos}
 
@@ -189,7 +271,8 @@ procedimientos almacenados ni agregaciones equivalentes a
   \end{tabular}
 \end{table}
 
-Tomados individualmente, los diez estudios eval\'uan siempre \textbf{una
+Como resume la tabla~\ref{tab:sintesis-relacionados}, tomados
+individualmente los diez estudios eval\'uan siempre \textbf{una
 sola dimensi\'on a la vez}: elicitaci\'on de requisitos sin evaluar el
 producto resultante, un benchmark de usabilidad sin aplicarlo a un sistema
 concreto, el dominio veterinario sin evaluaci\'on multim\'etrica (tres
@@ -227,6 +310,16 @@ no de calidad relativa del artefacto.
     este gap se se\~nala expl\'icitamente con l\'inea punteada en el
     diagrama de flujo regenerado (figura~\ref{fig:prisma-flow}), \'unico
     bloque que a\'un no est\'a completamente cuantificado.
+  \item \textbf{Inconsistencia num\'erica del bloque de Fred (detectada en
+    auditor\'ia cruzada de Jaime el 2026-09-04, corregida el mismo d\'ia
+    con la trazabilidad que Fred confirm\'o).} Una versi\'on anterior de
+    este cap\'itulo y del diagrama de flujo reportaba, para el bloque
+    Fred, ``13 candidatos $\to$ 2 excluidos $\to$ 3 incluidos'', dejando 8
+    candidatos sin categor\'ia expl\'icita. La trazabilidad real es ``13
+    identificados $\to$ 2 descartados $\to$ 11 retenidos $\to$ 3 trabajos
+    relacionados + 8 de apoyo metodol\'ogico/rendimiento (no excluidos)'',
+    ya reflejada en el p\'arrafo de trazabilidad de Fred arriba y en la
+    figura~\ref{fig:prisma-flow}.
   \item La selecci\'on no tuvo un segundo revisor independiente por
     estudio: cada bloque fue filtrado por una sola persona sobre su propio
     tema, sin validaci\'on cruzada entre integrantes --- recurso real de un

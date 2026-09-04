@@ -1,0 +1,16 @@
+# SHA-256 de los artefactos de la corrida ZAP AUTENTICADA LOCAL
+# (Fase Jaime 2B). Calculado con "sha256sum" desde la raiz del
+# repositorio. NO incluye el digest de la imagen de contenedor GHCR del
+# backend (ese digest se documenta por separado en README.md /
+# docs/informe/secciones-final/09-despliegue-reproducibilidad.tex; no se
+# mezcla con estos hashes).
+#
+# Verificar con: sha256sum -c docs/mediciones/sec/zap/SHA256SUMS-AUTH-LOCAL.txt
+# (ejecutar desde la raiz del repositorio)
+96284d9257686fc3d01bf024b93bb82e412e95372276b22894ec685b28ef5772 *docs/mediciones/sec/zap/zap-authenticated-local-report.json
+1a8c8c5586210e974fc23ac6cee867ecaafaa998b22088b6e6185da8f05c716f *docs/mediciones/sec/zap/zap-authenticated-local-report.html
+c604c30e548057a7cef04e5c3225699f03b959b02072cd7eaba3273262926b79 *docs/mediciones/sec/zap/zap-authenticated-local-report.xml
+f9730304401071f47dbbd488b6236fe6cc8d45f2eeafb8c4e0a1604aae2a2747 *docs/mediciones/sec/zap/zap-authenticated-local.yaml
+4c8bd77508888f09cdd43a39db41ff345ecf6e8c93c04d34b9f55350926752db *scripts/run-zap-authenticated-local.sh
+6327942037056a9997260b94e6e8a6d0bb73f29a60920396b2d71b796b97badc *docs/mediciones/sec/zap/RUN-METADATA-AUTH-LOCAL.txt
+bf1657eab2b20ce1d6a26d611391f8486eb117d69ee8a91a27f80f7866f6bc79 *docs/mediciones/sec/zap/summary-authenticated-local.json

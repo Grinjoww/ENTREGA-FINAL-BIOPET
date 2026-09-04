@@ -2,10 +2,12 @@
 \label{cap:arquitectura}
 
 Este cap\'itulo integra la documentaci\'on arquitect\'onica versionada en
-\texttt{docs/diagrams/} (modelo C4~\cite{c4-model}) y las decisiones de
-arquitectura relevantes (\texttt{docs/adr/}), actualizada para reflejar el
-estado v1.0.0 (PostgreSQL~18/Valkey~8 en producci\'on, acceso JPA formal a
-procedimientos almacenados).
+\texttt{docs/diagrams/} (modelo C4~\cite{c4-model}, con
+\texttt{docs/diagrams/workspace.dsl} como fuente Structurizr DSL \'unica de
+los tres niveles) y las decisiones de arquitectura relevantes
+(\texttt{docs/adr/}), actualizada para reflejar el estado v1.0.0
+(PostgreSQL~18/Valkey~8 en producci\'on, acceso JPA formal a procedimientos
+almacenados).
 
 \section{Arquitectura general}
 
@@ -21,15 +23,33 @@ como para la cach\'e de lecturas de mascotas. Todo el sistema se
 levanta mediante Docker Compose y un \texttt{Makefile} con un \'unico
 comando reproducible (\texttt{make up}).
 
+\section{C4 Nivel 1 --- Contexto}
+\label{sec:c4-nivel-1}
+
+El diagrama de contexto (\texttt{docs/diagrams/c4-contexto/},
+figura~\ref{fig:c4-nivel-1-final}) sit\'ua a BIOPET como una \'unica caja
+de software, frente a los cuatro roles reales
+del sistema (\texttt{ROLE\_ADMIN}, \texttt{ROLE\_VETERINARIO},
+\texttt{ROLE\_AUXILIAR}, \texttt{ROLE\_DUENO}) y al \'unico sistema externo
+real de v1.0.0: \emph{API Ninjas (Animals API)}, consumido desde
+\texttt{ExternalApiController}/\texttt{ExternalApiService} con cach\'e de
+respuesta en Redis/Valkey.
+
+% EVIDENCIA-COMPARTIDA-C4-L1
+% Ruta esperada: figuras/compartidas/c4-contexto.png
+\evidencia{figuras/compartidas/c4-contexto.png}%
+{Diagrama C4 Nivel 1 (contexto) de BIOPET: actores por rol y el sistema externo API Ninjas.}%
+{fig:c4-nivel-1-final}
+
 \section{C4 Nivel 2 --- Contenedores}
 \label{sec:c4-nivel-2}
 
-El diagrama de contenedores (\texttt{docs/diagrams/c4-contenedores/})
-describe los cuatro contenedores del sistema: el frontend Angular, el
-backend Spring Boot, PostgreSQL y Redis/Valkey, junto con los protocolos
-reales entre ellos (HTTPS/JSON con cookies entre frontend y backend; JDBC
-entre backend y PostgreSQL; el cliente Redis de Spring Data entre backend
-y Redis/Valkey).
+El diagrama de contenedores (\texttt{docs/diagrams/c4-contenedores/},
+figura~\ref{fig:c4-nivel-2-final}) describe los cuatro contenedores del
+sistema: el frontend Angular, el backend Spring Boot, PostgreSQL y
+Redis/Valkey, junto con los protocolos reales entre ellos (HTTPS/JSON con
+cookies entre frontend y backend; JDBC entre backend y PostgreSQL; el
+cliente Redis de Spring Data entre backend y Redis/Valkey).
 
 % EVIDENCIA-COMPARTIDA-C4-L2
 % Ruta esperada: figuras/compartidas/c4-contenedores.png
@@ -40,9 +60,10 @@ y Redis/Valkey).
 \section{C4 Nivel 3 --- Componentes del backend}
 \label{sec:c4-nivel-3}
 
-El diagrama de componentes del backend fue elaborado mediante inspecci\'on
-directa del c\'odigo fuente (constructores, llamadas directas,
-configuraci\'on de Spring), no por convenci\'on de nombres. A los
+El diagrama de componentes del backend (figura~\ref{fig:c4-nivel-3-final})
+fue elaborado mediante inspecci\'on directa del c\'odigo fuente
+(constructores, llamadas directas, configuraci\'on de Spring), no por
+convenci\'on de nombres. A los
 componentes ya documentados en la Tercera Entrega (controladores de
 autenticaci\'on, mascotas y usuario; servicios de seguridad; manejo de
 errores; persistencia; infraestructura del servidor) se suman, en v1.0.0,
@@ -114,6 +135,10 @@ vuelve a crear como \texttt{PROCEDURE} con su firma final. Flyway aplica
 \section{Decisiones de arquitectura relevantes (ADR)}
 \label{sec:adr-relevantes-final}
 
+La tabla~\ref{tab:adr-relevantes-final} resume las decisiones de
+arquitectura vigentes en \texttt{docs/adr/}, referenciadas a lo largo de
+este cap\'itulo:
+
 \begin{table}[H]
   \centering
   \caption{ADR vigentes del repositorio.}
@@ -160,7 +185,8 @@ Cada subcaracter\'istica se declara \textbf{evaluada} (con ruta de
 evidencia citada) o \textbf{no evaluada directamente} cuando no existe
 medici\'on espec\'ifica --- por ejemplo, \emph{Interoperability} m\'as
 all\'a de la API REST documentada con OpenAPI, o \emph{Adaptability} m\'as
-all\'a de la configuraci\'on externalizada por variables de entorno.
+all\'a de la configuraci\'on externalizada por variables de entorno. La
+tabla~\ref{tab:iso25010-resumen} resume ese mapeo.
 
 \begin{table}[H]
   \centering

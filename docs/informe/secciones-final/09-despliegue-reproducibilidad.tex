@@ -89,11 +89,13 @@ docker pull ghcr.io/grinjoww/entregafinal-biopet-backend@sha256:ef1e857a95a307a1
 15ebe01599a41506eab824808b70a3c8e317dcc55bef5163
 \end{verbatim}
 
-Las etiquetas \texttt{1.0.0} y \texttt{latest} se publicar\'an
-autom\'aticamente por el mismo workflow cuando se cree y publique el tag
-Git \texttt{v1.0.0} (fuera del alcance de esta fase de redacci\'on del
-informe, secci\'on~\ref{sec:pendientes-honestos-publicacion}); hasta
-entonces, \texttt{sha-fe2f033} es la \'unica etiqueta real y verificable.
+El tag Git \texttt{v1.0.0} ya fue creado y publicado (apunta al commit
+\texttt{0d5cd52}, estado hist\'orico de cierre de la Entrega Final; ver
+secci\'on~\ref{sec:pendientes-honestos-publicacion}). Las etiquetas
+\texttt{1.0.0} y \texttt{latest} en GHCR se publican autom\'aticamente
+por el mismo workflow ante ese \emph{push} de tag; \texttt{sha-fe2f033}
+sigue siendo, adem\'as, una etiqueta t\'ecnica real y verificable ligada
+al commit espec\'ifico de la imagen publicada.
 
 \section{Archivado permanente en Zenodo}
 
@@ -119,22 +121,30 @@ Esto cierra la observaci\'on OBS-10 (archivado en Zenodo pendiente,
 Tercera Entrega), registrada como CERRADA en
 \texttt{docs/observaciones/OBSERVACIONES.md}.
 
-\section{Pendientes honestos de publicaci\'on}
+\section{Estado de publicaci\'on del tag hist\'orico}
 \label{sec:pendientes-honestos-publicacion}
 
-Conforme al alcance expl\'icito de esta tarea de redacci\'on del informe,
-\textbf{no se crea aqu\'i el tag \texttt{v1.0.0} ni un GitHub Release}. A
-la fecha de cierre de este documento:
+El tag Git \texttt{v1.0.0} \textbf{ya existe y ya fue publicado}: apunta
+al commit \texttt{0d5cd52}
+(verificable con \texttt{git rev-list -n 1 v1.0.0}), que registra el
+estado hist\'orico de cierre de la Entrega Final. Ese tag es inmutable:
+las correcciones de retroalimentaci\'on y de recalificaci\'on posteriores
+a su publicaci\'on (incluida la redacci\'on de este propio p\'arrafo) se
+realizan sobre commits subsiguientes de la rama de trabajo, sin mover,
+borrar ni recrear \texttt{v1.0.0}. A la fecha de cierre de este documento:
 
 \begin{itemize}[nosep]
-  \item El tag Git \texttt{v1.0.0} todav\'ia no existe en el repositorio.
-  \item Al crearse y publicarse (\texttt{git push --tags}), el workflow
-    \texttt{ghcr-publish.yml} publicar\'a autom\'aticamente las etiquetas
+  \item El tag Git \texttt{v1.0.0} existe en el repositorio y apunta al
+    commit \texttt{0d5cd52}.
+  \item Al publicarse ese tag (\texttt{git push --tags}), el workflow
+    \texttt{ghcr-publish.yml} publica autom\'aticamente las etiquetas
     \texttt{1.0.0} y \texttt{latest} en GHCR, sin intervenci\'on manual
     adicional.
-  \item \texttt{CITATION.cff} declara \texttt{version: 1.0.0} pero
-    deliberadamente sin \texttt{date-released}, para no afirmar un release
-    que a\'un no ha ocurrido.
+  \item \texttt{CITATION.cff} declara \texttt{version: 1.0.0} junto con
+    \texttt{date-released}, fijado con la fecha real de creaci\'on de ese
+    tag (\texttt{git for-each-ref refs/tags/v1.0.0 --format=\%(creatordate:iso8601)}),
+    en vez de quedar deliberadamente vac\'io como en versiones anteriores
+    de este documento.
   \item La visibilidad p\'ublica del paquete GHCR (para que terceros puedan
     hacer \texttt{docker pull} sin autenticarse) qued\'o documentada como
     pendiente de confirmaci\'on expl\'icita en

@@ -30,10 +30,15 @@ sin minimizar ninguna amenaza.
     acad\'emico; el \'unico entorno equivalente a producci\'on es el
     despliegue real en el plan gratuito de Render, que tiene sus propias
     limitaciones (secci\'on~\ref{sec:limitacion-30-dias}).
-  \item La muestra SUS ($n=18$, reclutada por conveniencia) no es
-    necesariamente representativa de usuarios finales de una cl\'inica
-    veterinaria real; un tama\~no muestral mayor reduce el margen del
-    intervalo de confianza pero no cambia el m\'etodo de reclutamiento.
+  \item La muestra SUS ($n=18$, reclutada por conveniencia dentro del
+    c\'irculo cercano al equipo) no es necesariamente representativa de
+    usuarios finales de una cl\'inica veterinaria real; un tama\~no
+    muestral mayor reduce el margen del intervalo de confianza pero no
+    cambia el m\'etodo de reclutamiento. Justificaci\'on completa de
+    reclutamiento, poblaci\'on de origen, sesgos introducidos y l\'imites
+    de generalizaci\'on, con respaldo en Ralph, Baltes et al.
+    (2021)~\cite{ralph2021-empirical-standards}, en la
+    secci\'on~\ref{sec:muestreo-sus-metodologia}.
   \item Lighthouse depende del entorno de ejecuci\'on (hardware, red,
     versi\'on del navegador); sus puntajes no son un valor absoluto
     reproducible en cualquier m\'aquina.
@@ -134,9 +139,29 @@ ese periodo), decisi\'on que excede el alcance de esta entrega acad\'emica.
     cuantificados; el \'unico gap que persiste es que Jaime no document\'o
     su conteo de candidatos evaluados/excluidos, se\~nalado con l\'inea
     punteada en el propio diagrama (cap\'itulo~\ref{cap:trabajos-relacionados}).
-  \item \textbf{Tag \texttt{v1.0.0} y GitHub Release todav\'ia no creados}
-    (secci\'on~\ref{sec:pendientes-honestos-publicacion}), fuera del
-    alcance expl\'icito de esta tarea de redacci\'on del informe.
+  \item \textbf{Tag \texttt{v1.0.0} y GitHub Release: contexto hist\'orico
+    y estado actual.} En el momento en que se redact\'o originalmente esta
+    limitaci\'on, ni el tag Git \texttt{v1.0.0} ni un GitHub Release
+    exist\'ian todav\'ia, por quedar ambos expl\'icitamente fuera del
+    alcance de esa fase de redacci\'on del informe. Esa parte de la
+    limitaci\'on qued\'o \textbf{resuelta solo parcialmente} y de forma
+    distinta para cada artefacto, que \textbf{no deben confundirse}:
+    \begin{itemize}[nosep]
+      \item \textbf{Tag Git \texttt{v1.0.0}:} ya fue creado y publicado;
+        apunta al commit \texttt{0d5cd52} (creado el 2026-08-18). Se
+        conserva \textbf{inmutable} como referencia hist\'orica del cierre
+        de la Entrega Final; las correcciones posteriores de
+        retroalimentaci\'on y recalificaci\'on se realizan sobre
+        \texttt{main}, sin mover, borrar ni recrear ese tag.
+      \item \textbf{GitHub Release:} a la fecha de cierre de este
+        documento \textbf{sigue sin publicarse} en la p\'agina
+        \emph{Releases} del repositorio. La existencia del tag Git no
+        implica autom\'aticamente un GitHub Release publicado; son dos
+        artefactos distintos de GitHub, y esta limitaci\'on permanece
+        vigente para el segundo.
+    \end{itemize}
+    (Ver secci\'on~\ref{sec:pendientes-honestos-publicacion} para el
+    detalle t\'ecnico.)
 \end{itemize}
 
 Ninguna de estas limitaciones se presenta como resuelta; todas condicionan

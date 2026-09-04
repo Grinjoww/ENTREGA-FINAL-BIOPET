@@ -1,7 +1,7 @@
-# Diccionario de datos de mediciones — BIOPET (Tercera Entrega v0.9.0-rc)
+# Diccionario de datos de mediciones — BIOPET (Entrega Final v1.0.0)
 
 Cubre las variables de cada archivo crudo de mediciones bajo `docs/mediciones/`,
-según lo exige el Bloque E.3 de la guía de la Tercera Entrega: nombre, tipo de
+según lo exige el Bloque E.3 de la guía de la Entrega Final: nombre, tipo de
 dato, unidad, rango esperado y significado.
 
 Este documento se organiza por sub-bloque de evidencia. Cada integrante agrega
@@ -284,18 +284,15 @@ acción requerida.
 
 ## Cobertura JaCoCo (`Backend/target/site/jacoco/`, resumida en `docs/mediciones/sec/jacoco-summary.md`) — responsable: Jaime
 
-Corrección de ruta: esta sección originalmente referenciaba
-`docs/mediciones/jacoco/`, una carpeta que no existe en el repositorio. La
-fuente real de los datos crudos es local y no versionada:
-`Backend/target/site/jacoco/jacoco.xml` (reporte máquina-legible, usado para
-las cifras de esta sección), `Backend/target/site/jacoco/index.html` (reporte
-navegable) y `Backend/target/jacoco.exec` (datos crudos binarios). El resumen
-versionado equivalente está en `docs/mediciones/sec/jacoco-summary.md`. La
-configuración del plugin (exclusiones y regla de umbral) está en
-`Backend/pom.xml` (`jacoco-maven-plugin`, ejecuciones `prepare-agent`,
-`report` y `check`). **`Backend/target/` no se versiona** (excluido por
-`.gitignore`); estos artefactos se regeneran en cada `mvn clean verify` y no
-deben copiarse al repositorio.
+Fuente real de los datos crudos: `Backend/target/site/jacoco/jacoco.xml` (reporte
+máquina-legible), `Backend/target/site/jacoco/index.html` (reporte navegable) y
+`Backend/target/jacoco.exec` (datos crudos binarios). El resumen versionado
+equivalente está en `docs/mediciones/sec/jacoco-summary.md`. La configuración
+del plugin (exclusiones y regla de umbral) está en `Backend/pom.xml`
+(`jacoco-maven-plugin`, ejecuciones `prepare-agent`, `report` y `check`).
+**`Backend/target/` no se versiona** (excluido por `.gitignore`); estos
+artefactos se regeneran en cada `mvn clean verify` y no deben copiarse al
+repositorio.
 
 | Variable | Tipo de dato | Unidad | Rango esperado | Significado |
 |---|---|---|---|---|
@@ -305,20 +302,20 @@ deben copiarse al repositorio.
 | total | Entero | elementos del tipo de contador | = covered + missed | Total de elementos analizados de ese tipo, tras aplicar las exclusiones del plugin. |
 | covered_ratio | Decimal | proporción | 0–1 | `covered / total`. Es el valor que compara `jacoco:check` contra `minimum_required_ratio` (regla `COVEREDRATIO`). |
 | covered_percentage | Decimal | % | 0–100 | `covered_ratio × 100`; forma en que se reportan las cifras en `jacoco-summary.md`. |
-| minimum_required_ratio | Decimal | proporción | 0.60 (LINE, BRANCH, COMPLEXITY) | Umbral mínimo configurado en la regla `BUNDLE` de `Backend/pom.xml`; no existe umbral configurado para INSTRUCTION, METHOD ni CLASS. |
+| minimum_required_ratio | Decimal | proporción | 0.70 (LINE), 0.70 (BRANCH), 0.60 (COMPLEXITY) | Umbral mínimo configurado en la regla `BUNDLE` de `Backend/pom.xml` (Entrega Final); no existe umbral configurado para INSTRUCTION, METHOD ni CLASS. |
 | check_result | Texto (categórico) | — | {PASS, FAIL} | Resultado de `jacoco:check` para un contador con regla: PASS si `covered_ratio ≥ minimum_required_ratio`, FAIL en caso contrario (hace fallar `mvn verify` con el listado de clases incumplidoras). |
 
-### Resultados medidos actuales
+### Resultados medidos actuales (Entrega Final v1.0.0)
 
 Verificados directamente contra `Backend/target/site/jacoco/jacoco.xml`
 generado localmente (contadores de nivel `report`, alcance `BUNDLE`) y
 contra `docs/mediciones/sec/jacoco-summary.md`:
 
-| counter_type | covered | missed | total | covered_percentage | Regla de umbral |
+| counter_type | covered | missed | total | covered_percentage | Regla de umbral (Entrega Final) |
 |---|---|---|---|---|---|
-| LINE | 534 | 23 | 557 | 95.87 % | ≥ 60 % |
-| BRANCH | 103 | 31 | 134 | 76.87 % | ≥ 60 % |
-| COMPLEXITY | 172 | 43 | 215 | 80.00 % | ≥ 60 % |
+| LINE | 885 | 79 | 964 | 91.80 % | ≥ 70 % |
+| BRANCH | 181 | 47 | 228 | 79.39 % | ≥ 70 % |
+| COMPLEXITY | 202 | 81 | 283 | 71.38 % | ≥ 60 % |
 | INSTRUCTION | 2225 | 148 | 2373 | 93.76 % | Sin regla de fallo (informativo) |
 | METHOD | 133 | 15 | 148 | 89.86 % | Sin regla de fallo (informativo) |
 | CLASS | 26 | 0 | 26 | 100.00 % | Sin regla de fallo (informativo) |
@@ -327,8 +324,8 @@ contra `docs/mediciones/sec/jacoco-summary.md`:
 
 | Variable | Tipo de dato | Unidad | Rango esperado | Significado |
 |---|---|---|---|---|
-| tests_run | Entero | pruebas | 109 | Total de pruebas ejecutadas por `mvn clean verify`, verificado sumando `Tests run:` de todos los `Backend/target/surefire-reports/*.txt` generados localmente (109/109, 0 fallos, 0 errores, reejecutado el 2026-08-01). |
-| test_failures | Entero | pruebas | 0 | Suma de `Failures:` de los mismos reportes. |
+| tests_run | Entero | pruebas | 205 | Total de pruebas ejecutadas por `mvn clean verify` (tag `v1.0.0`), verificado por reproducción independiente. |
+| test_failures | Entero | pruebas | 0 | Suma de `Failures:` de los reportes Surefire. |
 | test_errors | Entero | pruebas | 0 | Suma de `Errors:` de los mismos reportes. |
 | test_skipped | Entero | pruebas | 0 | Suma de `Skipped:` de los mismos reportes. |
 | coverage_check_met | Booleano | — | true | Refleja el mensaje real `[INFO] All coverage checks have been met.` de la ejecución `jacoco:check`. |
@@ -338,8 +335,8 @@ contra `docs/mediciones/sec/jacoco-summary.md`:
 
 - El umbral automático de `jacoco:check` aplica a un único `rule` de alcance
   `BUNDLE` (todo el módulo `biopet-backend`, no por paquete ni por clase).
-- Solo LINE, BRANCH y COMPLEXITY tienen `minimum=0.60` configurado; si
-  cualquiera de los tres cae por debajo, `mvn verify` falla.
+- LINE, BRANCH y COMPLEXITY tienen `minimum=0.70/0.70/0.60` configurado
+  (Entrega Final); si cualquiera cae por debajo, `mvn verify` falla.
 - INSTRUCTION, METHOD y CLASS se informan en `jacoco.xml`/`jacoco-summary.md`
   porque ayudan a interpretar el reporte, pero no participan en la regla de
   fallo del build.

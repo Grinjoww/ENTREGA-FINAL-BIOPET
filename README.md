@@ -177,13 +177,34 @@ Ejecuta, en orden y con parada inmediata ante el primer fallo:
 
 ## Estado técnico verificado
 
-| Validación | Resultado |
+Las cifras de pruebas y cobertura se reportan en **dos columnas** porque
+corresponden a dos puntos distintos del proyecto, y mezclarlas sería
+engañoso: la columna *tag `v1.0.0`* es la evidencia histórica de la Entrega
+Final (commit `0d5cd52`), y la columna *HEAD recalificación* es la ejecución
+real de la rama de recalificación, que añade pruebas nuevas sobre aquella
+base. Ninguna sustituye a la otra.
+
+| Validación | Histórico — tag `v1.0.0` (`0d5cd52`) | HEAD de recalificación |
+|---|---|---|
+| Tests backend | 205 / 205 | **217 / 217** |
+| Failures | 0 | 0 |
+| Errors | 0 | 0 |
+| Skipped | 0 | 0 |
+| Resultado | `BUILD SUCCESS` | `BUILD SUCCESS` |
+| JaCoCo LINE | 91.80 % | **90.22 %** (876/971) |
+| JaCoCo BRANCH | 79.39 % | **75.85 %** (179/236) |
+
+Ambas columnas superan el gate obligatorio de JaCoCo (≥ 70 % LINE y BRANCH,
+`Backend/pom.xml`). La cobertura del HEAD es algo menor que la del tag porque
+la recalificación incorporó código nuevo (validaciones y configuración) junto
+con sus pruebas, sin re-cubrir cada rama añadida; la diferencia está medida,
+no estimada. Las 12 pruebas adicionales (205 → 217) provienen de las clases
+incorporadas durante la recalificación. Reproducción exacta del HEAD:
+`cd frontend && npm ci && npm run build` y después `cd Backend && mvn clean verify`
+(ese orden importa: ver [Reproducibilidad](#reproducibilidad)).
+
+| Otras validaciones | Resultado |
 |---|---|
-| Tests backend | 205 / 205 |
-| Failures | 0 |
-| Errors | 0 |
-| JaCoCo LINE | 91.8 % |
-| JaCoCo BRANCH | 79.4 % |
 | Flyway | V1 → V6 |
 | Trazabilidad | 38 / 38 |
 | SQL dinámico inseguro | 0 hallazgos |
@@ -387,10 +408,32 @@ El comando principal de reproducción técnica es:
 make all
 ```
 
-Requiere Docker, Java, Maven, Node/npm, GNU Make y Bash (para los scripts
+Requiere Docker, Java 21, Maven, Node/npm, GNU Make y Bash (para los scripts
 `.sh` de `scripts/`). La referencia de reproducibilidad es Linux/GitHub
 Actions; el Makefile evita construcciones específicas de un único shell
 para poder ejecutarse también en Windows con Git Bash en el `PATH`.
+
+Los targets de análisis (`make stats`, `make perf`) y la regeneración de
+figuras necesitan además **Python 3** con las librerías declaradas en
+[`tooling/requirements.txt`](tooling/requirements.txt):
+
+```bash
+python -m pip install -r tooling/requirements.txt
+```
+
+`make check-prereqs` verifica todo lo anterior (incluidas esas librerías) e
+indica qué falta antes de intentar una reproducción completa.
+
+**El orden importa:** dentro de `make all`, el target `frontend` se ejecuta
+**antes** que `backend`, porque la suite del backend incluye
+`FrontendResponsivenessTest`, que valida el build real del frontend en
+`frontend/dist/` (directorio no versionado). Al reproducir a mano hay que
+respetar ese mismo orden: primero `npm ci && npm run build` en `frontend/`,
+después `mvn clean verify` en `Backend/`. `make all` ya lo hace por sí solo.
+Las pruebas no requieren definir `JWT_SECRET`: toman el secreto de prueba de
+`Backend/src/test/resources/application-test.yml` mediante el perfil `test`,
+mientras que `application.yml` sigue exigiendo `${JWT_SECRET}` sin valor por
+defecto para ejecución real.
 
 ---
 

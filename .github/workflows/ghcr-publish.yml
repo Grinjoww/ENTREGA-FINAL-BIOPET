@@ -8,7 +8,7 @@ name: Publicar imagen backend en GHCR
 #
 # Dos modos, exactamente como pide la Entrega Final:
 #
-#   1. ANTES DEL RELEASE (tag v1.0.0 todavia no existe): disparo manual
+#   1. ANTES DEL RELEASE (tag v1.0.0 ya existe en 0d5cd52): disparo manual
 #      (workflow_dispatch) desde la pestana Actions de GitHub. Publica
 #      SOLO una etiqueta tecnica basada en el SHA corto del commit
 #      (ej. "sha-abc1234"), nunca "latest" ni un numero de version --

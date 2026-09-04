@@ -24,10 +24,17 @@ en esta fase de cierre), reporta:
   \end{tabular}
 \end{table}
 
-% EVIDENCIA-JAIME-01
-% Ruta esperada: figuras/jaime/01-maven-verify.png
-\evidencia{figuras/jaime/01-maven-verify.png}%
-{Salida real de \texttt{mvn clean verify}: pruebas del backend con \texttt{BUILD SUCCESS}.}%
+La figura~\ref{fig:maven-verify-final} resume este resultado, regenerada
+autom\'aticamente desde ese mismo log crudo versionado mediante
+\texttt{docs/informe/scripts/generar-figuras-evidencia.py}, sin capturas
+manuales.
+
+% EVIDENCIA-JAIME-01 (regenerada automaticamente; sustituye a la figura
+% historica figuras/jaime/01-maven-verify.png, que se conserva en el
+% repositorio como artefacto historico pero ya no se referencia aqui)
+% Ruta esperada: figuras/jaime/07-maven-verify-final.png
+\evidencia{figuras/jaime/07-maven-verify-final.png}%
+{Resultado real de \texttt{mvn clean verify} sobre el commit del tag \texttt{v1.0.0}: 205 pruebas, 0 fallos, 0 errores, 0 omitidas, \texttt{BUILD SUCCESS} (regenerada por \texttt{docs/informe/scripts/generar-figuras-evidencia.py} desde el log crudo versionado).}%
 {fig:maven-verify-final}
 
 \section{Cobertura JaCoCo}
@@ -53,10 +60,17 @@ autom\'atico configurado en \texttt{Backend/pom.xml} se elev\'o de 60\,\%
   \end{tabular}
 \end{table}
 
-% EVIDENCIA-JAIME-02
-% Ruta esperada: figuras/jaime/02-jacoco-resumen.png
-\evidencia{figuras/jaime/02-jacoco-resumen.png}%
-{Resumen navegable de JaCoCo con la cobertura por paquete.}%
+La figura~\ref{fig:jacoco-resumen-final} muestra LINE y BRANCH frente al
+umbral de 70\,\% (COMPLEXITY, con umbral distinto de 60\,\%, no se
+incluye), regenerada autom\'aticamente desde \texttt{jacoco.csv} (45
+clases) mediante el mismo script.
+
+% EVIDENCIA-JAIME-02 (regenerada automaticamente; sustituye a la figura
+% historica figuras/jaime/02-jacoco-resumen.png, que se conserva en el
+% repositorio como artefacto historico pero ya no se referencia aqui)
+% Ruta esperada: figuras/jaime/08-jacoco-resumen-final.png
+\evidencia{figuras/jaime/08-jacoco-resumen-final.png}%
+{Cobertura JaCoCo real sobre las 45 clases del backend: LINE 91{,}80\,\% y BRANCH 79{,}39\,\%, ambas por encima del umbral de calidad de 70\,\% (regenerada por \texttt{docs/informe/scripts/generar-figuras-evidencia.py} desde \texttt{jacoco.csv}).}%
 {fig:jacoco-resumen-final}
 
 Los tres contadores superan con margen su umbral configurado. La cobertura
@@ -170,10 +184,20 @@ que \textbf{no sustituye} consentimientos individuales.
   \end{tabular}
 \end{table}
 
-% EVIDENCIA-ZAIDA-05
-% Ruta esperada: figuras/zaida/05-sus-resultados.png
-\evidencia{figuras/zaida/05-sus-resultados.png}%
-{Resultados agregados del instrumento SUS (n=18): media, desviaci\'on t\'ipica, IC 95\,\%.}%
+La figura~\ref{fig:sus-resultados-final} presenta la distribuci\'on de
+los 18 puntajes SUS reales (diagrama de caja con los puntos individuales
+superpuestos), regenerada autom\'aticamente desde \texttt{sus-raw.csv}
+mediante el mismo script, sin captura manual.
+
+% EVIDENCIA-JAIME-06 (regenerada automaticamente por Jaime a partir del
+% hallazgo del docente sobre esta figura; sustituye, solo en esta
+% referencia del informe, a la figura historica
+% figuras/zaida/05-sus-resultados.png -- que se conserva SIN modificar en
+% el repositorio como artefacto historico de Zaida, no se sobrescribe ni
+% se borra)
+% Ruta esperada: figuras/jaime/06-sus-resultados-final.png
+\evidencia{figuras/jaime/06-sus-resultados-final.png}%
+{Distribuci\'on de los 18 puntajes SUS reales: media 74{,}44, DT 22{,}35, mediana 82{,}50, IC 95\,\% $[63{,}33,\ 85{,}56]$ (regenerada por \texttt{docs/informe/scripts/generar-figuras-evidencia.py} desde \texttt{sus-raw.csv}).}%
 {fig:sus-resultados-final}
 
 \textbf{Interpretaci\'on.} La media obtenida (74{,}44) se ubica en la
@@ -192,36 +216,45 @@ siguen siendo reclutados por conveniencia (secci\'on~\ref{cap:amenazas-limitacio
 \section{Calidad web autom\'atica (Lighthouse)}
 \label{sec:lighthouse-final}
 
-La configuraci\'on de auditor\'ia (\texttt{lighthouserc.js}, perfil m\'ovil
-simulado; \texttt{lighthouserc.desktop.js}, perfil de escritorio) declara
-umbrales Performance~$\geq$~80, Accessibility~$\geq$~90, Best
-Practices~$\geq$~90 y SEO~$\geq$~90~\cite{lighthouse-docs}. Tras la corrida
-inicial del 2026-08-01 (solo perfil m\'ovil, SEO~82/100, umbral no
-cumplido), el equipo ejecut\'o una \textbf{corrida nueva y completa el
-2026-08-18} (\texttt{docs/mediciones/lighthouse/lhci-20260818-0538-*.json},
-metadatos en \texttt{lhci-20260818-0538.meta.txt}), cubriendo \textbf{ambos
-perfiles} (m\'ovil y escritorio), 3~corridas por ruta y por perfil (12
-corridas totales), sobre las mismas rutas \texttt{/login} y
-\texttt{/mascotas}. A diferencia de la corrida de agosto (donde
-\texttt{/mascotas} redirig\'ia siempre a \texttt{/login} sin sesi\'on
-activa), el campo \texttt{finalUrl} de las seis corridas de
-\texttt{/mascotas} del 2026-08-18 coincide exactamente con la URL
-solicitada (\texttt{http://localhost:4200/mascotas}, sin redirecci\'on),
-verificado directamente contra los JSON crudos.
+La configuraci\'on de auditor\'ia declara umbrales Performance~$\geq$~80,
+Accessibility~$\geq$~90, Best Practices~$\geq$~90 y SEO~$\geq$~90~\cite{lighthouse-docs}.
+El equipo ejecut\'o tres corridas sucesivas: la inicial del 2026-08-01
+(solo perfil m\'ovil, contra \texttt{localhost}, SEO~82/100, umbral no
+cumplido); una corrida completa el 2026-08-18
+(\texttt{lighthouserc.js}/\texttt{lighthouserc.desktop.js}, tambi\'en
+contra \texttt{localhost:4200}, ambos perfiles, SEO~100/100); y la
+\textbf{corrida definitiva contra el despliegue p\'ublico de Render}
+el \textbf{2026-09-03}
+(\texttt{lighthouserc.render.js}/\texttt{lighthouserc.render.desktop.js},
+\texttt{docs/mediciones/lighthouse/lhci-20260903-2102-render-*.json},
+metadatos en \texttt{lhci-20260903-2102-render.meta.txt}; metodolog\'ia y
+medias reproducibles en \texttt{docs/mediciones/lighthouse/RENDER-REPORT.md}),
+la primera de las tres auditando \texttt{requestedUrl} p\'ublico
+(\texttt{https://biopet-frontend.onrender.com}) en vez de \texttt{localhost}.
+Cubre ambos perfiles (m\'ovil y escritorio), 3~corridas por ruta y por
+perfil (12~corridas totales) sobre las rutas \texttt{/login} y
+\texttt{/mascotas} (ninguna es la portada). El script
+\texttt{scripts/run-lighthouse-render.sh} verifica, antes de auditar, que
+el despliegue responda \texttt{200} en ambas rutas (sin despliegue en
+curso), y valida el campo \texttt{requestedUrl} de cada JSON generado
+contra el dominio p\'ublico antes de archivarlo.
 
 \begin{table}[H]
   \centering
-  \caption{Resultado real de la corrida Lighthouse del 2026-08-18 (12 corridas, mobile+desktop; fuente: \texttt{docs/mediciones/lighthouse/lhci-20260818-0538-*.json}).}
+  \caption{Resultado real de la corrida Lighthouse del 2026-09-03 contra el despliegue p\'ublico de Render (12 corridas, mobile+desktop, medias calculadas por \texttt{compute-render-averages.mjs}; fuente: \texttt{docs/mediciones/lighthouse/lhci-20260903-2102-render-*.json}).}
   \label{tab:lighthouse-final}
-  \begin{tabular}{@{}llrl@{}}
+  \begin{tabular}{@{}llrrl@{}}
     \toprule
-    Categor\'ia & Perfil & Puntaje (0--100) & Umbral \\
+    Categor\'ia & Perfil & Ruta & Media (0--100) & Umbral \\
     \midrule
-    Performance & Escritorio & 100 & $\geq$ 80 --- Cumplido \\
-    Performance & M\'ovil & 90--94 & $\geq$ 80 --- Cumplido \\
-    Accessibility & Ambos & 91 & $\geq$ 90 --- Cumplido \\
-    Best Practices & Ambos & 96--100 & $\geq$ 90 --- Cumplido \\
-    SEO & Ambos & \textbf{100} & $\geq$ 90 --- \textbf{Cumplido} \\
+    Performance & Escritorio & /login & 99{,}7 & $\geq$ 80 --- Cumplido \\
+    Performance & Escritorio & /mascotas & 100{,}0 & $\geq$ 80 --- Cumplido \\
+    Performance & M\'ovil & /login & 100{,}0 & $\geq$ 80 --- Cumplido \\
+    Performance & M\'ovil & /mascotas & 99{,}0 & $\geq$ 80 --- Cumplido \\
+    Accessibility & Ambos & Ambas & 91{,}0 & $\geq$ 90 --- Cumplido \\
+    Best Practices & Ambos & /login & 100{,}0 & $\geq$ 90 --- Cumplido \\
+    Best Practices & Ambos & /mascotas & 96{,}0 & $\geq$ 90 --- Cumplido \\
+    SEO & Ambos & Ambas & \textbf{100{,}0} & $\geq$ 90 --- \textbf{Cumplido} \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -229,30 +262,24 @@ verificado directamente contra los JSON crudos.
 % EVIDENCIA-ZAIDA-04
 % Ruta esperada: figuras/zaida/04-lighthouse.png
 \evidencia{figuras/zaida/04-lighthouse.png}%
-{Reporte de Lighthouse CI del frontend de BIOPET.}%
+{Reporte de Lighthouse CI del frontend de BIOPET contra el despliegue p\'ublico de Render (2026-09-03), por perfil y ruta.}%
 {fig:lighthouse-final}
 
 \textbf{Estado real para v1.0.0.} Las \textbf{cuatro} categor\'ias cumplen
-su umbral en las 12 corridas del 2026-08-18, en ambos perfiles: el hallazgo
-de SEO~82/100 de la corrida de agosto qued\'o corregido (SEO~100/100 en las
-12 corridas de la corrida definitiva). Performance en escritorio alcanza el
-m\'aximo (100/100); en m\'ovil se mantiene en el mismo rango que la corrida
-anterior (90--94/100). A diferencia de la corrida de agosto, los seis
-reportes de \texttt{/mascotas} del 2026-08-18 tienen \texttt{finalUrl}
-igual a la URL solicitada (sin redirecci\'on a \texttt{/login}), lo que
-indica que esta vez la ruta \texttt{/mascotas} s\'i fue auditada
-directamente. El equipo no document\'o expl\'icitamente en
-\texttt{docs/mediciones/lighthouse/README.md} el mecanismo usado para
-evitar la redirecci\'on del \emph{guard} de autenticaci\'on en esta
-corrida (por ejemplo, una sesi\'on preestablecida); este informe reporta
-el dato tal como aparece en los JSON crudos, sin afirmar un mecanismo no
-documentado. La narrativa completa del \texttt{README.md} de esta carpeta
-a\'un describe en detalle \'unicamente la corrida de agosto; la corrida de
-escritorio/m\'ovil del 2026-08-18 est\'a archivada con sus JSON crudos y
-metadatos, pero su narrativa completa todav\'ia no fue redactada --- esto
-se declara como pendiente documental menor, no como ausencia de
-evidencia: los datos num\'ericos citados en esta secci\'on se leyeron
-directamente de los archivos JSON reales.
+su umbral en las 12 corridas del 2026-09-03, en ambos perfiles y ambas
+rutas, contra el dominio p\'ublico real (\texttt{requestedUrl} y
+\texttt{finalUrl} de los 12 JSON coinciden con
+\texttt{https://biopet-frontend.onrender.com/login} o
+\texttt{.../mascotas}, sin redirecci\'on). Performance se mantiene en el
+rango 99{,}0--100{,}0 en los cuatro grupos perfil/ruta, mejorando el rango
+m\'ovil 90--94 de la corrida local del 2026-08-18. Accessibility (91{,}0),
+Best Practices (96{,}0--100{,}0) y SEO (100{,}0) se mantienen id\'enticos a
+la corrida local previa. Las corridas del 2026-08-01 y 2026-08-18 quedan
+como evidencia hist\'orica del proceso de mejora (SEO corregido de 82 a
+100) y se conservan sin modificar en
+\texttt{docs/mediciones/lighthouse/}; la corrida del 2026-09-03 contra
+Render es la que se reporta como definitiva por ser la \'unica auditada
+contra el sistema realmente evaluable en producci\'on.
 
 \section{Diferenciaci\'on de los tipos de medici\'on}
 

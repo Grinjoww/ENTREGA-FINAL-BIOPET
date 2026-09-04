@@ -7,22 +7,26 @@ authors:
     given-names: "Fred Adrián"
     affiliation: "Universidad Técnica Estatal de Quevedo"
     email: "fbeltranm@uteq.edu.ec"
+    orcid: "https://orcid.org/0009-0007-8303-2137"
   - family-names: "Mariscal Cabrera"
     given-names: "Jaime Josué"
     affiliation: "Universidad Técnica Estatal de Quevedo"
     email: "jmariscalc@uteq.edu.ec"
+    orcid: "https://orcid.org/0009-0007-2206-3941"
   - family-names: "Taipe Mora"
     given-names: "Zaida Melissa"
     affiliation: "Universidad Técnica Estatal de Quevedo"
     email: "ztaipem@uteq.edu.ec"
-# version: versión objetivo de la Entrega Final. El tag "v1.0.0" todavia
-# NO ha sido publicado en este repositorio (verificar con "git tag
-# --list"); este campo declara la version de software que se citara una
-# vez publicado ese tag, no una release ya existente.
+    orcid: "https://orcid.org/0009-0000-1227-3258"
+# version: version publicada de la Entrega Final. El tag "v1.0.0" YA fue
+# publicado en este repositorio y apunta al commit 0d5cd52 (verificable
+# con "git rev-list -n 1 v1.0.0"); este campo cita esa release ya
+# existente, no una version objetivo futura.
 version: 1.0.0
-# date-released: deliberadamente SIN valor todavia. No se fija una fecha
-# de release real hasta que el tag "v1.0.0" exista y quede publicado; fijar
-# una fecha ahora implicaria afirmar un release que no ha ocurrido.
+# date-released: fecha real de creacion del tag anotado "v1.0.0"
+# (commit 0d5cd52), obtenida con
+# "git for-each-ref refs/tags/v1.0.0 --format=%(creatordate:iso8601)".
+date-released: "2026-08-18"
 license: MIT
 repository-code: "https://github.com/Grinjoww/ENTREGA-FINAL-BIOPET"
 keywords:
@@ -41,3 +45,6 @@ identifiers:
   - type: doi
     value: "10.5281/zenodo.21988785"
     description: "DOI del dataset de evidencias empíricas de BIOPET (rendimiento, seguridad, usabilidad), archivado en Zenodo por separado del software."
+  - type: other
+    value: "sha256:ef1e857a95a307a115ebe01599a41506eab824808b70a3c8e317dcc55bef5163"
+    description: "Digest inmutable (sha256) de la imagen de contenedor del backend BIOPET publicada en GHCR (ghcr.io/grinjoww/entregafinal-biopet-backend), asociada al commit fe2f033138e3ec1fad07bf1038e10b8bb140449f. No es un DOI: se documenta como identifier de tipo 'other' porque CFF 1.2.0 no define un tipo dedicado a digests de artefactos de contenedor."

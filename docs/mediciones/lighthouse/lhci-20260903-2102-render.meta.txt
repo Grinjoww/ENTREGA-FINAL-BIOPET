@@ -1,0 +1,8 @@
+fecha_iso8601: 2026-09-03T21:02:23Z
+commit_hash_corto: 12b1870
+node_version: v24.18.0
+lighthouse_cli_version: 0.14.0
+url_publica_evaluada: https://biopet-frontend.onrender.com
+rutas_auditadas: https://biopet-frontend.onrender.com/login, https://biopet-frontend.onrender.com/mascotas
+perfiles: mobile (throttlingMethod=simulate, lighthouserc.render.js), desktop (formFactor=desktop, throttling devtools preset, lighthouserc.render.desktop.js)
+corridas_por_url: 3 por perfil (6 total por URL, 12 total)

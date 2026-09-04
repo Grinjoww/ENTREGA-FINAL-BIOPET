@@ -1,21 +1,31 @@
 @startuml
 !define RECTANGLE class
 skinparam packageStyle rectangle
-actor "Veterinario" as vet
-actor "Administrador" as admin
-actor "Dueño de Mascota" as dueno
+skinparam rectangle {
+  BackgroundColor<<external>> #F1F5F9
+  BorderColor<<external>> #94A3B8
+  FontColor<<external>> #64748B
+}
 
-rectangle "Frontend Angular 17\nNginx :80 / http://localhost:4200" as frontend
-rectangle "Backend Spring Boot 3\nREST API :8080" as backend
-rectangle "PostgreSQL 16\nDB :5432" as postgres
-rectangle "Redis 7\nBlacklist JWT + Cache :6379" as redis
+actor "Veterinarian" as vet
+actor "Administrator" as admin
+actor "Assistant" as assistant
+actor "Pet Owner" as owner
+
+rectangle "Frontend\nAngular 17 + Nginx\nSingle-page application" as frontend
+rectangle "Backend API\nSpring Boot 3.2 / Java 21\nREST JSON + JWT" as backend
+database "PostgreSQL\n16 (dev) / 18 (prod)\nSchema via Flyway V1-V6" as postgres
+database "Redis / Valkey\n7 (dev) / 8 (prod)\nJTI blacklist + read cache" as redis
 rectangle "Swagger UI\n/api/swagger-ui.html" as swagger
+rectangle "API Ninjas (Animals API)\n[External System]" as animalApi <<external>>
 
-vet --> frontend : HTTPS/HTTP
-admin --> frontend : HTTPS/HTTP
-dueno --> frontend : HTTPS/HTTP
-frontend --> backend : REST JSON + Bearer JWT
+vet --> frontend : HTTPS
+admin --> frontend : HTTPS
+assistant --> frontend : HTTPS
+owner --> frontend : HTTPS
+frontend --> backend : REST JSON\nHttpOnly auth cookies
 backend --> postgres : JDBC/JPA
 backend --> redis : Redis protocol
 backend --> swagger : OpenAPI
+backend .down.> animalApi : requests species data\n[HTTPS/JSON]
 @enduml

@@ -1,0 +1,132 @@
+# zap-authenticated-local.yaml
+#
+# Plan de OWASP ZAP Automation Framework (ZAP 2.17.0, esquema verificado
+# contra el propio contenedor con "zap.sh -cmd -autogenmax") para un
+# escaneo AUTENTICADO, PASIVO (sin active scan), contra el stack LOCAL
+# de este repositorio con TLS (docker-compose.tls.yml, backend real en
+# https://backend:8443 dentro de la red Docker Compose del proyecto).
+#
+# NUNCA contiene credenciales reales: los campos de credenciales usan los
+# tokens literales __ZAP_USERNAME__ / __ZAP_PASSWORD__, que
+# scripts/run-zap-authenticated-local.sh sustituye en un archivo TEMPORAL
+# (fuera de este repositorio, nunca escrito de vuelta aqui) a partir de
+# las variables de entorno ZAP_USERNAME/ZAP_PASSWORD antes de invocar a
+# ZAP, y borra ese archivo temporal al terminar. Este archivo tal como
+# esta versionado NO es ejecutable directamente sin esa sustitucion.
+#
+# Alcance: unicamente el backend local (https://backend:8443/api/*).
+# Excluye explicitamente /api/externa/** (proxy a una API externa real de
+# terceros) para no generar trafico saliente involuntario. NO incluye
+# Render ni BIOPET-V2.
+#
+# Autenticacion: metodo "json" (POST JSON a /api/auth/login), gestion de
+# sesion por cookie (metodo nativo "cookie" de ZAP, coincide con el
+# mecanismo real de la aplicacion: cookies HttpOnly+Secure+SameSite=Strict
+# emitidas por JwtCookieService). Verificacion por sondeo (poll) contra
+# GET /api/usuarios/me, comprobando la presencia de "email" en el cuerpo
+# de la respuesta (200 autenticado) para confirmar sesion activa.
+#
+# Este plan NO incluye ningun job de tipo "activeScan": solo
+# autenticacion + requestor (peticiones GET especificas y seguras) +
+# passiveScan-wait + reportes. No crea, modifica ni elimina datos.
+
+---
+env:
+  contexts:
+    - name: biopet-local-tls
+      urls:
+        - https://backend:8443
+      includePaths:
+        - https://backend:8443/api/.*
+      excludePaths:
+        - https://backend:8443/api/externa/.*
+      authentication:
+        method: json
+        parameters:
+          loginRequestUrl: https://backend:8443/api/auth/login
+          loginRequestBody: '{"email":"__ZAP_USERNAME__","password":"__ZAP_PASSWORD__"}'
+        verification:
+          method: poll
+          pollUrl: https://backend:8443/api/usuarios/me
+          pollFrequency: 1
+          pollUnits: requests
+          loggedInRegex: '\Q"email"\E'
+      sessionManagement:
+        method: cookie
+      users:
+        - name: admin-local
+          credentials:
+            username: __ZAP_USERNAME__
+            password: __ZAP_PASSWORD__
+  parameters:
+    failOnError: true
+    failOnWarning: false
+    continueOnFailure: false
+    progressToStdout: true
+
+jobs:
+  # Rutas GET reales y seguras (sin efectos secundarios), verificadas
+  # linea por linea en Backend/src/main/java/com/biopet/controller/*.java
+  # (ver docs/mediciones/sec/zap/README.md, seccion de la corrida
+  # autenticada, para el detalle rol-por-ruta). responseCode: 200 hace que
+  # ZAP registre explicitamente cualquier diferencia si la sesion no esta
+  # realmente autenticada -- scripts/run-zap-authenticated-local.sh
+  # detiene la evidencia como NO valida si aparece alguna diferencia.
+  - type: requestor
+    parameters:
+      user: admin-local
+    requests:
+      - url: https://backend:8443/api/usuarios/me
+        method: GET
+        responseCode: 200
+      - url: https://backend:8443/api/mascotas
+        method: GET
+        responseCode: 200
+      - url: https://backend:8443/api/mascotas/resumen-especies
+        method: GET
+        responseCode: 200
+      - url: https://backend:8443/api/citas
+        method: GET
+        responseCode: 200
+      - url: https://backend:8443/api/consultas
+        method: GET
+        responseCode: 200
+      - url: https://backend:8443/api/vacunas
+        method: GET
+        responseCode: 200
+      - url: https://backend:8443/api/usuarios
+        method: GET
+        responseCode: 200
+
+  - type: passiveScan-wait
+    parameters:
+      maxDuration: 2
+
+  - type: report
+    parameters:
+      reportDir: /zap/wrk/
+      reportFile: zap-authenticated-local-report.html
+      reportTitle: 'BIOPET - ZAP Authenticated Local Scan (TLS, backend local)'
+      reportDescription: 'Escaneo pasivo autenticado contra el stack local (docker-compose.tls.yml). No incluye active scan.'
+      template: traditional-html
+
+  - type: report
+    parameters:
+      reportDir: /zap/wrk/
+      reportFile: zap-authenticated-local-report.xml
+      reportTitle: 'BIOPET - ZAP Authenticated Local Scan (TLS, backend local)'
+      reportDescription: 'Escaneo pasivo autenticado contra el stack local (docker-compose.tls.yml). No incluye active scan.'
+      template: traditional-xml
+
+  - type: report
+    parameters:
+      reportDir: /zap/wrk/
+      reportFile: zap-authenticated-local-report.json
+      reportTitle: 'BIOPET - ZAP Authenticated Local Scan (TLS, backend local)'
+      reportDescription: 'Escaneo pasivo autenticado contra el stack local (docker-compose.tls.yml). No incluye active scan.'
+      template: traditional-json
+
+  - type: outputSummary
+    parameters:
+      format: Long
+      summaryFile: /zap/wrk/summary-authenticated-local.json
