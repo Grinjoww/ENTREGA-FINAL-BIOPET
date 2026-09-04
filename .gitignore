@@ -5,6 +5,7 @@ Backend/target/
 # Node
 frontend/node_modules/
 frontend/dist/
+frontend/.angular/
 # Env
 .env
 *.log
@@ -25,6 +26,8 @@ cookies.txt
 # Salida cruda de lhci autorun (se archiva ya procesada en docs/mediciones/lighthouse/)
 .lighthouseci/
 .lighthouseci-desktop/
+.lighthouseci-render/
+.lighthouseci-render-desktop/
 
 # Directorio temporal de scripts/run-zap-authenticated-local.sh (plan de
 # ZAP con credenciales ya sustituidas desde variables de entorno; se

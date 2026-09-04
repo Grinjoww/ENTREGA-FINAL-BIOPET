@@ -120,3 +120,21 @@ sha256sum -c SHA256SUMS.txt              # valida raw/ (31/31 OK)
 ```
 
 Los hashes de `SHA256SUMS-ORIGINAL.txt` y `SHA256SUMS.txt` **no coinciden** para 29 de los 31 archivos (los que contenían el identificador local sustituido); coinciden exactamente para los 2 archivos que no lo contenían (`assertion-results.json` y `flags-66a0fc98-....json`), lo cual es el resultado esperado de una sanitización selectiva y no indica ningún problema de integridad.
+
+## Anonimización adicional aplicada 2026-09-03 (hallazgo Z10, rutas absolutas)
+
+Los 12 JSON de la corrida `lhci-20260818-0538-*` (mobile+desktop,
+2026-08-18, citada en `docs/informe/secciones-final/07-pruebas-calidad.tex`)
+también embebían, en el campo `errorStack` de 6 auditorías fallidas por
+archivo, la ruta local de caché de `npx` con el nombre de usuario del
+equipo de ejecución — mismo patrón y misma causa (invocación vía
+`npx @lhci/cli`) que el `raw/` de la corrida del 2026-08-01 documentado
+arriba. Se aplicó la **misma sustitución selectiva**: solo el nombre de
+usuario literal por `USER_REDACTED` (48 ocurrencias por archivo), sin
+tocar ningún puntaje, URL, `requestedUrl`/`finalUrl` ni timestamp —
+verificado reparseando los 12 archivos como JSON válido después del
+cambio y comparando los `categories.*.score` contra los valores citados
+en el informe (idénticos). Los 12 JSON de la corrida
+`lhci-20260903-2102-render-*` (contra Render, ver `RENDER-REPORT.md`)
+recibieron la misma limpieza, documentada con hashes SHA-256 antes/después
+en ese mismo archivo.

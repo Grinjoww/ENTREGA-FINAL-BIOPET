@@ -1,5 +1,5 @@
 digraph ERD {
-  graph [rankdir=LR, dpi=200, bgcolor="white", fontname="Arial", label="BIOPET - Diagrama Entidad-Relación Entrega 1B", labelloc=t, fontsize=22];
+  graph [rankdir=LR, dpi=200, bgcolor="white", fontname="Arial", label="BIOPET - Entity-Relationship Diagram (v1.0.0)", labelloc=t, fontsize=22];
   node [shape=plaintext, fontname="Arial"];
   usuarios [label=<
   <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6">
@@ -26,6 +26,6 @@ digraph ERD {
     <TR><TD ALIGN="LEFT">creado_en TIMESTAMPTZ</TD></TR>
     <TR><TD ALIGN="LEFT">actualizado_en TIMESTAMPTZ</TD></TR>
   </TABLE>>];
-  usuarios -> mascotas [label="1 a N\nusuarios.id = mascotas.duenio_id", color="#334155"];
+  usuarios -> mascotas [label="1 to N\nusuarios.id = mascotas.duenio_id", color="#334155"];
 }
 

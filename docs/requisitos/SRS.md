@@ -1,10 +1,17 @@
 # Especificación de Requisitos de Software (SRS) — BIOPET
 
-**Versión:** v0.9.0-rc (Tercera Entrega, PFC Aplicaciones Web 2026-2027)
+**Versión:** v1.0.0 (Entrega Final, PFC Aplicaciones Web 2026-2027)
 **Conforme a:** ISO/IEC/IEEE 29148:2018 (estructura de SRS), INCOSE Guide to
 Writing Requirements v4 (calidad de requisitos individuales y de conjunto),
-criterios INVEST de Cohn (historias de usuario), plantilla de Cockburn (casos
-de uso).
+criterios INVEST de Cohn (historias de usuario, aplicados explícitamente en
+la sección 3.3), plantilla de Cockburn (casos de uso).
+
+**Estado de aprobación:** este documento **no está firmado** por el
+docente-director al momento de esta revisión. El PDF `SRS-v1.0.0.pdf` se
+envía para aprobación/firma tras cerrar esta revisión; el estado de firma
+se actualizará aquí, con fecha real, únicamente cuando exista una firma
+legítima recibida del docente — nunca antes, y nunca simulada o copiada de
+otro documento.
 
 **Procedencia de este documento:** este archivo se reconstruye a partir de
 dos fuentes: (1) el SRS de la Entrega 1A (`PFC_Entrega1A_BMT.pdf`), que
@@ -25,6 +32,7 @@ original está en `docs/requisitos/cambios/CAMBIOS-SRS.md`.
 3. Requisitos específicos
    3.1. Requisitos funcionales (REQ-F)
    3.2. Requisitos no funcionales (REQ-NF)
+   3.3. Criterios INVEST aplicados a las historias de usuario
 4. Trazabilidad (resumen)
 5. Modelo de datos (referencia)
 6. Interfaces de usuario (referencia)
@@ -37,11 +45,13 @@ original está en `docs/requisitos/cambios/CAMBIOS-SRS.md`.
 ### 1.1. Propósito
 
 Este documento especifica los requisitos funcionales y no funcionales del
-sistema BIOPET en su estado v0.9.0-rc (release candidate de la Tercera
-Entrega del PFC). Su propósito es servir como fuente única de verdad para la
-matriz de trazabilidad, las pruebas automatizadas y la evidencia empírica
-exigidas por el bloque A.3 de la Guía de la Tercera Entrega, y como insumo
-para la Entrega Final (v1.0.0).
+sistema BIOPET en su estado **v1.0.0 (Entrega Final)**. Su propósito es
+servir como fuente única de verdad para la matriz de trazabilidad, las
+pruebas automatizadas y la evidencia empírica exigidas por el bloque A.3
+de la Guía, incorporando además los módulos de la Unidad IV (citas,
+consultas, vacunas, gestión administrativa de usuarios y consulta externa
+de especies) que no existían en la revisión v0.9.0-rc de la Tercera
+Entrega.
 
 ### 1.2. Alcance
 
@@ -51,21 +61,34 @@ alcance completo del producto (definido en la Entrega 1A) contempla gestión
 de dueños y mascotas, historial clínico, citas, telemetría IoT, recomendación
 clínica asistida, facturación digital y reportes.
 
-**Alcance implementado y verificado en v0.9.0-rc:** autenticación completa
+**Alcance implementado y verificado en v1.0.0:** autenticación completa
 (registro, login, refresh, logout con revocación), control de acceso por rol
 (RBAC), CRUD completo de la entidad Mascota con verificación de propiedad, y
 resumen agregado de mascotas por especie (vía función SQL). Este es el
 subconjunto Must Have que el equipo se comprometió a entregar operativo y
-reproducible en este semestre.
+reproducible desde la Tercera Entrega (v0.9.0-rc).
 
-**Alcance pendiente, heredado de la Entrega 1A:** historial clínico,
-prescripción de medicamentos, citas veterinarias, telemetría IoT, ubicación
-en mapa, recomendaciones asistidas, facturación digital y reportes
-exportables. El modelo de datos conceptual de estos módulos ya existe (ver
-sección 5 y el DER de la Entrega 1A), pero no hay código de backend ni de
-frontend implementado todavía. Se documentan como requisitos con estado
-"pendiente" para que la matriz de trazabilidad (bloque A.3.3 de la Guía) los
-declare correctamente, en vez de omitirlos.
+**Ampliado en v1.0.0 (Unidad IV):** gestión administrativa de usuarios
+(REQ-F-023), CRUD de vacunas (REQ-F-024) y consulta externa de información
+de especies con caché (REQ-F-025), los tres con interfaz de usuario real
+para vacunas (`frontend/src/app/features/vacunas.component.ts`) y solo a
+nivel de API para usuarios/especies externas (sin pantalla propia
+todavía). Adicionalmente, el backend incorporó CRUD completo de citas
+(`CitaController`) y de consultas médicas (`ConsultaController`), que
+formalizan parcialmente REQ-F-015 y REQ-F-013 respectivamente (detalle de
+alcance real, sin sobre-declarar, en la sección 3.1).
+
+**Alcance pendiente, heredado de la Entrega 1A:** vista consolidada de
+historial clínico cronológico y calendario interactivo de citas (ambos
+con backend real desde v1.0.0, sin la pieza específica pendiente — ver
+"Ampliado en v1.0.0" arriba y la sección 3.1), más prescripción de
+medicamentos, telemetría IoT, ubicación en mapa, recomendaciones
+asistidas, facturación digital y reportes exportables (estos últimos
+seis, sin ningún código de backend ni de frontend todavía). El modelo de
+datos conceptual de estos módulos ya existe (ver sección 5 y el DER de la
+Entrega 1A). Se documentan como requisitos con estado "pendiente" o
+"parcial" (según corresponda) para que la matriz de trazabilidad (bloque
+A.3.3 de la Guía) los declare correctamente, en vez de omitirlos.
 
 ### 1.3. Definiciones, acrónimos y abreviaturas
 
@@ -126,10 +149,17 @@ el repositorio.
 ### 2.3. Funciones del producto (resumen)
 
 - Gestión de usuarios y autenticación (roles: `ADMIN`, `VETERINARIO`,
-  `AUXILIAR`, `DUENO`).
+  `AUXILIAR`, `DUENO`), incluida la administración de cuentas por un
+  `ADMIN` (Unidad IV).
 - Gestión de mascotas (CRUD + resumen agregado por especie).
-- *(Pendiente)* Gestión de historial clínico, citas, telemetría IoT,
-  recomendaciones asistidas, facturación y reportes.
+- Gestión de vacunas (CRUD, con interfaz de usuario) y de citas y
+  consultas médicas (CRUD a nivel de API; sin calendario interactivo ni
+  vista de historial clínico consolidado todavía — ver 3.1).
+- Consulta de información externa de especies (taxonomía, hábitat, dieta),
+  con caché.
+- *(Pendiente)* Vista consolidada de historial clínico cronológico,
+  prescripción de medicamentos, telemetría IoT, recomendaciones asistidas,
+  facturación y reportes exportables.
 
 ### 2.4. Características de los usuarios
 
@@ -387,15 +417,42 @@ propietario según rol**
 
 | Id | Descripción (resumen) | Prioridad | Origen | HU / CU | Estado |
 |---|---|---|---|---|---|
-| REQ-F-013 | Registrar atención médica y almacenar/consultar el historial clínico de cada mascota de forma cronológica. | Should | RF-03, RF-04 | HU-012 / CU-12 | pendiente |
+| REQ-F-013 | Registrar atención médica y almacenar/consultar el historial clínico de cada mascota de forma cronológica. | Should | RF-03, RF-04 | HU-012 / CU-12 | parcial |
 | REQ-F-014 | Registrar medicamentos prescritos durante una atención médica. | Could | RF-05 | HU-013 / CU-13 | pendiente |
-| REQ-F-015 | Registrar, modificar y consultar citas veterinarias mediante calendario interactivo. | Should | RF-06 | HU-014 / CU-14 | pendiente |
+| REQ-F-015 | Registrar, modificar y consultar citas veterinarias mediante calendario interactivo. | Should | RF-06 | HU-014 / CU-14 | parcial |
 | REQ-F-016 | Proveer una API para recibir datos de dispositivos IoT de rastreo asociados a mascotas. | Could | RF-08, RF-09 | HU-015 / CU-15 | pendiente |
 | REQ-F-017 | Generar recomendaciones clínicas informativas a partir del historial médico (enunciado ampliado — ver bloque detallado, cierre de OBS-04). | Could | RF-10 | HU-016 / CU-16 | pendiente |
 | REQ-F-018 | Generar comprobantes de pago digitales en PDF y registrar el método de pago de un servicio veterinario. | Should | RF-11, RF-12 | HU-017 / CU-17 | pendiente |
 | REQ-F-019 | Generar reportes estadísticos exportables en PDF y Excel. | Could | RF-14 | HU-018 / CU-18 | pendiente |
 | REQ-F-020 | Registrar las operaciones relevantes del sistema (usuario, fecha, hora) para fines de auditoría. | Should | RF-15 | HU-019 / CU-19 | parcial |
 | REQ-F-022 | Enviar notificaciones al usuario por correo electrónico ante eventos relevantes de su cuenta. | Could | RF-07 | HU-021 / CU-21 | pendiente |
+
+> **Nota sobre REQ-F-013 y REQ-F-015 (revisión v1.0.0 — código actual):**
+> a diferencia de los demás requisitos de esta tabla, no se dejan como
+> "pendiente" en v1.0.0 porque la Unidad IV sí incorporó código real para
+> ambos, verificado contra el repositorio actual (paso de revisión
+> obligatorio antes de cerrar esta entrega): `CitaController`/
+> `CitaService`/`CitaRepository` (CRUD completo: listar, buscar, crear,
+> actualizar, eliminar) y `ConsultaController`/`ConsultaService`/
+> `ConsultaRepository` (mismo CRUD), ambos con clase de test dedicada
+> (`CitaControllerTest`, `ConsultaControllerTest`). Se marcan **"parcial"**,
+> no "verificado", porque el enunciado original exige más de lo que el
+> CRUD por sí solo cubre: REQ-F-015 pide explícitamente un "calendario
+> interactivo" (no existe pantalla de citas en
+> `frontend/src/app/features/`, solo la API) y REQ-F-013 pide el
+> historial clínico "de forma cronológica" (existe la proyección
+> `HistorialClinico`/función `fn_historial_clinico_mascota` a nivel de
+> repositorio, pero ningún controlador la expone todavía como endpoint
+> consolidado — la única vía real hoy es el CRUD genérico de consultas,
+> sin agrupar ni ordenar por mascota). `docs/trazabilidad/matriz.csv`
+> registra además, para REQ-F-013, que `ConsultaService.listar()` **no
+> filtra por propietario para `ROLE_DUENO`** pese a la regla general de
+> aislamiento de datos que sí aplican `MascotaService`/`VacunaService`
+> (ver REQ-F-009); y que `GET /api/consultas` (listado) y
+> `PUT /api/consultas/{id}` no tienen prueba automatizada dedicada en
+> `ConsultaControllerTest`. Ambos quedan como limitación explícita en la
+> sección 7, no como pendientes ocultos ni como "verificado" sin serlo
+> del todo.
 
 > **Nota sobre REQ-F-020 (auditoría):** a diferencia de los demás requisitos
 > de esta tabla, no está 100% pendiente: el registro de eventos de
@@ -572,17 +629,17 @@ Correos, RF-07 recuperado)**
   con un proveedor externo (API Ninjas) vía `ExternalApiClient`, con patrón
   *cache-aside* en `ExternalApiService` (TTL configurable mediante
   `app.external-api.cache-ttl-seconds`, valor por defecto 600 s).
-- **Verificación:** sin prueba automatizada dedicada (no existe una clase de
-  test para `ExternalApiController`/`ExternalApiService` en
-  `Backend/src/test/`). Evidencia empírica manual en
+- **Verificación:** Test `ExternalApiServiceTest` (6 pruebas,
+  `Backend/src/test/java/com/biopet/integration/`) — corrige una
+  afirmación de una versión anterior de este documento, que declaraba
+  "sin prueba automatizada dedicada"; esa clase de test sí existe en el
+  código actual. Evidencia empírica adicional en
   `docs/u4/evidencias/fred/redis-cache-comparacion.md` (comparación real de
   tiempos de respuesta con caché fría vs. caché caliente).
 - **Trazabilidad:** → HU-024 → CU-24 →
   `ExternalApiController.infoEspecie` → `ExternalApiService.obtenerInfoEspecie`
   → `ExternalApiClient` → `GET /api/externa/especies`.
-- **Estado:** implementado (sin prueba automatizada; no se marca
-  "verificado" siguiendo la misma convención ya usada en el resto de este
-  SRS y en la matriz de trazabilidad).
+- **Estado:** verificado.
 
 ### 3.2. Requisitos no funcionales (REQ-NF)
 
@@ -661,8 +718,20 @@ Correos, RF-07 recuperado)**
   evaluación establecidas por la asignatura.
 - **Rationale:** heredado de RNF-06.
 - **Verificación:** demostración en vivo (`make up`) durante la semana de
-  entrega.
-- **Estado:** verificado por diseño (reproducibilidad automática, bloque B).
+  entrega; en producción, healthcheck de Render
+  (`docs/despliegue/`).
+- **Estado:** **pendiente de confirmación explícita (Must #1 de 2, ver
+  sección 7)**. La afirmación "verificado por diseño" de una versión
+  anterior de este documento no está respaldada por un artefacto
+  concreto (log de uptime, captura de healthcheck con fecha, o corrida de
+  monitoreo real); es una inferencia razonable, no una verificación
+  empírica — y coincide con lo que ya registra
+  `docs/trazabilidad/matriz.csv` para esta misma fila: estado
+  "implementado" (no "verificado"), con la nota explícita "no existe
+  evidencia de disponibilidad sostenida durante una semana completa de
+  evaluación". Se solicitó a Fred (responsable de despliegue/Render) el
+  nombre del artefacto o commit que la respalde antes de volver a marcarla
+  "verificado".
 
 **REQ-NF-008 — Cifrado de contraseñas**
 - **Categoría:** Seguridad · **Prioridad:** Must
@@ -751,12 +820,101 @@ almacenados)**
   este documento porque en ese momento no existía ninguna operación no
   elemental; en v0.9.0-rc ya existe una implementación real:
   `fn_resumen_mascotas_por_especie` (ver REQ-F-021).
-- **Verificación:** `ResumenEspeciesIntegrationTest`;
+- **Verificación:** `ResumenEspeciesIntegrationTest`, `ProcedimientosBiopetIntegrationTest`;
   `scripts/audit-sql-dynamic.sh` (ausencia de SQL dinámico por
   concatenación); `docs/basedatos/CATALOGO-SP.md`.
-- **Estado:** verificado.
+- **Estado:** **pendiente de confirmación explícita (Must #2 de 2, ver
+  sección 7)**. Las clases de test y `CATALOGO-SP.md` sí existen y son
+  reales en el repositorio actual (verificado); lo que falta confirmar es
+  que `scripts/audit-sql-dynamic.sh` se haya ejecutado realmente sobre el
+  estado v1.0.0 del código (con las seis rutinas reclasificadas a
+  `PROCEDURE`, ver `V6__formalizar_procedimientos_jpa.sql`) y no solo
+  sobre el estado v0.9.0-rc anterior. Se solicitó a Fred (responsable de
+  procedimientos almacenados/acceso a datos) confirmar la corrida y el
+  commit exacto antes de volver a marcarla "verificado".
 
 ---
+
+### 3.3. Criterios INVEST aplicados a las historias de usuario
+
+Las 24 historias de usuario de `docs/requisitos/historias/HistoriasUsuario.md`
+se evalúan aquí explícitamente contra los seis criterios INVEST de
+Cohn (Independent, Negotiable, Valuable, Estimable, Small, Testable),
+con justificación breve y verificable contra campos que ya existen en
+cada historia (no se introduce información nueva para esta evaluación).
+
+**Negotiable, Valuable y Testable se cumplen en las 24 historias, sin
+excepción**, verificado estructuralmente así:
+
+- **Negotiable:** las 24 historias siguen el formato Connextra ("Como...
+  quiero... para..."), que expresa intención y valor, no una solución de
+  diseño fija; el "cómo" (campos exactos, validaciones) queda abierto a
+  negociación en el caso de uso y en la implementación.
+- **Valuable:** cada historia declara un rol beneficiario explícito
+  (`Como <rol>`) y está trazada a un requisito funcional con *rationale*
+  propio en la sección 3.1, nunca a una tarea puramente técnica sin
+  beneficiario.
+- **Testable:** las 24 historias incluyen un bloque `gherkin` con al
+  menos un escenario `Given/When/Then` verificable; las 8 aún no
+  implementadas (Should/Could pendientes) lo declaran explícitamente
+  como "comportamiento esperado, no implementado", sin fingir que ya
+  existe evidencia de ejecución.
+
+**Independent, Estimable y Small varían por historia** (justificación
+por fila, tomada del campo *Dependencias* y del estado real de cada
+historia):
+
+| HU | Independent | Estimable | Small |
+|---|---|---|---|
+| HU-001 | Sí | Sí — implementada, esfuerzo ya observado | Nota — 2 REQ-F relacionados |
+| HU-002 | Sí | Sí — implementada, esfuerzo ya observado | Sí — 1 REQ-F |
+| HU-003 | Parcial — depende de HU-002 (requiere haber iniciado sesión previamente) | Sí — implementada, esfuerzo ya observado | Sí — 1 REQ-F |
+| HU-004 | Parcial — depende de HU-002 | Sí — implementada, esfuerzo ya observado | Sí — 1 REQ-F |
+| HU-005 | Parcial — depende de HU-002 | Sí — implementada, esfuerzo ya observado | Sí — 1 REQ-F |
+| HU-006 | Parcial — depende de HU-002 | Sí — implementada, esfuerzo ya observado | Sí — 1 REQ-F |
+| HU-007 | Parcial — depende de HU-005 (control de acceso por rol) | Sí — implementada, esfuerzo ya observado | Sí — 1 REQ-F |
+| HU-008 | Parcial — depende de HU-005 | Sí — implementada, esfuerzo ya observado | Sí — 1 REQ-F |
+| HU-009 | Parcial — depende de HU-005, HU-008 | Sí — implementada, esfuerzo ya observado | Sí — 1 REQ-F |
+| HU-010 | Parcial — depende de HU-005, HU-009 | Sí — implementada, esfuerzo ya observado | Sí — 1 REQ-F |
+| HU-011 | Parcial — depende de HU-005, HU-009 | Sí — implementada, esfuerzo ya observado | Sí — 1 REQ-F |
+| HU-012 | Parcial — depende de HU-007 (requiere que la mascota exista) | Parcial — hay código/tests reales para el subconjunto entregado (ver Observaciones de la historia) | Sí — 1 REQ-F |
+| HU-013 | Parcial — depende de HU-012 | Parcial — estado "Pendiente", sin artefacto entregado que medir | Sí — 1 REQ-F |
+| HU-014 | Parcial — depende de HU-007 | Parcial — hay código/tests reales para el subconjunto entregado (ver Observaciones de la historia) | Sí — 1 REQ-F |
+| HU-015 | Parcial — depende de HU-007 | Parcial — estado "Pendiente", sin artefacto entregado que medir | Sí — 1 REQ-F |
+| HU-016 | Parcial — depende de HU-012 (requiere historial clínico) | Parcial — estado "Pendiente", sin artefacto entregado que medir | Sí — 1 REQ-F |
+| HU-017 | Parcial — depende de HU-007 | Parcial — estado "Pendiente", sin artefacto entregado que medir | Sí — 1 REQ-F |
+| HU-018 | Sí | Parcial — estado "Pendiente", sin artefacto entregado que medir | Sí — 1 REQ-F |
+| HU-019 | Parcial — depende de HU-002 (requiere usuario autenticado) | Parcial — estado "Parcial", sin artefacto entregado que medir | Sí — 1 REQ-F |
+| HU-020 | Parcial — depende de HU-005 (control de acceso por rol), HU-007 (requiere que existan mascotas registradas) | Sí — implementada, esfuerzo ya observado | Sí — 1 REQ-F |
+| HU-021 | Parcial — depende de HU-001 (registro de usuario) | Parcial — estado "Pendiente", sin artefacto entregado que medir | Sí — 1 REQ-F |
+| HU-022 | Parcial — depende de HU-005 (control de acceso por rol) | Sí — implementada, esfuerzo ya observado | Sí — 1 REQ-F |
+| HU-023 | Parcial — depende de HU-007 (registro de mascota, requiere que la mascota exista) | Sí — implementada, esfuerzo ya observado | Sí — 1 REQ-F |
+| HU-024 | Sí | Sí — implementada, esfuerzo ya observado | Sí — 1 REQ-F |
+
+**Lectura honesta de "Independent".** La mayoría de historias depende de
+al menos otra (típicamente HU-002 "sesión iniciada" o HU-005/HU-007
+"rol autorizado"/"mascota existente"), lo cual es normal y esperado en
+un sistema con autenticación y CRUD relacional: ninguna historia de
+gestión de un recurso es realmente independiente de "existe sesión" y
+"el recurso padre existe". Se documenta la dependencia real en vez de
+declarar "Independent: Sí" de forma genérica sin sustento, que habría
+sido la alternativa más fácil pero menos honesta.
+
+**Lectura honesta de "Estimable".** Las historias ya **implementadas**
+(15 de 24) son estimables con certeza retrospectiva: el código y los
+tests existen, su esfuerzo ya fue observado. Las **parciales** (HU-012,
+HU-014: 2) son estimables solo para el subconjunto ya entregado — el
+esfuerzo del resto (calendario interactivo, vista de historial
+consolidado) sigue siendo una estimación no verificada. Las
+**pendientes** (7) no tienen ningún artefacto que permita estimar con
+base empírica; su tamaño es una suposición heredada de la Entrega 1A,
+no una medición.
+
+**Nota sobre "Small" en HU-001.** Es la única historia que agrupa dos
+REQ-F (registro exitoso + rechazo por correo duplicado) porque ambos
+comparten el mismo flujo de entrada (`POST /api/auth/registro`) y
+serían artificialmente pequeños por separado; se mantiene como una sola
+historia pequeña y cohesiva, no como una violación de INVEST.
 
 ## 4. Trazabilidad (resumen)
 
@@ -864,10 +1022,16 @@ intercambiables (cierre de OBS-05):**
 Los wireframes conceptuales (login unificado, dashboard por rol, historial
 clínico, gestión de citas) están documentados en la Entrega 1A
 (`PFC_Entrega1A_BMT.pdf`, sección 7). La interfaz realmente implementada en
-v0.9.0-rc (login y gestión de mascotas con paginación, formularios,
-confirmación de borrado, resumen por especie y accesibilidad) está en
-`frontend/src/app/features/`, sin wireframe formal actualizado — se deja
-como observación abierta en la sección 7.
+v1.0.0 está en `frontend/src/app/features/`: `login.component.ts`
+(autenticación), `mascotas.component.ts` (CRUD con paginación,
+formularios, confirmación de borrado, resumen por especie y
+accesibilidad) y, nuevo en Unidad IV, `vacunas.component.ts` (CRUD de
+vacunas). **Citas, consultas, gestión administrativa de usuarios y
+consulta externa de especies existen como API real (ver 3.1) pero sin
+pantalla propia todavía** — no hay componentes correspondientes en
+`frontend/src/app/features/`. Ninguna de estas cinco pantallas cuenta con
+wireframe formal actualizado — se deja como observación abierta en la
+sección 7.
 
 ## 7. Observaciones e información pendiente
 
@@ -920,6 +1084,38 @@ actualiza el estado real:
   nuevas de los tres bloques ya están integradas en
   `docs/informe/referencias.bib` (39 entradas totales).
 
+**Cierre 2026-09-03 — revisión a v1.0.0 (recalificación).**
+
+- **Versión y firma.** Este documento pasa de v0.9.0-rc a **v1.0.0**. El
+  PDF `SRS-v1.0.0.pdf` **no está firmado** por el docente-director a la
+  fecha de este cierre; se envía para aprobación y la firma se
+  incorporará, con fecha real, solo cuando se reciba.
+- **INVEST — CERRADO.** Se agrega la sección 3.3, con los seis criterios
+  aplicados explícitamente a las 24 historias de usuario (justificación
+  por criterio, tabla verificable fila por fila).
+- **Alineación de HU-012/HU-014 y REQ-F-013/REQ-F-015 con el código
+  actual — CERRADO.** Revisión contra el repositorio real detectó que
+  ambos requisitos seguían marcados "pendiente" pese a que la Unidad IV
+  ya entregó `CitaController`/`CitaService` y
+  `ConsultaController`/`ConsultaService` con CRUD completo y tests
+  dedicados. Se corrigen a "parcial" (no "verificado", porque el
+  calendario interactivo y la vista de historial consolidado siguen sin
+  implementar) en el SRS, en `HistoriasUsuario.md` y en `CasosDeUso.md`.
+- **REQ-F-025 corregido — CERRADO.** Una versión anterior de este
+  documento afirmaba que `ExternalApiController`/`ExternalApiService` no
+  tenían prueba automatizada; sí la tienen
+  (`ExternalApiServiceTest`, 6 pruebas). Se corrige el estado a
+  "verificado".
+- **Conteo de Must — NO se declara 22/22.** De los 22 requisitos Must,
+  **20 están verificados con evidencia concreta** (test automatizado,
+  captura HTTP real, o corrida de medición archivada). **2 quedan
+  explícitamente "pendiente de confirmación explícita"**
+  (REQ-NF-007 — disponibilidad; REQ-NF-013 — estrategia híbrida de
+  acceso a datos), a la espera de que Fred confirme el artefacto/commit
+  exacto que los respalda. No se marcan "verificado" sin ese respaldo,
+  aunque una versión anterior de este documento sí los daba por
+  verificados sin evidencia suficiente.
+
 **Sigue como limitación declarada, no bloqueante para el cierre de esta
 entrega:**
 
@@ -932,6 +1128,19 @@ entrega:**
   (historial clínico, citas, facturación): siguen siendo los de la
   Entrega 1A. El producto real y su documentación de arquitectura (C4,
   DER, SRS) sí reflejan el sistema implementado.
+- **Pantallas sin interfaz propia (API real, sin UI).** Citas
+  (calendario interactivo), historial clínico consolidado, gestión
+  administrativa de usuarios y consulta externa de especies: las cuatro
+  tienen backend real y verificado, pero ninguna tiene componente en
+  `frontend/src/app/features/` todavía.
+- **Aislamiento de datos incompleto en Consultas (REQ-F-013).**
+  `ConsultaService.listar()` no filtra por propietario para
+  `ROLE_DUENO`, a diferencia de `MascotaService`/`VacunaService`
+  (registrado en `docs/trazabilidad/matriz.csv`). Un dueño de mascota
+  autenticado podría ver consultas de mascotas ajenas a través de este
+  endpoint. Se documenta aquí para que no quede oculto; su corrección es
+  responsabilidad del propietario del módulo (Unidad IV), fuera de la
+  zona de archivos de esta revisión.
 
 Ninguno de estos puntos se cierra con datos inventados. Quedan como
 limitaciones explícitas de la Entrega Final, consistentes con el criterio

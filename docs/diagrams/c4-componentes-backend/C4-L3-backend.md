@@ -3,12 +3,26 @@
 ### Objetivo
 
 Este documento describe el **diagrama de componentes (C4 Nivel 3)** del
-contenedor **Backend Spring Boot** de BIOPET. Su alcance es exclusivamente
-interno a ese contenedor: muestra en qué componentes reales se organiza el
-backend (controladores, servicios, seguridad, persistencia, manejo de
-errores e infraestructura del servidor) y cómo se relacionan entre sí y con
-los contenedores externos ya documentados en el C4 Nivel 2
-(`docs/diagrams/c4-contenedores/`): Frontend, PostgreSQL y Redis.
+contenedor **Backend Spring Boot** de BIOPET, actualizado a **v1.0.0**. Su
+alcance es exclusivamente interno a ese contenedor: muestra en qué
+componentes reales se organiza el backend (controladores, servicios,
+seguridad, persistencia, manejo de errores e infraestructura del servidor)
+y cómo se relacionan entre sí, con los contenedores externos ya
+documentados en el C4 Nivel 2 (`docs/diagrams/c4-contenedores/`) — Frontend,
+PostgreSQL y Redis/Valkey — y con el único sistema externo real, *API
+Ninjas (Animals API)* (ver C4 Nivel 1, `docs/diagrams/c4-contexto/`).
+
+La fuente única y versionada del modelo (los tres niveles) es
+[`../workspace.dsl`](../workspace.dsl) (Structurizr DSL, en inglés); este
+`.dot`/`.puml` son derivaciones manuales alineadas a esa fuente.
+
+Respecto a la Tercera Entrega, v1.0.0 añade los controladores/servicios/
+repositorios de la Unidad IV — citas (`CitaController`/`CitaService`/
+`CitaRepository`), consultas (`ConsultaController`/`ConsultaService`/
+`ConsultaRepository`) y vacunas (`VacunaController`/`VacunaService`/
+`VacunaRepository`) — más la integración externa (`ExternalApiController`/
+`ExternalApiService`/`ExternalApiClient`) y el acceso formal a
+procedimientos almacenados (`ProcedimientoBiopetRepository`).
 
 No es un diagrama de clases: no muestra atributos, métodos, constructores,
 anotaciones Java ni el detalle línea por línea del código. Los DTOs y
@@ -37,111 +51,9 @@ convención, en su propia carpeta:
   `dot -Tcanon c4-componentes-backend.dot -o /dev/null` (sin errores) antes
   de generar la imagen final.
 
-Fuente Graphviz incluida aquí para lectura directa sin herramientas externas:
-
-```dot
-digraph C4L3 {
-  graph [rankdir=TB, dpi=200, bgcolor="white", fontname="Arial", label="BIOPET - C4 Nivel 3: Componentes del Backend", labelloc=t, fontsize=22, nodesep=0.5, ranksep=0.8, compound=true];
-  node [shape=box, style="rounded,filled", fillcolor="#F8FAFC", color="#334155", fontname="Arial", fontsize=11];
-  edge [fontname="Arial", fontsize=9, color="#475569"];
-
-  frontend [label="Frontend BIOPET\nAngular + Nginx :4200", shape=box, style="rounded,filled", fillcolor="#DCFCE7", color="#166534"];
-
-  subgraph cluster_controllers {
-    label="API REST / Controladores"; style="rounded,filled"; fillcolor="#E0E7FF"; color="#3730A3";
-    AuthController [label="AuthController\n/api/auth/*", fillcolor="#C7D2FE"];
-    MascotaController [label="MascotaController\n/api/mascotas/*", fillcolor="#C7D2FE"];
-    UsuarioController [label="UsuarioController\n/api/usuarios/me", fillcolor="#C7D2FE"];
-  }
-
-  subgraph cluster_services {
-    label="Servicios de aplicación"; style="rounded,filled"; fillcolor="#DBEAFE"; color="#1D4ED8";
-    AuthService [label="AuthService", fillcolor="#BFDBFE"];
-    MascotaService [label="MascotaService", fillcolor="#BFDBFE"];
-  }
-
-  subgraph cluster_security {
-    label="Seguridad y autenticación"; style="rounded,filled"; fillcolor="#FEE2E2"; color="#B91C1C";
-    SecurityConfig [label="SecurityConfig", fillcolor="#FECACA"];
-    JwtAuthFilter [label="JwtAuthenticationFilter", fillcolor="#FECACA"];
-    JwtService [label="JwtService", fillcolor="#FECACA"];
-    JwtCookieService [label="JwtCookieService", fillcolor="#FECACA"];
-    UserDetailsSvc [label="UserDetailsServiceImpl", fillcolor="#FECACA"];
-    RateLimiter [label="LoginRateLimiterService\n(memoria, por IP)", fillcolor="#FECACA"];
-    Blacklist [label="TokenBlacklistService", fillcolor="#FECACA"];
-    AuditService [label="AuthenticationAuditService", fillcolor="#FECACA"];
-    AuthEntryPoint [label="ProblemAuthenticationEntryPoint\n(401)", fillcolor="#FCA5A5"];
-    AccessDeniedHandler [label="ProblemAccessDeniedHandler\n(403)", fillcolor="#FCA5A5"];
-  }
-
-  subgraph cluster_errors {
-    label="Manejo de errores"; style="rounded,filled"; fillcolor="#FEF3C7"; color="#92400E";
-    GlobalExceptionHandler [label="GlobalExceptionHandler", fillcolor="#FDE68A"];
-    ProblemDetailFactory [label="ProblemDetailFactory", fillcolor="#FDE68A"];
-  }
-
-  subgraph cluster_persistence {
-    label="Persistencia (Spring Data JPA)"; style="rounded,filled"; fillcolor="#E9D5FF"; color="#6B21A8";
-    UsuarioRepo [label="UsuarioRepository", fillcolor="#DDD6FE"];
-    MascotaRepo [label="MascotaRepository\n(+ @Query nativa\nresumenPorEspecie)", fillcolor="#DDD6FE"];
-  }
-
-  subgraph cluster_infra {
-    label="Infraestructura del servidor"; style="rounded,filled"; fillcolor="#E2E8F0"; color="#334155";
-    TomcatDual [label="TomcatDualConnectorConfig\nperfil 'tls'", fillcolor="#CBD5E1"];
-  }
-
-  postgres [label="PostgreSQL 16\n:5432", fillcolor="#FDE68A", color="#92400E"];
-  redis [label="Redis 7\n:6379", fillcolor="#FECACA", color="#B91C1C"];
-  flyway [label="Flyway 9.22.3\nclasspath:db/migration\nV1__schema_inicial.sql", fillcolor="#FEF9C3", color="#92400E"];
-  logs [label="Logs locales del proceso\n(stdout / contenedor)", shape=note, fillcolor="#F1F5F9"];
-
-  frontend -> AuthController [label="HTTPS/JSON + cookies"];
-  frontend -> MascotaController [label="HTTPS/JSON + cookie access_token"];
-  frontend -> UsuarioController [label="HTTPS/JSON + cookie access_token"];
-  frontend -> TomcatDual [label="HTTPS :8443 (público) / HTTP :8080 (interno)", style=dashed];
-
-  AuthController -> AuthService [label="registro/login/refresh/logout"];
-  AuthController -> JwtCookieService [label="lee/escribe cookies"];
-  MascotaController -> MascotaService [label="listar/buscar/crear/actualizar/eliminar"];
-  UsuarioController -> AuthService [label="perfil(email)"];
-
-  AuthService -> UsuarioRepo [label="consulta/crea usuario"];
-  AuthService -> JwtService [label="genera/valida JWT"];
-  AuthService -> RateLimiter [label="verificarPermitido / registrarFallo"];
-  AuthService -> AuditService [label="LOGIN_*/REFRESH_*/LOGOUT_SUCCESS"];
-  AuthService -> Blacklist [label="revoke / isRevoked (refresh, logout)"];
-
-  MascotaService -> MascotaRepo [label="CRUD"];
-  MascotaService -> UsuarioRepo [label="valida dueño/rol"];
-  MascotaService -> redis [label="caché @Cacheable/@CacheEvict", style=dashed];
-
-  JwtAuthFilter -> JwtCookieService [label="lee cookie access_token"];
-  JwtAuthFilter -> JwtService [label="valida firma/claims/tipo"];
-  JwtAuthFilter -> Blacklist [label="isRevoked(jti)"];
-  JwtAuthFilter -> AuditService [label="TOKEN_REVOKED"];
-  JwtAuthFilter -> UserDetailsSvc [label="loadUserByUsername"];
-
-  SecurityConfig -> JwtAuthFilter [label="registra en la cadena de filtros"];
-  SecurityConfig -> AuthEntryPoint [label="entry point 401"];
-  SecurityConfig -> AccessDeniedHandler [label="access denied handler 403"];
-  SecurityConfig -> UserDetailsSvc [label="DaoAuthenticationProvider"];
-
-  AuthEntryPoint -> ProblemDetailFactory [label="construye 401"];
-  AccessDeniedHandler -> ProblemDetailFactory [label="construye 403"];
-  GlobalExceptionHandler -> ProblemDetailFactory [label="construye 4xx/429"];
-
-  Blacklist -> redis [label="StringRedisTemplate"];
-  UsuarioRepo -> postgres [label="JDBC/JPA"];
-  MascotaRepo -> postgres [label="JDBC/JPA"];
-
-  AuditService -> logs [label="AUTH_AUDIT"];
-  flyway -> postgres [label="aplica esquema al iniciar\n(una vez, antes de servir tráfico)", style=dotted];
-}
-```
-
-(Versión completa, con todos los atributos de color exactos, en el archivo
-fuente [`c4-componentes-backend.dot`](c4-componentes-backend.dot).)
+Fuente Graphviz completa (no se duplica aquí para evitar que ambas copias
+diverjan): [`c4-componentes-backend.dot`](c4-componentes-backend.dot),
+generada desde [`../workspace.dsl`](../workspace.dsl).
 
 ### Componentes
 
@@ -150,8 +62,17 @@ fuente [`c4-componentes-backend.dot`](c4-componentes-backend.dot).)
 | API REST | `AuthController` | Endpoints `/api/auth/registro`, `/login`, `/refresh`, `/logout` | Spring MVC REST |
 | API REST | `MascotaController` | Endpoints CRUD de `/api/mascotas` y `/api/mascotas/resumen-especies` | Spring MVC REST |
 | API REST | `UsuarioController` | Endpoint `GET /api/usuarios/me` (perfil autenticado) | Spring MVC REST |
+| API REST | `CitaController` | CRUD de `/api/citas` y actualización masiva de estado | Spring MVC REST |
+| API REST | `ConsultaController` | Registro y consulta de `/api/consultas` | Spring MVC REST |
+| API REST | `VacunaController` | CRUD de `/api/vacunas` | Spring MVC REST |
+| API REST | `ExternalApiController` | Endpoint `/api/externa/especies/*`, proxy cacheado hacia API Ninjas | Spring MVC REST |
 | Servicios | `AuthService` | Orquesta registro, login, refresh, logout: autenticación, JWT, rate limiting, auditoría y revocación | Spring `@Service` |
 | Servicios | `MascotaService` | Reglas de negocio de mascotas: autorización por propiedad, caché de listados, resumen por especie | Spring `@Service` + Spring Cache |
+| Servicios | `CitaService` | Reglas de negocio de citas: validación de veterinario, actualización masiva de estado | Spring `@Service` |
+| Servicios | `ConsultaService` | Valida mascota y veterinario activos antes de registrar una consulta | Spring `@Service` |
+| Servicios | `VacunaService` | Reglas de negocio de registros de vacunación | Spring `@Service` |
+| Servicios | `ExternalApiService` | Obtiene y cachea (Redis, TTL configurable) datos de especie desde la API externa | Spring `@Service` |
+| Servicios | `ExternalApiClient` | Cliente HTTP hacia API Ninjas (Animals API) | Spring `@Service` |
 | Seguridad | `SecurityConfig` | Cadena de filtros, CORS, cabeceras HTTP, autorización HTTP, wiring de entry point/access denied handler | Spring Security |
 | Seguridad | `JwtAuthenticationFilter` | Resuelve y valida el JWT (cookie o `Authorization`) de cada solicitud protegida | Spring Security `OncePerRequestFilter` |
 | Seguridad | `JwtService` | Genera y valida JWT: firma HMAC, claims estándar y propios, tipo access/refresh | JJWT (HS256) |
@@ -166,6 +87,10 @@ fuente [`c4-componentes-backend.dot`](c4-componentes-backend.dot).)
 | Errores | `ProblemDetailFactory` | Construye el `ProblemDetail` uniforme (`type`/`title`/`status`/`detail`/`instance`) | Utilitario estático |
 | Persistencia | `UsuarioRepository` | Acceso a la tabla `usuarios` | Spring Data JPA |
 | Persistencia | `MascotaRepository` | Acceso a la tabla `mascotas` + función nativa `fn_resumen_mascotas_por_especie` (parámetro enlazado `:duenioId`) | Spring Data JPA + `@Query` nativa |
+| Persistencia | `CitaRepository` | Acceso a la tabla `citas` | Spring Data JPA |
+| Persistencia | `ConsultaRepository` | Acceso a la tabla `consultas` | Spring Data JPA |
+| Persistencia | `VacunaRepository` | Acceso a la tabla `vacunas` | Spring Data JPA |
+| Persistencia | `ProcedimientoBiopetRepository` | Invocación formal de las 6 rutinas almacenadas de PostgreSQL | Spring Data JPA (`@Procedure`/`@NamedStoredProcedureQuery`) |
 | Infraestructura | `TomcatDualConnectorConfig` | Añade el conector HTTP interno (8080) junto al conector HTTPS principal (8443) cuando el perfil `tls` está activo | Tomcat embebido (Spring Boot), `@Profile("tls")` |
 | Infraestructura | Flyway | Aplica el esquema (`V1__schema_inicial.sql`) sobre PostgreSQL una sola vez, al iniciar el backend, antes de que este atienda tráfico; no interviene en ninguna solicitud HTTP | Flyway 9.22.3 (`spring.flyway.locations: classpath:db/migration`) |
 
@@ -293,15 +218,14 @@ fuente [`c4-componentes-backend.dot`](c4-componentes-backend.dot).)
   llevaría su propio contador si hubiera más de una.
 - Los logs de auditoría son **locales**, sin integración con un SIEM.
 - El certificado TLS es **autofirmado y exclusivamente académico/local**.
-- Este diagrama representa la **versión actual** del código, verificada
-  contra `main` y actualizada en la rama `jaime/adr-acceso-datos-c4-l3`
-  (incorporación de Flyway y render `.png` real); debe actualizarse si
-  cambian las dependencias reales entre estos componentes.
-- La fuente PlantUML (`c4-componentes-backend.puml`) se mantiene sincronizada
-  a mano con la fuente Graphviz; no se generó su render en esta fase (se
-  priorizó el render Graphviz, indicado como preferente para archivos
-  `.dot`), por lo que cualquier cambio futuro debe aplicarse a ambos
-  archivos fuente.
+- Este diagrama representa la **versión v1.0.0** del código, verificada
+  contra `main` (Unidad IV: citas, consultas, vacunas, integración externa)
+  y actualizada en la rama `fix/zaida-frontend-docs-recalificacion`; debe
+  actualizarse si cambian las dependencias reales entre estos componentes.
+- La fuente única de verdad es `../workspace.dsl` (Structurizr DSL); tanto
+  `c4-componentes-backend.dot` como `c4-componentes-backend.puml` son
+  derivaciones manuales de esa fuente y deben mantenerse sincronizadas
+  entre sí en cada cambio.
 
 ### Trazabilidad
 
@@ -309,11 +233,20 @@ fuente [`c4-componentes-backend.dot`](c4-componentes-backend.dot).)
 - `Backend/src/main/java/com/biopet/controller/AuthController.java`
 - `Backend/src/main/java/com/biopet/controller/MascotaController.java`
 - `Backend/src/main/java/com/biopet/controller/UsuarioController.java`
+- `Backend/src/main/java/com/biopet/controller/CitaController.java`
+- `Backend/src/main/java/com/biopet/controller/ConsultaController.java`
+- `Backend/src/main/java/com/biopet/controller/VacunaController.java`
+- `Backend/src/main/java/com/biopet/controller/ExternalApiController.java`
 
 **Servicios:**
 - `Backend/src/main/java/com/biopet/service/AuthService.java`
 - `Backend/src/main/java/com/biopet/service/MascotaService.java`
 - `Backend/src/main/java/com/biopet/service/UserDetailsServiceImpl.java`
+- `Backend/src/main/java/com/biopet/service/CitaService.java`
+- `Backend/src/main/java/com/biopet/service/ConsultaService.java`
+- `Backend/src/main/java/com/biopet/service/VacunaService.java`
+- `Backend/src/main/java/com/biopet/integration/ExternalApiService.java`
+- `Backend/src/main/java/com/biopet/integration/ExternalApiClient.java`
 
 **Seguridad:**
 - `Backend/src/main/java/com/biopet/security/JwtAuthenticationFilter.java`
@@ -332,8 +265,12 @@ fuente [`c4-componentes-backend.dot`](c4-componentes-backend.dot).)
 **Persistencia:**
 - `Backend/src/main/java/com/biopet/repository/UsuarioRepository.java`
 - `Backend/src/main/java/com/biopet/repository/MascotaRepository.java`
+- `Backend/src/main/java/com/biopet/repository/CitaRepository.java`
+- `Backend/src/main/java/com/biopet/repository/ConsultaRepository.java`
+- `Backend/src/main/java/com/biopet/repository/VacunaRepository.java`
+- `Backend/src/main/java/com/biopet/repository/ProcedimientoBiopetRepository.java`
 - `db/procs/fn_resumen_mascotas_por_especie.sql`
-- `Backend/src/main/resources/db/migration/V1__schema_inicial.sql` (Flyway)
+- `Backend/src/main/resources/db/migration/` (Flyway V1..V6)
 
 **Configuración:**
 - `Backend/src/main/java/com/biopet/config/SecurityConfig.java`

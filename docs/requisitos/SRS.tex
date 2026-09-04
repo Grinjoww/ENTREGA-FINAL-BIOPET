@@ -1,10 +1,12 @@
 % Options for packages loaded elsewhere
 \PassOptionsToPackage{unicode}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
-%
 \documentclass[
 ]{article}
+\usepackage{xcolor}
+\usepackage[margin=2.5cm]{geometry}
 \usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
@@ -15,12 +17,16 @@
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 \fi
+\usepackage{lmodern}
 \ifPDFTeX\else
   % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
-
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
 \makeatletter
 \@ifundefined{KOMAClassName}{% if non-KOMA class
   \IfFileExists{parskip.sty}{%
@@ -31,8 +37,6 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
-\usepackage{xcolor}
-\usepackage[margin=2.5cm]{geometry}
 \usepackage{longtable,booktabs,array}
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
@@ -43,10 +47,6 @@
 % Allow footnotes in longtable head/foot
 \IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
 \makesavenoteenv{longtable}
-\setlength{\emergencystretch}{3em} % prevent overfull lines
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
 \ifLuaTeX
 \usepackage[bidi=basic]{babel}
 \else
@@ -56,16 +56,21 @@
 % get rid of language-specific shorthands (see #6817):
 \let\LanguageShortHands\languageshorthands
 \def\languageshorthands#1{}
-\ifLuaTeX
-  \usepackage{selnolig}  % disable illegal ligatures
-\fi
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
 \hypersetup{
   pdflang={es},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
+
+\usepackage{newunicodechar}
+\newunicodechar{≥}{\ensuremath{\geq}}
+\newunicodechar{→}{\ensuremath{\rightarrow}}
+\newunicodechar{↔}{\ensuremath{\leftrightarrow}}
 
 \author{}
 \date{}
@@ -76,15 +81,21 @@
 \setcounter{tocdepth}{3}
 \tableofcontents
 }
-\hypertarget{especificaciuxf3n-de-requisitos-de-software-srs-biopet}{%
 \section{Especificación de Requisitos de Software (SRS) ---
-BIOPET}\label{especificaciuxf3n-de-requisitos-de-software-srs-biopet}}
+BIOPET}\label{especificaciuxf3n-de-requisitos-de-software-srs-biopet}
 
-\textbf{Versión:} v0.9.0-rc (Tercera Entrega, PFC Aplicaciones Web
-2026-2027) \textbf{Conforme a:} ISO/IEC/IEEE 29148:2018 (estructura de
-SRS), INCOSE Guide to Writing Requirements v4 (calidad de requisitos
-individuales y de conjunto), criterios INVEST de Cohn (historias de
-usuario), plantilla de Cockburn (casos de uso).
+\textbf{Versión:} v1.0.0 (Entrega Final, PFC Aplicaciones Web 2026-2027)
+\textbf{Conforme a:} ISO/IEC/IEEE 29148:2018 (estructura de SRS), INCOSE
+Guide to Writing Requirements v4 (calidad de requisitos individuales y
+de conjunto), criterios INVEST de Cohn (historias de usuario, aplicados
+explícitamente en la sección 3.3), plantilla de Cockburn (casos de uso).
+
+\textbf{Estado de aprobación:} este documento \textbf{no está firmado}
+por el docente-director al momento de esta revisión. El PDF
+\texttt{SRS-v1.0.0.pdf} se envía para aprobación/firma tras cerrar esta
+revisión; el estado de firma se actualizará aquí, con fecha real,
+únicamente cuando exista una firma legítima recibida del docente ---
+nunca antes, y nunca simulada o copiada de otro documento.
 
 \textbf{Procedencia de este documento:} este archivo se reconstruye a
 partir de dos fuentes: (1) el SRS de la Entrega 1A
@@ -100,8 +111,7 @@ documento original está en
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\hypertarget{uxedndice}{%
-\subsection{Índice}\label{uxedndice}}
+\subsection{Índice}\label{uxedndice}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -112,7 +122,8 @@ documento original está en
   Descripción global
 \item
   Requisitos específicos 3.1. Requisitos funcionales (REQ-F) 3.2.
-  Requisitos no funcionales (REQ-NF)
+  Requisitos no funcionales (REQ-NF) 3.3. Criterios INVEST aplicados a
+  las historias de usuario
 \item
   Trazabilidad (resumen)
 \item
@@ -125,21 +136,20 @@ documento original está en
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\hypertarget{introducciuxf3n}{%
-\subsection{1. Introducción}\label{introducciuxf3n}}
+\subsection{1. Introducción}\label{introducciuxf3n}
 
-\hypertarget{propuxf3sito}{%
-\subsubsection{1.1. Propósito}\label{propuxf3sito}}
+\subsubsection{1.1. Propósito}\label{propuxf3sito}
 
 Este documento especifica los requisitos funcionales y no funcionales
-del sistema BIOPET en su estado v0.9.0-rc (release candidate de la
-Tercera Entrega del PFC). Su propósito es servir como fuente única de
-verdad para la matriz de trazabilidad, las pruebas automatizadas y la
-evidencia empírica exigidas por el bloque A.3 de la Guía de la Tercera
-Entrega, y como insumo para la Entrega Final (v1.0.0).
+del sistema BIOPET en su estado \textbf{v1.0.0 (Entrega Final)}. Su
+propósito es servir como fuente única de verdad para la matriz de
+trazabilidad, las pruebas automatizadas y la evidencia empírica exigidas
+por el bloque A.3 de la Guía, incorporando además los módulos de la
+Unidad IV (citas, consultas, vacunas, gestión administrativa de usuarios
+y consulta externa de especies) que no existían en la revisión v0.9.0-rc
+de la Tercera Entrega.
 
-\hypertarget{alcance}{%
-\subsubsection{1.2. Alcance}\label{alcance}}
+\subsubsection{1.2. Alcance}\label{alcance}
 
 BIOPET es un sistema web para centralizar la información clínica y
 administrativa de clínicas veterinarias de pequeña y mediana escala. El
@@ -147,30 +157,45 @@ alcance completo del producto (definido en la Entrega 1A) contempla
 gestión de dueños y mascotas, historial clínico, citas, telemetría IoT,
 recomendación clínica asistida, facturación digital y reportes.
 
-\textbf{Alcance implementado y verificado en v0.9.0-rc:} autenticación
+\textbf{Alcance implementado y verificado en v1.0.0:} autenticación
 completa (registro, login, refresh, logout con revocación), control de
 acceso por rol (RBAC), CRUD completo de la entidad Mascota con
 verificación de propiedad, y resumen agregado de mascotas por especie
 (vía función SQL). Este es el subconjunto Must Have que el equipo se
-comprometió a entregar operativo y reproducible en este semestre.
+comprometió a entregar operativo y reproducible desde la Tercera Entrega
+(v0.9.0-rc).
 
-\textbf{Alcance pendiente, heredado de la Entrega 1A:} historial
-clínico, prescripción de medicamentos, citas veterinarias, telemetría
-IoT, ubicación en mapa, recomendaciones asistidas, facturación digital y
-reportes exportables. El modelo de datos conceptual de estos módulos ya
-existe (ver sección 5 y el DER de la Entrega 1A), pero no hay código de
-backend ni de frontend implementado todavía. Se documentan como
-requisitos con estado ``pendiente'' para que la matriz de trazabilidad
-(bloque A.3.3 de la Guía) los declare correctamente, en vez de
-omitirlos.
+\textbf{Ampliado en v1.0.0 (Unidad IV):} gestión administrativa de
+usuarios (REQ-F-023), CRUD de vacunas (REQ-F-024) y consulta externa de
+información de especies con caché (REQ-F-025), los tres con interfaz de
+usuario real para vacunas
+(\texttt{frontend/src/app/features/vacunas.component.ts}) y solo a nivel
+de API para usuarios/especies externas (sin pantalla propia todavía).
+Adicionalmente, el backend incorporó CRUD completo de citas
+(\texttt{CitaController}) y de consultas médicas
+(\texttt{ConsultaController}), que formalizan parcialmente REQ-F-015 y
+REQ-F-013 respectivamente (detalle de alcance real, sin sobre-declarar,
+en la sección 3.1).
 
-\hypertarget{definiciones-acruxf3nimos-y-abreviaturas}{%
+\textbf{Alcance pendiente, heredado de la Entrega 1A:} vista consolidada
+de historial clínico cronológico y calendario interactivo de citas
+(ambos con backend real desde v1.0.0, sin la pieza específica pendiente
+--- ver ``Ampliado en v1.0.0'' arriba y la sección 3.1), más
+prescripción de medicamentos, telemetría IoT, ubicación en mapa,
+recomendaciones asistidas, facturación digital y reportes exportables
+(estos últimos seis, sin ningún código de backend ni de frontend
+todavía). El modelo de datos conceptual de estos módulos ya existe (ver
+sección 5 y el DER de la Entrega 1A). Se documentan como requisitos con
+estado ``pendiente'' o ``parcial'' (según corresponda) para que la
+matriz de trazabilidad (bloque A.3.3 de la Guía) los declare
+correctamente, en vez de omitirlos.
+
 \subsubsection{1.3. Definiciones, acrónimos y
-abreviaturas}\label{definiciones-acruxf3nimos-y-abreviaturas}}
+abreviaturas}\label{definiciones-acruxf3nimos-y-abreviaturas}
 
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Término
@@ -195,8 +220,7 @@ shall & Verbo modal normativo de ISO/IEC/IEEE 29148 que indica
 obligación contractual del requisito. \\
 \end{longtable}
 
-\hypertarget{referencias}{%
-\subsubsection{1.4. Referencias}\label{referencias}}
+\subsubsection{1.4. Referencias}\label{referencias}
 
 \begin{itemize}
 \tightlist
@@ -216,8 +240,7 @@ obligación contractual del requisito. \\
   cambios respecto al documento original.
 \end{itemize}
 
-\hypertarget{resumen-del-documento}{%
-\subsubsection{1.5. Resumen del documento}\label{resumen-del-documento}}
+\subsubsection{1.5. Resumen del documento}\label{resumen-del-documento}
 
 La sección 2 describe el producto de forma global (perspectiva,
 funciones, usuarios, restricciones). La sección 3 contiene el detalle de
@@ -230,12 +253,10 @@ contenido, lo que aún falta por completar.
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\hypertarget{descripciuxf3n-global}{%
-\subsection{2. Descripción global}\label{descripciuxf3n-global}}
+\subsection{2. Descripción global}\label{descripciuxf3n-global}
 
-\hypertarget{perspectiva-del-producto}{%
 \subsubsection{2.1. Perspectiva del
-producto}\label{perspectiva-del-producto}}
+producto}\label{perspectiva-del-producto}
 
 BIOPET es un sistema nuevo, no una extensión de un producto previo
 existente en la clínica. Reemplaza procesos manuales (hojas de cálculo,
@@ -243,10 +264,9 @@ mensajería) por una plataforma web centralizada, según el problema
 documentado en la Entrega 1A (entrevistas a tres veterinarios y dos
 auxiliares, encuestas a quince dueños de mascotas).
 
-\hypertarget{cambio-de-plataforma-tecnoluxf3gica-respecto-a-la-entrega-1a}{%
 \subsubsection{2.2. Cambio de plataforma tecnológica respecto a la
 Entrega
-1A}\label{cambio-de-plataforma-tecnoluxf3gica-respecto-a-la-entrega-1a}}
+1A}\label{cambio-de-plataforma-tecnoluxf3gica-respecto-a-la-entrega-1a}
 
 El SRS original (Entrega 1A) especificaba ASP.NET Core 8/C\# como
 backend (ADR-001 original) y Bootstrap 5 + HTML/CSS/JS como frontend. El
@@ -259,30 +279,37 @@ ORM, mecanismo JWT) se actualizaron para reflejar la pila real, evitando
 que el SRS describa un sistema que no es el que existe en el
 repositorio.
 
-\hypertarget{funciones-del-producto-resumen}{%
 \subsubsection{2.3. Funciones del producto
-(resumen)}\label{funciones-del-producto-resumen}}
+(resumen)}\label{funciones-del-producto-resumen}
 
 \begin{itemize}
 \tightlist
 \item
   Gestión de usuarios y autenticación (roles: \texttt{ADMIN},
-  \texttt{VETERINARIO}, \texttt{AUXILIAR}, \texttt{DUENO}).
+  \texttt{VETERINARIO}, \texttt{AUXILIAR}, \texttt{DUENO}), incluida la
+  administración de cuentas por un \texttt{ADMIN} (Unidad IV).
 \item
   Gestión de mascotas (CRUD + resumen agregado por especie).
 \item
-  \emph{(Pendiente)} Gestión de historial clínico, citas, telemetría
-  IoT, recomendaciones asistidas, facturación y reportes.
+  Gestión de vacunas (CRUD, con interfaz de usuario) y de citas y
+  consultas médicas (CRUD a nivel de API; sin calendario interactivo ni
+  vista de historial clínico consolidado todavía --- ver 3.1).
+\item
+  Consulta de información externa de especies (taxonomía, hábitat,
+  dieta), con caché.
+\item
+  \emph{(Pendiente)} Vista consolidada de historial clínico cronológico,
+  prescripción de medicamentos, telemetría IoT, recomendaciones
+  asistidas, facturación y reportes exportables.
 \end{itemize}
 
-\hypertarget{caracteruxedsticas-de-los-usuarios}{%
 \subsubsection{2.4. Características de los
-usuarios}\label{caracteruxedsticas-de-los-usuarios}}
+usuarios}\label{caracteruxedsticas-de-los-usuarios}
 
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}@{}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Rol
@@ -307,8 +334,7 @@ mascotas. & Medio. \\
 mascotas. & Básico (público general, sin capacitación previa). \\
 \end{longtable}
 
-\hypertarget{restricciones}{%
-\subsubsection{2.5. Restricciones}\label{restricciones}}
+\subsubsection{2.5. Restricciones}\label{restricciones}
 
 \begin{itemize}
 \tightlist
@@ -328,9 +354,8 @@ mascotas. & Básico (público general, sin capacitación previa). \\
   Guía), no como JPQL/HQL con joins o agregaciones.
 \end{itemize}
 
-\hypertarget{supuestos-y-dependencias}{%
 \subsubsection{2.6. Supuestos y
-dependencias}\label{supuestos-y-dependencias}}
+dependencias}\label{supuestos-y-dependencias}
 
 \begin{itemize}
 \tightlist
@@ -347,8 +372,7 @@ dependencias}\label{supuestos-y-dependencias}}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\hypertarget{requisitos-especuxedficos}{%
-\subsection{3. Requisitos específicos}\label{requisitos-especuxedficos}}
+\subsection{3. Requisitos específicos}\label{requisitos-especuxedficos}
 
 Cada requisito seguirá el patrón
 \texttt{{[}condición{]}\ {[}sujeto{]}\ shall\ {[}acción{]}\ {[}objeto{]}\ {[}restricción{]}}
@@ -358,9 +382,8 @@ verificación, cumpliendo las características INCOSE C1--C9 (Necessary,
 Appropriate, Unambiguous, Complete, Singular, Feasible, Verifiable,
 Correct, Conforming).
 
-\hypertarget{requisitos-funcionales-req-f}{%
 \subsubsection{3.1. Requisitos funcionales
-(REQ-F)}\label{requisitos-funcionales-req-f}}
+(REQ-F)}\label{requisitos-funcionales-req-f}
 
 \begin{quote}
 \textbf{Nota de consistencia (corrección respecto a una versión anterior
@@ -375,9 +398,8 @@ numeración como única fuente de verdad, para que los tres documentos no
 se contradigan entre sí.
 \end{quote}
 
-\hypertarget{implementados-y-verificados-req-f-001-a-req-f-012-req-f-021}{%
 \paragraph{Implementados y verificados (REQ-F-001 a REQ-F-012,
-REQ-F-021)}\label{implementados-y-verificados-req-f-001-a-req-f-012-req-f-021}}
+REQ-F-021)}\label{implementados-y-verificados-req-f-001-a-req-f-012-req-f-021}
 
 \textbf{REQ-F-001 --- Registro de usuario dueño de mascota} -
 \textbf{Tipo:} Funcional · \textbf{Prioridad:} Must -
@@ -558,9 +580,8 @@ datos:} SP (agregación con \texttt{GROUP\ BY}, prohibido en ORM
 elemental por el bloque A.2.1 de la Guía). - \textbf{Estado:}
 verificado.
 
-\hypertarget{pendientes-heredados-de-la-entrega-1a-req-f-013-a-req-f-020}{%
 \paragraph{Pendientes, heredados de la Entrega 1A (REQ-F-013 a
-REQ-F-020)}\label{pendientes-heredados-de-la-entrega-1a-req-f-013-a-req-f-020}}
+REQ-F-020)}\label{pendientes-heredados-de-la-entrega-1a-req-f-013-a-req-f-020}
 
 \begin{quote}
 Estos requisitos provienen directamente de RF-03 a RF-15 del SRS
@@ -578,12 +599,12 @@ trazabilidad los declare sin ocultarlos.
 \end{quote}
 
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1667}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1667}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1667}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1667}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1667}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1667}}@{}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}@{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Id
@@ -604,11 +625,11 @@ Estado
 \endlastfoot
 REQ-F-013 & Registrar atención médica y almacenar/consultar el historial
 clínico de cada mascota de forma cronológica. & Should & RF-03, RF-04 &
-HU-012 / CU-12 & pendiente \\
+HU-012 / CU-12 & parcial \\
 REQ-F-014 & Registrar medicamentos prescritos durante una atención
 médica. & Could & RF-05 & HU-013 / CU-13 & pendiente \\
 REQ-F-015 & Registrar, modificar y consultar citas veterinarias mediante
-calendario interactivo. & Should & RF-06 & HU-014 / CU-14 & pendiente \\
+calendario interactivo. & Should & RF-06 & HU-014 / CU-14 & parcial \\
 REQ-F-016 & Proveer una API para recibir datos de dispositivos IoT de
 rastreo asociados a mascotas. & Could & RF-08, RF-09 & HU-015 / CU-15 &
 pendiente \\
@@ -627,6 +648,38 @@ REQ-F-022 & Enviar notificaciones al usuario por correo electrónico ante
 eventos relevantes de su cuenta. & Could & RF-07 & HU-021 / CU-21 &
 pendiente \\
 \end{longtable}
+
+\begin{quote}
+\textbf{Nota sobre REQ-F-013 y REQ-F-015 (revisión v1.0.0 --- código
+actual):} a diferencia de los demás requisitos de esta tabla, no se
+dejan como ``pendiente'' en v1.0.0 porque la Unidad IV sí incorporó
+código real para ambos, verificado contra el repositorio actual (paso de
+revisión obligatorio antes de cerrar esta entrega):
+\texttt{CitaController}/ \texttt{CitaService}/\texttt{CitaRepository}
+(CRUD completo: listar, buscar, crear, actualizar, eliminar) y
+\texttt{ConsultaController}/\texttt{ConsultaService}/
+\texttt{ConsultaRepository} (mismo CRUD), ambos con clase de test
+dedicada (\texttt{CitaControllerTest}, \texttt{ConsultaControllerTest}).
+Se marcan \textbf{``parcial''}, no ``verificado'', porque el enunciado
+original exige más de lo que el CRUD por sí solo cubre: REQ-F-015 pide
+explícitamente un ``calendario interactivo'' (no existe pantalla de
+citas en \texttt{frontend/src/app/features/}, solo la API) y REQ-F-013
+pide el historial clínico ``de forma cronológica'' (existe la proyección
+\texttt{HistorialClinico}/función
+\texttt{fn\_historial\_clinico\_mascota} a nivel de repositorio, pero
+ningún controlador la expone todavía como endpoint consolidado --- la
+única vía real hoy es el CRUD genérico de consultas, sin agrupar ni
+ordenar por mascota). \texttt{docs/trazabilidad/matriz.csv} registra
+además, para REQ-F-013, que \texttt{ConsultaService.listar()} \textbf{no
+filtra por propietario para \texttt{ROLE\_DUENO}} pese a la regla
+general de aislamiento de datos que sí aplican
+\texttt{MascotaService}/\texttt{VacunaService} (ver REQ-F-009); y que
+\texttt{GET\ /api/consultas} (listado) y
+\texttt{PUT\ /api/consultas/\{id\}} no tienen prueba automatizada
+dedicada en \texttt{ConsultaControllerTest}. Ambos quedan como
+limitación explícita en la sección 7, no como pendientes ocultos ni como
+``verificado'' sin serlo del todo.
+\end{quote}
 
 \begin{quote}
 \textbf{Nota sobre REQ-F-020 (auditoría):} a diferencia de los demás
@@ -746,9 +799,89 @@ ante fallo del servicio externo. - \textbf{Trazabilidad:} → HU-021 →
 CU-21 → (módulo pendiente; sin controlador ni servicio implementados en
 el backend). - \textbf{Estado:} pendiente.
 
-\hypertarget{requisitos-no-funcionales-req-nf}{%
+\paragraph{Incorporados en Unidad IV (REQ-F-023 a
+REQ-F-025)}\label{incorporados-en-unidad-iv-req-f-023-a-req-f-025}
+
+\begin{quote}
+\textbf{Nota de alcance:} los tres requisitos siguientes formalizan
+funcionalidades reales incorporadas al backend durante la Unidad IV
+(Citas y Consultas ya tenían requisito formal propio ---
+\texttt{REQ-F-015} y \texttt{REQ-F-013} respectivamente --- y no se
+duplican aquí). Cada uno agrupa el módulo completo, no una operación
+HTTP individual: la trazabilidad hacia cada endpoint real se detalla en
+\texttt{docs/trazabilidad/matriz.csv}.
+\end{quote}
+
+\textbf{REQ-F-023 --- Gestión administrativa de usuarios} -
+\textbf{Tipo:} Funcional · \textbf{Prioridad:} Should -
+\textbf{Enunciado:} El sistema deberá permitir que un usuario con rol
+\texttt{ADMIN} liste, consulte por identificador, cree, actualice y dé
+de baja lógica cuentas de usuario de cualquier rol, sin permitir que un
+administrador modifique el rol de su propia cuenta. -
+\textbf{Rationale:} nuevo requisito de la actividad de Unidad IV;
+formaliza el CRUD administrativo de
+\texttt{UsuarioController}/\texttt{UsuarioService}, funcionalidad
+distinta de \texttt{REQ-F-007} (consulta del perfil propio,
+\texttt{/api/usuarios/me}), que no se modifica ni se duplica. Se numera
+023 (siguiente identificador libre después de \texttt{REQ-F-022}). -
+\textbf{Verificación:} Test \texttt{UsuarioControllerTest} (16 pruebas:
+listado, consulta, creación, actualización, baja lógica, correo
+duplicado, contraseña obligatoria, no autoescalada de rol propio,
+control de acceso por rol). - \textbf{Trazabilidad:} → HU-022 → CU-22 →
+\texttt{UsuarioController.\{listar,buscar,crear,actualizar,eliminar\}} →
+\texttt{UsuarioService} → \texttt{GET\ /api/usuarios},
+\texttt{GET\ /api/usuarios/\{id\}}, \texttt{POST\ /api/usuarios},
+\texttt{PUT\ /api/usuarios/\{id\}},
+\texttt{DELETE\ /api/usuarios/\{id\}}. - \textbf{Estado:} verificado.
+
+\textbf{REQ-F-024 --- Gestión de vacunas} - \textbf{Tipo:} Funcional ·
+\textbf{Prioridad:} Should - \textbf{Enunciado:} El sistema deberá
+permitir registrar, consultar (de forma global, filtrada por mascota, o
+por identificador), actualizar y dar de baja lógica las vacunas
+aplicadas a una mascota, restringiendo la consulta de un usuario con rol
+\texttt{ROLE\_DUENO} a las vacunas de sus propias mascotas. -
+\textbf{Rationale:} nuevo requisito de la actividad de Unidad IV;
+formaliza el módulo \texttt{VacunaController}/\texttt{VacunaService},
+sin requisito formal previo en el SRS. - \textbf{Verificación:} Test
+\texttt{VacunaControllerTest} (10 pruebas); colección Postman
+\texttt{docs/postman/BIOPET-Vacunas.postman\_collection.json} (12
+requests, ejecutable con Newman). La operación
+\texttt{GET\ /api/vacunas/mascota/\{mascotaId\}} no tiene prueba
+automatizada dedicada en \texttt{VacunaControllerTest}; las demás
+operaciones sí. - \textbf{Trazabilidad:} → HU-023 → CU-23 →
+\texttt{VacunaController.\{listar,listarPorMascota,buscar,crear,actualizar,eliminar\}}
+→ \texttt{VacunaService} → \texttt{GET\ /api/vacunas},
+\texttt{GET\ /api/vacunas/mascota/\{mascotaId\}},
+\texttt{GET\ /api/vacunas/\{id\}}, \texttt{POST\ /api/vacunas},
+\texttt{PUT\ /api/vacunas/\{id\}}, \texttt{DELETE\ /api/vacunas/\{id\}}.
+- \textbf{Estado:} verificado.
+
+\textbf{REQ-F-025 --- Consulta de información externa de especies} -
+\textbf{Tipo:} Funcional · \textbf{Prioridad:} Could -
+\textbf{Enunciado:} El sistema deberá permitir consultar información de
+una especie (nombre científico, hábitat, dieta) desde un servicio
+externo, utilizando una caché Redis para evitar llamadas repetidas al
+servicio externo dentro de una ventana de tiempo configurable. -
+\textbf{Rationale:} nuevo requisito de la actividad de Unidad IV;
+integración con un proveedor externo (API Ninjas) vía
+\texttt{ExternalApiClient}, con patrón \emph{cache-aside} en
+\texttt{ExternalApiService} (TTL configurable mediante
+\texttt{app.external-api.cache-ttl-seconds}, valor por defecto 600 s). -
+\textbf{Verificación:} Test \texttt{ExternalApiServiceTest} (6 pruebas,
+\texttt{Backend/src/test/java/com/biopet/integration/}) --- corrige una
+afirmación de una versión anterior de este documento, que declaraba
+``sin prueba automatizada dedicada''; esa clase de test sí existe en el
+código actual. Evidencia empírica adicional en
+\texttt{docs/u4/evidencias/fred/redis-cache-comparacion.md} (comparación
+real de tiempos de respuesta con caché fría vs.~caché caliente). -
+\textbf{Trazabilidad:} → HU-024 → CU-24 →
+\texttt{ExternalApiController.infoEspecie} →
+\texttt{ExternalApiService.obtenerInfoEspecie} →
+\texttt{ExternalApiClient} → \texttt{GET\ /api/externa/especies}. -
+\textbf{Estado:} verificado.
+
 \subsubsection{3.2. Requisitos no funcionales
-(REQ-NF)}\label{requisitos-no-funcionales-req-nf}}
+(REQ-NF)}\label{requisitos-no-funcionales-req-nf}
 
 \textbf{REQ-NF-001 --- Rendimiento del listado de mascotas} -
 \textbf{Categoría:} Rendimiento · \textbf{Prioridad:} Must -
@@ -756,9 +889,13 @@ el backend). - \textbf{Estado:} pendiente.
 deberá superar 200 ms (p95) con caché caliente ni 500 ms (p95) con caché
 fría. - \textbf{Rationale:} heredado de RNF-01/RNF-WEB-04 de la Entrega
 1A, con umbrales cuantitativos añadidos por el bloque C.1 de la Guía. -
-\textbf{Verificación:} k6 (50 VUs, 30 s), 3 corridas,
-\texttt{docs/mediciones/perf/}. - \textbf{Estado:} pendiente de
-evidencia empírica archivada (bloque C.1).
+\textbf{Verificación:} k6, 5 corridas en caliente y 5 en frío,
+\texttt{docs/mediciones/perf/} (archivos
+\texttt{k6-20260817T*-local-tls-v0.9.0-rc-*.json} y \texttt{REPORT.md}).
+- \textbf{Estado:} verificado. \texttt{docs/mediciones/perf/REPORT.md}
+registra p95 entre 9.7 ms y 22.13 ms según la corrida, muy por debajo de
+los umbrales de 200 ms (caché caliente) y 500 ms (caché fría) exigidos
+por este requisito, con 0.0 \% de error en todas las corridas.
 
 \textbf{REQ-NF-002 --- Comunicación cifrada obligatoria} -
 \textbf{Categoría:} Seguridad · \textbf{Prioridad:} Must -
@@ -794,13 +931,19 @@ en \texttt{JwtService.java} (issuer, audience configurables vía
 Usabilidad · \textbf{Prioridad:} Must - \textbf{Enunciado:} La interfaz
 deberá adaptarse correctamente a resoluciones entre 320px y 1440px
 (móvil, tablet, escritorio). - \textbf{Rationale:} heredado de
-RNF-04/RNF-WEB-01. - \textbf{Verificación:} Lighthouse (perfil móvil,
-Slow 4G) + inspección manual en Chrome DevTools a 320px, 768px y 1440px.
-- \textbf{Trazabilidad:}
+RNF-04/RNF-WEB-01. - \textbf{Verificación:} Lighthouse (perfil móvil
+Slow 4G + perfil desktop) + inspección manual en Chrome DevTools a
+320px, 768px y 1440px. - \textbf{Trazabilidad:}
 \texttt{frontend/src/app/features/mascotas.component.ts}
 (\texttt{.grid-mascotas} con \texttt{@media\ (max-width:\ 600px)}). -
-\textbf{Estado:} verificado parcialmente (pantalla de Mascotas);
-pendiente de auditoría Lighthouse archivada.
+\textbf{Estado:} verificado. \texttt{docs/mediciones/lighthouse/}
+contiene 6 corridas originales (2026-08-01, perfil móvil) más 12
+corridas de re-ejecución (2026-08-18, perfiles móvil y desktop,
+\texttt{/login} y \texttt{/mascotas},
+\texttt{lhci-20260818-0538-*.json}). Performance ≥90 en todos los casos
+(100 en desktop, 90--94 en móvil), Accessibility 91 en todos los casos,
+en ambos perfiles y ambas rutas (incluida la vista autenticada de
+Mascotas).
 
 \textbf{REQ-NF-006 --- Compatibilidad de navegadores} -
 \textbf{Categoría:} Compatibilidad · \textbf{Prioridad:} Should -
@@ -815,9 +958,20 @@ pendiente de evidencia archivada.
 \textbf{Enunciado:} El sistema deberá estar operativo durante las
 semanas de evaluación establecidas por la asignatura. -
 \textbf{Rationale:} heredado de RNF-06. - \textbf{Verificación:}
-demostración en vivo (\texttt{make\ up}) durante la semana de entrega. -
-\textbf{Estado:} verificado por diseño (reproducibilidad automática,
-bloque B).
+demostración en vivo (\texttt{make\ up}) durante la semana de entrega;
+en producción, healthcheck de Render (\texttt{docs/despliegue/}). -
+\textbf{Estado:} \textbf{pendiente de confirmación explícita (Must \#1
+de 2, ver sección 7)}. La afirmación ``verificado por diseño'' de una
+versión anterior de este documento no está respaldada por un artefacto
+concreto (log de uptime, captura de healthcheck con fecha, o corrida de
+monitoreo real); es una inferencia razonable, no una verificación
+empírica --- y coincide con lo que ya registra
+\texttt{docs/trazabilidad/matriz.csv} para esta misma fila: estado
+``implementado'' (no ``verificado''), con la nota explícita ``no existe
+evidencia de disponibilidad sostenida durante una semana completa de
+evaluación''. Se solicitó a Fred (responsable de despliegue/Render) el
+nombre del artefacto o commit que la respalde antes de volver a marcarla
+``verificado''.
 
 \textbf{REQ-NF-008 --- Cifrado de contraseñas} - \textbf{Categoría:}
 Seguridad · \textbf{Prioridad:} Must - \textbf{Enunciado:} Las
@@ -837,10 +991,12 @@ refresh, logout) con IP, marca de tiempo y sujeto (correo), sin exceder
 nuevo derivado del control OWASP A09, exigido por el bloque C.2 de la
 Guía; ausente en el SRS original. Verificado directamente en
 \texttt{AuthenticationAuditService.java}. - \textbf{Verificación:}
-\texttt{AuthenticationAuditServiceTest}; captura de log real para el
-bloque C.2 (\texttt{docs/mediciones/sec/}). - \textbf{Estado:}
-verificado en código; pendiente de evidencia archivada (captura de log
-de producción/staging).
+\texttt{AuthenticationAuditServiceTest}; captura de log real en
+\texttt{docs/mediciones/sec/A09-logging.md}. - \textbf{Estado:}
+verificado. \texttt{docs/mediciones/sec/A09-logging.md} incluye líneas
+reales de log (\texttt{AUTH\_AUDIT\ event=LOGIN\_SUCCESS},
+\texttt{LOGIN\_FAILURE}, \texttt{LOGIN\_RATE\_LIMITED}, con IP,
+timestamp UTC y sujeto) y documenta la sanitización contra log forging.
 
 \textbf{REQ-NF-010 --- Limitación de intentos de login (OWASP A07)} -
 \textbf{Categoría:} Seguridad · \textbf{Prioridad:} Must -
@@ -854,8 +1010,14 @@ C.2 de la Guía; ausente en el SRS original. Verificado directamente en
 \texttt{LoginRateLimiterService.java}
 (\texttt{security.rate-limit.login.max-attempts}, \texttt{.window},
 \texttt{.block-duration}). - \textbf{Verificación:}
-\texttt{LoginRateLimiterServiceTest}. - \textbf{Estado:} verificado en
-código; pendiente de evidencia curl archivada (bloque C.2, control A07).
+\texttt{LoginRateLimiterServiceTest}; evidencia HTTP real en
+\texttt{docs/mediciones/sec/A07-authentication.md}. - \textbf{Estado:}
+verificado. \texttt{docs/mediciones/sec/A07-authentication.md} registra
+los 5 primeros fallos respondiendo \texttt{401}, el 6º respondiendo
+\texttt{429} con \texttt{ProblemDetail}
+(\texttt{type=urn:biopet:error:rate-limited}) y cabecera
+\texttt{Retry-After:\ 900} real, capturada con \texttt{curl}, no solo
+con la prueba JUnit.
 
 \textbf{REQ-NF-011 --- Arquitectura en capas} - \textbf{Categoría:}
 Mantenibilidad · \textbf{Prioridad:} Must - \textbf{Enunciado:} La
@@ -878,9 +1040,14 @@ heredado de la estrategia de caché ya definida en
 \texttt{ADR-003-jwt-redis.md}; llevado a requisito no funcional
 explícito exigido por el bloque A.1 de la Guía. - \textbf{Verificación:}
 inspección de \texttt{application.yml}
-(\texttt{spring.cache.redis.time-to-live}); medición de hit ratio en
-\texttt{docs/mediciones/perf/}. - \textbf{Estado:} verificado en
-configuración; pendiente de evidencia de hit ratio archivada.
+(\texttt{spring.cache.redis.time-to-live}); evidencia cruda en
+\texttt{docs/mediciones/redis/}. - \textbf{Estado:} verificado
+parcialmente. \texttt{docs/mediciones/redis/} confirma el TTL real de la
+clave de caché (195 s, mediante \texttt{TTL}) y su existencia bajo carga
+(\texttt{DBSIZE}, \texttt{KEYS\ mascotas::*}). \textbf{No hay todavía
+una medición explícita de hit ratio} (aciertos/total); solo se verificó
+que la clave existe con el TTL configurado, no su tasa de aciertos a lo
+largo del tiempo. Esto queda pendiente (ver Observaciones, sección 7).
 
 \textbf{REQ-NF-013 --- Estrategia híbrida de acceso a datos (ORM +
 procedimientos almacenados)} - \textbf{Categoría:} Mantenibilidad /
@@ -896,15 +1063,165 @@ alcance actual'' en una versión anterior de este documento porque en ese
 momento no existía ninguna operación no elemental; en v0.9.0-rc ya
 existe una implementación real:
 \texttt{fn\_resumen\_mascotas\_por\_especie} (ver REQ-F-021). -
-\textbf{Verificación:} \texttt{ResumenEspeciesIntegrationTest};
+\textbf{Verificación:} \texttt{ResumenEspeciesIntegrationTest},
+\texttt{ProcedimientosBiopetIntegrationTest};
 \texttt{scripts/audit-sql-dynamic.sh} (ausencia de SQL dinámico por
 concatenación); \texttt{docs/basedatos/CATALOGO-SP.md}. -
-\textbf{Estado:} verificado.
+\textbf{Estado:} \textbf{pendiente de confirmación explícita (Must \#2
+de 2, ver sección 7)}. Las clases de test y \texttt{CATALOGO-SP.md} sí
+existen y son reales en el repositorio actual (verificado); lo que falta
+confirmar es que \texttt{scripts/audit-sql-dynamic.sh} se haya ejecutado
+realmente sobre el estado v1.0.0 del código (con las seis rutinas
+reclasificadas a \texttt{PROCEDURE}, ver
+\texttt{V6\_\_formalizar\_procedimientos\_jpa.sql}) y no solo sobre el
+estado v0.9.0-rc anterior. Se solicitó a Fred (responsable de
+procedimientos almacenados/acceso a datos) confirmar la corrida y el
+commit exacto antes de volver a marcarla ``verificado''.
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-\hypertarget{trazabilidad-resumen}{%
-\subsection{4. Trazabilidad (resumen)}\label{trazabilidad-resumen}}
+\subsubsection{3.3. Criterios INVEST aplicados a las historias de
+usuario}\label{criterios-invest-aplicados-a-las-historias-de-usuario}
+
+Las 24 historias de usuario de
+\texttt{docs/requisitos/historias/HistoriasUsuario.md} se evalúan aquí
+explícitamente contra los seis criterios INVEST de Cohn (Independent,
+Negotiable, Valuable, Estimable, Small, Testable), con justificación
+breve y verificable contra campos que ya existen en cada historia (no se
+introduce información nueva para esta evaluación).
+
+\textbf{Negotiable, Valuable y Testable se cumplen en las 24 historias,
+sin excepción}, verificado estructuralmente así:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Negotiable:} las 24 historias siguen el formato Connextra
+  (``Como\ldots{} quiero\ldots{} para\ldots{}''), que expresa intención
+  y valor, no una solución de diseño fija; el ``cómo'' (campos exactos,
+  validaciones) queda abierto a negociación en el caso de uso y en la
+  implementación.
+\item
+  \textbf{Valuable:} cada historia declara un rol beneficiario explícito
+  (\texttt{Como\ \textless{}rol\textgreater{}}) y está trazada a un
+  requisito funcional con \emph{rationale} propio en la sección 3.1,
+  nunca a una tarea puramente técnica sin beneficiario.
+\item
+  \textbf{Testable:} las 24 historias incluyen un bloque
+  \texttt{gherkin} con al menos un escenario \texttt{Given/When/Then}
+  verificable; las 8 aún no implementadas (Should/Could pendientes) lo
+  declaran explícitamente como ``comportamiento esperado, no
+  implementado'', sin fingir que ya existe evidencia de ejecución.
+\end{itemize}
+
+\textbf{Independent, Estimable y Small varían por historia}
+(justificación por fila, tomada del campo \emph{Dependencias} y del
+estado real de cada historia):
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+HU
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Independent
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Estimable
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Small
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+HU-001 & Sí & Sí --- implementada, esfuerzo ya observado & Nota --- 2
+REQ-F relacionados \\
+HU-002 & Sí & Sí --- implementada, esfuerzo ya observado & Sí --- 1
+REQ-F \\
+HU-003 & Parcial --- depende de HU-002 (requiere haber iniciado sesión
+previamente) & Sí --- implementada, esfuerzo ya observado & Sí --- 1
+REQ-F \\
+HU-004 & Parcial --- depende de HU-002 & Sí --- implementada, esfuerzo
+ya observado & Sí --- 1 REQ-F \\
+HU-005 & Parcial --- depende de HU-002 & Sí --- implementada, esfuerzo
+ya observado & Sí --- 1 REQ-F \\
+HU-006 & Parcial --- depende de HU-002 & Sí --- implementada, esfuerzo
+ya observado & Sí --- 1 REQ-F \\
+HU-007 & Parcial --- depende de HU-005 (control de acceso por rol) & Sí
+--- implementada, esfuerzo ya observado & Sí --- 1 REQ-F \\
+HU-008 & Parcial --- depende de HU-005 & Sí --- implementada, esfuerzo
+ya observado & Sí --- 1 REQ-F \\
+HU-009 & Parcial --- depende de HU-005, HU-008 & Sí --- implementada,
+esfuerzo ya observado & Sí --- 1 REQ-F \\
+HU-010 & Parcial --- depende de HU-005, HU-009 & Sí --- implementada,
+esfuerzo ya observado & Sí --- 1 REQ-F \\
+HU-011 & Parcial --- depende de HU-005, HU-009 & Sí --- implementada,
+esfuerzo ya observado & Sí --- 1 REQ-F \\
+HU-012 & Parcial --- depende de HU-007 (requiere que la mascota exista)
+& Parcial --- hay código/tests reales para el subconjunto entregado (ver
+Observaciones de la historia) & Sí --- 1 REQ-F \\
+HU-013 & Parcial --- depende de HU-012 & Parcial --- estado
+``Pendiente'', sin artefacto entregado que medir & Sí --- 1 REQ-F \\
+HU-014 & Parcial --- depende de HU-007 & Parcial --- hay código/tests
+reales para el subconjunto entregado (ver Observaciones de la historia)
+& Sí --- 1 REQ-F \\
+HU-015 & Parcial --- depende de HU-007 & Parcial --- estado
+``Pendiente'', sin artefacto entregado que medir & Sí --- 1 REQ-F \\
+HU-016 & Parcial --- depende de HU-012 (requiere historial clínico) &
+Parcial --- estado ``Pendiente'', sin artefacto entregado que medir & Sí
+--- 1 REQ-F \\
+HU-017 & Parcial --- depende de HU-007 & Parcial --- estado
+``Pendiente'', sin artefacto entregado que medir & Sí --- 1 REQ-F \\
+HU-018 & Sí & Parcial --- estado ``Pendiente'', sin artefacto entregado
+que medir & Sí --- 1 REQ-F \\
+HU-019 & Parcial --- depende de HU-002 (requiere usuario autenticado) &
+Parcial --- estado ``Parcial'', sin artefacto entregado que medir & Sí
+--- 1 REQ-F \\
+HU-020 & Parcial --- depende de HU-005 (control de acceso por rol),
+HU-007 (requiere que existan mascotas registradas) & Sí ---
+implementada, esfuerzo ya observado & Sí --- 1 REQ-F \\
+HU-021 & Parcial --- depende de HU-001 (registro de usuario) & Parcial
+--- estado ``Pendiente'', sin artefacto entregado que medir & Sí --- 1
+REQ-F \\
+HU-022 & Parcial --- depende de HU-005 (control de acceso por rol) & Sí
+--- implementada, esfuerzo ya observado & Sí --- 1 REQ-F \\
+HU-023 & Parcial --- depende de HU-007 (registro de mascota, requiere
+que la mascota exista) & Sí --- implementada, esfuerzo ya observado & Sí
+--- 1 REQ-F \\
+HU-024 & Sí & Sí --- implementada, esfuerzo ya observado & Sí --- 1
+REQ-F \\
+\end{longtable}
+
+\textbf{Lectura honesta de ``Independent''.} La mayoría de historias
+depende de al menos otra (típicamente HU-002 ``sesión iniciada'' o
+HU-005/HU-007 ``rol autorizado''/``mascota existente''), lo cual es
+normal y esperado en un sistema con autenticación y CRUD relacional:
+ninguna historia de gestión de un recurso es realmente independiente de
+``existe sesión'' y ``el recurso padre existe''. Se documenta la
+dependencia real en vez de declarar ``Independent: Sí'' de forma
+genérica sin sustento, que habría sido la alternativa más fácil pero
+menos honesta.
+
+\textbf{Lectura honesta de ``Estimable''.} Las historias ya
+\textbf{implementadas} (15 de 24) son estimables con certeza
+retrospectiva: el código y los tests existen, su esfuerzo ya fue
+observado. Las \textbf{parciales} (HU-012, HU-014: 2) son estimables
+solo para el subconjunto ya entregado --- el esfuerzo del resto
+(calendario interactivo, vista de historial consolidado) sigue siendo
+una estimación no verificada. Las \textbf{pendientes} (7) no tienen
+ningún artefacto que permita estimar con base empírica; su tamaño es una
+suposición heredada de la Entrega 1A, no una medición.
+
+\textbf{Nota sobre ``Small'' en HU-001.} Es la única historia que agrupa
+dos REQ-F (registro exitoso + rechazo por correo duplicado) porque ambos
+comparten el mismo flujo de entrada (\texttt{POST\ /api/auth/registro})
+y serían artificialmente pequeños por separado; se mantiene como una
+sola historia pequeña y cohesiva, no como una violación de INVEST.
+
+\subsection{4. Trazabilidad (resumen)}\label{trazabilidad-resumen}
 
 La matriz completa vive en \texttt{docs/trazabilidad/matriz.csv} (bloque
 A.3.3 de la Guía), con la fila raíz por requisito y las columnas:
@@ -941,10 +1258,9 @@ REQ-F & HU & CU & REQ-F & HU & CU \\
 021 & HU-020 & CU-20 & 022 & HU-021 & CU-21 \\
 \end{longtable}
 
-\hypertarget{trazabilidad-histuxf3rica-identificadores-originales-identificadores-actuales-cierre-de-obs-03}{%
 \subsubsection{4.1. Trazabilidad histórica: identificadores originales →
 identificadores actuales (cierre de
-OBS-03)}\label{trazabilidad-histuxf3rica-identificadores-originales-identificadores-actuales-cierre-de-obs-03}}
+OBS-03)}\label{trazabilidad-histuxf3rica-identificadores-originales-identificadores-actuales-cierre-de-obs-03}
 
 La retroalimentación oficial del SGA de la Entrega 1A señaló que ``los
 RF-WEB se remapean a RF-16/RF-17 sin matriz de trazabilidad explícita en
@@ -958,12 +1274,12 @@ ningún requisito funcional del sistema y sin inventar ningún origen que
 no estuviera ya citado en este documento:
 
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1667}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1667}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1667}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1667}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1667}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1667}}@{}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}@{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 Identificador anterior (Entrega 1A)
@@ -1036,9 +1352,8 @@ este cierre de observaciones). Queda como acción de seguimiento
 incorporar, en una futura revisión de \texttt{matriz.csv}, una columna
 equivalente de origen histórico para \texttt{REQ-F-022}.
 
-\hypertarget{modelo-de-datos-referencia}{%
 \subsection{5. Modelo de datos
-(referencia)}\label{modelo-de-datos-referencia}}
+(referencia)}\label{modelo-de-datos-referencia}
 
 El diccionario de datos completo de las entidades implementadas
 (\texttt{usuarios}, \texttt{mascotas}) está en
@@ -1076,58 +1391,174 @@ intercambiables (cierre de OBS-05):}
   fuente \texttt{.dot}.
 \end{itemize}
 
-\hypertarget{interfaces-de-usuario-referencia}{%
 \subsection{6. Interfaces de usuario
-(referencia)}\label{interfaces-de-usuario-referencia}}
+(referencia)}\label{interfaces-de-usuario-referencia}
 
 Los wireframes conceptuales (login unificado, dashboard por rol,
 historial clínico, gestión de citas) están documentados en la Entrega 1A
 (\texttt{PFC\_Entrega1A\_BMT.pdf}, sección 7). La interfaz realmente
-implementada en v0.9.0-rc (login y gestión de mascotas con paginación,
-formularios, confirmación de borrado, resumen por especie y
-accesibilidad) está en \texttt{frontend/src/app/features/}, sin
-wireframe formal actualizado --- se deja como observación abierta en la
-sección 7.
+implementada en v1.0.0 está en \texttt{frontend/src/app/features/}:
+\texttt{login.component.ts} (autenticación),
+\texttt{mascotas.component.ts} (CRUD con paginación, formularios,
+confirmación de borrado, resumen por especie y accesibilidad) y, nuevo
+en Unidad IV, \texttt{vacunas.component.ts} (CRUD de vacunas).
+\textbf{Citas, consultas, gestión administrativa de usuarios y consulta
+externa de especies existen como API real (ver 3.1) pero sin pantalla
+propia todavía} --- no hay componentes correspondientes en
+\texttt{frontend/src/app/features/}. Ninguna de estas cinco pantallas
+cuenta con wireframe formal actualizado --- se deja como observación
+abierta en la sección 7.
 
-\hypertarget{observaciones-e-informaciuxf3n-pendiente}{%
 \subsection{7. Observaciones e información
-pendiente}\label{observaciones-e-informaciuxf3n-pendiente}}
+pendiente}\label{observaciones-e-informaciuxf3n-pendiente}
 
-Sin inventar contenido, se documenta explícitamente lo que la Guía exige
-y que aún no existe con evidencia verificable en el repositorio al
-momento de escribir este documento:
+Esta sección se revisó contra el estado real del repositorio (v1.0.0).
+Se mantiene el mismo principio que en versiones anteriores: no se marca
+nada como resuelto sin evidencia verificable, y no se inventa contenido
+para cerrar un pendiente.
+
+\textbf{Resuelto desde la versión anterior de este documento:}
 
 \begin{itemize}
 \tightlist
 \item
+  \textbf{ADR de cambio de pila tecnológica} --- CERRADO.
+  \texttt{docs/adr/ADR-002-pila-tecnologica.md} existe, está en estado
+  ``Aceptado'' y documenta explícitamente la migración de ASP.NET Core 8
+  (ADR-001, Entrega 1A) a Java 21 / Spring Boot 3.2, con contexto,
+  evidencia verificable en \texttt{Backend/pom.xml} y alternativas
+  consideradas. El señalamiento que traía \texttt{CAMBIOS-SRS.md} ya no
+  aplica.
+\item
+  \textbf{Evidencia empírica de rendimiento (REQ-NF-001)} --- CERRADO.
+  10 corridas k6 reales (5 caliente, 5 frío) en
+  \texttt{docs/mediciones/perf/}, con p95 entre 9.7 ms y 22.13 ms, muy
+  por debajo del umbral de 200/500 ms.
+\item
+  \textbf{Evidencia OWASP A07/A09 (REQ-NF-009, REQ-NF-010)} --- CERRADO.
+  \texttt{docs/mediciones/sec/A07-authentication.md} y
+  \texttt{A09-logging.md} contienen capturas HTTP (\texttt{curl}) y de
+  log reales, no solo pruebas JUnit.
+\item
   \textbf{Bitácora de observaciones}
-  (\texttt{docs/observaciones/OBSERVACIONES.md}, bloque 0 de la Guía):
-  no verificada en este documento; corresponde a otro bloque de trabajo
-  del equipo.
-\item
-  \textbf{ADR de cambio de pila tecnológica}:
-  \texttt{ADR-002-pila-tecnologica.md} existe en el repositorio; se
-  recomienda verificar que documente explícitamente el cambio desde
-  ASP.NET Core (Entrega 1A) hacia Java/Spring Boot, con alternativas
-  consideradas y consecuencias, para cerrar el señalamiento que traía
-  este SRS desde \texttt{CAMBIOS-SRS.md}.
-\item
-  \textbf{Evidencia empírica del bloque C} (k6, curl OWASP, SUS,
-  Lighthouse, JaCoCo): los requisitos REQ-NF-001, 002, 005, 006, 009,
-  010, 012 dependen de archivos crudos en \texttt{docs/mediciones/} que
-  deben generarse con las herramientas reales, no simularse.
-\item
-  \textbf{Wireframes actualizados de la pantalla de Mascotas} (sección
-  6): la Entrega 1A solo documentó wireframes de login y dashboard
-  genérico: no existe un wireframe específico de la pantalla real de
-  gestión de mascotas con paginación y formularios. Se recomienda
-  generarlo para la Entrega Final si el criterio de rúbrica lo exige.
-\item
-  \textbf{Wireframes de los módulos pendientes} (historial clínico,
-  citas, facturación): los wireframes de la Entrega 1A
-  (\texttt{Figura\ 5} y \texttt{Figura\ 6} del documento original)
-  describen intención de diseño, no un contrato de implementación; deben
-  revalidarse cuando esos módulos se desarrollen.
+  (\texttt{docs/observaciones/OBSERVACIONES.md}): existe, cubre OBS-01 a
+  OBS-15 con fuente primaria (capturas SGA) y verificación cruzada
+  contra \texttt{git\ log}. OBS-13 y OBS-14 (CRediT individual y
+  afirmación falsa sobre ausencia de historial Git en
+  \texttt{CONTRIBUTORS.md}) quedaron cerradas al corregirse
+  \texttt{CONTRIBUTORS.md} con acuerdo del equipo completo.
 \end{itemize}
+
+\textbf{Cierre 2026-08-18 --- actualización tras la re-ejecución real de
+Lighthouse.} Contrario a lo previsto en el cierre del 2026-08-17 (que
+asumía que Fred no completaría sus pendientes), el equipo sí ejecutó la
+re-corrida de Lighthouse y Fred sí entregó su bloque de trabajos
+relacionados. Se actualiza el estado real:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Lighthouse --- perfil de escritorio y re-ejecución tras el fix
+  de SEO --- CERRADO.} Re-corrida real del 2026-08-18
+  (\texttt{docs/mediciones/lighthouse/lhci-20260818-0538-*.json}, 12
+  archivos: perfil móvil y desktop, \texttt{/login} y
+  \texttt{/mascotas}, 3 corridas cada uno). \textbf{SEO pasó de 82/100 a
+  100/100 en las 12 corridas}, confirmando que los dos fixes aplicados
+  (\texttt{meta\ description} en \texttt{index.html},
+  \texttt{robots.txt} + \texttt{angular.json}) resolvían la causa raíz
+  por completo. Performance ≥90 en todos los casos (100 en desktop,
+  90--94 en móvil); Accessibility 91 en todos. REQ-NF-005 queda
+  verificado en ambos perfiles.
+\item
+  \textbf{PRISMA (trabajos relacionados) --- CERRADO con 10 estudios.}
+  Fred entregó su bloque (F20-F21) el 2026-08-18: 3 estudios incluidos
+  (\texttt{docs/investigacion/handoff-fred-trabajos-relacionados.md}) +
+  11 referencias BibTeX con DOI verificado
+  (\texttt{handoff-fred-referencias.bib}). Total: 3 (Zaida) + 4 (Jaime)
+  + 3 (Fred) = \textbf{10 estudios, meta de ≥8-9 cumplida}. Las 24
+  referencias nuevas de los tres bloques ya están integradas en
+  \texttt{docs/informe/referencias.bib} (39 entradas totales).
+\end{itemize}
+
+\textbf{Cierre 2026-09-03 --- revisión a v1.0.0 (recalificación).}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Versión y firma.} Este documento pasa de v0.9.0-rc a
+  \textbf{v1.0.0}. El PDF \texttt{SRS-v1.0.0.pdf} \textbf{no está
+  firmado} por el docente-director a la fecha de este cierre; se envía
+  para aprobación y la firma se incorporará, con fecha real, solo cuando
+  se reciba.
+\item
+  \textbf{INVEST --- CERRADO.} Se agrega la sección 3.3, con los seis
+  criterios aplicados explícitamente a las 24 historias de usuario
+  (justificación por criterio, tabla verificable fila por fila).
+\item
+  \textbf{Alineación de HU-012/HU-014 y REQ-F-013/REQ-F-015 con el
+  código actual --- CERRADO.} Revisión contra el repositorio real
+  detectó que ambos requisitos seguían marcados ``pendiente'' pese a que
+  la Unidad IV ya entregó \texttt{CitaController}/\texttt{CitaService} y
+  \texttt{ConsultaController}/\texttt{ConsultaService} con CRUD completo
+  y tests dedicados. Se corrigen a ``parcial'' (no ``verificado'',
+  porque el calendario interactivo y la vista de historial consolidado
+  siguen sin implementar) en el SRS, en \texttt{HistoriasUsuario.md} y
+  en \texttt{CasosDeUso.md}.
+\item
+  \textbf{REQ-F-025 corregido --- CERRADO.} Una versión anterior de este
+  documento afirmaba que
+  \texttt{ExternalApiController}/\texttt{ExternalApiService} no tenían
+  prueba automatizada; sí la tienen (\texttt{ExternalApiServiceTest}, 6
+  pruebas). Se corrige el estado a ``verificado''.
+\item
+  \textbf{Conteo de Must --- NO se declara 22/22.} De los 22 requisitos
+  Must, \textbf{20 están verificados con evidencia concreta} (test
+  automatizado, captura HTTP real, o corrida de medición archivada).
+  \textbf{2 quedan explícitamente ``pendiente de confirmación
+  explícita''} (REQ-NF-007 --- disponibilidad; REQ-NF-013 --- estrategia
+  híbrida de acceso a datos), a la espera de que Fred confirme el
+  artefacto/commit exacto que los respalda. No se marcan ``verificado''
+  sin ese respaldo, aunque una versión anterior de este documento sí los
+  daba por verificados sin evidencia suficiente.
+\end{itemize}
+
+\textbf{Sigue como limitación declarada, no bloqueante para el cierre de
+esta entrega:}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Hit ratio de caché Redis (REQ-NF-012).} Sigue sin una medición
+  de \texttt{keyspace\_hits}/\texttt{keyspace\_misses}; solo hay
+  evidencia de TTL y existencia de clave bajo carga.
+\item
+  \textbf{REQ-NF-006 (compatibilidad de navegadores).} Sin evidencia
+  archivada de ejecución manual en Chrome/Firefox/Edge.
+\item
+  \textbf{Wireframes de la pantalla de Mascotas y de los módulos
+  pendientes} (historial clínico, citas, facturación): siguen siendo los
+  de la Entrega 1A. El producto real y su documentación de arquitectura
+  (C4, DER, SRS) sí reflejan el sistema implementado.
+\item
+  \textbf{Pantallas sin interfaz propia (API real, sin UI).} Citas
+  (calendario interactivo), historial clínico consolidado, gestión
+  administrativa de usuarios y consulta externa de especies: las cuatro
+  tienen backend real y verificado, pero ninguna tiene componente en
+  \texttt{frontend/src/app/features/} todavía.
+\item
+  \textbf{Aislamiento de datos incompleto en Consultas (REQ-F-013).}
+  \texttt{ConsultaService.listar()} no filtra por propietario para
+  \texttt{ROLE\_DUENO}, a diferencia de
+  \texttt{MascotaService}/\texttt{VacunaService} (registrado en
+  \texttt{docs/trazabilidad/matriz.csv}). Un dueño de mascota
+  autenticado podría ver consultas de mascotas ajenas a través de este
+  endpoint. Se documenta aquí para que no quede oculto; su corrección es
+  responsabilidad del propietario del módulo (Unidad IV), fuera de la
+  zona de archivos de esta revisión.
+\end{itemize}
+
+Ninguno de estos puntos se cierra con datos inventados. Quedan como
+limitaciones explícitas de la Entrega Final, consistentes con el
+criterio de todo este documento.
 
 \end{document}
