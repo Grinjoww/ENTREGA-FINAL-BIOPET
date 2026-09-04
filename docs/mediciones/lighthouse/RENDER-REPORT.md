@@ -58,14 +58,45 @@ perfiles y ambas rutas, contra el dominio público real.
 
 ## Evidencia cruda
 
-Los 12 JSON completos (LHR — Lighthouse Result, formato máquina-legible,
-sin editar) y el archivo de metadatos:
+Los 12 JSON completos (LHR — Lighthouse Result, formato máquina-legible)
+y el archivo de metadatos:
 
 - `lhci-20260903-2102-render-mobile-login-run{0,1,2}.json`
 - `lhci-20260903-2102-render-mobile-mascotas-run{3,4,5}.json`
 - `lhci-20260903-2102-render-desktop-login-run{0,1,2}.json`
 - `lhci-20260903-2102-render-desktop-mascotas-run{3,4,5}.json`
 - `lhci-20260903-2102-render.meta.txt`
+
+### Anonimización aplicada (hallazgo Z10, misma convención que `README.md` de esta carpeta)
+
+`lhci autorun`, invocado vía `npx`, embebió la ruta local de caché de
+`npx` (con el nombre de usuario del equipo de ejecución) dentro de
+`errorStack` de 6 auditorías que fallaron a ejecutarse en las 12 corridas
+(`largest-contentful-paint-element`, `lcp-lazy-loaded`, `layout-shifts`,
+`non-composited-animations`, `prioritize-lcp-image`,
+`render-blocking-resources` — fallo de esas auditorías puntuales, no del
+resto del reporte; los puntajes de las 4 categorías no dependen de ellas
+y no cambiaron). Se sustituyó \**únicamente**\* el nombre de usuario
+literal por el marcador `USER_REDACTED` (48 ocurrencias por archivo, las
+12 archivos parsean como JSON válido después del cambio y
+`compute-render-averages.mjs` reproduce exactamente las mismas medias
+que antes de la sustitución). Ningún puntaje, URL, timestamp ni
+`requestedUrl`/`finalUrl` fue tocado.
+
+| Archivo | SHA-256 antes (antes de redactar) | SHA-256 después |
+|---|---|---|
+| `lhci-20260903-2102-render-desktop-login-run0.json` | `5161ca3ca7a6…` | `7ae995ea2559…` |
+| `lhci-20260903-2102-render-desktop-login-run1.json` | `94ce4d777d0a…` | `c20e6627cf70…` |
+| `lhci-20260903-2102-render-desktop-login-run2.json` | `e56618dbed50…` | `eb43a93f5061…` |
+| `lhci-20260903-2102-render-desktop-mascotas-run3.json` | `37e3945175ea…` | `367c658d3837…` |
+| `lhci-20260903-2102-render-desktop-mascotas-run4.json` | `c621a73e9dd2…` | `f4c3d30c14dc…` |
+| `lhci-20260903-2102-render-desktop-mascotas-run5.json` | `36a928e9ea12…` | `06297cc8ebb4…` |
+| `lhci-20260903-2102-render-mobile-login-run0.json` | `ddb49fa31a3f…` | `cf84352d05b6…` |
+| `lhci-20260903-2102-render-mobile-login-run1.json` | `ba8f1e9661d7…` | `34c04c367a44…` |
+| `lhci-20260903-2102-render-mobile-login-run2.json` | `fe3af4c2e116…` | `40ba6769067c…` |
+| `lhci-20260903-2102-render-mobile-mascotas-run3.json` | `60a40d05f8e8…` | `4fb23e919a4f…` |
+| `lhci-20260903-2102-render-mobile-mascotas-run4.json` | `4ffab5f2bdd5…` | `96d5fe853a1a…` |
+| `lhci-20260903-2102-render-mobile-mascotas-run5.json` | `e6213a943c2c…` | `c5205bc9d349…` |
 
 Cada JSON conserva `requestedUrl` y `finalUrl` apuntando a
 `https://biopet-frontend.onrender.com` (verificado individualmente en cada

@@ -5,6 +5,7 @@ Backend/target/
 # Node
 frontend/node_modules/
 frontend/dist/
+frontend/.angular/
 # Env
 .env
 *.log
