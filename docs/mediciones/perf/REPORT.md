@@ -4,50 +4,43 @@ Metodo de intervalo de confianza: distribucion t de Student (scipy.stats.t), apr
 
 | Corrida | n | Media (ms) | Mediana (ms) | DE (ms) | IC95% (ms) | p50 | p90 | p95 | p99 | Error (%) | Throughput (req/s) |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| k6-20260817T005446-local-tls-v0.9.0-rc-caliente-01.json | 3196 | 10.54 | 8.68 | 6.95 | [10.3, 10.78] | 8.68 | 17.16 | 20.15 | 30.68 | 0.0 | 91.17 |
-| k6-20260817T005826-local-tls-v0.9.0-rc-frio-01.json | 3206 | 10.51 | 8.47 | 15.83 | [9.96, 11.05] | 8.47 | 16.62 | 21.1 | 33.14 | 0.0 | 91.49 |
-| k6-20260817T005523-local-tls-v0.9.0-rc-caliente-02.json | 3226 | 7.19 | 6.63 | 6.38 | [6.97, 7.41] | 6.63 | 8.55 | 9.7 | 17.18 | 0.0 | 92.09 |
-| k6-20260817T005930-local-tls-v0.9.0-rc-frio-02.json | 3211 | 9.37 | 7.6 | 16.15 | [8.82, 9.93] | 7.6 | 12.82 | 17.23 | 25.79 | 0.0 | 91.62 |
-| k6-20260817T005559-local-tls-v0.9.0-rc-caliente-03.json | 3226 | 6.6 | 6.01 | 5.27 | [6.42, 6.78] | 6.01 | 8.63 | 10.86 | 16.13 | 0.0 | 92.13 |
-| k6-20260817T010033-local-tls-v0.9.0-rc-frio-03.json | 3204 | 10.8 | 8.43 | 21.75 | [10.05, 11.56] | 8.43 | 16.5 | 22.13 | 33.4 | 0.0 | 91.36 |
-| k6-20260817T005636-local-tls-v0.9.0-rc-caliente-04.json | 3236 | 5.21 | 4.92 | 4.99 | [5.04, 5.38] | 4.92 | 6.39 | 6.83 | 10.12 | 0.0 | 92.4 |
-| k6-20260817T010137-local-tls-v0.9.0-rc-frio-04.json | 3206 | 10.71 | 8.5 | 15.97 | [10.16, 11.26] | 8.5 | 16.47 | 20.16 | 32.65 | 0.0 | 91.45 |
-| k6-20260817T005712-local-tls-v0.9.0-rc-caliente-05.json | 3236 | 5.4 | 4.96 | 4.81 | [5.23, 5.57] | 4.96 | 6.72 | 7.81 | 12.59 | 0.0 | 92.41 |
-| k6-20260817T010240-local-tls-v0.9.0-rc-frio-05.json | 3199 | 10.61 | 7.88 | 18.18 | [9.98, 11.24] | 7.88 | 16.29 | 20.71 | 40.87 | 0.0 | 91.51 |
+| k6-20260903T183212-local-tls-v1.0.0-caliente-01.json | 3217 | 8.66 | 7.59 | 7.62 | [8.4, 8.93] | 7.59 | 12.38 | 15.06 | 20.56 | 0.0 | 91.83 |
+| k6-20260903T183852-local-tls-v1.0.0-frio-01.json | 3211 | 9.33 | 8.06 | 15.61 | [8.79, 9.87] | 8.06 | 12.71 | 15.31 | 21.1 | 0.0 | 91.65 |
+| k6-20260903T183301-local-tls-v1.0.0-caliente-02.json | 3236 | 7.0 | 6.68 | 4.71 | [6.83, 7.16] | 6.68 | 8.61 | 9.48 | 13.06 | 0.0 | 92.35 |
+| k6-20260903T184117-local-tls-v1.0.0-frio-02.json | 3216 | 9.09 | 7.82 | 15.68 | [8.55, 9.63] | 7.82 | 12.63 | 15.13 | 19.14 | 0.0 | 91.86 |
+| k6-20260903T183427-local-tls-v1.0.0-caliente-03.json | 3236 | 5.48 | 5.27 | 4.73 | [5.32, 5.64] | 5.27 | 6.46 | 6.94 | 9.38 | 0.0 | 92.48 |
+| k6-20260903T184249-local-tls-v1.0.0-frio-03.json | 3210 | 10.26 | 8.37 | 16.52 | [9.69, 10.83] | 8.37 | 15.64 | 18.23 | 25.89 | 0.0 | 91.57 |
+| k6-20260903T183517-local-tls-v1.0.0-caliente-04.json | 3236 | 4.92 | 4.75 | 4.44 | [4.76, 5.07] | 4.75 | 5.76 | 6.04 | 8.79 | 0.0 | 92.62 |
+| k6-20260903T184420-local-tls-v1.0.0-frio-04.json | 3211 | 9.88 | 7.84 | 17.75 | [9.27, 10.5] | 7.84 | 15.23 | 18.56 | 26.05 | 0.0 | 91.57 |
+| k6-20260903T183633-local-tls-v1.0.0-caliente-05.json | 3246 | 5.04 | 4.89 | 4.55 | [4.88, 5.2] | 4.89 | 6.02 | 6.48 | 7.68 | 0.0 | 92.61 |
+| k6-20260903T184614-local-tls-v1.0.0-frio-05.json | 3207 | 10.13 | 8.54 | 17.37 | [9.52, 10.73] | 8.54 | 14.88 | 18.03 | 25.97 | 0.0 | 91.52 |
 
 ## Wilcoxon pareado (caliente vs frio)
 
 Pareo por indice de llegada (truncando al menor tamano de muestra). Tamano de efecto r de Rosenthal (r = Z / sqrt(n)).
+Correccion por comparaciones multiples: Holm-Bonferroni (alfa=0.05, m=5).
+Nota metodologica: las corridas son independientes; el pareo por indice de llegada no constituye un diseno pareado verdadero. Ver analisis de sensibilidad abajo.
 
-| Par | W | p | r |
+| Par | W | p (original) | p (ajustado Holm) | Significativo (Holm) | r |
+|---|---|---|---|---|---|
+| local-tls-v1.0.0-01 | 1833064.5 | 1.10e-45 | 1.10e-45 | Si | -0.2504 |
+| local-tls-v1.0.0-02 | 1189148.0 | 3.88e-155 | 7.75e-155 | Si | -0.4679 |
+| local-tls-v1.0.0-03 | 99000.0 | p < 2.23e-308 | p < 2.23e-308 | Si | -0.8328 |
+| local-tls-v1.0.0-04 | 58374.0 | p < 2.23e-308 | p < 2.23e-308 | Si | -0.8465 |
+| local-tls-v1.0.0-05 | 41669.5 | p < 2.23e-308 | p < 2.23e-308 | Si | -0.8521 |
+
+## Sensibilidad: Mann-Whitney U (muestras independientes)
+
+Analisis de sensibilidad sin asumir pareo por indice (corridas independientes). Tamano de efecto r = Z / sqrt(N).
+
+| Par | U | p | r |
 |---|---|---|---|
-| local-tls-v0.9.0-rc-01 | 2334567.5 | 2.5e-05 | -0.0745 |
-| local-tls-v0.9.0-rc-02 | 919470.5 | 0.0 | -0.5572 |
-| local-tls-v0.9.0-rc-03 | 633693.0 | 0.0 | -0.6523 |
-| local-tls-v0.9.0-rc-04 | 78460.0 | 0.0 | -0.8397 |
-| local-tls-v0.9.0-rc-05 | 227940.0 | 0.0 | -0.789 |
+| local-tls-v1.0.0-01 | 4412540.0 | 4.82e-24 | -0.1261 |
+| local-tls-v1.0.0-02 | 2929640.0 | 6.30e-203 | -0.3784 |
+| local-tls-v1.0.0-03 | 548681.0 | p < 2.23e-308 | -0.7745 |
+| local-tls-v1.0.0-04 | 319349.0 | p < 2.23e-308 | -0.8127 |
+| local-tls-v1.0.0-05 | 282984.0 | p < 2.23e-308 | -0.8189 |
 
 ## Grafico
 
 ![Latencia por percentil](grafico.svg)
-
-## Metadata de la medicion
-
-- **Rango de fecha/hora (ISO 8601):** corridas ejecutadas el 2026-08-17,
-  entre `2026-08-17T00:54:46-05:00` (caliente-01) y `2026-08-17T01:02:40-05:00`
-  (frio-05).
-- **Commit:** `ab7043a` (rama `fred/f06-f07-rendimiento-k6`, sobre `fred/f01-f05-sp-acceso-datos`)
-- **Herramientas:**
-  - k6 v2.1.0 (commit 83a87a41e2, go1.26.4, windows/amd64)
-- **Protocolo:** HTTPS con TLS 1.3 real (`https://localhost:8443`).
-- **Carga:** 50 VUs, ramp-up 5s, carga sostenida 30s (threshold `http_req_failed rate<0.01`).
-- **Hit ratio de Redis (cache `mascotas`):** verificado de forma aislada con
-  `redis-cli DBSIZE` tras una peticion autenticada: una unica clave
-  `mascotas::admin@biopet.ec-0-10-UNSORTED`, consistente con la evidencia del
-  2026-07-30 (sin eviccion, `maxmemory-policy: noeviction`).
-- **Version del sistema:** `v0.9.0-rc` (`git describe --tags --abbrev=0`).
-- **Corridas en frio:** `docker compose -f docker-compose.yml -f docker-compose.tls.yml restart backend redis`
-  antes de cada corrida (cache Redis vacio al inicio).
-- **Esquema de archivo (F06):** `k6-<YYYYMMDDTHHMMSS>-<entorno>-<version>-<caliente|frio>-<NN>.json`.
-- **Analisis generado por:** `scripts/perf-analysis.py` (IC95% t de Student,
-  Wilcoxon pareado con tamano de efecto r de Rosenthal, grafico SVG).

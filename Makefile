@@ -34,7 +34,7 @@
 .PHONY: all up down clean reset-db \
 	backend test jacoco jacoco-report frontend traceability \
 	sql-audit security-static zap zap-scan zap-gate \
-	audit bench lighthouse
+	audit bench lighthouse pdf perf stats
 
 .NOTPARALLEL:
 
@@ -49,11 +49,13 @@ BASH ?= bash
 # real de docker-compose). No borra volumenes ni datos persistentes.
 #
 # Orden (prerequisitos de Make, no llamadas "$(MAKE)"):
-#   1. backend          4. sql-audit
-#   2. frontend         5. security-static
-#   3. traceability     6. zap
+#   1. backend           6. sql-audit
+#   2. frontend          7. security-static
+#   3. traceability      8. zap
+#   4. pdf               9. perf
+#   5. stats             10. lighthouse
 # =============================================================================
-all: backend frontend traceability sql-audit security-static zap
+all: backend frontend traceability pdf perf stats lighthouse sql-audit security-static zap
 	@echo ""
 	@echo "make all: TODAS las validaciones obligatorias pasaron."
 
@@ -226,12 +228,97 @@ reset-db:
 	@echo "[reset-db] ADVERTENCIA: esto eliminara los datos persistentes de PostgreSQL y Redis."
 	docker compose down -v --remove-orphans
 
-# Ejecuta la auditoria Lighthouse (bloque C.5 de la Guia) contra el
-# frontend servido por el contenedor y archiva los resultados crudos en
-# docs/mediciones/lighthouse/. Requiere 'make up' corrido previamente.
-# Corre los dos perfiles exigidos (movil via lighthouserc.js, desktop via
-# lighthouserc.desktop.js); ver scripts/run-lighthouse.sh.
-# NO forma parte de "make all": queda como validacion manual, no como gate
-# obligatorio de CI (ver .github/workflows/ci.yml).
+# =============================================================================
+# PDF compilation (latexmk) — target para compilar el informe final
+# =============================================================================
+# Requiere: latexmk, TexLive/TeX (paquetes: latexmk, texlive-latex-recommended,
+# texlive-fonts-recommended, texlive-latex-extra, texlive-bibtex-extra).
+# El target compila el PDF siguiendo exactamente las instrucciones del README.
+pdf:
+	@echo "[pdf] Compilando informe con latexmk..."
+	cd docs/informe && latexmk -pdf -interaction=nonstopmode -halt-on-error informe-final-v1.0.0.tex
+	@echo "[pdf] PDF generado en docs/informe/informe-final-v1.0.0.pdf"
+
+# =============================================================================
+# Lighthouse — ejecuta auditoría Lighthouse y valida umbrales
+# =============================================================================
+# Requiere: node, npx @lhci/cli, Chrome/Chromium, frontend servido (make up).
+# Ejecuta lighthouse contra el frontend real (Docker) y valida umbrales.
+# Falla si algún umbral no se cumple (exit != 0).
 lighthouse:
+	@echo "[lighthouse] Ejecutando auditoría Lighthouse..."
 	bash scripts/run-lighthouse.sh
+	@echo "[lighthouse] Auditoría completada."
+
+# =============================================================================
+# Performance (k6 + analisis) — target para generar/analizar evidencia k6
+# =============================================================================
+# Requiere: k6, python3, scipy, numpy, matplotlib.
+# Parametros:
+#   K6_VERSION   - version del sistema (default: git describe --tags --abbrev=0)
+#   K6_BASE_URL  - base URL del backend (default: https://localhost:8443)
+#   K6_ADMIN_EMAIL / K6_ADMIN_PASSWORD - credenciales admin
+#   Perfila las 10 corridas oficiales (5 caliente, 5 frio con restart).
+#   Este target asume que el stack ya esta levantado con 'make up' y que
+#   las credenciales estan disponibles en variables de entorno.
+perf:
+	@echo "[perf] Generando evidencia de rendimiento (5 caliente + 5 frio)..."
+	@if [ -z "$$K6_ADMIN_EMAIL" ] || [ -z "$$K6_ADMIN_PASSWORD" ]; then \
+		echo "[perf] ERROR: K6_ADMIN_EMAIL y K6_ADMIN_PASSWORD requeridos"; \
+		exit 1; \
+	fi
+	@VERSION=$$(git describe --tags --abbrev=0 2>/dev/null || echo "dev"); \
+	for i in 01 02 03 04 05; do \
+		echo "[perf] Caliente-$$i..."; \
+		k6 run k6/listado-mascotas.js \
+			--out json=docs/mediciones/perf/k6-$$(date -u +%Y%m%dT%H%M%S)-local-tls-$$VERSION-caliente-$$i.json; \
+	done
+	@for i in 01 02 03 04 05; do \
+		echo "[perf] Frío-$$i (restart backend+redis)..."; \
+		docker compose -f docker-compose.yml -f docker-compose.tls.yml restart backend redis; \
+		sleep 15; \
+		k6 run k6/listado-mascotas.js \
+			--out json=docs/mediciones/perf/k6-$$(date -u +%Y%m%dT%H%M%S)-local-tls-$$VERSION-frio-$$i.json; \
+	done
+	@echo "[perf] Analizando resultados..."
+	python scripts/perf-analysis.py "docs/mediciones/perf/k6-*-local-tls-$$VERSION-caliente-0*.json" "docs/mediciones/perf/k6-*-local-tls-$$VERSION-frio-0*.json" \
+		--report docs/mediciones/perf/REPORT.md --grafico docs/mediciones/perf/grafico.svg
+	@echo "[perf] Evidencia generada en docs/mediciones/perf/"
+
+# =============================================================================
+# Análisis estadístico (scripts Python) — ejecuta análisis de rendimiento y SUS
+# =============================================================================
+# Requiere: python3, scipy, numpy, matplotlib, pandas.
+# Ejecuta los scripts de análisis reales (perf-analysis.py, analisis-sus.py)
+# que generan los reportes y gráficos versionados. Falla si algún script falla.
+stats:
+	@echo "[stats] Ejecutando análisis estadístico de rendimiento..."
+	python scripts/perf-analysis.py "docs/mediciones/perf/k6-*-local-tls-*-caliente-0*.json" "docs/mediciones/perf/k6-*-local-tls-*-frio-0*.json" \
+		--report docs/mediciones/perf/REPORT.md --grafico docs/mediciones/perf/grafico.svg
+	@echo "[stats] Ejecutando análisis SUS..."
+	python scripts/analisis-sus.py
+	@echo "[stats] Análisis completado. Reportes en docs/mediciones/perf/ y docs/mediciones/sus/"
+
+# =============================================================================
+# Notebooks execution — DEPRECADO: use 'make stats' para análisis reales
+# =============================================================================
+# Los análisis reales se ejecutan via scripts Python (make stats).
+# Este target existe por compatibilidad pero delega a stats.
+notebooks: stats
+	@echo "[notebooks] Use 'make stats' para análisis reproducibles via scripts Python."
+
+# =============================================================================
+# Prerequisites check — verifica que las herramientas necesarias estan instaladas
+# =============================================================================
+# Java 21, Maven, Node/npm, k6, Chrome/Lighthouse, Python 3, LaTeX
+check-prereqs:
+	@echo === Verificando prerequisitos ===
+	@echo Java 21: && java -version 2>&1 | findstr /R /C:"version" || echo NO ENCONTRADO
+	@echo Maven: && mvn -version 2>&1 | findstr /R /C:"Apache Maven" || echo NO ENCONTRADO
+	@echo Node: && node --version 2>&1 || echo NO ENCONTRADO
+	@echo npm: && npm --version 2>&1 || echo NO ENCONTRADO
+	@echo k6: && k6 version 2>&1 | findstr /R /C:"k6" || echo NO ENCONTRADO
+	@echo Python 3: && python3 --version 2>&1 || echo NO ENCONTRADO
+	@echo latexmk: && latexmk -version 2>&1 | findstr /R /C:"Latexmk" || echo NO ENCONTRADO
+	@echo Docker: && docker --version 2>&1 || echo NO ENCONTRADO
+	@echo docker compose: && docker compose version 2>&1 || echo NO ENCONTRADO

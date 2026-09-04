@@ -15,17 +15,35 @@ datos que ya existen en el repositorio, verificado contra su origen real.
 
 ---
 
+# Procedencia de los datos (Data Provenance) — BIOPET (Entrega Final v1.0.0)
+
+Este documento complementa a `DATA-DICTIONARY.md` (qué significa cada
+variable) documentando, para cada conjunto de datos crudo bajo
+`docs/mediciones/`, **de dónde viene, cómo se generó, con qué herramienta
+y versión, y qué transformación (si alguna) sufrió antes de llegar al
+repositorio**. Es el insumo mínimo para que el paquete de evidencia sea
+reproducible y trazable (principios FAIR — Findable, Accessible,
+Interoperable, Reusable), en línea con lo ya practicado en
+`docs/mediciones/lighthouse/README.md` (que documenta anonimización y
+`SHA256SUMS-ORIGINAL.txt`).
+
+No se documenta aquí ningún dato nuevo: es un índice de procedencia sobre
+datos que ya existen en el repositorio, verificado contra su origen real.
+
+---
+
 ## 1. Rendimiento — `docs/mediciones/perf/`
 
 | Campo | Detalle |
 |---|---|
 | Generado por | k6 (`k6 run k6/listado-mascotas.js`), 50 VUs, ~30–35 s por corrida |
 | Responsable | Fred Beltrán Montiel |
-| Fecha de generación | 2026-08-17 (corridas `k6-20260817T*`); corridas anteriores `k6-run{1,2,3}-{frio,caliente}.json` de fecha previa, conservadas para comparación histórica |
+| Fecha de generación | 2026-09-03 (corridas `k6-20260903T*-local-tls-v1.0.0-*`); corridas históricas `k6-20260817T*` y `k6-run{1,2,3}-{frio,caliente}.json` conservadas para comparación histórica |
 | Entrada | Backend real vía `https://localhost:8443` (perfil `tls`, `docker-compose.tls.yml`), no un mock ni un stub |
-| Transformación aplicada | Agregación estadística (media, mediana, IC95% con distribución t de Student vía `scipy.stats.t`, percentiles) realizada por `scripts/perf-analysis.py` sobre los JSON crudos de k6, volcada a `REPORT.md` y `grafico.svg` |
-| Archivo crudo sin transformar | Los `.json` individuales (`k6-20260817T*.json`) — **no se editan manualmente**; son la salida directa de k6 |
+| Transformación aplicada | Agregación estadística (media, mediana, IC95% con distribución t de Student vía `scipy.stats.t`, percentiles, Wilcoxon pareado + corrección Holm-Bonferroni, Mann-Whitney U sensitivity) realizada por `scripts/perf-analysis.py` sobre los JSON crudos de k6, volcada a `REPORT.md` y `grafico.svg` |
+| Archivo crudo sin transformar | Los `.json` individuales (`k6-20260903T*.json`) — **no se editan manualmente**; son la salida directa de k6 |
 | Cadena de verificación | `REPORT.md` cita el nombre exacto de cada archivo fuente por fila de su tabla, permitiendo recalcular cualquier estadístico desde el crudo |
+| Commit de generación | `3adb230` (test (perf): regenerar evidencia de rendimiento final v1.0.0) |
 | Limitación declarada | Corridas ejecutadas contra una sola instancia del backend, sin réplicas (ver README.md, sección "Consideraciones para evolución y despliegue") |
 
 ## 2. Caché Redis — `docs/mediciones/redis/`
@@ -120,7 +138,41 @@ documentada, o anonimización textual puntual en el caso de Lighthouse);
 editar un crudo sin declararlo invalidaría la evidencia, siguiendo el
 mismo criterio ya aplicado en `docs/mediciones/lighthouse/README.md`.
 
-## 8. Procedencia de la re-corrida Lighthouse (2026-08-18)
+---
+
+## 8. Procedencia por tabla/figura del informe (Entrega Final v1.0.0)
+
+La siguiente tabla relaciona cada elemento citado en el informe con su
+archivo crudo, script/notebook de generación y commit de verificación.
+
+| Elemento del informe | Archivo crudo | Script / Notebook | Commit (git cat-file -t) |
+|---|---|---|---|
+| tab:anexo-observaciones | `docs/observaciones/OBSERVACIONES.md` | — | `4c5e51d` |
+| fig:performance-report-final | `docs/informe/figuras/fred/06-performance-report.png` | `scripts/gen_performance_report_fig.py` | `8343c30` |
+| fig:rendimiento-caliente-final | `docs/informe/figuras/fred/Rendimiento-PruebaCaliente.png` | — (captura consola k6) | histórico |
+| fig:rendimiento-frio-final | `docs/informe/figuras/fred/Rendimiento-PruebaFria.png` | — (captura consola k6) | histórico |
+| fig:sp-acceso-hibrido-final | `docs/informe/figuras/fred/StoreProceduro-AccesoHibrido.png` | — (captura pgAdmin) | histórico |
+| fig:postman-sp-final | `docs/informe/figuras/fred/Postman-STOREPROCEDURE.png` | — (captura Postman) | histórico |
+| fig:docker-healthy-final | `docs/informe/figuras/fred/Docker-compose-servicios-healthy.png` | — (captura Docker) | histórico |
+| fig:docker-digest-final | `docs/informe/figuras/fred/Docker-compose-diges-sha.png` | — (captura Docker) | histórico |
+| tab:catalogo-sp | `docs/basedatos/CATALOGOSP.md` | — | pendiente F9 |
+| tab:k6-final | `docs/mediciones/perf/REPORT.md` | `scripts/perf-analysis.py` | `3adb230` / `cfdcc0e` |
+| tab:produccion-final | `docs/informe/secciones-final/09-despliegue-reproducibilidad.tex` | — | histórico |
+| tab:ci-jobs | `.github/workflows/ci.yml` | — | histórico |
+| tab:ghcr-final | `.github/workflows/ghcr-publish.yml` | — | histórico |
+| tab:zenodo-final | `CITATION.cff` / `README.md` | — | `20671b6` |
+| tab:jacoco-final | `Backend/target/site/jacoco/jacoco.xml` | `mvn clean verify` | `0d5cd52` (tag v1.0.0) |
+| tab:lighthouse-final | `docs/mediciones/lighthouse/raw/*.json` | `scripts/run-lighthouse.sh` | histórico / `lhci-20260818` |
+| fig:lighthouse-final | `docs/mediciones/lighthouse/raw/*.html` | `scripts/run-lighthouse.sh` | histórico / `lhci-20260818` |
+| fig:bd-reproducible-final | `docs/informe/figuras/fred/Bd-reproducible.png` | — (captura pgAdmin) | histórico |
+| fig:security-headers-final | `docs/informe/figuras/jaime/security-headers.png` | — (captura curl) | histórico |
+| fig:zap-final | `docs/mediciones/sec/zap/raw/*.html` | `scripts/run-zap-baseline.sh` | histórico |
+
+Todos los commits listados fueron verificados con `git cat-file -t <hash>` (devuelve `commit`). Los marcados como "histórico" corresponden a evidencia generada en fases anteriores del proyecto; los commits exactos se pueden rastrear mediante `git log --oneline -- <archivo>`.
+
+---
+
+## 9. Procedencia de la re-corrida Lighthouse (2026-08-18)
 
 | Campo | Detalle |
 |---|---|
