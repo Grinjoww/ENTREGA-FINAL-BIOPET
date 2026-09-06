@@ -1,0 +1,69 @@
+CONTROL:
+A09 - Security Logging and Monitoring Failures
+
+OBJETIVO:
+Los eventos de autenticación (éxito, fallo, bloqueo, revocación) deben
+quedar registrados de forma estructurada, sin datos sensibles. Este
+archivo documenta una petición real y benigna que dispara uno de esos
+eventos (`LOGIN_FAILURE`) desde el cliente, con un identificador de
+correlación no sensible para dejar constancia del intento.
+
+FECHA UTC:
+2026-09-06T05:07:52Z
+
+ENDPOINT:
+POST https://biopet-backend-dh5e.onrender.com/api/auth/login
+
+COMANDO:
+curl -sS -D - -o body.json \
+  -H "X-Request-ID: qa-owasp-a09-<timestamp>" \
+  -H "Content-Type: application/json" \
+  -X POST https://biopet-backend-dh5e.onrender.com/api/auth/login \
+  -d '{"email":"qa.owasp.a09.curl.<timestamp>@example.test","password":"WrongPass123!"}' \
+  -w "STATUS:%{http_code}\n"
+
+RESULTADO:
+401 Unauthorized
+
+CABECERAS:
+HTTP/1.1 401 Unauthorized
+Content-Type: application/problem+json
+(el `X-Request-ID` enviado por el cliente NO aparece en la respuesta: el
+backend no lo refleja ni lo usa como cabecera de correlación; se incluyó
+igual como identificador propio de esta captura, no como algo que el
+servidor procese)
+
+RESPUESTA:
+{"type":"urn:biopet:error:unauthorized","title":"No autenticado","status":401,"detail":"Credenciales inválidas","instance":"/api/auth/login"}
+
+INTERPRETACIÓN:
+La petición demuestra el evento generado desde el cliente: una credencial
+inválida contra una cuenta inexistente, con un identificador de
+correlación (`X-Request-ID: qa-owasp-a09-<timestamp>`) elegido para que
+esta captura sea localizable sin usar ningún dato sensible. Por inspección
+de código (`Backend/src/main/java/com/biopet/service/AuthService.java` y
+`Backend/src/main/java/com/biopet/security/AuthenticationAuditService.java`,
+constante `EVENTO_LOGIN_FALLIDO = "LOGIN_FAILURE"`), este flujo invoca a
+`AuthenticationAuditService` con ese evento en cada intento de login
+fallido, incluido este.
+
+La persistencia/registro del evento en logs del servidor NO puede
+comprobarse únicamente mediante curl y se mantiene como limitación de
+esta evidencia: el backend académico en Render no expone sus logs de
+contenedor por HTTP (no hay endpoint público equivalente a `docker
+compose logs backend`), y esta tarea no usó credenciales de la plataforma
+de despliegue para leerlos. Por tanto esta captura demuestra el lado
+cliente del evento (la petición que debería auditarse) y su fundamento en
+el código, pero NO demuestra que la línea de log se haya escrito
+realmente en el servidor de producción para esta petición puntual.
+
+La comprobación real de que el formato de log es el correcto y de que no
+filtra datos sensibles sigue siendo la transcripción real de
+`docker compose logs backend` contra un entorno equivalente: ver
+`../raw/A09-audit-logs.txt` (eventos `LOGIN_SUCCESS`, `LOGIN_FAILURE`,
+`LOGIN_RATE_LIMITED`, `REFRESH_SUCCESS`, `LOGOUT_SUCCESS`, `TOKEN_REVOKED`
+capturados el 2026-08-17T03:19:25Z, con el mismo evento `LOGIN_FAILURE`
+que esta petición dispara) y `AuthenticationAuditServiceTest` (código,
+verifica el formato y la ausencia de datos sensibles de forma
+determinista). La comprobación principal de este control sigue siendo esa
+evidencia de servidor y la prueba automatizada, no este curl.

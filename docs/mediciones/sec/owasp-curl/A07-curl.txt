@@ -1,0 +1,47 @@
+CONTROL:
+A07 - Identification and Authentication Failures
+
+OBJETIVO:
+Un intento de login con credenciales inválidas contra una cuenta que no
+existe debe responder 401 con un mensaje genérico ("Credenciales
+inválidas"), sin distinguir si el correo existe o no (lo que evitaría
+enumeración de usuarios), y sin fijar una sesión.
+
+FECHA UTC:
+2026-09-06T04:50:18Z
+
+ENDPOINT:
+POST https://biopet-backend-dh5e.onrender.com/api/auth/login
+
+COMANDO:
+curl -sS -D - -o body.json -X POST \
+  https://biopet-backend-dh5e.onrender.com/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"qa.owasp.a07.curl.<timestamp>@example.test","password":"WrongPass123!"}' \
+  -w "STATUS:%{http_code}\n"
+
+RESULTADO:
+401 Unauthorized
+
+CABECERAS:
+HTTP/1.1 401 Unauthorized
+Content-Type: application/problem+json
+(sin cabecera Set-Cookie: no se emite sesión sobre credenciales inválidas)
+
+RESPUESTA:
+{"type":"urn:biopet:error:unauthorized","title":"No autenticado","status":401,"detail":"Credenciales inválidas","instance":"/api/auth/login"}
+
+INTERPRETACIÓN:
+Demuestra, contra el despliegue académico real, que un intento de login
+con una cuenta inexistente devuelve 401 con un mensaje genérico y sin
+cookie de sesión, en línea con el objetivo del control. NO se repitieron
+aquí los 6 intentos consecutivos necesarios para observar el 429 con
+`Retry-After` real: hacerlo habría bloqueado por 15 minutos
+(`security.rate-limit.login.block-duration`) la IP de salida usada para
+esta captura contra el entorno de demostración público que otras personas
+(el docente, compañeros) pueden estar usando en simultáneo, y el bloqueo es
+por IP, no por cuenta. Esa secuencia completa (intentos 1-5 → 401, 6º →
+429 con `Retry-After: 900`) ya está evidenciada de punta a punta contra un
+entorno efímero equivalente en `../raw/A07-auth-rate-limit.txt` y en
+`AuthControllerTest`/`JwtCookieAuthenticationTest` (código), y no se
+reproduce artificialmente aquí solo para llenar este archivo.

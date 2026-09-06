@@ -1,0 +1,53 @@
+CONTROL:
+A02 - Cryptographic Failures
+
+OBJETIVO:
+La conexión al backend público debe negociar TLS moderno (no una versión
+obsoleta ni texto plano), y el certificado servido debe ser válido para el
+dominio del despliegue académico.
+
+FECHA UTC:
+2026-09-06T04:49:52Z
+
+ENDPOINT:
+https://biopet-backend-dh5e.onrender.com:443
+
+COMANDO:
+echo | openssl s_client -connect biopet-backend-dh5e.onrender.com:443 \
+  -tls1_3 -servername biopet-backend-dh5e.onrender.com 2>&1 \
+  | grep -E "Protocol|Cipher"
+
+echo | openssl s_client -connect biopet-backend-dh5e.onrender.com:443 \
+  -tls1_3 -servername biopet-backend-dh5e.onrender.com 2>/dev/null \
+  | openssl x509 -noout -subject -issuer -dates
+
+RESULTADO:
+Conexión TLS 1.3 establecida (curl a /actuator/health sobre el mismo host
+respondió 200, ver A05-curl.txt para la transcripción completa de esa
+petición).
+
+CABECERAS:
+(no aplica directamente a la negociación TLS; ver A05-curl.txt para las
+cabeceras HTTP servidas sobre este canal, incluida Strict-Transport-Security)
+
+RESPUESTA:
+New, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384
+Protocol: TLSv1.3
+subject=CN=onrender.com
+issuer=C=US, O=Google Trust Services, CN=WE1
+notBefore=Jul 24 20:54:20 2026 GMT
+notAfter=Oct 22 21:54:17 2026 GMT
+
+INTERPRETACIÓN:
+Demuestra que el backend académico negocia TLS 1.3 con un cifrado AEAD
+(TLS_AES_256_GCM_SHA384) y sirve un certificado vigente (no vencido en la
+fecha de esta captura) emitido por una autoridad pública (Google Trust
+Services), a diferencia del certificado autofirmado usado en el entorno de
+desarrollo local. El certificado cubre `onrender.com` (wildcard de la
+plataforma de despliegue, no un nombre propio de BIOPET): es la limitación
+esperada de un despliegue académico sobre un PaaS gratuito con dominio
+compartido, no un fallo de configuración del equipo. NO demuestra el
+comportamiento de las cookies de sesión (HttpOnly/Secure/SameSite): ese
+mecanismo requiere una autenticación real y sigue evidenciado en
+`../raw/A07-auth-rate-limit.txt` (atributos de cookie visibles, valor
+redactado) y en `JwtCookieAuthenticationTest` (código).
