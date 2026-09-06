@@ -23,7 +23,9 @@ milisegundos en condiciones de cach\'e caliente, throughput cercano a
 92~req/s), con tasa de error 0{,}0\,\% sostenida al duplicar el n\'umero de
 corridas (3+3~$\to$~5+5). El an\'alisis de Wilcoxon con tama\~no de efecto
 de Rosenthal muestra que el efecto de la cach\'e no es uniforme entre
-corridas ($r$ desde $-0{,}07$ hasta $-0{,}84$), lo que sugiere que factores
+corridas ($r$ desde $-0{,}25$ hasta $-0{,}85$; corregido por comparaciones
+m\'ultiples con Holm--Bonferroni, secci\'on~\ref{sec:rendimiento-final}),
+lo que sugiere que factores
 del entorno de ejecuci\'on (por ejemplo, el estado de la JVM o del pool de
 conexiones al inicio de cada corrida) influyen en la magnitud observable
 del beneficio de cach\'e, sin que eso invalide la conclusi\'on cualitativa
