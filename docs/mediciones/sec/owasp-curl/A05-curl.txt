@@ -1,0 +1,50 @@
+CONTROL:
+A05 - Security Misconfiguration
+
+OBJETIVO:
+Las respuestas HTTP de backend y frontend deben incluir, ambas, las cuatro
+cabeceras de seguridad exigidas: HSTS, CSP, X-Frame-Options y
+X-Content-Type-Options. Este archivo captura los dos orígenes por
+separado porque son dos aplicaciones desplegadas de forma independiente.
+
+FECHA UTC:
+2026-09-06T04:50:09Z
+
+ENDPOINT:
+GET https://biopet-backend-dh5e.onrender.com/actuator/health
+GET https://biopet-frontend.onrender.com/
+
+COMANDO:
+curl -sS -D - -o /dev/null https://biopet-backend-dh5e.onrender.com/actuator/health -w "STATUS:%{http_code}\n"
+curl -sS -D - -o /dev/null https://biopet-frontend.onrender.com/ -w "STATUS:%{http_code}\n"
+
+RESULTADO:
+200 OK (los dos orígenes)
+
+CABECERAS:
+Backend (biopet-backend-dh5e.onrender.com):
+  strict-transport-security: max-age=31536000 ; includeSubDomains ; preload
+  content-security-policy: default-src 'self'; frame-ancestors 'none'; object-src 'none'
+  x-frame-options: DENY
+  x-content-type-options: nosniff
+
+Frontend (biopet-frontend.onrender.com):
+  strict-transport-security: max-age=31536000; includeSubDomains; preload
+  content-security-policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self' https://biopet-backend-dh5e.onrender.com; frame-ancestors 'none'; object-src 'none'; base-uri 'self'
+  x-frame-options: DENY
+  x-content-type-options: nosniff
+
+RESPUESTA:
+Backend: {"status":"UP","groups":["liveness","readiness"]}
+Frontend: documento HTML de la aplicación Angular (no relevante para este
+control; lo que se evalúa son las cabeceras, no el cuerpo).
+
+INTERPRETACIÓN:
+Demuestra que las cuatro cabeceras exigidas están presentes en el backend
+Y en el frontend público del despliegue académico vigente, cada una con un
+valor no trivial (HSTS con `preload`, CSP restrictiva con `default-src
+'self'`, `X-Frame-Options: DENY`). NO demuestra el manejo de errores
+verboso (parte de esta misma categoría OWASP): ese control ya está
+evidenciado por `SqlInjectionSecurityTest.respuestaNoFiltraInformacionDeBaseDeDatos`
+(código) y por la ausencia de trazas en los cuerpos de A03-curl.txt y
+A01-curl.txt de este mismo directorio.

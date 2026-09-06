@@ -1,0 +1,20 @@
+# .mailmap -- unifica la atribucion mostrada de identidades Git que
+# pertenecen a la misma persona, sin alterar los commits historicos.
+#
+# Este archivo NO reescribe historia: no cambia el SHA de ningun commit,
+# no modifica el autor original almacenado en el objeto commit, y no
+# afecta los tags existentes (incluido v1.0.0). Unicamente normaliza
+# como se agrupan y muestran los nombres/correos al pasar --use-mailmap
+# a comandos como `git log`, `git shortlog` o `git blame`.
+#
+# Formato: <Nombre canonico> <correo canonico> <Nombre en el commit> <correo en el commit>
+# Referencia: https://git-scm.com/docs/gitmailmap
+#
+# Jaime Josue Mariscal Cabrera aparecia en el historial bajo cinco
+# combinaciones de nombre/correo distintas (dos correos, tres variantes
+# de nombre). Se unifican bajo el correo institucional, que ya es la
+# forma predominante en los commits mas recientes.
+Jaime Josue Mariscal Cabrera <jmariscalc@uteq.edu.ec> Jaime Mariscal <jmariscalc@uteq.edu.ec>
+Jaime Josue Mariscal Cabrera <jmariscalc@uteq.edu.ec> Jaime Josué Mariscal Cabrera <jmariscalc@uteq.edu.ec>
+Jaime Josue Mariscal Cabrera <jmariscalc@uteq.edu.ec> Jaime Mariscal <mariscaljaime34@gmail.com>
+Jaime Josue Mariscal Cabrera <jmariscalc@uteq.edu.ec> Jaime Josué Mariscal Cabrera <mariscaljaime34@gmail.com>

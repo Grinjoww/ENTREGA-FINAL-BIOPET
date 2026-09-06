@@ -1,0 +1,51 @@
+CONTROL:
+A01 - Broken Access Control
+
+OBJETIVO:
+Un cliente sin sesión (sin cookie de autenticación) no debe poder leer un
+recurso protegido. Se observa el estado exacto del sistema, no una
+inferencia: la respuesta HTTP real que devuelve el backend desplegado.
+
+FECHA UTC:
+2026-09-06T04:49:39Z
+
+ENDPOINT:
+GET https://biopet-backend-dh5e.onrender.com/api/usuarios/me
+GET https://biopet-backend-dh5e.onrender.com/api/mascotas
+
+COMANDO:
+curl -sS -D - -o body.json https://biopet-backend-dh5e.onrender.com/api/usuarios/me -w "STATUS:%{http_code}\n"
+curl -sS -D - -o body.json https://biopet-backend-dh5e.onrender.com/api/mascotas -w "STATUS:%{http_code}\n"
+
+RESULTADO:
+401 Unauthorized (los dos endpoints)
+
+CABECERAS:
+HTTP/1.1 401 Unauthorized
+Content-Type: application/problem+json;charset=UTF-8
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+content-security-policy: default-src 'self'; frame-ancestors 'none'; object-src 'none'
+strict-transport-security: max-age=31536000 ; includeSubDomains ; preload
+x-content-type-options: nosniff
+x-frame-options: DENY
+
+RESPUESTA:
+GET /api/usuarios/me ->
+{"type":"urn:biopet:error:unauthorized","title":"No autenticado","status":401,"detail":"Se requiere una autenticación válida para acceder a este recurso.","instance":"/api/usuarios/me"}
+
+GET /api/mascotas ->
+{"type":"urn:biopet:error:unauthorized","title":"No autenticado","status":401,"detail":"Se requiere una autenticación válida para acceder a este recurso.","instance":"/api/mascotas"}
+
+INTERPRETACIÓN:
+Demuestra que dos endpoints que exponen datos de usuario/mascotas
+rechazan una petición sin credenciales con 401 y un cuerpo ProblemDetail
+(RFC 7807) sin fuga de información interna, contra el despliegue público
+real (no localhost, no un mock). NO demuestra el caso más fuerte de A01
+(control de propiedad entre dos usuarios autenticados: el Dueño B no
+puede leer/modificar un recurso del Dueño A), que exige crear dos cuentas
+reales y no se reprodujo aquí para no sembrar cuentas de prueba adicionales
+en el entorno de demostración público. Ese caso (IDOR bloqueado con 403)
+ya está evidenciado con transcripción curl real y verificable por
+`git cat-file` en `../raw/A01-access-control.txt` (entorno efímero,
+2026-08-17T03:19:05Z, commit `9a1afce`); esta captura es evidencia
+complementaria centrada en el despliegue académico vigente.

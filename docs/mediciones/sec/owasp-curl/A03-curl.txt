@@ -1,0 +1,46 @@
+CONTROL:
+A03 - Injection
+
+OBJETIVO:
+Un payload con apariencia de inyección SQL en el campo `email` de
+`POST /api/auth/login` no debe alcanzar la capa de persistencia ni alterar
+la sentencia ejecutada contra PostgreSQL. El campo `email` es el campo por
+el que `AuthService` localiza al usuario a autenticar.
+
+FECHA UTC:
+2026-09-06T04:49:56Z
+
+ENDPOINT:
+POST https://biopet-backend-dh5e.onrender.com/api/auth/login
+
+COMANDO:
+curl -sS -D - -o body.json -X POST \
+  https://biopet-backend-dh5e.onrender.com/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d "{\"email\":\"' OR '1'='1\",\"password\":\"x\"}" \
+  -w "STATUS:%{http_code}\n"
+
+RESULTADO:
+422 Unprocessable Entity
+
+CABECERAS:
+HTTP/1.1 422 Unprocessable Entity
+Content-Type: application/problem+json
+
+RESPUESTA:
+{"type":"urn:biopet:error:validation","title":"Error de validación","status":422,"detail":"Uno o más campos contienen valores inválidos.","instance":"/api/auth/login","errors":{"email":["must be a well-formed email address"]}}
+
+INTERPRETACIÓN:
+Demuestra que el payload de inyección literal citado por la guía
+(`' OR '1'='1`) nunca llega a `AuthService`/`UsuarioRepository`: Bean
+Validation (`@Email` sobre `LoginRequest.email`) lo rechaza antes, con 422
+y un `ProblemDetail` que no contiene nombres de clase Java, mensajes de
+Hibernate/PostgreSQL ni stack traces. Esto es evidencia real contra el
+despliegue académico, no solo contra `MockMvc`. NO demuestra el
+comportamiento sobre parámetros no validados como email (p. ej. un `Long`
+como `duenioId`, o payloads dentro de un campo de texto libre que sí acepte
+formato arbitrario): esos casos, junto con la verificación de que
+`usuarioRepository.count()` no cambia antes/después, siguen evidenciados
+en `../raw/A03-injection.txt` y en `SqlInjectionSecurityTest` (código), y
+en `scripts/audit-sql-dynamic.sh` (0 hallazgos de SQL dinámico en el
+código fuente).
