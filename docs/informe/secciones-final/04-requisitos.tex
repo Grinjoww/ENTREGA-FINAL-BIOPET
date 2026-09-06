@@ -37,7 +37,7 @@ ten\'ian requisito formal hist\'orico propio --- \texttt{REQ-F-015} y
 
 \begin{itemize}[nosep]
   \item \textbf{REQ-F-023 --- Gesti\'on administrativa de usuarios}
-    (\texttt{UsuarioController}/\texttt{UsuarioService}): un
+    (\rutalarga{UsuarioController/UsuarioService}): un
     \texttt{ADMIN} lista, consulta, crea, actualiza y da de baja l\'ogica
     cuentas de cualquier rol, sin poder autoescalar el rol de su propia
     cuenta. Estado: \textbf{verificado} (\texttt{UsuarioControllerTest},
@@ -51,7 +51,7 @@ ten\'ian requisito formal hist\'orico propio --- \texttt{REQ-F-015} y
     \texttt{GET /api/vacunas/mascota/\{mascotaId\}} no tiene prueba
     automatizada dedicada.
   \item \textbf{REQ-F-025 --- Consulta de informaci\'on externa de especies}
-    (\texttt{ExternalApiController}): consulta de datos de una especie
+    (\texttt{External\allowbreak ApiController}): consulta de datos de una especie
     (nombre cient\'ifico, h\'abitat, dieta) desde un servicio externo (API
     Ninjas), con cach\'e Redis \emph{cache-aside} para evitar llamadas
     repetidas. Estado: \textbf{implementado} (sin prueba automatizada

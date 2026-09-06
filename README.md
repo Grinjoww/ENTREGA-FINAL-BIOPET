@@ -456,7 +456,7 @@ en vez de continuar con datos incompletos.
 
 ## Compilación del informe académico (LaTeX)
 
-El informe final (`informe-final-v1.0.0.pdf`, 101 páginas) se compila desde
+El informe final (`informe-final-v1.0.0.pdf`, 102 páginas) se compila desde
 `docs/informe/` con **TeX Live** o **MiKTeX** (BibTeX clásico, sin
 `shell-escape` ni `minted`).
 

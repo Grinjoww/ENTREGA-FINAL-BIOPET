@@ -56,6 +56,14 @@
 % causados por rutas de archivo largas en \texttt{} dentro de parrafos y
 % captions, sin cambiar el contenido visible del texto.
 \usepackage{microtype}
+% emergencystretch: colchon de estiramiento de ultimo recurso que TeX solo
+% usa cuando un parrafo no tiene ningun corte de linea que cumpla el
+% \tolerance normal (tipico con \texttt{} largo: rutas, timestamps ISO,
+% identificadores). No es \sloppy (que relaja \tolerance/\hyphenpenalty en
+% TODO el documento y empeora el espaciado en parrafos que ya estaban
+% bien); aqui solo se activa como respaldo puntual, sin alterar la
+% justificacion normal de los parrafos que ya encajan.
+\setlength{\emergencystretch}{3em}
 % listings: para los listados de codigo cortos exigidos por la Guia Final
 % (seccion Implementacion), con indice de listados en la materia
 % preliminar (\lstlistoflistings).
@@ -90,6 +98,16 @@
   \ifx\relax#2\relax #1%
   \else #1/\allowbreak\rutalargaimpl#2\relax\fi
 }
+% El capitulo de Anexos tiene mas de nueve \section (Glosario, Endpoints,
+% Documentos de referencia, Clases de prueba, Anexo A al G, Evidencias
+% pendientes), asi que su numeracion en el indice llega a dos digitos
+% (p. ej. "17.10."); el ancho reservado por defecto para el numero en
+% \l@section (2.3em) alcanza para un digito y desborda por un par de
+% puntos con dos. Se ensancha ligeramente esa caja, sin tocar ningun otro
+% aspecto del indice.
+\makeatletter
+\renewcommand*\l@section{\@dottedtocline{1}{1.5em}{2.8em}}
+\makeatother
 
 % --- Encabezados/pies de pagina -------------------------------------------
 \usepackage{fancyhdr}
@@ -144,11 +162,16 @@
 \newcommand{\equipo}{BMT}
 \newcommand{\tituloinforme}{BIOPET --- Sistema web de gesti\'on veterinaria:\\ Informe acad\'emico final --- Entrega Final v1.0.0}
 \newcommand{\ciudadfecha}{Quevedo, 18 de agosto de 2026}
-\newcommand{\doisoftware}{10.5281/zenodo.21988746}
-\newcommand{\doidataset}{10.5281/zenodo.21988785}
-\newcommand{\urlfrontend}{https://biopet-frontend.onrender.com}
-\newcommand{\urlbackend}{https://biopet-backend-dh5e.onrender.com}
-\newcommand{\urlrepositorio}{https://github.com/Grinjoww/ENTREGA-FINAL-BIOPET}
+% Los \allowbreak despues de cada "/" son puntos de corte de linea
+% invisibles (no imprimen guion ni cambian el valor); evitan que estos
+% identificadores largos, usados dentro de \texttt{}, produzcan un
+% "Overfull \hbox" cuando aparecen en una columna estrecha o junto a mas
+% texto en la misma linea.
+\newcommand{\doisoftware}{10.5281/\allowbreak zenodo.21988746}
+\newcommand{\doidataset}{10.5281/\allowbreak zenodo.21988785}
+\newcommand{\urlfrontend}{https://\allowbreak biopet-frontend.onrender.com}
+\newcommand{\urlbackend}{https://\allowbreak biopet-backend-dh5e.onrender.com}
+\newcommand{\urlrepositorio}{https://\allowbreak github.com/\allowbreak Grinjoww/\allowbreak ENTREGA-FINAL-BIOPET}
 % ORCID verificados de los tres integrantes (digito de control valido).
 \newcommand{\orcidjaime}{0009-0007-2206-3941}
 \newcommand{\orcidfred}{0009-0007-8303-2137}
@@ -195,10 +218,10 @@
   \vspace{0.6cm}
 
   {\normalsize
-    \begin{tabular}{c}
-      Mariscal Cabrera Jaime Josu\'e \quad --- \quad jmariscalc@uteq.edu.ec \quad --- \quad ORCID: \orcidjaime \\
-      Beltr\'an Montiel Fred Adri\'an \quad --- \quad fbeltranm@uteq.edu.ec \quad --- \quad ORCID: \orcidfred \\
-      Taipe Mora Zaida Melissa \quad --- \quad ztaipem@uteq.edu.ec \quad --- \quad ORCID: \orcidzaida \\
+    \begin{tabular}{>{\centering\arraybackslash}p{15cm}}
+      Mariscal Cabrera Jaime Josu\'e \quad --- \quad jmariscalc@\allowbreak uteq.edu.ec \quad --- \quad ORCID: \orcidjaime \\
+      Beltr\'an Montiel Fred Adri\'an \quad --- \quad fbeltranm@\allowbreak uteq.edu.ec \quad --- \quad ORCID: \orcidfred \\
+      Taipe Mora Zaida Melissa \quad --- \quad ztaipem@\allowbreak uteq.edu.ec \quad --- \quad ORCID: \orcidzaida \\
     \end{tabular}
     \par
   }
@@ -211,7 +234,7 @@
 
   \vspace{1.1cm}
   {\small
-    \begin{tabular}{ll}
+    \begin{tabular}{@{}>{\raggedright\arraybackslash}p{6.9cm}>{\raggedright\arraybackslash}p{8.4cm}@{}}
       DOI del software (Zenodo) & \texttt{\doisoftware} \\
       DOI del \emph{dataset} de evidencias (Zenodo) & \texttt{\doidataset} \\
       Repositorio & \texttt{\urlrepositorio} \\

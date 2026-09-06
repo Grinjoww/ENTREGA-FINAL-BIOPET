@@ -121,22 +121,22 @@ las diez corridas.
 \begin{table}[H]
   \centering
   \tiny
-  \caption{Resultado real de las diez corridas de k6 (fuente: \texttt{docs/mediciones/perf/REPORT.md}).}
+  \caption[Resultado real de las diez corridas de k6.]{Resultado real de las diez corridas de k6 (fuente: \texttt{docs/mediciones/perf/REPORT.md}).}
   \label{tab:k6-final}
   \begin{tabular}{@{}lrrrrrrr@{}}
     \toprule
     Corrida & n & Media (ms) & Mediana (ms) & p95 (ms) & p99 (ms) & Error (\%) & Throughput (req/s) \\
     \midrule
-    caliente-01 & 3196 & 10{,}54 & 8{,}68 & 20{,}15 & 30{,}68 & 0{,}0 & 91{,}17 \\
-    caliente-02 & 3226 & 7{,}19 & 6{,}63 & 9{,}70 & 17{,}18 & 0{,}0 & 92{,}09 \\
-    caliente-03 & 3226 & 6{,}60 & 6{,}01 & 10{,}86 & 16{,}13 & 0{,}0 & 92{,}13 \\
-    caliente-04 & 3236 & 5{,}21 & 4{,}92 & 6{,}83 & 10{,}12 & 0{,}0 & 92{,}40 \\
-    caliente-05 & 3236 & 5{,}40 & 4{,}96 & 7{,}81 & 12{,}59 & 0{,}0 & 92{,}41 \\
-    fr\'io-01 & 3206 & 10{,}51 & 8{,}47 & 21{,}10 & 33{,}14 & 0{,}0 & 91{,}49 \\
-    fr\'io-02 & 3211 & 9{,}37 & 7{,}60 & 17{,}23 & 25{,}79 & 0{,}0 & 91{,}62 \\
-    fr\'io-03 & 3204 & 10{,}80 & 8{,}43 & 22{,}13 & 33{,}40 & 0{,}0 & 91{,}36 \\
-    fr\'io-04 & 3206 & 10{,}71 & 8{,}50 & 20{,}16 & 32{,}65 & 0{,}0 & 91{,}45 \\
-    fr\'io-05 & 3199 & 10{,}61 & 7{,}88 & 20{,}71 & 40{,}87 & 0{,}0 & 91{,}51 \\
+    caliente-01 & 3217 & 8{,}66 & 7{,}59 & 15{,}06 & 20{,}56 & 0{,}0 & 91{,}83 \\
+    caliente-02 & 3236 & 7{,}00 & 6{,}68 & 9{,}48 & 13{,}06 & 0{,}0 & 92{,}35 \\
+    caliente-03 & 3236 & 5{,}48 & 5{,}27 & 6{,}94 & 9{,}38 & 0{,}0 & 92{,}48 \\
+    caliente-04 & 3236 & 4{,}92 & 4{,}75 & 6{,}04 & 8{,}79 & 0{,}0 & 92{,}62 \\
+    caliente-05 & 3246 & 5{,}04 & 4{,}89 & 6{,}48 & 7{,}68 & 0{,}0 & 92{,}61 \\
+    fr\'io-01 & 3211 & 9{,}33 & 8{,}06 & 15{,}31 & 21{,}10 & 0{,}0 & 91{,}65 \\
+    fr\'io-02 & 3216 & 9{,}09 & 7{,}82 & 15{,}13 & 19{,}14 & 0{,}0 & 91{,}86 \\
+    fr\'io-03 & 3210 & 10{,}26 & 8{,}37 & 18{,}23 & 25{,}89 & 0{,}0 & 91{,}57 \\
+    fr\'io-04 & 3211 & 9{,}88 & 7{,}84 & 18{,}56 & 26{,}05 & 0{,}0 & 91{,}57 \\
+    fr\'io-05 & 3207 & 10{,}13 & 8{,}54 & 18{,}03 & 25{,}97 & 0{,}0 & 91{,}52 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -144,17 +144,66 @@ las diez corridas.
 La tasa de error fue \textbf{0{,}0\,\%} en las diez corridas, sin
 excepci\'on. Intervalos de confianza al 95\,\% (distribuci\'on t de
 Student) reportados por corrida en \texttt{docs/mediciones/perf/REPORT.md};
-por ejemplo, caliente-01: $[10{,}30, 10{,}78]$~ms. Adem\'as del IC~95\,\%,
+por ejemplo, caliente-01: $[8{,}40, 8{,}93]$~ms. Adem\'as del IC~95\,\%,
 se aplic\'o la prueba de Wilcoxon pareada entre condiciones fr\'ia y
 caliente (por \'indice de llegada), con tama\~no de efecto $r$ de
-Rosenthal: el efecto es peque\~no en la corrida~01 ($r=-0{,}07$) y grande en
-las corridas~03--04 ($r=-0{,}65$ a $-0{,}84$), consistente con una cach\'e
+Rosenthal: el efecto es moderado en la corrida~01 ($r=-0{,}25$) y grande en
+las corridas~03--05 ($r=-0{,}83$ a $-0{,}85$), consistente con una cach\'e
 que reduce la latencia de forma creciente conforme el sistema se estabiliza
 entre corridas consecutivas. La figura~\ref{fig:performance-report-final}
 muestra la vista agregada de este reporte, y las
 figuras~\ref{fig:rendimiento-caliente-final}
 y~\ref{fig:rendimiento-frio-final} muestran la salida de consola real de
 una corrida representativa en cada condici\'on.
+
+\textbf{Correcci\'on por comparaciones m\'ultiples (Holm--Bonferroni).}
+Las cinco corridas fr\'io--caliente (01 a 05) no son cinco repeticiones
+independientes de una \'unica pregunta, sino \textbf{una familia de $m=5$
+contrastes} (un Wilcoxon pareado por corrida) evaluados sobre el mismo
+conjunto de datos de rendimiento; contrastar los cinco sin ajuste
+infla el error de tipo~I familiar por encima del $\alpha=0{,}05$ nominal.
+\texttt{docs/mediciones/perf/REPORT.md} aplica el m\'etodo secuencial de
+\textbf{Holm--Bonferroni} ($\alpha=0{,}05$, $m=5$) sobre los $p$ crudos del
+Wilcoxon pareado, reproducible en el propio reporte. La
+tabla~\ref{tab:holm-bonferroni-k6} reproduce los cinco contrastes con su
+$p$ crudo y su $p$ ajustado por Holm.
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{Correcci\'on Holm--Bonferroni sobre los cinco contrastes Wilcoxon pareados fr\'io vs.\ caliente (fuente: \texttt{docs/mediciones/perf/REPORT.md}).}
+  \label{tab:holm-bonferroni-k6}
+  \begin{tabular}{@{}lllll@{}}
+    \toprule
+    Contraste & $p$ crudo & $p$ ajustado (Holm) & \'Signif. ($\alpha=0{,}05$) & $r$ (Rosenthal) \\
+    \midrule
+    01 & $1{,}10\times10^{-45}$ & $1{,}10\times10^{-45}$ & S\'i & $-0{,}25$ \\
+    02 & $3{,}88\times10^{-155}$ & $7{,}75\times10^{-155}$ & S\'i & $-0{,}47$ \\
+    03 & $p<2{,}23\times10^{-308}$ & $p<2{,}23\times10^{-308}$ & S\'i & $-0{,}83$ \\
+    04 & $p<2{,}23\times10^{-308}$ & $p<2{,}23\times10^{-308}$ & S\'i & $-0{,}85$ \\
+    05 & $p<2{,}23\times10^{-308}$ & $p<2{,}23\times10^{-308}$ & S\'i & $-0{,}85$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Con Holm--Bonferroni, cada $p$ crudo se compara contra un umbral
+progresivamente menos estricto seg\'un su orden (el m\'as peque\~no contra
+$\alpha/m$, el siguiente contra $\alpha/(m-1)$, y as\'i sucesivamente),
+en vez de comparar los cinco contra el mismo $\alpha/m$ fijo de Bonferroni
+cl\'asico --- por eso el $p$ ajustado de la corrida~01 no cambia
+respecto al crudo (ya era, por s\'i solo, varios \'ordenes de magnitud
+menor que $\alpha/m=0{,}01$), mientras que el de la corrida~02 s\'i se
+duplica. Las cinco corridas permanecen \textbf{significativas despu\'es
+del ajuste} ($p$ ajustado $\ll 0{,}05$ en los cinco casos): la
+correcci\'on por comparaciones m\'ultiples \textbf{no cambia la
+conclusi\'on} de que la condici\'on fr\'ia produce latencias
+sistem\'aticamente mayores que la caliente en las cinco corridas. Esto
+\textbf{no implica} que la cach\'e sea la \'unica causa posible de la
+diferencia observada --- ver la nota metodol\'ogica sobre pareo por
+\'indice de llegada m\'as abajo y el an\'alisis de sensibilidad Mann--Whitney
+en el mismo \texttt{REPORT.md} --- \'unicamente que, bajo el dise\~no y los
+datos reales de esta medici\'on, el efecto no es un artefacto de comparar
+cinco veces sin control del error familiar.
 
 % EVIDENCIA-FRED-06
 % Ruta esperada: figuras/fred/06-performance-report.png
@@ -193,7 +242,7 @@ esta entrega constat\'o que esos formularios individuales no est\'an
 actualmente disponibles como evidencia verificable; esta situaci\'on se
 document\'o mediante una constancia de regularizaci\'on firmada por los
 integrantes del proyecto
-(\texttt{docs/etica/regularizacion-sus/CONSTANCIA-REGULARIZACION-SUS-BIOPET-2026-08-31.pdf}),
+(\rutalarga{docs/etica/regularizacion-sus/CONSTANCIA-REGULARIZACION-SUS-BIOPET-2026-08-31.pdf}),
 que \textbf{no sustituye} consentimientos individuales. La
 tabla~\ref{tab:sus-final} resume los estad\'isticos agregados.
 
@@ -252,16 +301,16 @@ Accessibility~$\geq$~90, Best Practices~$\geq$~90 y SEO~$\geq$~90~\cite{lighthou
 El equipo ejecut\'o tres corridas sucesivas: la inicial del 2026-08-01
 (solo perfil m\'ovil, contra \texttt{localhost}, SEO~82/100, umbral no
 cumplido); una corrida completa el 2026-08-18
-(\texttt{lighthouserc.js}/\texttt{lighthouserc.desktop.js}, tambi\'en
+(\texttt{lighthouserc.js}\allowbreak/\texttt{lighthouserc.desktop.js}, tambi\'en
 contra \texttt{localhost:4200}, ambos perfiles, SEO~100/100); y la
 \textbf{corrida definitiva contra el despliegue p\'ublico de Render}
 el \textbf{2026-09-03}
-(\texttt{lighthouserc.render.js}/\texttt{lighthouserc.render.desktop.js},
-\texttt{docs/mediciones/lighthouse/lhci-20260903-2102-render-*.json},
-metadatos en \texttt{lhci-20260903-2102-render.meta.txt}; metodolog\'ia y
-medias reproducibles en \texttt{docs/mediciones/lighthouse/RENDER-REPORT.md}),
+(\texttt{lighthouserc.render.js}\allowbreak/\texttt{lighthouserc.render.desktop.js},
+\rutalarga{docs/mediciones/lighthouse/lhci-20260903-2102-render-*.json},
+metadatos en \texttt{lhci-20260903-2102-\allowbreak render.meta.txt}; metodolog\'ia y
+medias reproducibles en \rutalarga{docs/mediciones/lighthouse/RENDER-REPORT.md}),
 la primera de las tres auditando \texttt{requestedUrl} p\'ublico
-(\texttt{https://biopet-frontend.onrender.com}) en vez de \texttt{localhost}.
+(\rutalarga{https://biopet-frontend.onrender.com}) en vez de \texttt{localhost}.
 Cubre ambos perfiles (m\'ovil y escritorio), 3~corridas por ruta y por
 perfil (12~corridas totales) sobre las rutas \texttt{/login} y
 \texttt{/mascotas} (ninguna es la portada). El script
