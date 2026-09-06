@@ -46,3 +46,19 @@ reales del repositorio y contra la autoría de commits real
 (`git shortlog -sne --all`, `git log --all --author=<correo> --name-only`),
 no contra memoria ni supuestos. No se marcó un rol para una persona sin al
 menos un archivo o rama de trabajo concreto que lo respalde.
+
+## Unificación de identidades Git (`.mailmap`)
+
+Jaime Mariscal Cabrera registró commits bajo cinco combinaciones distintas
+de nombre y correo (dos correos, tres variantes de nombre) a lo largo del
+historial. El archivo [`.mailmap`](../.mailmap) del repositorio unifica esa
+atribución bajo la identidad canónica `Jaime Josue Mariscal Cabrera
+<jmariscalc@uteq.edu.ec>` para `git log`, `git shortlog` y herramientas
+compatibles que lean `.mailmap`.
+
+Esto **no** reescribe los commits históricos: cada objeto commit conserva
+intacto el nombre y correo con el que se creó originalmente, y no se
+afirma que todos esos commits se hicieron desde el inicio con el correo
+institucional. `.mailmap` solo normaliza cómo se agrupa y se muestra esa
+autoría al consultarla. Los commits nuevos deben hacerse ya con el correo
+institucional (`jmariscalc@uteq.edu.ec`).

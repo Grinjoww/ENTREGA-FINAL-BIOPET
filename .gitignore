@@ -2,6 +2,9 @@
 Backend/target/
 *.class
 *.jar
+# Python (bytecode cacheado al ejecutar scripts/*.py, p. ej. perf-analysis.py)
+__pycache__/
+*.pyc
 # Node
 frontend/node_modules/
 frontend/dist/
@@ -33,3 +36,9 @@ cookies.txt
 # ZAP con credenciales ya sustituidas desde variables de entorno; se
 # borra automaticamente al terminar el script, nunca deberia commitearse)
 .zap-auth-local-tmp.*/
+
+# Insumos de retroalimentacion/evaluacion del docente (TXT + PDF de la
+# guia de recalificacion), usados como material de consulta local para
+# la auditoria de esta entrega: no forman parte del entregable academico
+# y nunca deben versionarse en el repositorio.
+auditoria-final/
