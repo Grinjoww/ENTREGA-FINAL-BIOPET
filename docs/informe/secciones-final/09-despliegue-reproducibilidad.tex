@@ -12,13 +12,13 @@ resume la tabla~\ref{tab:produccion-final}.
   \centering
   \caption{Servicios reales de producci\'on (fuente: \texttt{docs/despliegue/DEPLOYMENT.md}).}
   \label{tab:produccion-final}
-  \begin{tabular}{@{}ll@{}}
+  \begin{tabular}{@{}p{3.0cm}p{11.5cm}@{}}
     \toprule
     Servicio & URL / valor \\
     \midrule
-    Frontend & \texttt{https://biopet-frontend.onrender.com} \\
-    Backend & \texttt{https://biopet-backend-dh5e.onrender.com} \\
-    \emph{Healthcheck} & \texttt{GET /actuator/health} $\to$ \texttt{\{"status":"UP","groups":["liveness","readiness"]\}} \\
+    Frontend & \rutalarga{https://biopet-frontend.onrender.com} \\
+    Backend & \rutalarga{https://biopet-backend-dh5e.onrender.com} \\
+    \emph{Healthcheck} & \rutalarga{GET /actuator/health} $\to$ \texttt{\{"status":\allowbreak"UP","groups":\allowbreak["liveness","readiness"]\}} \\
     Base de datos & PostgreSQL~18 (gestionado por Render) \\
     Cach\'e & Valkey~8 (compatible con Redis, gestionado por Render) \\
     HTTPS & Activo, autom\'atico, sin configuraci\'on TLS manual en la app \\
@@ -45,7 +45,7 @@ entrega:
   \small
   \caption{Jobs del pipeline de CI.}
   \label{tab:ci-jobs}
-  \begin{tabular}{@{}p{2.8cm}p{9.4cm}@{}}
+  \begin{tabular}{@{}p{3.2cm}p{9.0cm}@{}}
     \toprule
     Job & Prop\'osito \\
     \midrule
@@ -74,22 +74,24 @@ Registry (tabla~\ref{tab:ghcr-final}):
   \centering
   \caption{Publicaci\'on GHCR (fuente: \texttt{docs/publicacion/PAQUETE-V1.0.0.md}).}
   \label{tab:ghcr-final}
-  \begin{tabular}{@{}ll@{}}
+  \begin{tabular}{@{}p{3.6cm}p{10.9cm}@{}}
     \toprule
     Campo & Valor \\
     \midrule
-    Imagen & \texttt{ghcr.io/grinjoww/entregafinal-biopet-backend} \\
+    Imagen & \rutalarga{ghcr.io/grinjoww/entregafinal-biopet-backend} \\
     Tag publicado & \texttt{sha-fe2f033} \\
-    Digest (\texttt{sha256}, inmutable) & \texttt{sha256:ef1e857a95a307a1\allowbreak15ebe01599a41506eab824808b70a3c8e317dcc55bef5163} \\
+    Digest (\texttt{sha256}, inmutable) & \texttt{sha256:ef1e857a95a307a1\allowbreak 15ebe01599a41506\allowbreak eab824808b70a3c8\allowbreak e317dcc55bef5163} \\
     Commit asociado & \texttt{fe2f033138e3ec1fad07bf1038e10b8bb140449f} \\
     \bottomrule
   \end{tabular}
 \end{table}
 
+{\footnotesize
 \begin{verbatim}
 docker pull ghcr.io/grinjoww/entregafinal-biopet-backend@sha256:ef1e857a95a307a1
 15ebe01599a41506eab824808b70a3c8e317dcc55bef5163
 \end{verbatim}
+}
 
 El tag Git \texttt{v1.0.0} ya fue creado y publicado (apunta al commit
 \texttt{0d5cd52}, estado hist\'orico de cierre de la Entrega Final; ver

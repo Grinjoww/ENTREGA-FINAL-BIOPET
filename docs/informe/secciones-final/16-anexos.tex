@@ -7,7 +7,7 @@ La tabla~\ref{tab:glosario-final} recoge las siglas usadas a lo largo de
 este informe.
 
 \small
-\begin{longtable}{@{}ll@{}}
+\begin{longtable}{@{}p{2.3cm}p{12.3cm}@{}}
 \caption{Siglas usadas en este informe.}
 \label{tab:glosario-final} \\
     \toprule
@@ -67,7 +67,7 @@ por el backend v1.0.0.
   \small
   \caption{Endpoints reales expuestos por el backend v1.0.0.}
   \label{tab:endpoints-final}
-  \begin{tabular}{@{}llp{7.0cm}@{}}
+  \begin{tabular}{@{}p{3.0cm}p{4.2cm}p{7.0cm}@{}}
     \toprule
     M\'etodo & Ruta & Autenticaci\'on / rol \\
     \midrule
@@ -76,7 +76,7 @@ por el backend v1.0.0.
     POST & /api/auth/refresh & Cookie \texttt{refresh\_token} \\
     POST & /api/auth/logout & Cookie (idempotente sin sesi\'on) \\
     GET & /api/usuarios/me & Cualquier rol autenticado \\
-    GET/POST/PUT/DELETE & /api/mascotas[/\{id\}] & Rol y propiedad (secci\'on \ref{cap:seguridad}) \\
+    GET\allowbreak/POST\allowbreak/PUT\allowbreak/DELETE & /api\allowbreak/mascotas[\allowbreak/\{id\}] & Rol y propiedad (secci\'on \ref{cap:seguridad}) \\
     GET & /api/mascotas/resumen-especies & Cualquier rol autenticado \\
     \ /* & /api/citas/* & \texttt{CitaController}, rol y propiedad \\
     \ /* & /api/consultas/* & \texttt{ConsultaController}, \texttt{VETERINARIO}/\texttt{ADMIN} \\
@@ -105,7 +105,7 @@ por el backend v1.0.0.
   \item Despliegue: \texttt{docs/despliegue/} (\texttt{DEPLOYMENT.md}, \texttt{RUNBOOK.md}, \texttt{BACKUP.md}).
   \item Publicaci\'on: \texttt{docs/publicacion/PAQUETE-V1.0.0.md}.
   \item \'Etica: \texttt{docs/etica/ETHICS.md}.
-  \item Checklists de rigor metodol\'ogico: \rutalarga{docs/checklists/} (\texttt{ralph2021-engineering-research.md}, \texttt{prisma2020.md}, \texttt{incose2023-req.md}, \texttt{fair.md}).
+  \item Checklists de rigor metodol\'ogico: \rutalarga{docs/checklists/} (\texttt{ralph2021-\allowbreak engineering-\allowbreak research.md}, \texttt{prisma2020.md}, \texttt{incose2023-req.md}, \texttt{fair.md}).
   \item Bit\'acora de observaciones: \texttt{docs/observaciones/OBSERVACIONES.md}.
   \item Contribuciones CRediT: \texttt{CONTRIBUTORS.md}.
   \item Metadatos de citaci\'on: \texttt{CITATION.cff}.
@@ -115,13 +115,13 @@ por el backend v1.0.0.
 
 \small
 \begin{itemize}[nosep]
-  \item \texttt{AuthControllerTest}, \texttt{JwtCookieAuthenticationTest},
-    \texttt{JwtServiceTest}, \texttt{LoginRateLimiterServiceTest},
-    \texttt{AuthenticationAuditServiceTest} (seguridad y autenticaci\'on).
+  \item \texttt{AuthControllerTest}, \texttt{JwtCookie\allowbreak AuthenticationTest},
+    \texttt{JwtServiceTest}, \texttt{LoginRate\allowbreak LimiterServiceTest},
+    \texttt{Authentication\allowbreak AuditServiceTest} (seguridad y autenticaci\'on).
   \item \texttt{MascotaControllerTest} (autorizaci\'on por rol y propiedad).
   \item \texttt{SqlInjectionSecurityTest}, \texttt{SecurityHeadersTest}
     (OWASP A03 y A05).
-  \item \texttt{ResumenEspeciesIntegrationTest} (Testcontainers, PostgreSQL real).
+  \item \texttt{Resumen\allowbreak Especies\allowbreak IntegrationTest} (Testcontainers, PostgreSQL real).
 \end{itemize}
 \normalsize
 
@@ -169,7 +169,7 @@ OBS-15 & 3 & Correo institucional de Jaime en commits & Cerrada \\
 \label{sec:anexo-prisma-busqueda}
 
 Cadenas y criterios de b\'usqueda documentados por bloque en
-\texttt{docs/checklists/prisma2020.md} (\'item~7); la versi\'on completa
+\rutalarga{docs/checklists/prisma2020.md} (\'item~7); la versi\'on completa
 por bloque, con fuentes y ventana temporal, est\'a en la
 secci\'on~\ref{sec:cadena-busqueda-trabajos-relacionados} del
 cap\'itulo de trabajos relacionados:
@@ -177,8 +177,10 @@ cap\'itulo de trabajos relacionados:
 \begin{itemize}[nosep]
   \item \textbf{Zaida} (IEEE Xplore, ACM Digital Library, Scopus, Google
     Scholar; b\'usqueda 2026-08-17):
-    \texttt{"requirements elicitation" AND "systematic literature review"}
-    \textbullet\ \texttt{"system usability scale" AND web application}
+    \texttt{"requirements elicitation" AND\allowbreak\ "systematic
+    literature review"}
+    \textbullet\ \texttt{"system usability scale" AND\allowbreak\ web
+    application}
     \textbullet\ \texttt{veterinary management system web application case
     study}.
   \item \textbf{Jaime}: verificaci\'on dirigida por tema (metodolog\'ia
@@ -236,7 +238,8 @@ YAML, no una captura), en vez de inventar capturas inexistentes:
   \item Reproducci\'on local equivalente: \texttt{make all} (encadena las
     mismas verificaciones que corren en CI).
   \item Resultado esperado de cada \emph{job}, verificado localmente en
-    esta fase: \texttt{backend-test} (205 pruebas, \texttt{jacoco:check}
+    esta fase: \texttt{backend-test} (205 pruebas,
+    \texttt{jacoco:\allowbreak check}
     $\geq$70\,\%); \texttt{sql-audit} (0 hallazgos,
     \rutalarga{scripts/audit-sql-dynamic.sh}); \texttt{security-static}
     (0 hallazgos \texttt{SQL\_*}); \texttt{zap-baseline} (0 alertas altas).
@@ -250,7 +253,7 @@ YAML, no una captura), en vez de inventar capturas inexistentes:
 \label{sec:anexo-ralph}
 
 La tabla~\ref{tab:anexo-ralph} tabula de forma resumida el checklist
-completo (\texttt{docs/checklists/ralph2021-engineering-research.md},
+completo (\rutalarga{docs/checklists/ralph2021-engineering-research.md},
 15~\'items):
 
 \begin{longtable}{@{}p{1.2cm}p{9.4cm}p{2.4cm}@{}}
@@ -295,7 +298,7 @@ disponibles en el CSV original.
 
 \begin{landscape}
 \small
-\begin{longtable}{@{}p{2.0cm}p{1.3cm}p{1.3cm}p{2.0cm}p{2.0cm}p{4.6cm}p{4.4cm}p{2.0cm}@{}}
+\begin{longtable}{@{}p{2.0cm}p{1.55cm}p{1.65cm}p{1.6cm}p{1.6cm}p{4.45cm}p{4.4cm}p{2.35cm}@{}}
 \caption{Matriz de trazabilidad completa (fuente: \texttt{docs/trazabilidad/matriz.csv}).}
 \label{tab:anexo-matriz-completa} \\
 \toprule
@@ -311,7 +314,7 @@ Requisito & Tipo & MoSCoW & HU & CU & M\'odulo/c\'odigo & Prueba automatizada & 
 \endfoot
 REQ-F-001 & funcional & Must & HU-001 & CU-01 & \rutalarga{AuthController/AuthService} & \texttt{AuthControllerTest} & verificado \\
 REQ-F-002 & funcional & Must & HU-001 & CU-01 & \texttt{GlobalExceptionHandler} & \texttt{AuthControllerTest} & verificado \\
-REQ-F-003 & funcional & Must & HU-002 & CU-02 & \rutalarga{AuthController/JwtService} & \texttt{AuthControllerTest}+\texttt{JwtServiceTest} & verificado \\
+REQ-F-003 & funcional & Must & HU-002 & CU-02 & \rutalarga{AuthController/JwtService} & \texttt{AuthControllerTest}\allowbreak+\texttt{JwtServiceTest} & verificado \\
 REQ-F-004 & funcional & Must & HU-003 & CU-03 & \rutalarga{AuthController/AuthService} & \texttt{AuthControllerTest} & verificado \\
 REQ-F-005 & funcional & Must & HU-004 & CU-04 & \rutalarga{AuthController/TokenBlacklistService} & \texttt{AuthControllerTest} & verificado \\
 REQ-F-006 & funcional & Must & HU-005 & CU-05 & \rutalarga{SecurityConfig/MascotaController} & \texttt{MascotaControllerTest} & verificado \\
@@ -321,7 +324,7 @@ REQ-F-009 & funcional & Must & HU-008 & CU-08 & \rutalarga{MascotaController/Mas
 REQ-F-010 & funcional & Must & HU-009 & CU-09 & \rutalarga{MascotaController/MascotaService} & \texttt{MascotaControllerTest} & verificado \\
 REQ-F-011 & funcional & Must & HU-010 & CU-10 & \rutalarga{MascotaController/MascotaService} & \texttt{MascotaControllerTest} & verificado \\
 REQ-F-012 & funcional & Must & HU-011 & CU-11 & \rutalarga{MascotaController/MascotaService} & \texttt{MascotaControllerTest} & verificado \\
-REQ-F-013 & funcional & Should & HU-012 & CU-12 & \rutalarga{ConsultaController/ConsultaService} & \texttt{ConsultaControllerTest} (parcial) & implementado \\
+REQ-F-013 & funcional & Should & HU-012 & CU-12 & \rutalarga{ConsultaController/ConsultaService} & \texttt{Consulta\allowbreak ControllerTest} (parcial) & implementado \\
 REQ-F-014 & funcional & Could & HU-013 & CU-13 & --- & --- & pendiente \\
 REQ-F-015 & funcional & Should & HU-014 & CU-14 & \rutalarga{CitaController/CitaService} & \texttt{CitaControllerTest} & implementado \\
 REQ-F-016 & funcional & Could & HU-015 & CU-15 & --- & --- & pendiente \\
@@ -329,24 +332,24 @@ REQ-F-017 & funcional & Could & HU-016 & CU-16 & --- & --- & pendiente \\
 REQ-F-018 & funcional & Should & HU-017 & CU-17 & --- & --- & pendiente \\
 REQ-F-019 & funcional & Could & HU-018 & CU-18 & --- & --- & pendiente \\
 REQ-F-020 & funcional & Should & HU-019 & CU-19 & --- & --- & pendiente \\
-REQ-F-021 & funcional & Should & HU-020 & CU-20 & \rutalarga{MascotaController/MascotaRepository} & \texttt{ResumenEspeciesIntegrationTest} & verificado \\
+REQ-F-021 & funcional & Should & HU-020 & CU-20 & \rutalarga{MascotaController/MascotaRepository} & \texttt{Resumen\allowbreak Especies\allowbreak IntegrationTest} & verificado \\
 REQ-F-022 & funcional & Could & HU-021 & CU-21 & --- & --- & pendiente \\
 REQ-F-023 & funcional & Should & HU-022 & CU-22 & \rutalarga{UsuarioController/UsuarioService} & \texttt{UsuarioControllerTest} & verificado \\
 REQ-F-024 & funcional & Should & HU-023 & CU-23 & \rutalarga{VacunaController/VacunaService} & \texttt{VacunaControllerTest} (parcial) & verificado \\
 REQ-F-025 & funcional & Could & HU-024 & CU-24 & \rutalarga{ExternalApiController/ExternalApiService} & sin prueba dedicada & implementado \\
 REQ-NF-001 & no funcional & Must & --- & --- & Cach\'e Redis (listado mascotas) & k6 v2.1.0 (10 corridas) & verificado \\
-REQ-NF-002 & no funcional & Must & --- & --- & \rutalarga{SecurityConfig/TomcatDualConnectorConfig} & \texttt{SecurityHeadersTest} & verificado \\
+REQ-NF-002 & no funcional & Must & --- & --- & \rutalarga{SecurityConfig/Tomcat\allowbreak DualConnectorConfig} & \texttt{SecurityHeadersTest} & verificado \\
 REQ-NF-003 & no funcional & Must & --- & --- & \texttt{JwtService} & \texttt{JwtServiceTest} & verificado \\
 REQ-NF-004 & no funcional & Must & --- & --- & \texttt{JwtService} & \texttt{JwtServiceTest} (6 pruebas) & verificado \\
 REQ-NF-005 & no funcional & Must & --- & --- & Frontend Angular & Lighthouse (12 corridas, mobile+desktop) & verificado \\
 REQ-NF-006 & no funcional & Should & --- & --- & Frontend Angular & Manual (pendiente) & pendiente \\
-REQ-NF-007 & no funcional & Must & --- & --- & \texttt{Makefile}/\texttt{docker-compose.yml} & \emph{healthcheck} Docker Compose & implementado \\
+REQ-NF-007 & no funcional & Must & --- & --- & \rutalarga{Makefile/docker-compose.yml} & \emph{healthcheck} Docker Compose & implementado \\
 REQ-NF-008 & no funcional & Must & --- & --- & \texttt{SecurityConfig} (BCrypt) & \texttt{AuthControllerTest} & verificado \\
-REQ-NF-009 & no funcional & Must & --- & --- & Logging de autenticaci\'on & \texttt{AuthenticationAuditServiceTest} & verificado \\
-REQ-NF-010 & no funcional & Must & --- & --- & \texttt{LoginRateLimiterService} & \texttt{LoginRateLimiterServiceTest} & verificado \\
+REQ-NF-009 & no funcional & Must & --- & --- & Logging de autenticaci\'on & \texttt{Authentication\allowbreak AuditServiceTest} & verificado \\
+REQ-NF-010 & no funcional & Must & --- & --- & \texttt{LoginRate\allowbreak LimiterService} & \texttt{LoginRate\allowbreak LimiterServiceTest} & verificado \\
 REQ-NF-011 & no funcional & Must & --- & --- & Estructura de paquetes backend & Revisi\'on de c\'odigo & verificado \\
 REQ-NF-012 & no funcional & Should & --- & --- & Cach\'e Redis (TTL configurable) & Inspecci\'on + medici\'on Redis & verificado \\
-REQ-NF-013 & no funcional & Must & --- & --- & \texttt{MascotaRepository} (\texttt{fn\_resumen\_...}) & \texttt{ResumenEspeciesIntegrationTest} & verificado \\
+REQ-NF-013 & no funcional & Must & --- & --- & \texttt{MascotaRepository} (\texttt{fn\_resumen\_...}) & \texttt{Resumen\allowbreak Especies\allowbreak IntegrationTest} & verificado \\
 \end{longtable}
 \end{landscape}
 

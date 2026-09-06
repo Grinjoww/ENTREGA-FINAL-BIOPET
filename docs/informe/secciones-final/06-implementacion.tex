@@ -29,8 +29,8 @@ ya autenticado, no de forma autoasignada por el registro p\'ublico.
 
 \section{Gesti\'on de mascotas}
 
-CRUD completo (\texttt{GET}/\texttt{POST}/\texttt{PUT}/\texttt{DELETE}
-sobre \texttt{/api/mascotas} y \texttt{/api/mascotas/\{id\}}), con
+CRUD completo (\texttt{GET}\allowbreak/\texttt{POST}\allowbreak/\texttt{PUT}\allowbreak/\texttt{DELETE}
+sobre \rutalarga{/api/mascotas} y \rutalarga{/api/mascotas/\{id\}}), con
 eliminaci\'on l\'ogica (\texttt{activo=false}), no f\'isica, y un endpoint
 de resumen por especie respaldado por \texttt{fn\_resumen\_mascotas\_por\_especie}.
 
@@ -48,7 +48,7 @@ PostgreSQL, no un bucle de actualizaciones individuales desde el backend).
 usa la rutina \texttt{sp\_registrar\_consulta\_validada}, que valida en la
 propia base de datos --- antes de insertar --- que la mascota exista y
 est\'e activa, y que el veterinario referenciado tenga rol
-\texttt{VETERINARIO} o \texttt{ADMIN} y est\'e activo, lanzando
+\texttt{ADMIN} o \texttt{VETERINARIO} y est\'e activo, lanzando
 \texttt{RAISE EXCEPTION} si no, en vez de delegar esa validaci\'on
 \'unicamente a la capa de servicio de Java.
 
@@ -114,7 +114,7 @@ rutinas almacenadas: cada m\'etodo usa \texttt{@Procedure}, sin ning\'un
 CRUD gen\'erico expuesto (el repositorio extiende \texttt{Repository}, no
 \texttt{JpaRepository}, deliberadamente).
 
-\begin{lstlisting}[language=Java,caption={Acceso JPA formal a procedimientos almacenados en \texttt{ProcedimientoBiopetRepository.java} (fragmento real).},label={lst:procedure-jpa}]
+\begin{lstlisting}[language=Java,caption={Acceso JPA formal a procedimientos almacenados en \texttt{Procedimiento\allowbreak BiopetRepository.\allowbreak java}.},label={lst:procedure-jpa}]
 public interface ProcedimientoBiopetRepository
         extends Repository<Mascota, Long> {
 
@@ -174,7 +174,7 @@ reproducible en Docker es, en su versi\'on final v1.0.0:
 
 Esta arquitectura corrige un dise\~no anterior en el que \texttt{db/schema.sql}
 duplicaba \texttt{V1} y, montado en \texttt{docker-entrypoint-initdb.d} junto
-con \texttt{spring.flyway.baseline-on-migrate}, enmascaraba la migraci\'on
+con \texttt{spring.\allowbreak flyway.\allowbreak baseline-on-migrate}, enmascaraba la migraci\'on
 real detr\'as de un baseline sobre un volumen que aparentaba ser nuevo. La
 versi\'on final v1.0.0 elimina esa duplicidad: Flyway es la \'unica v\'ia
 por la que se crea el esquema, verificable ejecutando \texttt{make up}
