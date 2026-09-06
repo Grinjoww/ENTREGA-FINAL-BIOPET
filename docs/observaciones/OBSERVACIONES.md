@@ -1003,6 +1003,195 @@ observaciones de las Entregas 1A y 1B ya no bloquean la creación de
 
 ---
 
+# Parte 10 — Incidencias de CI del 4 de septiembre de 2026
+
+La revisión del 5 de septiembre de 2026 señaló, sobre P1 (Cierre funcional,
+cobertura y acceso a datos): "la CI tuvo cuatro corridas rojas el 4 de
+septiembre antes de volver a verde." Esta sección documenta esas cuatro
+corridas con su causa, su corrección y su validación en verde, para que no
+queden como un hecho sin explicar.
+
+**Método de verificación.** Los identificadores de corrida (`run id`),
+fechas UTC, SHA evaluado, nombre del job y nombre del paso que falló se
+obtuvieron consultando la API pública de GitHub Actions del repositorio
+(`GET /repos/Grinjoww/ENTREGA-FINAL-BIOPET/actions/runs` y
+`.../actions/runs/{id}/jobs`), que no requiere autenticación para un
+repositorio público. **Limitación declarada:** la descarga del texto
+literal del log (`.../actions/jobs/{id}/logs`) devuelve `403 Must have
+admin rights to Repository` sin credenciales de administrador del
+repositorio, que no se usaron para esta tarea; por tanto, la causa raíz de
+cada fallo se reconstruye a partir del diff real y el mensaje de cada
+commit corrector (evidencia verificable con `git show <sha>`), no a partir
+de una línea de log copiada. Donde la atribución de causa a una corrida
+concreta es una inferencia razonada y no una lectura directa del log, se
+indica explícitamente.
+
+## Resumen de las cuatro corridas rojas
+
+| # | Run ID | Fecha/hora UTC | Commit evaluado | Job que falló | Paso que falló |
+|---|---|---|---|---|---|
+| 1 | [33839273530](https://github.com/Grinjoww/ENTREGA-FINAL-BIOPET/actions/runs/33839273530) | 2026-09-04T05:06:41Z | `1222908` (no alcanzable desde `HEAD` actual, ver más abajo) | `backend-test` | "Verificar backend (tests + JaCoCo check >= 70% LINE/BRANCH)" |
+| 2 | [33840906318](https://github.com/Grinjoww/ENTREGA-FINAL-BIOPET/actions/runs/33840906318) | 2026-09-04T05:33:07Z | `297c88c` | `backend-test` | "Verificar backend (tests + JaCoCo check >= 70% LINE/BRANCH)" |
+| 3 | [33843170694](https://github.com/Grinjoww/ENTREGA-FINAL-BIOPET/actions/runs/33843170694) | 2026-09-04T06:08:47Z | `d33b234` | `zap-baseline` | "Ejecutar OWASP ZAP Baseline Scan" |
+| 4 | [33904527616](https://github.com/Grinjoww/ENTREGA-FINAL-BIOPET/actions/runs/33904527616) | 2026-09-04T18:11:11Z | `a815dbf` | `backend-test` | "Verificar backend (tests + JaCoCo check >= 70% LINE/BRANCH)" |
+
+**Primera corrida verde:** [33905996425](https://github.com/Grinjoww/ENTREGA-FINAL-BIOPET/actions/runs/33905996425), 2026-09-04T18:27:36Z, commit `1a8b4a0`, los seis jobs (`traceability`, `sql-audit`, `security-static`, `frontend-build`, `backend-test`, `zap-baseline`) en `success`.
+
+## Corrida 1 y 2 — fallo real en `backend-test`
+
+**FALLO REAL.** Las corridas 1 (`1222908`) y 2 (`297c88c`) fallan en el
+mismo job (`backend-test`) y el mismo paso ("Verificar backend"). Ambos
+commits comparten el mensaje `merge: integra recalificacion final BIOPET`
+y el mismo timestamp de autor (`2026-09-04 00:04:51 -0500`), pero tienen
+padres distintos:
+
+```
+$ git show -s --format="%H  parents: %P" 122290879fb6a6b6bfc037ae3ff6c3b83e32c134
+122290879fb6a6b6bfc037ae3ff6c3b83e32c134  parents: 394bcb3... ef6bb18...
+$ git show -s --format="%H  parents: %P" 297c88c55e68fe3d0f852aebb7632aef5e5fa41d
+297c88c55e68fe3d0f852aebb7632aef5e5fa41d  parents: 442851f... 11f590b...
+$ git merge-base --is-ancestor 122290879fb6a6b6bfc037ae3ff6c3b83e32c134 HEAD && echo YES || echo NO
+NO
+$ git merge-base --is-ancestor 297c88c55e68fe3d0f852aebb7632aef5e5fa41d HEAD && echo YES || echo NO
+YES
+```
+
+`1222908` fue sustituido por `297c88c` sobre `main` a los 27 minutos (un
+nuevo merge del mismo trabajo, no una reescritura de historia posterior:
+ambos existen todavía como objetos en el repositorio y ninguno fue
+purgado). El fallo de `backend-test` persistió a través de ese reemplazo,
+lo que indica que la causa no estaba en el propio merge sino en el estado
+de la suite de pruebas heredado por ambos.
+
+**DIAGNÓSTICO.** El commit corrector inmediatamente posterior,
+`d33b234cea5b9a10603b45608bceeef208358b13` ("fix(test): desacopla health
+check de Redis en perfil test", 2026-09-04T06:08:43-05:00), documenta en su
+propio mensaje el defecto: el perfil `test` no dispone de Redis real, y
+aunque `spring.cache.type=simple` evita que la aplicación lo necesite para
+cachear, `spring-boot-starter-data-redis` en el classpath deja registrado
+el `RedisHealthIndicator` de Actuator, que intenta conectar a
+`localhost:6379`. Sin ese servicio en CI, el indicador reporta `DOWN` y
+`/actuator/health` agregado responde `503`, lo que hace fallar la prueba
+que verifica un health check `UP`.
+
+**CORRECCIÓN.** `d33b234` añade `management.health.redis.enabled: false`
+exclusivamente en `Backend/src/test/resources/application-test.yml`, sin
+tocar `application.yml` de producción (donde Redis es un componente real y
+su indicador de salud debe seguir activo):
+
+```
+$ git show --stat d33b234
+Backend/src/test/resources/application-test.yml | 16 ++++++++++++++++
+1 file changed, 16 insertions(+)
+```
+
+**VALIDACIÓN VERDE (parcial).** La corrida 3 (`d33b234`, run
+`33843170694`) confirma que `backend-test` pasó a `success`; el job que
+falló en esa corrida fue otro distinto (`zap-baseline`, ver abajo).
+
+## Corrida 3 — fallo real en `zap-baseline`
+
+**FALLO REAL.** La corrida 3 (`d33b234`, run `33843170694`,
+2026-09-04T06:08:47Z) falla en el job `zap-baseline`, paso "Ejecutar OWASP
+ZAP Baseline Scan", después de que `backend-test` ya pasó en verde en esa
+misma corrida.
+
+**DIAGNÓSTICO.** El commit corrector `a815dbf1d5dd9eecbe55710b34b090333caf22dc`
+("fix(ci): genera JWT efimero para baseline ZAP",
+2026-09-04T13:11:03-05:00) añade, antes del paso de escaneo, la generación
+de un `.env` efímero a partir de `.env.example` con un `JWT_SECRET`
+aleatorio para el stack Docker temporal que levanta `zap-baseline`:
+
+```
+$ git show a815dbf -- .github/workflows/ci.yml
++      - name: Generar .env efimero con JWT_SECRET aleatorio (solo para este stack Docker temporal)
++        run: |
++          set +x
++          cp .env.example .env
++          ZAP_JWT_SECRET="$(openssl rand -hex 32)"
++          sed -i "s|^JWT_SECRET=.*$|JWT_SECRET=${ZAP_JWT_SECRET}|" .env
++          unset ZAP_JWT_SECRET
+```
+
+Esto indica que, sin ese paso, el stack Docker que `scripts/run-zap-baseline.sh`
+levanta para el escaneo no contaba con un `.env` (ni por tanto con un
+`JWT_SECRET`) en una corrida de CI limpia, lo que es coherente con que el
+job fallara en el paso de ejecución del escaneo y no en un paso anterior.
+El texto literal del log no se pudo recuperar (ver limitación declarada
+arriba); esta es la reconstrucción a partir del propio commit corrector.
+
+**CORRECCIÓN.** `a815dbf`, arriba.
+
+**VALIDACIÓN VERDE.** La corrida 5 (`1a8b4a0`, run `33905996425`) confirma
+`zap-baseline` en `success`. La corrida 4, con `a815dbf` ya aplicado, no
+llegó a ejecutar `zap-baseline` (quedó `skipped`) porque `backend-test`
+volvió a fallar antes en esa misma corrida — ver siguiente incidencia.
+
+## Corrida 4 — fallo real recurrente en `backend-test`
+
+**FALLO REAL.** La corrida 4 (`a815dbf`, run `33904527616`,
+2026-09-04T18:11:11Z, ~12 horas después de la corrida 3) vuelve a fallar en
+`backend-test`, el mismo job y el mismo paso que en las corridas 1 y 2,
+pese a que `d33b234` (fix de Redis) ya estaba aplicado y `a815dbf` en sí
+mismo solo toca `.github/workflows/ci.yml` (el paso de ZAP), sin relación
+funcional con las pruebas del backend.
+
+**DIAGNÓSTICO.** El commit corrector final,
+`1a8b4a09527f89d62e708639912e7954dabd7fc4` ("fix(test): corrige
+aislamiento de VacunaControllerTest", 2026-09-04T13:27:29-05:00), diagnostica
+en su propio mensaje un defecto de aislamiento entre pruebas
+`@SpringBootTest` que comparten el mismo `ApplicationContext` (y por tanto
+la misma base H2 en memoria) por tener idéntica firma de configuración:
+`VacunaControllerTest` no limpiaba, antes de cada prueba, las entidades
+hijas (`Consulta`, `Cita`) que otras clases de prueba (`CitaControllerTest`,
+`ConsultaControllerTest`, `MascotaControllerTest`,
+`SqlInjectionSecurityTest`) dejan referenciando una `Mascota` por clave
+foránea. El propio commit señala que el orden de ejecución entre clases
+"no [está] garantizado ni [es] estable entre entornos", lo que explica que
+el mismo defecto no se manifestara en toda corrida (no se vio en la corrida
+3) sino de forma intermitente según el orden que JUnit eligiera ese día:
+
+```
+$ git show --stat 1a8b4a0
+.../src/test/java/com/biopet/VacunaControllerTest.java | 18 ++++++++++++++++++
+1 file changed, 18 insertions(+)
+```
+
+Nota de honestidad: no se pudo confirmar contra el texto del log de la
+corrida 4 que la aserción concreta que falló fuera la de
+`VacunaControllerTest` (limitación de acceso declarada arriba). La
+atribución se apoya en que (a) es el único defecto de pruebas backend que
+se corrige entre la corrida 4 (roja) y la corrida 5 (verde), (b) el fix
+anterior (`d33b234`, Redis) ya estaba aplicado y no explica una nueva
+falla, y (c) el propio commit describe un modo de fallo intermitente
+consistente con "el mismo job vuelve a fallar sin que el commit evaluado
+toque el backend".
+
+**CORRECCIÓN.** `1a8b4a0` añade la limpieza de `ConsultaRepository` y
+`CitaRepository` (en ese orden, antes de `vacunaRepository`,
+`mascotaRepository` y `usuarioRepository`) al `@BeforeEach` de
+`VacunaControllerTest`, igual que ya hacían las otras clases.
+
+**VALIDACIÓN VERDE.** La corrida 5 (`33905996425`, commit `1a8b4a0`,
+2026-09-04T18:27:36Z) confirma `backend-test` en `success`, y con él los
+seis jobs de la corrida en verde.
+
+## Conclusión de esta incidencia
+
+Ninguna de las cuatro corridas rojas se ocultó: las cuatro son parte
+verificable del proceso correctivo de la última jornada antes del cierre
+(3 y 4 de septiembre), cada una con un fallo real distinto o recurrente,
+un commit corrector identificable por diff, y una corrida posterior que la
+deja en verde. El detalle de por qué el mismo job (`backend-test`) falló
+dos veces por causas distintas (Redis en las corridas 1-2, aislamiento de
+pruebas en la corrida 4) es exactamente lo que esta sección documenta.
+Limitación declarada: el texto literal de los logs de GitHub Actions no
+fue accesible sin credenciales de administrador del repositorio; toda
+causa raíz aquí se apoya en el diff real de los commits correctores, citado
+con su hash verificable, y no en una transcripción del log.
+
+---
+
 ## Trazabilidad de este documento
 
 - Elaborado en la rama `jaime/observaciones-1a-1b`; cerrado (OBS-02, OBS-03, OBS-04, OBS-05) en la rama `jaime/cierre-observaciones-1a-1b`; cerrado (OBS-08) en la rama `jaime/cierre-obs-08`.
