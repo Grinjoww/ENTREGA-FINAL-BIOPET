@@ -301,8 +301,8 @@ Conforming).
 - **Rationale:** funcionalidad presente en el código
   (`GET /api/usuarios/me`), base del `authGuard` de Angular; no documentada
   como requisito independiente en el SRS original.
-- **Verificación:** inspección de `UsuarioController` y prueba manual con
-  Postman (sin test automatizado formal registrado).
+- **Verificación:** Test `UsuarioControllerTest` (prueba `meSigueFuncionando`
+  sobre `GET /api/usuarios/me`); inspección de `UsuarioController`.
 - **Trazabilidad:** → HU-006 → CU-06 → `UsuarioController.me` →
   `AuthService.perfil`.
 - **Estado:** verificado.
@@ -607,7 +607,7 @@ Correos, RF-07 recuperado)**
 - **Rationale:** nuevo requisito de la actividad de Unidad IV; formaliza el
   módulo `VacunaController`/`VacunaService`, sin requisito formal previo en
   el SRS.
-- **Verificación:** Test `VacunaControllerTest` (10 pruebas); colección
+- **Verificación:** Test `VacunaControllerTest` (9 pruebas); colección
   Postman `docs/postman/BIOPET-Vacunas.postman_collection.json` (12
   requests, ejecutable con Newman). La operación
   `GET /api/vacunas/mascota/{mascotaId}` no tiene prueba automatizada
@@ -649,13 +649,14 @@ Correos, RF-07 recuperado)**
   superar 200 ms (p95) con caché caliente ni 500 ms (p95) con caché fría.
 - **Rationale:** heredado de RNF-01/RNF-WEB-04 de la Entrega 1A, con
   umbrales cuantitativos añadidos por el bloque C.1 de la Guía.
-- **Verificación:** k6, 5 corridas en caliente y 5 en frío,
-  `docs/mediciones/perf/` (archivos `k6-20260817T*-local-tls-v0.9.0-rc-*.json`
-  y `REPORT.md`).
-- **Estado:** verificado. `docs/mediciones/perf/REPORT.md` registra p95 entre
-  9.7 ms y 22.13 ms según la corrida, muy por debajo de los umbrales de 200 ms
-  (caché caliente) y 500 ms (caché fría) exigidos por este requisito, con
-  0.0 % de error en todas las corridas.
+- **Verificación:** k6, 5 corridas en caliente y 5 en frío sobre el tag
+  v1.0.0, `docs/mediciones/perf/` (archivos
+  `k6-20260903T*-local-tls-v1.0.0-*.json` y `REPORT.md`).
+- **Estado:** verificado. `docs/mediciones/perf/REPORT.md` (2026-09-03)
+  registra p95 entre 6.04 ms y 18.56 ms según la corrida (máximo 15.06 ms en
+  caché caliente y 18.56 ms en caché fría), muy por debajo de los umbrales de
+  200 ms (caché caliente) y 500 ms (caché fría) exigidos por este requisito,
+  con 0.0 % de error en todas las corridas.
 
 **REQ-NF-002 — Comunicación cifrada obligatoria**
 - **Categoría:** Seguridad · **Prioridad:** Must
@@ -946,6 +947,8 @@ en la sección 3.
 | 009 | HU-008 | CU-08 | 019 | HU-018 | CU-18 |
 | 010 | HU-009 | CU-09 | 020 | HU-019 | CU-19 |
 | 021 | HU-020 | CU-20 | 022 | HU-021 | CU-21 |
+| 023 | HU-022 | CU-22 | 024 | HU-023 | CU-23 |
+| 025 | HU-024 | CU-24 |     |         |        |
 
 ### 4.1. Trazabilidad histórica: identificadores originales → identificadores actuales (cierre de OBS-03)
 
@@ -965,9 +968,9 @@ estuviera ya citado en este documento:
 | RF-01, RF-02 | REQ-F-008 | Creación de mascota asociada a un dueño existente | CU-07 | HU-007 | verificado |
 | RF-02 | REQ-F-009 | Listado paginado de mascotas activas por propietario/rol | CU-08 | HU-008 | verificado |
 | RF-02 | REQ-F-011 | Actualización de mascota con verificación de propiedad | CU-10 | HU-010 | verificado |
-| RF-03, RF-04 | REQ-F-013 | Registro y consulta de historial clínico | CU-12 | HU-012 | pendiente |
+| RF-03, RF-04 | REQ-F-013 | Registro y consulta de historial clínico | CU-12 | HU-012 | parcial |
 | RF-05 | REQ-F-014 | Prescripción de medicamentos | CU-13 | HU-013 | pendiente |
-| RF-06 | REQ-F-015 | Gestión de citas veterinarias mediante calendario | CU-14 | HU-014 | pendiente |
+| RF-06 | REQ-F-015 | Gestión de citas veterinarias mediante calendario | CU-14 | HU-014 | parcial |
 | **RF-07** | **REQ-F-022** | **Notificaciones al usuario por correo electrónico (cierre de OBS-02)** | **CU-21** | **HU-021** | **pendiente** |
 | RF-08, RF-09 | REQ-F-016 | API de recepción de telemetría de dispositivos IoT | CU-15 | HU-015 | pendiente |
 | RF-10 | REQ-F-017 | Recomendaciones clínicas informativas (redacción cerrada en OBS-04) | CU-16 | HU-016 | pendiente |
@@ -985,7 +988,10 @@ requisito previo que cerrar): `REQ-F-002` (rechazo de correo duplicado),
 `REQ-F-007` (consulta del perfil propio), `REQ-F-010` (consulta de mascota
 por id), `REQ-F-012` (baja lógica de mascota) y `REQ-F-021` (resumen de
 mascotas por especie, exigido por el bloque A.2.2 de la Guía de la Tercera
-Entrega). Ninguno de estos sustituye ni duplica un identificador `RF-NN`
+Entrega). Se incorporan igualmente sin origen en la Entrega 1A, durante la
+Unidad IV: `REQ-F-023` (gestión administrativa de usuarios), `REQ-F-024`
+(gestión de vacunas) y `REQ-F-025` (consulta externa de especies con caché).
+Ninguno de estos sustituye ni duplica un identificador `RF-NN`
 original.
 
 Esta tabla es de solo lectura respecto a `docs/trazabilidad/matriz.csv`: no
@@ -1125,6 +1131,26 @@ actualiza el estado real:
   `docs/mediciones/sec/audit-sql-dynamic-v1.0.0.txt`). No se marca
   "verificado" sin ese respaldo, aunque una versión anterior de este
   documento sí los daba por verificados sin evidencia suficiente.
+
+**Cierre 2026-09-07 — sincronización SRS / matriz / código antes de la
+firma.**
+
+- **REQ-F-007.** La verificación pasa a citar el test automatizado real
+  (`UsuarioControllerTest.meSigueFuncionando`, `GET /api/usuarios/me`),
+  que la matriz ya registraba; se retira la afirmación "sin test
+  automatizado formal registrado", que quedó desactualizada.
+- **REQ-F-024.** Corrección de conteo: `VacunaControllerTest` tiene 9
+  pruebas, no 10.
+- **Sección 4.** Se agregan a la tabla de correspondencia REQ-F-023
+  (HU-022/CU-22), REQ-F-024 (HU-023/CU-23) y REQ-F-025 (HU-024/CU-24), que
+  faltaban, y a la lista de requisitos sin origen en la Entrega 1A.
+  La sección 4.1 pasa REQ-F-013 y REQ-F-015 de "pendiente" a "parcial",
+  en línea con su estado en la sección 3.1 y en la matriz.
+- **REQ-NF-001.** Evidencia actualizada a la corrida oficial v1.0.0
+  (2026-09-03): p95 entre 6.04 ms y 18.56 ms, archivos `k6-20260903T*`.
+- **Matriz de trazabilidad.** Estados y notas alineados con el SRS para
+  REQ-F-013, REQ-F-015, REQ-F-020, REQ-F-025, REQ-NF-001 y REQ-NF-012.
+  Detalle fila por fila en `docs/requisitos/CHANGELOG-REQ.md`.
 
 **Sigue como limitación declarada, no bloqueante para el cierre de esta
 entrega:**
