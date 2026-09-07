@@ -6,6 +6,47 @@ de la Guía de la Tercera Entrega). No reemplaza a `docs/requisitos/cambios/CAMB
 (que narra el contexto general de la migración de pila ASP.NET → Spring Boot);
 este archivo es el registro formal, fila por requisito, exigido por A.3.4.
 
+## [v1.0.0] - 2026-09-07 (sincronización SRS / matriz / código, antes de firma)
+
+Revisión de sincronización del SRS contra `docs/trazabilidad/matriz.csv` y el
+código real, previa a la firma del docente-director. No cambia la numeración
+de ningún requisito ni agrega funcionalidad; corrige estados, conteos y
+referencias que el documento arrastraba de versiones anteriores.
+
+### Fixed
+- **REQ-F-007** — la verificación ahora cita el test automatizado real
+  (`UsuarioControllerTest.meSigueFuncionando`, `GET /api/usuarios/me`),
+  coherente con la matriz; se elimina la afirmación "sin test automatizado
+  formal registrado", que había quedado desactualizada. No cambia el
+  enunciado ni el estado (`verificado`).
+- **REQ-F-024** — corrección de conteo: `VacunaControllerTest` tiene **9**
+  pruebas, no 10. No cambia el resto del requisito.
+- **REQ-F-013** y **REQ-F-015** — la sección 4.1 documentaba su estado como
+  "pendiente"; se pasa a "parcial", en línea con la sección 3.1, la nota real
+  de la matriz y el código (CRUD de `ConsultaController`/`CitaController`
+  implementado, pendiente el calendario interactivo / la vista de historial
+  consolidado).
+- **REQ-F-020** — la matriz lo tenía como "pendiente"; pasa a "parcial" con
+  el módulo `AuthenticationAuditService` y la nota de que la parte de
+  autenticación está cubierta por REQ-NF-009 en producción (falta la
+  auditoría genérica de CRUD), en línea con la nota del SRS.
+- **REQ-F-025** — la matriz declaraba "sin prueba automatizada dedicada" y
+  estado "implementado"; el test `ExternalApiServiceTest` (6 pruebas,
+  `Backend/src/test/java/com/biopet/integration/`) sí existe, así que se
+  registra como prueba y el estado pasa a "verificado", en línea con el SRS.
+- **REQ-NF-001** — evidencia actualizada a la corrida oficial v1.0.0
+  (2026-09-03): archivos `k6-20260903T*-local-tls-v1.0.0-*.json` (10
+  corridas, 5 frío + 5 caliente). El p95 máximo real es 15.06 ms en caliente
+  y 18.56 ms en frío (umbrales 200/500 ms siguen cumpliéndose con holgura).
+- **REQ-NF-012** — se retira de la matriz la afirmación "hit ratio cercano al
+  100% documentado en docs/mediciones/perf/REPORT.md", que no existe en el
+  reporte; la medición de hit ratio sigue pendiente (sección 7 del SRS).
+  Estado alineado a "verificado parcialmente".
+- **Sección 4 del SRS** — la tabla de correspondencia REQ-F ↔ HU ↔ CU no
+  incluía REQ-F-023 (HU-022/CU-22), REQ-F-024 (HU-023/CU-23) ni REQ-F-025
+  (HU-024/CU-24); se agregan. La lista de "requisitos sin origen en la
+  Entrega 1A" tampoco los mencionaba; se incorporan explícitamente.
+
 ## [v0.9.0-rc] - 2026-08-10 (reconciliación GA Unidad IV)
 
 Corrige el fallo del CI de trazabilidad (`CI BIOPET / traceability`, job
