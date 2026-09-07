@@ -83,7 +83,57 @@
 
 \date{}
 
+% --- Metadatos institucionales (usados en la portada) ---------------------
+\newcommand{\universidad}{Universidad T\'ecnica Estatal de Quevedo}
+\newcommand{\facultad}{Facultad de Ciencias de la Computaci\'on}
+\newcommand{\carrera}{Carrera de Software}
+\newcommand{\asignatura}{Aplicaciones Web}
+\newcommand{\docente}{Guerrero Ulloa Gleiston Ciceron}
+\newcommand{\periodoacademico}{2025 -- 2026}
+\newcommand{\cursoparalelo}{A}
+\newcommand{\equipo}{BMT}
+\newcommand{\tituloproyecto}{BIOPET --- Sistema web de gesti\'on veterinaria}
+\newcommand{\ciudadfecha}{Quevedo, 7 de septiembre de 2026}
+
 \begin{document}
+
+% === PORTADA INSTITUCIONAL ===============================================
+\begin{titlepage}
+\centering
+\vspace*{0.6cm}
+{\LARGE\bfseries \universidad \\[0.5cm]}
+{\Large \facultad \\[0.2cm]}
+{\large \carrera \\[0.2cm]}
+{\large Proyecto de Fin de Carrera --- \asignatura \\[0.3cm]}
+{\large Periodo acad\'emico: \periodoacademico \quad --- \quad Curso/Paralelo:
+\cursoparalelo \\[1.2cm]}
+\rule{\linewidth}{0.8pt}\\[0.4cm]
+{\Huge\bfseries BIOPET \\[0.35cm]}
+{\LARGE Sistema web de gesti\'on veterinaria \\[0.4cm]}
+{\Large Especificaci\'on de Requisitos de Software (SRS) --- v1.0.0 \\[0.3cm]}
+\rule{\linewidth}{0.8pt}
+\vspace{1cm}
+{\large \textbf{Docente-director:} \docente \\[0.5cm]}
+{\large \textbf{Equipo:} \equipo \\[0.8cm]}
+{\large\bfseries Integrantes \\[0.35cm]}
+{\small
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{@{}>{\centering\arraybackslash}p{5.2cm}
+                >{\centering\arraybackslash}p{4.2cm}
+                >{\centering\arraybackslash}p{5.4cm}@{}}
+  Fred Adri\'an Beltr\'an Montiel & \texttt{fbeltranm@uteq.edu.ec} &
+  ORCID: 0009-0007-8303-2137 \\
+  Jaime Josu\'e Mariscal Cabrera & \texttt{jmariscalc@uteq.edu.ec} &
+  ORCID: 0009-0007-2206-3941 \\
+  Zaida Melissa Taipe Mora & \texttt{ztaipem@uteq.edu.ec} &
+  ORCID: 0009-0000-1227-3258 \\
+\end{tabular}
+}
+\vspace{1.2cm}
+{\large Repositorio: \url{https://github.com/Grinjoww/ENTREGA-FINAL-BIOPET}}
+\vfill
+{\large \ciudadfecha}
+\end{titlepage}
 
 {
 \setcounter{tocdepth}{3}
