@@ -8,7 +8,7 @@
 [INFO] --- clean:3.3.2:clean (default-clean) @ biopet-backend ---
 [INFO] 
 [INFO] --- jacoco:0.8.12:prepare-agent (prepare-agent) @ biopet-backend ---
-[INFO] argLine set to -javaagent:C:\\Users\\jaime\\.m2\\repository\\org\\jacoco\\org.jacoco.agent\\0.8.12\\org.jacoco.agent-0.8.12-runtime.jar=destfile=C:\\Users\\jaime\\Desktop\\BiopetCorrecciones\\BIOPET-v1.0.0-audit\\Backend\\target\\jacoco.exec,excludes=com/biopet/BiopetApplication.class:com/biopet/dto/**:com/biopet/entity/Rol.class:com/biopet/repository/ResumenEspecie.class:com/biopet/config/OpenApiConfig.class
+[INFO] argLine set to -javaagent:USER_REDACTED\\.m2\\repository\\org\\jacoco\\org.jacoco.agent\\0.8.12\\org.jacoco.agent-0.8.12-runtime.jar=destfile=USER_REDACTED\\Desktop\\BiopetCorrecciones\\BIOPET-v1.0.0-audit\\Backend\\target\\jacoco.exec,excludes=com/biopet/BiopetApplication.class:com/biopet/dto/**:com/biopet/entity/Rol.class:com/biopet/repository/ResumenEspecie.class:com/biopet/config/OpenApiConfig.class
 [INFO] 
 [INFO] --- resources:3.3.1:resources (default-resources) @ biopet-backend ---
 [INFO] Copying 2 resources from src\main\resources to target\classes
@@ -57,7 +57,7 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::               (v3.2.12)
 
-2026-08-31T15:19:55.759-05:00  INFO 9408 --- [           main] com.biopet.AuthControllerTest            : Starting AuthControllerTest using Java 21.0.11 with PID 9408 (started by jaime in C:\Users\jaime\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend)
+2026-08-31T15:19:55.759-05:00  INFO 9408 --- [           main] com.biopet.AuthControllerTest            : Starting AuthControllerTest using Java 21.0.11 with PID 9408 (started by jaime in USER_REDACTED\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend)
 2026-08-31T15:19:55.761-05:00  INFO 9408 --- [           main] com.biopet.AuthControllerTest            : The following 1 profile is active: "test"
 2026-08-31T15:19:57.675-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
 2026-08-31T15:19:57.681-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
@@ -72,7 +72,7 @@
 2026-08-31T15:19:58.027-05:00  INFO 9408 --- [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.biopet.repository.VacunaRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
 2026-08-31T15:19:58.027-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 11 ms. Found 0 Redis repository interfaces.
 OpenJDK 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
-WARNING: A Java agent has been loaded dynamically (C:\Users\jaime\.m2\repository\net\bytebuddy\byte-buddy-agent\1.14.19\byte-buddy-agent-1.14.19.jar)
+WARNING: A Java agent has been loaded dynamically (USER_REDACTED\.m2\repository\net\bytebuddy\byte-buddy-agent\1.14.19\byte-buddy-agent-1.14.19.jar)
 WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
 WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
 WARNING: Dynamic loading of agents will be disallowed by default in a future release
@@ -104,7 +104,7 @@ WARNING: Dynamic loading of agents will be disallowed by default in a future rel
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::               (v3.2.12)
 
-2026-08-31T15:20:28.587-05:00  INFO 9408 --- [           main] com.biopet.CitaControllerTest            : Starting CitaControllerTest using Java 21.0.11 with PID 9408 (started by jaime in C:\Users\jaime\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend)
+2026-08-31T15:20:28.587-05:00  INFO 9408 --- [           main] com.biopet.CitaControllerTest            : Starting CitaControllerTest using Java 21.0.11 with PID 9408 (started by jaime in USER_REDACTED\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend)
 2026-08-31T15:20:28.587-05:00  INFO 9408 --- [           main] com.biopet.CitaControllerTest            : The following 1 profile is active: "test"
 2026-08-31T15:20:28.964-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
 2026-08-31T15:20:28.964-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
@@ -269,7 +269,7 @@ WARNING: Dynamic loading of agents will be disallowed by default in a future rel
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::               (v3.2.12)
 
-2026-08-31T15:21:31.463-05:00  INFO 9408 --- [           main] etAppRolMinimoPrivilegiosIntegrationTest : Starting BiopetAppRolMinimoPrivilegiosIntegrationTest using Java 21.0.11 with PID 9408 (started by jaime in C:\Users\jaime\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend)
+2026-08-31T15:21:31.463-05:00  INFO 9408 --- [           main] etAppRolMinimoPrivilegiosIntegrationTest : Starting BiopetAppRolMinimoPrivilegiosIntegrationTest using Java 21.0.11 with PID 9408 (started by jaime in USER_REDACTED\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend)
 2026-08-31T15:21:31.463-05:00  INFO 9408 --- [           main] etAppRolMinimoPrivilegiosIntegrationTest : No active profile set, falling back to 1 default profile: "default"
 2026-08-31T15:21:31.797-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
 2026-08-31T15:21:31.798-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
@@ -317,7 +317,7 @@ WARNING: Dynamic loading of agents will be disallowed by default in a future rel
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::               (v3.2.12)
 
-2026-08-31T15:21:36.172-05:00  INFO 9408 --- [           main] .b.r.ProcedimientosBiopetIntegrationTest : Starting ProcedimientosBiopetIntegrationTest using Java 21.0.11 with PID 9408 (started by jaime in C:\Users\jaime\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend)
+2026-08-31T15:21:36.172-05:00  INFO 9408 --- [           main] .b.r.ProcedimientosBiopetIntegrationTest : Starting ProcedimientosBiopetIntegrationTest using Java 21.0.11 with PID 9408 (started by jaime in USER_REDACTED\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend)
 2026-08-31T15:21:36.172-05:00  INFO 9408 --- [           main] .b.r.ProcedimientosBiopetIntegrationTest : No active profile set, falling back to 1 default profile: "default"
 2026-08-31T15:21:36.400-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
 2026-08-31T15:21:36.400-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
@@ -392,7 +392,7 @@ WARNING: Dynamic loading of agents will be disallowed by default in a future rel
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::               (v3.2.12)
 
-2026-08-31T15:21:40.374-05:00  INFO 9408 --- [           main] c.b.r.ResumenEspeciesIntegrationTest     : Starting ResumenEspeciesIntegrationTest using Java 21.0.11 with PID 9408 (started by jaime in C:\Users\jaime\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend)
+2026-08-31T15:21:40.374-05:00  INFO 9408 --- [           main] c.b.r.ResumenEspeciesIntegrationTest     : Starting ResumenEspeciesIntegrationTest using Java 21.0.11 with PID 9408 (started by jaime in USER_REDACTED\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend)
 2026-08-31T15:21:40.374-05:00  INFO 9408 --- [           main] c.b.r.ResumenEspeciesIntegrationTest     : No active profile set, falling back to 1 default profile: "default"
 2026-08-31T15:21:40.601-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
 2026-08-31T15:21:40.602-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
@@ -452,7 +452,7 @@ WARNING: Dynamic loading of agents will be disallowed by default in a future rel
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::               (v3.2.12)
 
-2026-08-31T15:21:44.488-05:00  INFO 9408 --- [           main] .b.r.TriggerActualizadoEnIntegrationTest : Starting TriggerActualizadoEnIntegrationTest using Java 21.0.11 with PID 9408 (started by jaime in C:\Users\jaime\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend)
+2026-08-31T15:21:44.488-05:00  INFO 9408 --- [           main] .b.r.TriggerActualizadoEnIntegrationTest : Starting TriggerActualizadoEnIntegrationTest using Java 21.0.11 with PID 9408 (started by jaime in USER_REDACTED\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend)
 2026-08-31T15:21:44.488-05:00  INFO 9408 --- [           main] .b.r.TriggerActualizadoEnIntegrationTest : No active profile set, falling back to 1 default profile: "default"
 2026-08-31T15:21:44.769-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
 2026-08-31T15:21:44.770-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
@@ -528,7 +528,7 @@ WARNING: Dynamic loading of agents will be disallowed by default in a future rel
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::               (v3.2.12)
 
-2026-08-31T15:21:47.042-05:00  INFO 9408 --- [           main] com.biopet.SecurityHeadersTest           : Starting SecurityHeadersTest using Java 21.0.11 with PID 9408 (started by jaime in C:\Users\jaime\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend)
+2026-08-31T15:21:47.042-05:00  INFO 9408 --- [           main] com.biopet.SecurityHeadersTest           : Starting SecurityHeadersTest using Java 21.0.11 with PID 9408 (started by jaime in USER_REDACTED\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend)
 2026-08-31T15:21:47.043-05:00  INFO 9408 --- [           main] com.biopet.SecurityHeadersTest           : The following 1 profile is active: "test"
 2026-08-31T15:21:47.339-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
 2026-08-31T15:21:47.339-05:00  INFO 9408 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
@@ -615,18 +615,18 @@ WARNING: Dynamic loading of agents will be disallowed by default in a future rel
 [INFO] 
 [INFO] 
 [INFO] --- jacoco:0.8.12:report (report) @ biopet-backend ---
-[INFO] Loading execution data file C:\Users\jaime\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend\target\jacoco.exec
+[INFO] Loading execution data file USER_REDACTED\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend\target\jacoco.exec
 [INFO] Analyzed bundle 'BIOPET Backend' with 45 classes
 [INFO] 
 [INFO] --- jar:3.3.0:jar (default-jar) @ biopet-backend ---
-[INFO] Building jar: C:\Users\jaime\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend\target\biopet-backend-0.1.0.jar
+[INFO] Building jar: USER_REDACTED\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend\target\biopet-backend-0.1.0.jar
 [INFO] 
 [INFO] --- spring-boot:3.2.12:repackage (repackage) @ biopet-backend ---
-[INFO] Replacing main artifact C:\Users\jaime\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend\target\biopet-backend-0.1.0.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
-[INFO] The original artifact has been renamed to C:\Users\jaime\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend\target\biopet-backend-0.1.0.jar.original
+[INFO] Replacing main artifact USER_REDACTED\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend\target\biopet-backend-0.1.0.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to USER_REDACTED\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend\target\biopet-backend-0.1.0.jar.original
 [INFO] 
 [INFO] --- jacoco:0.8.12:check (check) @ biopet-backend ---
-[INFO] Loading execution data file C:\Users\jaime\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend\target\jacoco.exec
+[INFO] Loading execution data file USER_REDACTED\Desktop\BiopetCorrecciones\BIOPET-v1.0.0-audit\Backend\target\jacoco.exec
 [INFO] Analyzed bundle 'biopet-backend' with 45 classes
 [INFO] All coverage checks have been met.
 [INFO] ------------------------------------------------------------------------

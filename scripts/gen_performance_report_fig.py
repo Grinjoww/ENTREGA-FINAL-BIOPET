@@ -49,15 +49,15 @@ fig, ax = plt.subplots(figsize=(10, 6))
 x = np.arange(len(percentiles))
 width = 0.35
 
-bars1 = ax.bar(x - width/2, caliente_means, width, label='Caliente (con caché)', 
+bars1 = ax.bar(x - width/2, caliente_means, width, label='Warm (cached)',
                color='#2e7d32', edgecolor='white', yerr=caliente_stds, capsize=5)
-bars2 = ax.bar(x + width/2, frio_means, width, label='Frío (sin caché)', 
+bars2 = ax.bar(x + width/2, frio_means, width, label='Cold (uncached)',
                color='#e65100', edgecolor='white', yerr=frio_stds, capsize=5)
 
 # Etiquetas y título
-ax.set_ylabel('Latencia (ms)', fontsize=12)
-ax.set_xlabel('Percentil', fontsize=12)
-ax.set_title('BIOPET — Latencia por percentil (promedio 5 corridas, TLS local)', fontsize=14, fontweight='bold')
+ax.set_ylabel('Latency (ms)', fontsize=12)
+ax.set_xlabel('Percentile', fontsize=12)
+ax.set_title('BIOPET — Latency by percentile (mean of 5 runs, local TLS)', fontsize=14, fontweight='bold')
 ax.set_xticks(x)
 ax.set_xticklabels(labels, fontsize=11)
 ax.legend(fontsize=11, loc='upper left')

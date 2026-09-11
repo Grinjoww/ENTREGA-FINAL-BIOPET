@@ -2,7 +2,7 @@ name: pfc-vet-entr3-v090-rc
 services:
   backend:
     build:
-      context: C:\Users\jaime\Desktop\TerceraEntrega\PFC-VET-ENTR3-v0.9.0-rc\Backend
+      context: USER_REDACTED\Desktop\TerceraEntrega\PFC-VET-ENTR3-v0.9.0-rc\Backend
       dockerfile: Dockerfile
     container_name: biopet-backend
     depends_on:
@@ -54,13 +54,13 @@ services:
         protocol: tcp
     volumes:
       - type: bind
-        source: C:\Users\jaime\Desktop\TerceraEntrega\PFC-VET-ENTR3-v0.9.0-rc\Backend\certs
+        source: USER_REDACTED\Desktop\TerceraEntrega\PFC-VET-ENTR3-v0.9.0-rc\Backend\certs
         target: /app/certs
         read_only: true
         bind: {}
   frontend:
     build:
-      context: C:\Users\jaime\Desktop\TerceraEntrega\PFC-VET-ENTR3-v0.9.0-rc\frontend
+      context: USER_REDACTED\Desktop\TerceraEntrega\PFC-VET-ENTR3-v0.9.0-rc\frontend
       dockerfile: Dockerfile
     container_name: biopet-frontend
     depends_on:
@@ -108,22 +108,22 @@ services:
         target: /var/lib/postgresql/data
         volume: {}
       - type: bind
-        source: C:\Users\jaime\Desktop\TerceraEntrega\PFC-VET-ENTR3-v0.9.0-rc\db\schema.sql
+        source: USER_REDACTED\Desktop\TerceraEntrega\PFC-VET-ENTR3-v0.9.0-rc\db\schema.sql
         target: /docker-entrypoint-initdb.d/00-schema.sql
         read_only: true
         bind: {}
       - type: bind
-        source: C:\Users\jaime\Desktop\TerceraEntrega\PFC-VET-ENTR3-v0.9.0-rc\db\seed.sql
+        source: USER_REDACTED\Desktop\TerceraEntrega\PFC-VET-ENTR3-v0.9.0-rc\db\seed.sql
         target: /docker-entrypoint-initdb.d/01-seed.sql
         read_only: true
         bind: {}
       - type: bind
-        source: C:\Users\jaime\Desktop\TerceraEntrega\PFC-VET-ENTR3-v0.9.0-rc\db\roles.sql
+        source: USER_REDACTED\Desktop\TerceraEntrega\PFC-VET-ENTR3-v0.9.0-rc\db\roles.sql
         target: /docker-entrypoint-initdb.d/02-roles.sql
         read_only: true
         bind: {}
       - type: bind
-        source: C:\Users\jaime\Desktop\TerceraEntrega\PFC-VET-ENTR3-v0.9.0-rc\db\procs\fn_resumen_mascotas_por_especie.sql
+        source: USER_REDACTED\Desktop\TerceraEntrega\PFC-VET-ENTR3-v0.9.0-rc\db\procs\fn_resumen_mascotas_por_especie.sql
         target: /docker-entrypoint-initdb.d/03-resumen-especies.sql
         read_only: true
         bind: {}

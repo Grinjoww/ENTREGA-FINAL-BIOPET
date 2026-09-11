@@ -1,31 +1,33 @@
+' Conceptual English view of the backend domain. Physical identifiers keep
+' their implemented form (see Backend/src/main/java and Flyway migrations).
 @startuml
 skinparam packageStyle rectangle
 skinparam classAttributeIconSize 0
 
 package entity {
-  enum Rol { ROLE_ADMIN; ROLE_VETERINARIO; ROLE_DUENO; ROLE_AUXILIAR }
-  class Usuario <<Entity>> {
+  enum Role { ROLE_ADMIN; ROLE_VETERINARIO; ROLE_DUENO; ROLE_AUXILIAR }
+  class User <<Entity>> {
     - Long id
-    - String nombre
+    - String name
     - String email
     - String passwordHash
-    - Rol rol
-    - boolean activo
-    - Instant creadoEn
-    - Instant actualizadoEn
+    - Role role
+    - boolean active
+    - Instant createdAt
+    - Instant updatedAt
     + prePersist(): void
     + preUpdate(): void
   }
-  class Mascota <<Entity>> {
+  class Pet <<Entity>> {
     - Long id
-    - Usuario duenio
-    - String nombre
-    - String especie
-    - String raza
-    - LocalDate fechaNacimiento
-    - boolean activo
-    - Instant creadoEn
-    - Instant actualizadoEn
+    - User owner
+    - String name
+    - String species
+    - String breed
+    - LocalDate birthDate
+    - boolean active
+    - Instant createdAt
+    - Instant updatedAt
     + prePersist(): void
     + preUpdate(): void
   }
@@ -33,51 +35,50 @@ package entity {
 
 package dto {
   record LoginRequest
-  record RegistroRequest
+  record RegistrationRequest
   record AuthResponse
   record RefreshRequest
-  record UsuarioResponse
-  record MascotaRequest
-  record MascotaResponse
-  record ApiError
+  record UserResponse
+  record PetRequest
+  record PetResponse
 }
 
 package repository {
-  interface UsuarioRepository {
-    + findByEmail(email: String): Optional<Usuario>
-    + findByEmailAndActivoTrue(email: String): Optional<Usuario>
+  interface UserRepository {
+    + findByEmail(email: String): Optional<User>
+    + findByEmailAndActive(email: String): Optional<User>
     + existsByEmail(email: String): boolean
   }
-  interface MascotaRepository {
-    + findAllByActivoTrue(pageable: Pageable): Page<Mascota>
-    + findByIdAndActivoTrue(id: Long): Optional<Mascota>
+  interface PetRepository {
+    + findAllActive(pageable: Pageable): Page<Pet>
+    + findByIdAndActive(id: Long): Optional<Pet>
   }
 }
 
 package service {
   class AuthService {
-    - UsuarioRepository usuarioRepository
+    - UserRepository userRepository
     - PasswordEncoder passwordEncoder
     - AuthenticationManager authenticationManager
     - JwtService jwtService
     - TokenBlacklistService blacklistService
-    + registrar(request: RegistroRequest): UsuarioResponse
+    + register(request: RegistrationRequest): UserResponse
     + login(request: LoginRequest): AuthResponse
     + refresh(request: RefreshRequest): AuthResponse
-    + logout(bearerToken: String): void
-    + perfil(email: String): UsuarioResponse
+    + logout(tokens: String): void
+    + profile(email: String): UserResponse
   }
-  class MascotaService {
-    - MascotaRepository mascotaRepository
-    - UsuarioRepository usuarioRepository
-    + listar(pageable: Pageable): Page<MascotaResponse>
-    + buscar(id: Long): MascotaResponse
-    + crear(request: MascotaRequest): MascotaResponse
-    + actualizar(id: Long, request: MascotaRequest): MascotaResponse
-    + eliminar(id: Long): void
+  class PetService {
+    - PetRepository petRepository
+    - UserRepository userRepository
+    + listAll(pageable: Pageable): Page<PetResponse>
+    + findById(id: Long): PetResponse
+    + create(request: PetRequest): PetResponse
+    + update(id: Long, request: PetRequest): PetResponse
+    + delete(id: Long): void
   }
   class UserDetailsServiceImpl {
-    - UsuarioRepository usuarioRepository
+    - UserRepository userRepository
     + loadUserByUsername(email: String): UserDetails
   }
 }
@@ -87,8 +88,8 @@ package security {
     - SecretKey key
     - long expirationMs
     - long refreshExpirationMs
-    + generateAccessToken(usuario: Usuario): String
-    + generateRefreshToken(usuario: Usuario): String
+    + generateAccessToken(user: User): String
+    + generateRefreshToken(user: User): String
     + extractClaims(token: String): Claims
     + extractEmail(token: String): String
     + extractJti(token: String): String
@@ -112,22 +113,22 @@ package security {
 package controller {
   class AuthController {
     - AuthService authService
-    + registro(request: RegistroRequest): ResponseEntity<UsuarioResponse>
+    + register(request: RegistrationRequest): ResponseEntity<UserResponse>
     + login(request: LoginRequest): ResponseEntity<AuthResponse>
     + refresh(request: RefreshRequest): ResponseEntity<AuthResponse>
-    + logout(authorization: String): ResponseEntity<Void>
+    + logout(request: HttpServletRequest): ResponseEntity<Void>
   }
-  class UsuarioController {
+  class UserController {
     - AuthService authService
-    + me(userDetails: UserDetails): UsuarioResponse
+    + me(userDetails: UserDetails): UserResponse
   }
-  class MascotaController {
-    - MascotaService mascotaService
-    + listar(pageable: Pageable): Page<MascotaResponse>
-    + buscar(id: Long): MascotaResponse
-    + crear(request: MascotaRequest): ResponseEntity<MascotaResponse>
-    + actualizar(id: Long, request: MascotaRequest): MascotaResponse
-    + eliminar(id: Long): ResponseEntity<Void>
+  class PetController {
+    - PetService petService
+    + listAll(pageable: Pageable): Page<PetResponse>
+    + findById(id: Long): PetResponse
+    + create(request: PetRequest): ResponseEntity<PetResponse>
+    + update(id: Long, request: PetRequest): PetResponse
+    + delete(id: Long): ResponseEntity<Void>
   }
 }
 
@@ -141,19 +142,19 @@ package config {
   }
 }
 
-Usuario "1" <-- "0..*" Mascota : duenio
-UsuarioRepository ..|> JpaRepository
-MascotaRepository ..|> JpaRepository
+User "1" <-- "0..*" Pet : owner
+UserRepository ..|> JpaRepository
+PetRepository ..|> JpaRepository
 UserDetailsServiceImpl ..|> UserDetailsService
 JwtAuthenticationFilter --|> OncePerRequestFilter
 AuthController --> AuthService
-MascotaController --> MascotaService
-UsuarioController --> AuthService
-AuthService --> UsuarioRepository
+PetController --> PetService
+UserController --> AuthService
+AuthService --> UserRepository
 AuthService --> JwtService
 AuthService --> TokenBlacklistService
-MascotaService --> MascotaRepository
-MascotaService --> UsuarioRepository
+PetService --> PetRepository
+PetService --> UserRepository
 JwtAuthenticationFilter --> JwtService
 JwtAuthenticationFilter --> TokenBlacklistService
 JwtAuthenticationFilter --> UserDetailsServiceImpl
