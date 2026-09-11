@@ -1,6 +1,6 @@
 package com.biopet.entity;
 
-public enum Rol {
+public enum Role {
     ROLE_ADMIN,
     ROLE_VETERINARIO,
     ROLE_DUENO,

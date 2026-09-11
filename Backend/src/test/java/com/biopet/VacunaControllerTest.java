@@ -1,7 +1,7 @@
 package com.biopet;
 
 import com.biopet.entity.Pet;
-import com.biopet.entity.Rol;
+import com.biopet.entity.Role;
 import com.biopet.entity.User;
 import com.biopet.entity.Vaccine;
 import com.biopet.repository.AppointmentRepository;
@@ -74,7 +74,7 @@ class VacunaControllerTest {
                 .nombre("Zaida Admin")
                 .email("admin.vacunas@biopet.com")
                 .passwordHash(passwordEncoder.encode("ClaveCorrecta123*"))
-                .rol(Rol.ROLE_ADMIN)
+                .rol(Role.ROLE_ADMIN)
                 .activo(true)
                 .build();
         usuarioRepository.save(admin);

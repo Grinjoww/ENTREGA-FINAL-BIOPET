@@ -1,11 +1,11 @@
 package com.biopet.dto;
 
-import com.biopet.entity.Rol;
+import com.biopet.entity.Role;
 
 public record UserResponse(
         Long id,
         String nombre,
         String email,
-        Rol rol,
+        Role rol,
         boolean activo
 ) {}

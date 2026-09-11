@@ -1,6 +1,6 @@
 package com.biopet.service;
 
-import com.biopet.entity.Rol;
+import com.biopet.entity.Role;
 import com.biopet.dto.*;
 import com.biopet.entity.User;
 import com.biopet.exception.DuplicateEmailException;
@@ -76,7 +76,7 @@ public class AuthService {
                 .nombre(request.nombre())
                 .email(request.email().toLowerCase())
                 .passwordHash(passwordEncoder.encode(request.password()))
-                .rol(Rol.ROLE_DUENO)
+                .rol(Role.ROLE_DUENO)
                 .activo(true)
                 .build();
         User guardado = usuarioRepository.save(usuario);

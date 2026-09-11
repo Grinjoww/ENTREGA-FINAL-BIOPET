@@ -3,7 +3,7 @@ package com.biopet.service;
 import com.biopet.dto.VaccineRequest;
 import com.biopet.dto.VaccineResponse;
 import com.biopet.entity.Pet;
-import com.biopet.entity.Rol;
+import com.biopet.entity.Role;
 import com.biopet.entity.User;
 import com.biopet.entity.Vaccine;
 import com.biopet.exception.ResourceNotFoundException;
@@ -51,7 +51,7 @@ public class VaccineService {
     @Transactional(readOnly = true)
     public Page<VaccineResponse> listar(Pageable pageable, String email) {
         User usuario = usuarioActivo(email);
-        if (usuario.getRol() == Rol.ROLE_DUENO) {
+        if (usuario.getRol() == Role.ROLE_DUENO) {
             return vacunaRepository.findAllByMascota_Duenio_IdAndActivoTrue(usuario.getId(), pageable)
                     .map(this::toResponse);
         }
@@ -190,15 +190,15 @@ public class VaccineService {
         User veterinario = usuarioRepository.findById(veterinarioId)
                 .filter(User::isActivo)
                 .orElseThrow(() -> new ResourceNotFoundException("Veterinario no encontrado: " + veterinarioId));
-        if (veterinario.getRol() != Rol.ROLE_VETERINARIO) {
+        if (veterinario.getRol() != Role.ROLE_VETERINARIO) {
             throw new IllegalArgumentException(
                     "El usuario asignado como veterinario debe tener rol ROLE_VETERINARIO: " + veterinarioId);
         }
         return veterinario;
     }
 
-    private boolean tieneAccesoGlobal(Rol rol) {
-        return rol == Rol.ROLE_ADMIN || rol == Rol.ROLE_VETERINARIO || rol == Rol.ROLE_AUXILIAR;
+    private boolean tieneAccesoGlobal(Role rol) {
+        return rol == Role.ROLE_ADMIN || rol == Role.ROLE_VETERINARIO || rol == Role.ROLE_AUXILIAR;
     }
 
     private void verificarAcceso(User usuario, Pet mascota) {

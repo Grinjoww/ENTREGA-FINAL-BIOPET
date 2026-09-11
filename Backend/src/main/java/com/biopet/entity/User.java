@@ -30,7 +30,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
-    private Rol rol;
+    private Role rol;
 
     @Column(nullable = false)
     private boolean activo;
@@ -47,7 +47,7 @@ public class User {
         if (creadoEn == null) creadoEn = now;
         if (actualizadoEn == null) actualizadoEn = now;
         activo = true;
-        if (rol == null) rol = Rol.ROLE_DUENO;
+        if (rol == null) rol = Role.ROLE_DUENO;
     }
 
     @PreUpdate

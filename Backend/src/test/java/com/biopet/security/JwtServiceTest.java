@@ -1,6 +1,6 @@
 package com.biopet.security;
 
-import com.biopet.entity.Rol;
+import com.biopet.entity.Role;
 import com.biopet.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -42,7 +42,7 @@ class JwtServiceTest {
                 .nombre("Jaime Mariscal")
                 .email("jaime@biopet.com")
                 .passwordHash("hash-irrelevante-para-esta-prueba")
-                .rol(Rol.ROLE_ADMIN)
+                .rol(Role.ROLE_ADMIN)
                 .activo(true)
                 .build();
     }

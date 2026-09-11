@@ -5,7 +5,7 @@ import com.biopet.dto.AppointmentResponse;
 import com.biopet.entity.Appointment;
 import com.biopet.entity.AppointmentStatus;
 import com.biopet.entity.Pet;
-import com.biopet.entity.Rol;
+import com.biopet.entity.Role;
 import com.biopet.entity.User;
 import com.biopet.exception.ResourceNotFoundException;
 import com.biopet.repository.AppointmentRepository;
@@ -55,7 +55,7 @@ public class AppointmentService {
     @Transactional(readOnly = true)
     public Page<AppointmentResponse> listar(Pageable pageable, String email) {
         User usuario = usuarioActual(email);
-        if (usuario.getRol() == Rol.ROLE_DUENO) {
+        if (usuario.getRol() == Role.ROLE_DUENO) {
             return citaRepository.findAllByMascota_Duenio_IdAndActivoTrue(usuario.getId(), pageable).map(this::toResponse);
         }
         return citaRepository.findAllByActivoTrue(pageable).map(this::toResponse);
@@ -164,15 +164,15 @@ public class AppointmentService {
         User veterinario = usuarioRepository.findById(veterinarioId)
                 .filter(User::isActivo)
                 .orElseThrow(() -> new ResourceNotFoundException("Veterinario no encontrado: " + veterinarioId));
-        if (veterinario.getRol() != Rol.ROLE_VETERINARIO) {
+        if (veterinario.getRol() != Role.ROLE_VETERINARIO) {
             throw new IllegalArgumentException(
                     "El usuario asignado como veterinario debe tener rol ROLE_VETERINARIO: " + veterinarioId);
         }
         return veterinario;
     }
 
-    private boolean tieneAccesoGlobal(Rol rol) {
-        return rol == Rol.ROLE_ADMIN || rol == Rol.ROLE_VETERINARIO || rol == Rol.ROLE_AUXILIAR;
+    private boolean tieneAccesoGlobal(Role rol) {
+        return rol == Role.ROLE_ADMIN || rol == Role.ROLE_VETERINARIO || rol == Role.ROLE_AUXILIAR;
     }
 
     private void verificarAccesoLectura(User usuario, Appointment cita) {
@@ -182,7 +182,7 @@ public class AppointmentService {
     }
 
     private void verificarPermisoEscritura(User usuario, Appointment cita) {
-        if (usuario.getRol() == Rol.ROLE_VETERINARIO && !cita.getVeterinario().getId().equals(usuario.getId())) {
+        if (usuario.getRol() == Role.ROLE_VETERINARIO && !cita.getVeterinario().getId().equals(usuario.getId())) {
             throw new AccessDeniedException("Solo puede modificar las citas asignadas a usted.");
         }
     }

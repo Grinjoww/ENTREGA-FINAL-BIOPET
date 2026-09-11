@@ -1,7 +1,7 @@
 package com.biopet.repository;
 
 import com.biopet.entity.Pet;
-import com.biopet.entity.Rol;
+import com.biopet.entity.Role;
 import com.biopet.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +75,7 @@ class TriggerActualizadoEnIntegrationTest {
     void triggerActualizaActualizadoEnSinIntervencionDeHibernate() throws InterruptedException {
         User duenio = usuarioRepository.save(User.builder()
                 .nombre("Test Trigger").email("test-trigger@biopet.ec")
-                .passwordHash("x").rol(Rol.ROLE_DUENO).activo(true).build());
+                .passwordHash("x").rol(Role.ROLE_DUENO).activo(true).build());
 
         Pet mascota = mascotaRepository.save(Pet.builder()
                 .duenio(duenio).nombre("Rocky").especie("Perro")

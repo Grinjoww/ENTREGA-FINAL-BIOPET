@@ -56,7 +56,7 @@ class EntityLifecycleCallbacksTest {
         assertNotNull(usuario.getCreadoEn());
         assertNotNull(usuario.getActualizadoEn());
         assertTrue(usuario.isActivo());
-        assertEquals(Rol.ROLE_DUENO, usuario.getRol());
+        assertEquals(Role.ROLE_DUENO, usuario.getRol());
     }
 
     @Test
@@ -66,13 +66,13 @@ class EntityLifecycleCallbacksTest {
         User usuario = new User();
         usuario.setCreadoEn(creado);
         usuario.setActualizadoEn(actualizado);
-        usuario.setRol(Rol.ROLE_ADMIN);
+        usuario.setRol(Role.ROLE_ADMIN);
 
         usuario.prePersist();
 
         assertEquals(creado, usuario.getCreadoEn());
         assertEquals(actualizado, usuario.getActualizadoEn());
-        assertEquals(Rol.ROLE_ADMIN, usuario.getRol());
+        assertEquals(Role.ROLE_ADMIN, usuario.getRol());
     }
 
     @Test

@@ -4,11 +4,11 @@ import com.biopet.dto.PetRequest;
 import com.biopet.dto.PetResponse;
 import com.biopet.dto.SpeciesSummaryResponse;
 import com.biopet.entity.Pet;
-import com.biopet.entity.Rol;
+import com.biopet.entity.Role;
 import com.biopet.entity.User;
 import com.biopet.exception.ResourceNotFoundException;
 import com.biopet.repository.PetRepository;
-import com.biopet.repository.ProcedimientoBiopetRepository;
+import com.biopet.repository.BiopetProcedureRepository;
 import com.biopet.repository.UserRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -36,11 +36,11 @@ import java.util.List;
 public class PetService {
     private final PetRepository mascotaRepository;
     private final UserRepository usuarioRepository;
-    private final ProcedimientoBiopetRepository procedimientoBiopetRepository;
+    private final BiopetProcedureRepository procedimientoBiopetRepository;
 
     public PetService(PetRepository mascotaRepository,
                           UserRepository usuarioRepository,
-                          ProcedimientoBiopetRepository procedimientoBiopetRepository) {
+                          BiopetProcedureRepository procedimientoBiopetRepository) {
         this.mascotaRepository = mascotaRepository;
         this.usuarioRepository = usuarioRepository;
         this.procedimientoBiopetRepository = procedimientoBiopetRepository;
@@ -62,7 +62,7 @@ public class PetService {
         User usuario = usuarioRepository.findByEmailAndActivoTrue(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User no encontrado"));
 
-        if (usuario.getRol() == Rol.ROLE_DUENO) {
+        if (usuario.getRol() == Role.ROLE_DUENO) {
             return mascotaRepository.findAllByDuenioIdAndActivoTrue(usuario.getId(), pageable).map(this::toResponse);
         }
         return mascotaRepository.findAllByActivoTrue(pageable).map(this::toResponse);
@@ -177,7 +177,7 @@ public class PetService {
         User usuarioAutenticado = usuarioRepository.findByEmailAndActivoTrue(emailAutenticado)
                 .orElseThrow(() -> new ResourceNotFoundException("User no encontrado: " + emailAutenticado));
 
-        Long duenioIdEfectivo = (usuarioAutenticado.getRol() == Rol.ROLE_ADMIN)
+        Long duenioIdEfectivo = (usuarioAutenticado.getRol() == Role.ROLE_ADMIN)
                 ? duenioIdSolicitado
                 : usuarioAutenticado.getId();
 
@@ -186,8 +186,8 @@ public class PetService {
                 .toList();
     }
 
-    private boolean tieneAccesoGlobal(Rol rol) {
-        return rol == Rol.ROLE_ADMIN || rol == Rol.ROLE_VETERINARIO || rol == Rol.ROLE_AUXILIAR;
+    private boolean tieneAccesoGlobal(Role rol) {
+        return rol == Role.ROLE_ADMIN || rol == Role.ROLE_VETERINARIO || rol == Role.ROLE_AUXILIAR;
     }
 
     private void verificarPropiedad(User usuario, Pet mascota) {
@@ -200,7 +200,7 @@ public class PetService {
         User duenio = usuarioRepository.findById(duenioId)
                 .filter(User::isActivo)
                 .orElseThrow(() -> new ResourceNotFoundException("Dueño no encontrado: " + duenioId));
-        if (duenio.getRol() != Rol.ROLE_DUENO) {
+        if (duenio.getRol() != Role.ROLE_DUENO) {
             throw new IllegalArgumentException("El usuario asignado como dueño debe tener rol ROLE_DUENO: " + duenioId);
         }
         return duenio;

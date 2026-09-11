@@ -2,7 +2,7 @@ package com.biopet;
 
 import com.biopet.entity.Consultation;
 import com.biopet.entity.Pet;
-import com.biopet.entity.Rol;
+import com.biopet.entity.Role;
 import com.biopet.entity.User;
 import com.biopet.repository.AppointmentRepository;
 import com.biopet.repository.ConsultationRepository;
@@ -71,7 +71,7 @@ class ConsultaControllerTest {
                 .nombre("Jaime Mariscal")
                 .email("jaime@biopet.com")
                 .passwordHash(passwordEncoder.encode("ClaveCorrecta123*"))
-                .rol(Rol.ROLE_ADMIN)
+                .rol(Role.ROLE_ADMIN)
                 .activo(true)
                 .build();
         usuarioRepository.save(admin);
@@ -80,7 +80,7 @@ class ConsultaControllerTest {
                 .nombre("Vet Real")
                 .email("vet@biopet.com")
                 .passwordHash(passwordEncoder.encode("ClaveVet123*"))
-                .rol(Rol.ROLE_VETERINARIO)
+                .rol(Role.ROLE_VETERINARIO)
                 .activo(true)
                 .build();
 
@@ -90,7 +90,7 @@ class ConsultaControllerTest {
                 .nombre("Dueño Real")
                 .email("dueno@biopet.com")
                 .passwordHash(passwordEncoder.encode("ClaveDueno123*"))
-                .rol(Rol.ROLE_DUENO)
+                .rol(Role.ROLE_DUENO)
                 .activo(true)
                 .build();
 
@@ -205,7 +205,7 @@ class ConsultaControllerTest {
                 .nombre("Otro Dueño")
                 .email("otro.dueno@biopet.com")
                 .passwordHash(passwordEncoder.encode("ClaveOtro123*"))
-                .rol(Rol.ROLE_DUENO)
+                .rol(Role.ROLE_DUENO)
                 .activo(true)
                 .build();
 

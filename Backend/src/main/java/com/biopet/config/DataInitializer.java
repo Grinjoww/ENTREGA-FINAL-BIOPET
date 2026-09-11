@@ -1,6 +1,6 @@
 package com.biopet.config;
 
-import com.biopet.entity.Rol;
+import com.biopet.entity.Role;
 import com.biopet.entity.User;
 import com.biopet.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -32,7 +32,7 @@ public class DataInitializer {
                         .nombre("Administrador BIOPET")
                         .email(email)
                         .passwordHash(enc.encode(password))
-                        .rol(Rol.ROLE_ADMIN)
+                        .rol(Role.ROLE_ADMIN)
                         .activo(true)
                         .build());
             }

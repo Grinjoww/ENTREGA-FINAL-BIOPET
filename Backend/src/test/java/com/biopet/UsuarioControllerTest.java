@@ -1,6 +1,6 @@
 package com.biopet;
 
-import com.biopet.entity.Rol;
+import com.biopet.entity.Role;
 import com.biopet.entity.User;
 import com.biopet.repository.UserRepository;
 import com.biopet.security.TokenBlacklistService;
@@ -55,7 +55,7 @@ class UsuarioControllerTest {
                 .nombre("Jaime Mariscal")
                 .email(EMAIL_ADMIN)
                 .passwordHash(passwordEncoder.encode(PASSWORD_ADMIN))
-                .rol(Rol.ROLE_ADMIN)
+                .rol(Role.ROLE_ADMIN)
                 .activo(true)
                 .build();
         usuarioRepository.save(admin);
@@ -64,7 +64,7 @@ class UsuarioControllerTest {
 
     @Test
     void listarUsuariosComoAdmin() throws Exception {
-        Long duenoId = registrarUsuarioYObtenerId("listado.dueno@biopet.com", "ClaveDueno123*", Rol.ROLE_DUENO);
+        Long duenoId = registrarUsuarioYObtenerId("listado.dueno@biopet.com", "ClaveDueno123*", Role.ROLE_DUENO);
         String tokenAdmin = extractCookieValue(iniciarSesion(EMAIL_ADMIN, PASSWORD_ADMIN), "access_token");
 
         mockMvc.perform(get("/api/usuarios")
@@ -76,7 +76,7 @@ class UsuarioControllerTest {
 
     @Test
     void buscarUsuarioPorId() throws Exception {
-        Long duenoId = registrarUsuarioYObtenerId("buscar.dueno@biopet.com", "ClaveDueno123*", Rol.ROLE_DUENO);
+        Long duenoId = registrarUsuarioYObtenerId("buscar.dueno@biopet.com", "ClaveDueno123*", Role.ROLE_DUENO);
         String tokenAdmin = extractCookieValue(iniciarSesion(EMAIL_ADMIN, PASSWORD_ADMIN), "access_token");
 
         mockMvc.perform(get("/api/usuarios/" + duenoId)
@@ -179,7 +179,7 @@ class UsuarioControllerTest {
 
     @Test
     void actualizarUsuarioDevuelve200() throws Exception {
-        Long duenoId = registrarUsuarioYObtenerId("actualizar.dueno@biopet.com", "ClaveDueno123*", Rol.ROLE_DUENO);
+        Long duenoId = registrarUsuarioYObtenerId("actualizar.dueno@biopet.com", "ClaveDueno123*", Role.ROLE_DUENO);
         String tokenAdmin = extractCookieValue(iniciarSesion(EMAIL_ADMIN, PASSWORD_ADMIN), "access_token");
 
         mockMvc.perform(put("/api/usuarios/" + duenoId)
@@ -223,12 +223,12 @@ class UsuarioControllerTest {
                 .andExpect(jsonPath("$.type").value("urn:biopet:error:forbidden"));
 
         User adminSinCambios = usuarioRepository.findByEmail(EMAIL_ADMIN).orElseThrow();
-        org.junit.jupiter.api.Assertions.assertEquals(Rol.ROLE_ADMIN, adminSinCambios.getRol());
+        org.junit.jupiter.api.Assertions.assertEquals(Role.ROLE_ADMIN, adminSinCambios.getRol());
     }
 
     @Test
     void eliminarUsuarioDevuelve204YBajaLogica() throws Exception {
-        Long duenoId = registrarUsuarioYObtenerId("eliminar.dueno@biopet.com", "ClaveDueno123*", Rol.ROLE_DUENO);
+        Long duenoId = registrarUsuarioYObtenerId("eliminar.dueno@biopet.com", "ClaveDueno123*", Role.ROLE_DUENO);
         String tokenAdmin = extractCookieValue(iniciarSesion(EMAIL_ADMIN, PASSWORD_ADMIN), "access_token");
 
         mockMvc.perform(delete("/api/usuarios/" + duenoId)
@@ -265,7 +265,7 @@ class UsuarioControllerTest {
 
     @Test
     void accesoConRolNoAdminDevuelve403() throws Exception {
-        registrarUsuarioYObtenerId("rolno.dueno@biopet.com", "ClaveDueno123*", Rol.ROLE_DUENO);
+        registrarUsuarioYObtenerId("rolno.dueno@biopet.com", "ClaveDueno123*", Role.ROLE_DUENO);
         String tokenDueno = extractCookieValue(iniciarSesion("rolno.dueno@biopet.com", "ClaveDueno123*"), "access_token");
 
         mockMvc.perform(get("/api/usuarios")
@@ -278,7 +278,7 @@ class UsuarioControllerTest {
 
     @Test
     void veterinarioNoPuedeCrearUsuariosDevuelve403() throws Exception {
-        registrarUsuarioYObtenerId("rolno.veterinario@biopet.com", "ClaveVet123*", Rol.ROLE_VETERINARIO);
+        registrarUsuarioYObtenerId("rolno.veterinario@biopet.com", "ClaveVet123*", Role.ROLE_VETERINARIO);
         String tokenVeterinario = extractCookieValue(iniciarSesion("rolno.veterinario@biopet.com", "ClaveVet123*"), "access_token");
 
         mockMvc.perform(post("/api/usuarios")
@@ -301,7 +301,7 @@ class UsuarioControllerTest {
                 .andExpect(jsonPath("$.rol").value("ROLE_ADMIN"));
     }
 
-    private Long registrarUsuarioYObtenerId(String email, String password, Rol rol) {
+    private Long registrarUsuarioYObtenerId(String email, String password, Role rol) {
         User usuario = User.builder()
                 .nombre("User Prueba")
                 .email(email)

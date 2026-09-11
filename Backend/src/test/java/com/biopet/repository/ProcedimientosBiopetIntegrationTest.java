@@ -4,7 +4,7 @@ import com.biopet.entity.Appointment;
 import com.biopet.entity.Consultation;
 import com.biopet.entity.AppointmentStatus;
 import com.biopet.entity.Pet;
-import com.biopet.entity.Rol;
+import com.biopet.entity.Role;
 import com.biopet.entity.User;
 import com.biopet.entity.Vaccine;
 import jakarta.persistence.EntityManager;
@@ -35,7 +35,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * F03: pruebas de integracion (PostgreSQL real via Testcontainers) de las 6
- * invocaciones formales de ProcedimientoBiopetRepository. Para cada SP/function:
+ * invocaciones formales de BiopetProcedureRepository. Para cada SP/function:
  * caso feliz + caso de parametro invalido. Los privilegios minimos del rol
  * biopet_app se verifican en BiopetAppRolMinimoPrivilegiosIntegrationTest.
  */
@@ -99,7 +99,7 @@ class ProcedimientosBiopetIntegrationTest {
     @Autowired
     JdbcTemplate jdbcTemplate;
     @Autowired
-    ProcedimientoBiopetRepository procedimientoBiopetRepository;
+    BiopetProcedureRepository procedimientoBiopetRepository;
     @Autowired
     UserRepository usuarioRepository;
     @Autowired
@@ -113,7 +113,7 @@ class ProcedimientosBiopetIntegrationTest {
     @Autowired
     EntityManager entityManager;
 
-    private User guardarUsuario(String email, Rol rol) {
+    private User guardarUsuario(String email, Role rol) {
         return usuarioRepository.save(User.builder()
                 .nombre("User " + email)
                 .email(email)
@@ -142,8 +142,8 @@ class ProcedimientosBiopetIntegrationTest {
 
     @Test
     void historialClinico_mascotaConDatos_consolidaHistorial() {
-        User duenio = guardarUsuario("duenio-historial@biopet.ec", Rol.ROLE_DUENO);
-        User vet = guardarUsuario("vet-historial@biopet.ec", Rol.ROLE_VETERINARIO);
+        User duenio = guardarUsuario("duenio-historial@biopet.ec", Role.ROLE_DUENO);
+        User vet = guardarUsuario("vet-historial@biopet.ec", Role.ROLE_VETERINARIO);
         Pet mascota = guardarMascota(duenio, "Rex");
 
         consultaRepository.save(Consultation.builder().mascota(mascota).veterinario(vet)
@@ -178,8 +178,8 @@ class ProcedimientosBiopetIntegrationTest {
 
     @Test
     void reporteDashboard_conDatos_calculaIndicadores() {
-        User duenio = guardarUsuario("duenio-reporte@biopet.ec", Rol.ROLE_DUENO);
-        User vet = guardarUsuario("vet-reporte@biopet.ec", Rol.ROLE_VETERINARIO);
+        User duenio = guardarUsuario("duenio-reporte@biopet.ec", Role.ROLE_DUENO);
+        User vet = guardarUsuario("vet-reporte@biopet.ec", Role.ROLE_VETERINARIO);
         Pet mascota = guardarMascota(duenio, "Rex");
 
         consultaRepository.save(Consultation.builder().mascota(mascota).veterinario(vet)
@@ -205,7 +205,7 @@ class ProcedimientosBiopetIntegrationTest {
 
     @Test
     void reporteDashboard_rangoInvertido_noCuentaDentroDelRango() {
-        User duenio = guardarUsuario("duenio-rango@biopet.ec", Rol.ROLE_DUENO);
+        User duenio = guardarUsuario("duenio-rango@biopet.ec", Role.ROLE_DUENO);
         guardarMascota(duenio, "Rex");
 
         List<DashboardReportView> resultado = procedimientoBiopetRepository.reporteDashboard(
@@ -236,8 +236,8 @@ class ProcedimientosBiopetIntegrationTest {
 
     @Test
     void actualizarEstadoCitasMasivas_soloActualizaLasQueCumplenFiltro() {
-        User duenio = guardarUsuario("duenio-citas@biopet.ec", Rol.ROLE_DUENO);
-        User vet = guardarUsuario("vet-citas@biopet.ec", Rol.ROLE_VETERINARIO);
+        User duenio = guardarUsuario("duenio-citas@biopet.ec", Role.ROLE_DUENO);
+        User vet = guardarUsuario("vet-citas@biopet.ec", Role.ROLE_VETERINARIO);
         Pet mascota = guardarMascota(duenio, "Rex");
         Instant limite = Instant.now();
 
@@ -270,8 +270,8 @@ class ProcedimientosBiopetIntegrationTest {
 
     @Test
     void registrarConsultaValidada_casoFeliz_retornaIdYPersiste() {
-        User duenio = guardarUsuario("duenio-consulta@biopet.ec", Rol.ROLE_DUENO);
-        User vet = guardarUsuario("vet-consulta@biopet.ec", Rol.ROLE_VETERINARIO);
+        User duenio = guardarUsuario("duenio-consulta@biopet.ec", Role.ROLE_DUENO);
+        User vet = guardarUsuario("vet-consulta@biopet.ec", Role.ROLE_VETERINARIO);
         Pet mascota = guardarMascota(duenio, "Rex");
 
         Long consultaId = procedimientoBiopetRepository.registrarConsultaValidada(
@@ -285,7 +285,7 @@ class ProcedimientosBiopetIntegrationTest {
 
     @Test
     void registrarConsultaValidada_mascotaInexistente_lanzaExcepcion() {
-        User vet = guardarUsuario("vet-consulta-inexistente@biopet.ec", Rol.ROLE_VETERINARIO);
+        User vet = guardarUsuario("vet-consulta-inexistente@biopet.ec", Role.ROLE_VETERINARIO);
 
         assertThatThrownBy(() -> procedimientoBiopetRepository.registrarConsultaValidada(
                 999999L, vet.getId(), "Chequeo", null, null, null))
@@ -294,7 +294,7 @@ class ProcedimientosBiopetIntegrationTest {
 
     @Test
     void registrarConsultaValidada_rolNoAutorizado_lanzaExcepcion() {
-        User duenio = guardarUsuario("duenio-consulta-noaut@biopet.ec", Rol.ROLE_DUENO);
+        User duenio = guardarUsuario("duenio-consulta-noaut@biopet.ec", Role.ROLE_DUENO);
         Pet mascota = guardarMascota(duenio, "Rex");
 
         assertThatThrownBy(() -> procedimientoBiopetRepository.registrarConsultaValidada(

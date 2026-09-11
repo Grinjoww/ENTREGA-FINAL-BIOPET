@@ -1,7 +1,7 @@
 package com.biopet;
 
 import com.biopet.entity.Pet;
-import com.biopet.entity.Rol;
+import com.biopet.entity.Role;
 import com.biopet.entity.User;
 import com.biopet.repository.AppointmentRepository;
 import com.biopet.repository.ConsultationRepository;
@@ -73,7 +73,7 @@ class MascotaControllerTest {
                 .nombre("Jaime Mariscal")
                 .email("jaime@biopet.com")
                 .passwordHash(passwordEncoder.encode("ClaveCorrecta123*"))
-                .rol(Rol.ROLE_ADMIN)
+                .rol(Role.ROLE_ADMIN)
                 .activo(true)
                 .build();
 
@@ -371,7 +371,7 @@ class MascotaControllerTest {
         crearUsuarioConRol(
                 "veterinario@biopet.com",
                 "ClaveVet123*",
-                Rol.ROLE_VETERINARIO
+                Role.ROLE_VETERINARIO
         );
 
         String tokenVeterinario = extractCookieValue(
@@ -493,7 +493,7 @@ class MascotaControllerTest {
         Long adminId = crearUsuarioConRolYObtenerId(
                 "otro.admin@biopet.com",
                 "ClaveAdmin123*",
-                Rol.ROLE_ADMIN
+                Role.ROLE_ADMIN
         );
 
         String tokenAdmin = extractCookieValue(
@@ -525,7 +525,7 @@ class MascotaControllerTest {
         Long veterinarioId = crearUsuarioConRolYObtenerId(
                 "otro.veterinario@biopet.com",
                 "ClaveVet123*",
-                Rol.ROLE_VETERINARIO
+                Role.ROLE_VETERINARIO
         );
 
         String tokenAdmin = extractCookieValue(
@@ -557,7 +557,7 @@ class MascotaControllerTest {
         Long auxiliarId = crearUsuarioConRolYObtenerId(
                 "otro.auxiliar@biopet.com",
                 "ClaveAux123*",
-                Rol.ROLE_AUXILIAR
+                Role.ROLE_AUXILIAR
         );
 
         String tokenAdmin = extractCookieValue(
@@ -615,7 +615,7 @@ class MascotaControllerTest {
         Long duenoInactivoId = crearUsuarioInactivoYObtenerId(
                 "inactivo.dueno@biopet.com",
                 "ClaveDueno123*",
-                Rol.ROLE_DUENO
+                Role.ROLE_DUENO
         );
 
         String tokenAdmin = extractCookieValue(
@@ -687,7 +687,7 @@ class MascotaControllerTest {
         Long veterinarioId = crearUsuarioConRolYObtenerId(
                 "actualizar.rechazo.veterinario@biopet.com",
                 "ClaveVet123*",
-                Rol.ROLE_VETERINARIO
+                Role.ROLE_VETERINARIO
         );
 
         String tokenAdmin = extractCookieValue(
@@ -803,7 +803,7 @@ class MascotaControllerTest {
         crearUsuarioConRol(
                 "auxiliar.listado@biopet.com",
                 "ClaveAux123*",
-                Rol.ROLE_AUXILIAR
+                Role.ROLE_AUXILIAR
         );
 
         String tokenAuxiliar = extractCookieValue(
@@ -823,7 +823,7 @@ class MascotaControllerTest {
     private Long crearUsuarioConRolYObtenerId(
             String email,
             String password,
-            Rol rol
+            Role rol
     ) {
         crearUsuarioConRol(email, password, rol);
 
@@ -837,7 +837,7 @@ class MascotaControllerTest {
     private Long crearUsuarioInactivoYObtenerId(
             String email,
             String password,
-            Rol rol
+            Role rol
     ) {
         User usuario = User.builder()
                 .nombre("User Inactivo")
@@ -872,7 +872,7 @@ class MascotaControllerTest {
     private void crearUsuarioConRol(
             String email,
             String password,
-            Rol rol
+            Role rol
     ) {
         User usuario = User.builder()
                 .nombre("User Prueba")

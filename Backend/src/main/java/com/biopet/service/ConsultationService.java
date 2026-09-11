@@ -4,7 +4,7 @@ import com.biopet.dto.ConsultationRequest;
 import com.biopet.dto.ConsultationResponse;
 import com.biopet.entity.Consultation;
 import com.biopet.entity.Pet;
-import com.biopet.entity.Rol;
+import com.biopet.entity.Role;
 import com.biopet.entity.User;
 import com.biopet.exception.ResourceNotFoundException;
 import com.biopet.repository.ConsultationRepository;
@@ -57,7 +57,7 @@ public class ConsultationService {
     @Transactional(readOnly = true)
     public Page<ConsultationResponse> listar(Pageable pageable, String email) {
         User usuario = usuarioActual(email);
-        if (usuario.getRol() == Rol.ROLE_DUENO) {
+        if (usuario.getRol() == Role.ROLE_DUENO) {
             // Un dueño solo ve consultas de sus propias mascotas
             return consultaRepository.findAllByActivoTrue(pageable)
                     .map(this::toResponse); // filtrado real de propiedad se aplica en buscar(); aquí listamos y filtramos abajo si se requiere endpoint dedicado
@@ -178,16 +178,16 @@ public class ConsultationService {
         User veterinario = usuarioRepository.findById(veterinarioId)
                 .filter(User::isActivo)
                 .orElseThrow(() -> new ResourceNotFoundException("Veterinario no encontrado: " + veterinarioId));
-        if (veterinario.getRol() != Rol.ROLE_VETERINARIO) {
+        if (veterinario.getRol() != Role.ROLE_VETERINARIO) {
             throw new IllegalArgumentException("El usuario asignado debe tener rol ROLE_VETERINARIO: " + veterinarioId);
         }
         return veterinario;
     }
 
     private void verificarAcceso(User usuario, Consultation consulta) {
-        boolean accesoGlobal = usuario.getRol() == Rol.ROLE_ADMIN
-                || usuario.getRol() == Rol.ROLE_VETERINARIO
-                || usuario.getRol() == Rol.ROLE_AUXILIAR;
+        boolean accesoGlobal = usuario.getRol() == Role.ROLE_ADMIN
+                || usuario.getRol() == Role.ROLE_VETERINARIO
+                || usuario.getRol() == Role.ROLE_AUXILIAR;
         boolean esDuenioDeLaMascota = consulta.getMascota().getDuenio().getId().equals(usuario.getId());
         if (!accesoGlobal && !esDuenioDeLaMascota) {
             throw new AccessDeniedException("No tiene permisos para acceder a esta consulta.");

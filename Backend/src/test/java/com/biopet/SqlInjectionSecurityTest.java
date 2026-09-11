@@ -1,6 +1,6 @@
 package com.biopet;
 
-import com.biopet.entity.Rol;
+import com.biopet.entity.Role;
 import com.biopet.entity.User;
 import com.biopet.repository.AppointmentRepository;
 import com.biopet.repository.ConsultationRepository;
@@ -118,7 +118,7 @@ class SqlInjectionSecurityTest {
                 .nombre("Jaime Mariscal")
                 .email(EMAIL_VALIDO)
                 .passwordHash(passwordEncoder.encode(PASSWORD_VALIDO))
-                .rol(Rol.ROLE_ADMIN)
+                .rol(Role.ROLE_ADMIN)
                 .activo(true)
                 .build();
 

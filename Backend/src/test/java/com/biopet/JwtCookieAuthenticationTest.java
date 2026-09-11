@@ -1,6 +1,6 @@
 package com.biopet;
 
-import com.biopet.entity.Rol;
+import com.biopet.entity.Role;
 import com.biopet.entity.User;
 import com.biopet.security.AuthenticationAuditService;
 import com.biopet.security.JwtService;
@@ -144,7 +144,7 @@ class JwtCookieAuthenticationTest {
                 .nombre("User Expirado")
                 .email("cookie.expirada@biopet.com")
                 .passwordHash("hash-irrelevante-para-esta-prueba")
-                .rol(Rol.ROLE_DUENO)
+                .rol(Role.ROLE_DUENO)
                 .activo(true)
                 .build();
         JwtService servicioConTokenExpirado = new JwtService(

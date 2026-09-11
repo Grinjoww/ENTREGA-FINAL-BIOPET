@@ -116,7 +116,7 @@ class BiopetAppRolMinimoPrivilegiosIntegrationTest {
     @Test
     void biopet_app_ejecutaLasSeisFuncionesYProcedimientos() throws SQLException {
         // Las 6 rutinas son ahora PROCEDURE (F02, acceso JPA formal: ver
-        // ProcedimientoBiopetRepository). Las 3 que devuelven un conjunto de
+        // BiopetProcedureRepository). Las 3 que devuelven un conjunto de
         // filas exponen OUT refcursor; el cursor solo es legible dentro de la
         // transaccion donde se abre, por eso aqui se usa una conexion JDBC
         // cruda con autoCommit(false).

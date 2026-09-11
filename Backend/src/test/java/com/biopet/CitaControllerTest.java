@@ -3,7 +3,7 @@ package com.biopet;
 import com.biopet.entity.Appointment;
 import com.biopet.entity.AppointmentStatus;
 import com.biopet.entity.Pet;
-import com.biopet.entity.Rol;
+import com.biopet.entity.Role;
 import com.biopet.entity.User;
 import com.biopet.repository.AppointmentRepository;
 import com.biopet.repository.ConsultationRepository;
@@ -88,7 +88,7 @@ class CitaControllerTest {
                 .nombre("Jaime Mariscal")
                 .email(EMAIL_ADMIN)
                 .passwordHash(passwordEncoder.encode(PASSWORD_ADMIN))
-                .rol(Rol.ROLE_ADMIN)
+                .rol(Role.ROLE_ADMIN)
                 .activo(true)
                 .build();
 
@@ -99,13 +99,13 @@ class CitaControllerTest {
         veterinarioId = crearUsuarioConRolYObtenerId(
                 "vet.principal@biopet.com",
                 "ClaveVet123*",
-                Rol.ROLE_VETERINARIO
+                Role.ROLE_VETERINARIO
         );
 
         duenoId = crearUsuarioConRolYObtenerId(
                 "dueno.principal@biopet.com",
                 "ClaveDueno123*",
-                Rol.ROLE_DUENO
+                Role.ROLE_DUENO
         );
 
         mascotaId = crearMascotaYObtenerId(duenoId, "Firulais");
@@ -184,7 +184,7 @@ class CitaControllerTest {
         Long otroDuenoId = crearUsuarioConRolYObtenerId(
                 "otro.dueno@biopet.com",
                 "ClaveDueno456*",
-                Rol.ROLE_DUENO
+                Role.ROLE_DUENO
         );
 
         Long otraMascotaId = crearMascotaYObtenerId(
@@ -219,7 +219,7 @@ class CitaControllerTest {
         Long otroDuenoId = crearUsuarioConRolYObtenerId(
                 "listado.otro.dueno@biopet.com",
                 "ClaveDueno456*",
-                Rol.ROLE_DUENO
+                Role.ROLE_DUENO
         );
 
         Long otraMascotaId = crearMascotaYObtenerId(
@@ -294,7 +294,7 @@ class CitaControllerTest {
         crearUsuarioConRol(
                 "aux.crea@biopet.com",
                 "ClaveAux123*",
-                Rol.ROLE_AUXILIAR
+                Role.ROLE_AUXILIAR
         );
 
         String tokenAuxiliar = extractCookieValue(
@@ -366,7 +366,7 @@ class CitaControllerTest {
         Long auxiliarId = crearUsuarioConRolYObtenerId(
                 "aux.no.vet@biopet.com",
                 "ClaveAux123*",
-                Rol.ROLE_AUXILIAR
+                Role.ROLE_AUXILIAR
         );
 
         String tokenAdmin = extractCookieValue(
@@ -538,7 +538,7 @@ class CitaControllerTest {
         Long otroVeterinarioId = crearUsuarioConRolYObtenerId(
                 "otro.vet@biopet.com",
                 "ClaveVet456*",
-                Rol.ROLE_VETERINARIO
+                Role.ROLE_VETERINARIO
         );
 
         Long citaId = crearCitaYObtenerId(
@@ -648,7 +648,7 @@ class CitaControllerTest {
         crearUsuarioConRol(
                 "aux.elimina@biopet.com",
                 "ClaveAux123*",
-                Rol.ROLE_AUXILIAR
+                Role.ROLE_AUXILIAR
         );
 
         String tokenAuxiliar = extractCookieValue(
@@ -745,7 +745,7 @@ class CitaControllerTest {
     private Long crearUsuarioConRolYObtenerId(
             String email,
             String password,
-            Rol rol
+            Role rol
     ) {
         crearUsuarioConRol(email, password, rol);
 
@@ -759,7 +759,7 @@ class CitaControllerTest {
     private void crearUsuarioConRol(
             String email,
             String password,
-            Rol rol
+            Role rol
     ) {
         User usuario = User.builder()
                 .nombre("User Prueba")

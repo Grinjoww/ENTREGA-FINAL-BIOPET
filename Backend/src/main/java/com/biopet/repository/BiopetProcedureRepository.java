@@ -53,7 +53,7 @@ import java.util.List;
  * circundante), igual que los 2 {@code sp_*} (que ya eran {@code PROCEDURE}
  * y no cambiaron).
  */
-public interface ProcedimientoBiopetRepository extends Repository<Pet, Long> {
+public interface BiopetProcedureRepository extends Repository<Pet, Long> {
 
     @Procedure(name = "fn_resumen_mascotas_por_especie")
     List<SpeciesSummary> resumenPorEspecie(Long duenioId);
