@@ -1,14 +1,14 @@
 package com.biopet;
 
-import com.biopet.entity.Mascota;
-import com.biopet.entity.Rol;
-import com.biopet.entity.Usuario;
-import com.biopet.entity.Vacuna;
-import com.biopet.repository.CitaRepository;
-import com.biopet.repository.ConsultaRepository;
-import com.biopet.repository.MascotaRepository;
-import com.biopet.repository.UsuarioRepository;
-import com.biopet.repository.VacunaRepository;
+import com.biopet.entity.Pet;
+import com.biopet.entity.Role;
+import com.biopet.entity.User;
+import com.biopet.entity.Vaccine;
+import com.biopet.repository.AppointmentRepository;
+import com.biopet.repository.ConsultationRepository;
+import com.biopet.repository.PetRepository;
+import com.biopet.repository.UserRepository;
+import com.biopet.repository.VaccineRepository;
 import com.biopet.security.TokenBlacklistService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,11 +42,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 class VacunaControllerTest {
     @Autowired MockMvc mockMvc;
-    @Autowired UsuarioRepository usuarioRepository;
-    @Autowired MascotaRepository mascotaRepository;
-    @Autowired VacunaRepository vacunaRepository;
-    @Autowired CitaRepository citaRepository;
-    @Autowired ConsultaRepository consultaRepository;
+    @Autowired UserRepository usuarioRepository;
+    @Autowired PetRepository mascotaRepository;
+    @Autowired VaccineRepository vacunaRepository;
+    @Autowired AppointmentRepository citaRepository;
+    @Autowired ConsultationRepository consultaRepository;
     @Autowired PasswordEncoder passwordEncoder;
 
     @MockBean TokenBlacklistService tokenBlacklistService;
@@ -60,7 +60,7 @@ class VacunaControllerTest {
         // configuracion, asi que Citas/Consultas creadas por otra clase
         // (p. ej. CitaControllerTest, ConsultaControllerTest,
         // MascotaControllerTest, SqlInjectionSecurityTest) pueden seguir
-        // referenciando una Mascota cuando le toca el turno a esta clase,
+        // referenciando una Pet cuando le toca el turno a esta clase,
         // segun el orden de ejecucion (no garantizado ni estable entre
         // entornos). Por eso se limpian primero las entidades hijas que
         // referencian mascotas por FK (consulta -> cita), igual que hacen
@@ -70,11 +70,11 @@ class VacunaControllerTest {
         vacunaRepository.deleteAll();
         mascotaRepository.deleteAll();
         usuarioRepository.deleteAll();
-        Usuario admin = Usuario.builder()
+        User admin = User.builder()
                 .nombre("Zaida Admin")
                 .email("admin.vacunas@biopet.com")
                 .passwordHash(passwordEncoder.encode("ClaveCorrecta123*"))
-                .rol(Rol.ROLE_ADMIN)
+                .rol(Role.ROLE_ADMIN)
                 .activo(true)
                 .build();
         usuarioRepository.save(admin);
@@ -210,7 +210,7 @@ class VacunaControllerTest {
         mockMvc.perform(delete("/api/vacunas/" + vacunaId).header("Authorization", "Bearer " + tokenAdmin))
                 .andExpect(status().isNoContent());
 
-        Vacuna vacunaEliminada = vacunaRepository.findById(vacunaId)
+        Vaccine vacunaEliminada = vacunaRepository.findById(vacunaId)
                 .orElseThrow(() -> new AssertionError("La vacuna fue eliminada físicamente: " + vacunaId));
         assertFalse(vacunaEliminada.isActivo());
     }
@@ -234,7 +234,7 @@ class VacunaControllerTest {
                                 """.formatted(email, password)))
                 .andExpect(status().isCreated());
         return usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new AssertionError("Usuario no encontrado tras registro: " + email))
+                .orElseThrow(() -> new AssertionError("User no encontrado tras registro: " + email))
                 .getId();
     }
 
@@ -259,9 +259,9 @@ class VacunaControllerTest {
                 .andExpect(status().isCreated());
         return mascotaRepository.findAll().stream()
                 .filter(m -> m.getNombre().equals(nombre))
-                .map(Mascota::getId)
+                .map(Pet::getId)
                 .findFirst()
-                .orElseThrow(() -> new AssertionError("Mascota no encontrada tras crearla: " + nombre));
+                .orElseThrow(() -> new AssertionError("Pet no encontrada tras crearla: " + nombre));
     }
 
     private void crearVacuna(String tokenAdmin, Long mascotaId, String tipo) throws Exception {
@@ -278,9 +278,9 @@ class VacunaControllerTest {
         crearVacuna(tokenAdmin, mascotaId, tipo);
         return vacunaRepository.findAll().stream()
                 .filter(v -> v.getMascota().getId().equals(mascotaId) && v.getTipo().equals(tipo))
-                .map(Vacuna::getId)
+                .map(Vaccine::getId)
                 .findFirst()
-                .orElseThrow(() -> new AssertionError("Vacuna no encontrada tras crearla"));
+                .orElseThrow(() -> new AssertionError("Vaccine no encontrada tras crearla"));
     }
 
     private String extractCookieValue(MvcResult result, String cookieName) {

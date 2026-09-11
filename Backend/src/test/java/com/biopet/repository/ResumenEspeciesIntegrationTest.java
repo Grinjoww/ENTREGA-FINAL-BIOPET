@@ -1,8 +1,8 @@
 package com.biopet.repository;
 
-import com.biopet.entity.Mascota;
-import com.biopet.entity.Rol;
-import com.biopet.entity.Usuario;
+import com.biopet.entity.Pet;
+import com.biopet.entity.Role;
+import com.biopet.entity.User;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * F02/F03: fn_resumen_mascotas_por_especie es ahora PROCEDURE con OUT
- * refcursor (ver ProcedimientoBiopetRepository); el cursor solo es legible
+ * refcursor (ver BiopetProcedureRepository); el cursor solo es legible
  * dentro de la misma transaccion en la que se abre, por eso esta clase
  * lleva @Transactional.
  */
@@ -66,11 +66,11 @@ class ResumenEspeciesIntegrationTest {
     @Autowired
     JdbcTemplate jdbcTemplate;
     @Autowired
-    MascotaRepository mascotaRepository;
+    PetRepository mascotaRepository;
     @Autowired
-    UsuarioRepository usuarioRepository;
+    UserRepository usuarioRepository;
     @Autowired
-    ProcedimientoBiopetRepository procedimientoBiopetRepository;
+    BiopetProcedureRepository procedimientoBiopetRepository;
 
     @BeforeAll
     static void aplicarFuncion() throws IOException {
@@ -85,17 +85,17 @@ class ResumenEspeciesIntegrationTest {
     void resumenAgrupaPorEspecieYFiltraPorDuenio() {
         jdbcTemplate.execute(FUNCION_SQL);
 
-        Usuario duenio = usuarioRepository.save(Usuario.builder()
+        User duenio = usuarioRepository.save(User.builder()
                 .nombre("Test Duenio").email("test-duenio@biopet.ec")
-                .passwordHash("x").rol(Rol.ROLE_DUENO).activo(true).build());
+                .passwordHash("x").rol(Role.ROLE_DUENO).activo(true).build());
 
-        mascotaRepository.save(Mascota.builder()
+        mascotaRepository.save(Pet.builder()
         .duenio(duenio).nombre("Firulais").especie("Perro")
         .raza("Mestizo").fechaNacimiento(LocalDate.of(2020,1,1)).activo(true).build());
-        mascotaRepository.save(Mascota.builder()
+        mascotaRepository.save(Pet.builder()
         .duenio(duenio).nombre("Michi").especie("Gato")
         .raza("Mestizo").fechaNacimiento(LocalDate.of(2021,1,1)).activo(true).build());
-        List<ResumenEspecie> resultado = procedimientoBiopetRepository.resumenPorEspecie(duenio.getId());
+        List<SpeciesSummary> resultado = procedimientoBiopetRepository.speciesSummary(duenio.getId());
 
         assertThat(resultado).hasSize(2);
         assertThat(resultado).anyMatch(r -> r.getEspecie().equals("Perro") && r.getTotal() == 1);

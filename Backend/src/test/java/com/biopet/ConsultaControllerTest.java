@@ -1,13 +1,13 @@
 package com.biopet;
 
-import com.biopet.entity.Consulta;
-import com.biopet.entity.Mascota;
-import com.biopet.entity.Rol;
-import com.biopet.entity.Usuario;
-import com.biopet.repository.CitaRepository;
-import com.biopet.repository.ConsultaRepository;
-import com.biopet.repository.MascotaRepository;
-import com.biopet.repository.UsuarioRepository;
+import com.biopet.entity.Consultation;
+import com.biopet.entity.Pet;
+import com.biopet.entity.Role;
+import com.biopet.entity.User;
+import com.biopet.repository.AppointmentRepository;
+import com.biopet.repository.ConsultationRepository;
+import com.biopet.repository.PetRepository;
+import com.biopet.repository.UserRepository;
 import com.biopet.security.TokenBlacklistService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,16 +40,16 @@ class ConsultaControllerTest {
     MockMvc mockMvc;
 
     @Autowired
-    UsuarioRepository usuarioRepository;
+    UserRepository usuarioRepository;
 
     @Autowired
-    MascotaRepository mascotaRepository;
+    PetRepository mascotaRepository;
 
     @Autowired
-    ConsultaRepository consultaRepository;
+    ConsultationRepository consultaRepository;
 
     @Autowired
-    CitaRepository citaRepository;
+    AppointmentRepository citaRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -67,36 +67,36 @@ class ConsultaControllerTest {
         mascotaRepository.deleteAll();
         usuarioRepository.deleteAll();
 
-        Usuario admin = Usuario.builder()
+        User admin = User.builder()
                 .nombre("Jaime Mariscal")
                 .email("jaime@biopet.com")
                 .passwordHash(passwordEncoder.encode("ClaveCorrecta123*"))
-                .rol(Rol.ROLE_ADMIN)
+                .rol(Role.ROLE_ADMIN)
                 .activo(true)
                 .build();
         usuarioRepository.save(admin);
 
-        Usuario veterinario = Usuario.builder()
+        User veterinario = User.builder()
                 .nombre("Vet Real")
                 .email("vet@biopet.com")
                 .passwordHash(passwordEncoder.encode("ClaveVet123*"))
-                .rol(Rol.ROLE_VETERINARIO)
+                .rol(Role.ROLE_VETERINARIO)
                 .activo(true)
                 .build();
 
         veterinarioId = usuarioRepository.save(veterinario).getId();
 
-        Usuario dueno = Usuario.builder()
+        User dueno = User.builder()
                 .nombre("Dueño Real")
                 .email("dueno@biopet.com")
                 .passwordHash(passwordEncoder.encode("ClaveDueno123*"))
-                .rol(Rol.ROLE_DUENO)
+                .rol(Role.ROLE_DUENO)
                 .activo(true)
                 .build();
 
-        Usuario duenoGuardado = usuarioRepository.save(dueno);
+        User duenoGuardado = usuarioRepository.save(dueno);
 
-        Mascota mascota = Mascota.builder()
+        Pet mascota = Pet.builder()
                 .duenio(duenoGuardado)
                 .nombre("Firulais")
                 .especie("Perro")
@@ -198,14 +198,14 @@ class ConsultaControllerTest {
 
         Long consultaId = consultaRepository.findAll().stream()
                 .findFirst()
-                .orElseThrow(() -> new AssertionError("Consulta no fue creada"))
+                .orElseThrow(() -> new AssertionError("Consultation no fue creada"))
                 .getId();
 
-        Usuario otroDueno = Usuario.builder()
+        User otroDueno = User.builder()
                 .nombre("Otro Dueño")
                 .email("otro.dueno@biopet.com")
                 .passwordHash(passwordEncoder.encode("ClaveOtro123*"))
-                .rol(Rol.ROLE_DUENO)
+                .rol(Role.ROLE_DUENO)
                 .activo(true)
                 .build();
 
@@ -238,16 +238,16 @@ class ConsultaControllerTest {
 
         Long consultaId = consultaRepository.findAll().stream()
                 .findFirst()
-                .orElseThrow(() -> new AssertionError("Consulta no fue creada"))
+                .orElseThrow(() -> new AssertionError("Consultation no fue creada"))
                 .getId();
 
         mockMvc.perform(delete("/api/consultas/" + consultaId)
                         .header("Authorization", "Bearer " + tokenAdmin))
                 .andExpect(status().isNoContent());
 
-        Consulta eliminada = consultaRepository.findById(consultaId)
+        Consultation eliminada = consultaRepository.findById(consultaId)
                 .orElseThrow(() ->
-                        new AssertionError("Consulta eliminada físicamente: " + consultaId)
+                        new AssertionError("Consultation eliminada físicamente: " + consultaId)
                 );
 
         assertFalse(eliminada.isActivo());

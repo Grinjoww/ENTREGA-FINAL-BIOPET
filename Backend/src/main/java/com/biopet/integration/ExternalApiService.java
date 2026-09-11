@@ -45,7 +45,7 @@ public class ExternalApiService {
      * @return species information (taxonomy, habitat, diet), tagged with its source ("cache" or "api-ninjas")
      * @throws ExternalApiException if no results are found, or the external API call fails
      */
-    public ExternalApiResponse obtenerInfoEspecie(String especie) {
+    public ExternalApiResponse getSpeciesInfo(String especie) {
         String claveNormalizada = especie.trim().toLowerCase();
         String cacheKey = CACHE_PREFIX + claveNormalizada;
 
@@ -54,7 +54,7 @@ public class ExternalApiService {
             return deserializar(cacheado, especie, "cache");
         }
 
-        List<ExternalApiClient.AnimalApiNinjasDto> resultados = externalApiClient.buscarPorEspecie(claveNormalizada);
+        List<ExternalApiClient.AnimalApiNinjasDto> resultados = externalApiClient.findBySpecies(claveNormalizada);
         if (resultados.isEmpty()) {
             throw new ExternalApiException("No se encontró información para la especie: " + especie);
         }
@@ -69,11 +69,11 @@ public class ExternalApiService {
                 Instant.now()
         );
 
-        guardarEnCache(cacheKey, response);
+        saveToCache(cacheKey, response);
         return response;
     }
 
-    private void guardarEnCache(String cacheKey, ExternalApiResponse response) {
+    private void saveToCache(String cacheKey, ExternalApiResponse response) {
         try {
             String json = objectMapper.writeValueAsString(response);
             redisTemplate.opsForValue().set(cacheKey, json, Duration.ofSeconds(ttlSegundos));

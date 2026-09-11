@@ -38,12 +38,12 @@ public class AuthController {
      * @param request registration data (name, email, password), already
      *                 validated by {@code @Valid}
      * @return the created user, with HTTP 201 (Created)
-     * @throws com.biopet.exception.EmailDuplicadoException if a user with
+     * @throws com.biopet.exception.DuplicateEmailException if a user with
      *         that email already exists
      */
     @PostMapping("/registro")
-    public ResponseEntity<UsuarioResponse> registro(@Valid @RequestBody RegistroRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(authService.registrar(request));
+    public ResponseEntity<UserResponse> register(@Valid @RequestBody RegistrationRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(request));
     }
 
     /**
@@ -59,7 +59,7 @@ public class AuthController {
      * @return HTTP 200 (OK) with the access token's expiration in seconds
      * @throws org.springframework.security.authentication.BadCredentialsException
      *         if the email/password pair is invalid
-     * @throws com.biopet.exception.RateLimitExcedidoException if too many
+     * @throws com.biopet.exception.RateLimitExceededException if too many
      *         failed attempts were already made from this IP
      */
     @PostMapping("/login")

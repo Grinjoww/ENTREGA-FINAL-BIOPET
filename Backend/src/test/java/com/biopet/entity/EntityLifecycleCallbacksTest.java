@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Cobertura de rama de los callbacks @PrePersist de las entidades de dominio:
  * cada entidad decide, con un `if (campo == null) campo = valor`, si debe
- * autocompletar timestamps (y en Cita/Usuario, también un valor por defecto
+ * autocompletar timestamps (y en Appointment/User, también un valor por defecto
  * de estado/rol) o respetar un valor ya asignado explícitamente. Ambas ramas
  * (campo nulo / campo ya asignado) se ejercitan aquí para cada entidad,
  * invocando directamente el método de paquete `prePersist()` (visible desde
@@ -21,63 +21,63 @@ class EntityLifecycleCallbacksTest {
 
     @Test
     void citaPrePersistAutocompletaCuandoCamposSonNulos() {
-        Cita cita = new Cita();
+        Appointment cita = new Appointment();
 
         cita.prePersist();
 
         assertNotNull(cita.getCreadoEn());
         assertNotNull(cita.getActualizadoEn());
         assertTrue(cita.isActivo());
-        assertEquals(EstadoCita.PROGRAMADA, cita.getEstado());
+        assertEquals(AppointmentStatus.PROGRAMADA, cita.getEstado());
     }
 
     @Test
     void citaPrePersistRespetaValoresYaAsignados() {
         Instant creado = Instant.parse("2026-01-01T00:00:00Z");
         Instant actualizado = Instant.parse("2026-01-02T00:00:00Z");
-        Cita cita = new Cita();
+        Appointment cita = new Appointment();
         cita.setCreadoEn(creado);
         cita.setActualizadoEn(actualizado);
-        cita.setEstado(EstadoCita.COMPLETADA);
+        cita.setEstado(AppointmentStatus.COMPLETADA);
 
         cita.prePersist();
 
         assertEquals(creado, cita.getCreadoEn());
         assertEquals(actualizado, cita.getActualizadoEn());
-        assertEquals(EstadoCita.COMPLETADA, cita.getEstado());
+        assertEquals(AppointmentStatus.COMPLETADA, cita.getEstado());
     }
 
     @Test
     void usuarioPrePersistAutocompletaCuandoCamposSonNulos() {
-        Usuario usuario = new Usuario();
+        User usuario = new User();
 
         usuario.prePersist();
 
         assertNotNull(usuario.getCreadoEn());
         assertNotNull(usuario.getActualizadoEn());
         assertTrue(usuario.isActivo());
-        assertEquals(Rol.ROLE_DUENO, usuario.getRol());
+        assertEquals(Role.ROLE_DUENO, usuario.getRol());
     }
 
     @Test
     void usuarioPrePersistRespetaValoresYaAsignados() {
         Instant creado = Instant.parse("2026-01-01T00:00:00Z");
         Instant actualizado = Instant.parse("2026-01-02T00:00:00Z");
-        Usuario usuario = new Usuario();
+        User usuario = new User();
         usuario.setCreadoEn(creado);
         usuario.setActualizadoEn(actualizado);
-        usuario.setRol(Rol.ROLE_ADMIN);
+        usuario.setRol(Role.ROLE_ADMIN);
 
         usuario.prePersist();
 
         assertEquals(creado, usuario.getCreadoEn());
         assertEquals(actualizado, usuario.getActualizadoEn());
-        assertEquals(Rol.ROLE_ADMIN, usuario.getRol());
+        assertEquals(Role.ROLE_ADMIN, usuario.getRol());
     }
 
     @Test
     void consultaPrePersistAutocompletaCuandoCamposSonNulos() {
-        Consulta consulta = new Consulta();
+        Consultation consulta = new Consultation();
 
         consulta.prePersist();
 
@@ -90,7 +90,7 @@ class EntityLifecycleCallbacksTest {
     void consultaPrePersistRespetaValoresYaAsignados() {
         Instant creado = Instant.parse("2026-01-01T00:00:00Z");
         Instant actualizado = Instant.parse("2026-01-02T00:00:00Z");
-        Consulta consulta = new Consulta();
+        Consultation consulta = new Consultation();
         consulta.setCreadoEn(creado);
         consulta.setActualizadoEn(actualizado);
 
@@ -102,7 +102,7 @@ class EntityLifecycleCallbacksTest {
 
     @Test
     void mascotaPrePersistAutocompletaCuandoCamposSonNulos() {
-        Mascota mascota = new Mascota();
+        Pet mascota = new Pet();
 
         mascota.prePersist();
 
@@ -115,7 +115,7 @@ class EntityLifecycleCallbacksTest {
     void mascotaPrePersistRespetaValoresYaAsignados() {
         Instant creado = Instant.parse("2026-01-01T00:00:00Z");
         Instant actualizado = Instant.parse("2026-01-02T00:00:00Z");
-        Mascota mascota = new Mascota();
+        Pet mascota = new Pet();
         mascota.setCreadoEn(creado);
         mascota.setActualizadoEn(actualizado);
 
@@ -127,7 +127,7 @@ class EntityLifecycleCallbacksTest {
 
     @Test
     void vacunaPrePersistAutocompletaCuandoCamposSonNulos() {
-        Vacuna vacuna = new Vacuna();
+        Vaccine vacuna = new Vaccine();
 
         vacuna.prePersist();
 
@@ -140,7 +140,7 @@ class EntityLifecycleCallbacksTest {
     void vacunaPrePersistRespetaValoresYaAsignados() {
         Instant creado = Instant.parse("2026-01-01T00:00:00Z");
         Instant actualizado = Instant.parse("2026-01-02T00:00:00Z");
-        Vacuna vacuna = new Vacuna();
+        Vaccine vacuna = new Vaccine();
         vacuna.setCreadoEn(creado);
         vacuna.setActualizadoEn(actualizado);
 
@@ -152,7 +152,7 @@ class EntityLifecycleCallbacksTest {
 
     @Test
     void citaPreUpdateActualizaMarcaDeTiempo() {
-        Cita cita = new Cita();
+        Appointment cita = new Appointment();
         cita.setActualizadoEn(Instant.parse("2020-01-01T00:00:00Z"));
 
         cita.preUpdate();

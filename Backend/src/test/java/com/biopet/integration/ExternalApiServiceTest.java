@@ -56,27 +56,27 @@ class ExternalApiServiceTest {
         String json = objectMapper.writeValueAsString(original);
         when(valueOperations.get("external-api:animal:perro")).thenReturn(json);
 
-        ExternalApiResponse resultado = service.obtenerInfoEspecie("perro");
+        ExternalApiResponse resultado = service.getSpeciesInfo("perro");
 
         assertEquals("perro", resultado.especieConsultada());
         assertEquals("cache", resultado.origen());
         assertEquals("Canis lupus familiaris", resultado.nombreCientifico());
-        verify(externalApiClient, never()).buscarPorEspecie(anyString());
+        verify(externalApiClient, never()).findBySpecies(anyString());
     }
 
     @Test
     void cacheConJsonCorruptoLanzaExcepcion() {
         when(valueOperations.get("external-api:animal:gato")).thenReturn("{no-es-json-valido");
 
-        assertThrows(ExternalApiException.class, () -> service.obtenerInfoEspecie("gato"));
+        assertThrows(ExternalApiException.class, () -> service.getSpeciesInfo("gato"));
     }
 
     @Test
     void cacheMissConResultadosVaciosLanzaExcepcion() {
         when(valueOperations.get(anyString())).thenReturn(null);
-        when(externalApiClient.buscarPorEspecie("ave")).thenReturn(List.of());
+        when(externalApiClient.findBySpecies("ave")).thenReturn(List.of());
 
-        assertThrows(ExternalApiException.class, () -> service.obtenerInfoEspecie("Ave"));
+        assertThrows(ExternalApiException.class, () -> service.getSpeciesInfo("Ave"));
     }
 
     @Test
@@ -88,9 +88,9 @@ class ExternalApiServiceTest {
                 new ExternalApiClient.AnimalApiNinjasDto.Characteristics("carnivoro", "domestico", "12-18 años", "slogan");
         ExternalApiClient.AnimalApiNinjasDto dto =
                 new ExternalApiClient.AnimalApiNinjasDto("Cat", taxonomy, characteristics, List.of("mundial"));
-        when(externalApiClient.buscarPorEspecie("gato")).thenReturn(List.of(dto));
+        when(externalApiClient.findBySpecies("gato")).thenReturn(List.of(dto));
 
-        ExternalApiResponse resultado = service.obtenerInfoEspecie("gato");
+        ExternalApiResponse resultado = service.getSpeciesInfo("gato");
 
         assertEquals("Felis catus", resultado.nombreCientifico());
         assertEquals("domestico", resultado.habitat());
@@ -104,9 +104,9 @@ class ExternalApiServiceTest {
         when(valueOperations.get(anyString())).thenReturn(null);
         ExternalApiClient.AnimalApiNinjasDto dto =
                 new ExternalApiClient.AnimalApiNinjasDto("Desconocido", null, null, List.of());
-        when(externalApiClient.buscarPorEspecie("desconocido")).thenReturn(List.of(dto));
+        when(externalApiClient.findBySpecies("desconocido")).thenReturn(List.of(dto));
 
-        ExternalApiResponse resultado = service.obtenerInfoEspecie("desconocido");
+        ExternalApiResponse resultado = service.getSpeciesInfo("desconocido");
 
         assertNull(resultado.nombreCientifico());
         assertNull(resultado.habitat());
@@ -118,11 +118,11 @@ class ExternalApiServiceTest {
         when(valueOperations.get(anyString())).thenReturn(null);
         ExternalApiClient.AnimalApiNinjasDto dto =
                 new ExternalApiClient.AnimalApiNinjasDto("Perro", null, null, List.of());
-        when(externalApiClient.buscarPorEspecie("perro")).thenReturn(List.of(dto));
+        when(externalApiClient.findBySpecies("perro")).thenReturn(List.of(dto));
         doThrow(new RuntimeException("Redis caído")).when(valueOperations)
                 .set(anyString(), anyString(), any(Duration.class));
 
-        ExternalApiResponse resultado = service.obtenerInfoEspecie("perro");
+        ExternalApiResponse resultado = service.getSpeciesInfo("perro");
 
         assertEquals("api-ninjas", resultado.origen());
     }

@@ -1,7 +1,7 @@
 package com.biopet;
 
-import com.biopet.entity.Rol;
-import com.biopet.entity.Usuario;
+import com.biopet.entity.Role;
+import com.biopet.entity.User;
 import com.biopet.security.AuthenticationAuditService;
 import com.biopet.security.JwtService;
 import com.biopet.security.TokenBlacklistService;
@@ -64,7 +64,7 @@ class JwtCookieAuthenticationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value("cookie.valida@biopet.com"));
 
-        verify(authenticationAuditService, never()).tokenRevocado(any(), any());
+        verify(authenticationAuditService, never()).tokenRevoked(any(), any());
     }
 
     @Test
@@ -79,7 +79,7 @@ class JwtCookieAuthenticationTest {
                 .andExpect(jsonPath("$.detail").isNotEmpty())
                 .andExpect(jsonPath("$.instance").value("/api/usuarios/me"));
 
-        verify(authenticationAuditService, never()).tokenRevocado(any(), any());
+        verify(authenticationAuditService, never()).tokenRevoked(any(), any());
     }
 
     @Test
@@ -98,7 +98,7 @@ class JwtCookieAuthenticationTest {
                 .andExpect(jsonPath("$.detail").isNotEmpty())
                 .andExpect(jsonPath("$.instance").value("/api/usuarios/me"));
 
-        verify(authenticationAuditService, never()).tokenRevocado(any(), any());
+        verify(authenticationAuditService, never()).tokenRevoked(any(), any());
     }
 
     @Test
@@ -113,7 +113,7 @@ class JwtCookieAuthenticationTest {
                 .andExpect(content().contentType("application/problem+json;charset=UTF-8"))
                 .andExpect(jsonPath("$.status").value(401));
 
-        verify(authenticationAuditService, never()).tokenRevocado(any(), any());
+        verify(authenticationAuditService, never()).tokenRevoked(any(), any());
     }
 
     @Test
@@ -134,17 +134,17 @@ class JwtCookieAuthenticationTest {
                 .andExpect(jsonPath("$.detail").isNotEmpty())
                 .andExpect(jsonPath("$.instance").value("/api/usuarios/me"));
 
-        verify(authenticationAuditService, times(1)).tokenRevocado(anyString(), eq("cookie.revocada@biopet.com"));
+        verify(authenticationAuditService, times(1)).tokenRevoked(anyString(), eq("cookie.revocada@biopet.com"));
     }
 
     @Test
     void tokenExpiradoNoInvocaAuditoriaDeRevocacion() throws Exception {
-        Usuario usuarioDePrueba = Usuario.builder()
+        User usuarioDePrueba = User.builder()
                 .id(999L)
-                .nombre("Usuario Expirado")
+                .nombre("User Expirado")
                 .email("cookie.expirada@biopet.com")
                 .passwordHash("hash-irrelevante-para-esta-prueba")
-                .rol(Rol.ROLE_DUENO)
+                .rol(Role.ROLE_DUENO)
                 .activo(true)
                 .build();
         JwtService servicioConTokenExpirado = new JwtService(
@@ -157,7 +157,7 @@ class JwtCookieAuthenticationTest {
                 .andExpect(content().contentType("application/problem+json;charset=UTF-8"))
                 .andExpect(jsonPath("$.status").value(401));
 
-        verify(authenticationAuditService, never()).tokenRevocado(any(), any());
+        verify(authenticationAuditService, never()).tokenRevoked(any(), any());
     }
 
     @Test
@@ -188,7 +188,7 @@ class JwtCookieAuthenticationTest {
         mockMvc.perform(post("/api/auth/registro")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
-                                {"nombre":"Usuario Prueba","email":"%s","password":"%s","rol":"ROLE_DUENO"}
+                                {"nombre":"User Prueba","email":"%s","password":"%s","rol":"ROLE_DUENO"}
                                 """.formatted(email, password)))
                 .andExpect(status().isCreated());
     }

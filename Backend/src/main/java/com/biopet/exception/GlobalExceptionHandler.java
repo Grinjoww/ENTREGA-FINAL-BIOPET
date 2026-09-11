@@ -33,8 +33,8 @@ public class GlobalExceptionHandler {
      * @param request the current HTTP request, used to populate the problem instance URI
      * @return a 409 Conflict problem response
      */
-    @ExceptionHandler(EmailDuplicadoException.class)
-    public ResponseEntity<ProblemDetail> emailDuplicado(EmailDuplicadoException ex, HttpServletRequest request) {
+    @ExceptionHandler(DuplicateEmailException.class)
+    public ResponseEntity<ProblemDetail> duplicateEmail(DuplicateEmailException ex, HttpServletRequest request) {
         return problemResponse(HttpStatus.CONFLICT, ProblemType.CONFLICT, "Conflicto de datos", ex.getMessage(), request);
     }
 
@@ -45,8 +45,8 @@ public class GlobalExceptionHandler {
      * @param request the current HTTP request, used to populate the problem instance URI
      * @return a 404 Not Found problem response
      */
-    @ExceptionHandler(RecursoNoEncontradoException.class)
-    public ResponseEntity<ProblemDetail> noEncontrado(RecursoNoEncontradoException ex, HttpServletRequest request) {
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ProblemDetail> noEncontrado(ResourceNotFoundException ex, HttpServletRequest request) {
         return problemResponse(HttpStatus.NOT_FOUND, ProblemType.NOT_FOUND, "Recurso no encontrado", ex.getMessage(), request);
     }
 
@@ -128,8 +128,8 @@ public class GlobalExceptionHandler {
      * @param request the current HTTP request, used to populate the problem instance URI
      * @return a 429 Too Many Requests problem response with a {@code Retry-After} header
      */
-    @ExceptionHandler(RateLimitExcedidoException.class)
-    public ResponseEntity<ProblemDetail> demasiadosIntentos(RateLimitExcedidoException ex, HttpServletRequest request) {
+    @ExceptionHandler(RateLimitExceededException.class)
+    public ResponseEntity<ProblemDetail> demasiadosIntentos(RateLimitExceededException ex, HttpServletRequest request) {
         ProblemDetail problemDetail = ProblemDetailFactory.build(
                 HttpStatus.TOO_MANY_REQUESTS,
                 ProblemType.RATE_LIMITED,
@@ -139,7 +139,7 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
                 .contentType(MediaType.APPLICATION_PROBLEM_JSON)
-                .header(HttpHeaders.RETRY_AFTER, String.valueOf(ex.getSegundosRestantes()))
+                .header(HttpHeaders.RETRY_AFTER, String.valueOf(ex.getSecondsRemaining()))
                 .body(problemDetail);
     }
 

@@ -1,6 +1,6 @@
 package com.biopet.security;
 
-import com.biopet.entity.Usuario;
+import com.biopet.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -38,15 +38,15 @@ public class JwtService {
         this.audience = audience;
     }
 
-    public String generateAccessToken(Usuario usuario) {
+    public String generateAccessToken(User usuario) {
         return buildToken(usuario, expirationMs, "access");
     }
 
-    public String generateRefreshToken(Usuario usuario) {
+    public String generateRefreshToken(User usuario) {
         return buildToken(usuario, refreshExpirationMs, "refresh");
     }
 
-    private String buildToken(Usuario usuario, long ttlMs, String tipo) {
+    private String buildToken(User usuario, long ttlMs, String tipo) {
         Instant now = Instant.now();
         Instant exp = now.plusMillis(ttlMs);
         return Jwts.builder()

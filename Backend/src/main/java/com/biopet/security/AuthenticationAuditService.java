@@ -11,67 +11,67 @@ public class AuthenticationAuditService {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationAuditService.class);
 
-    private static final String DESCONOCIDO = "unknown";
-    private static final int LONGITUD_MAXIMA = 200;
+    private static final String UNKNOWN = "unknown";
+    private static final int MAX_LENGTH = 200;
 
-    private static final String EVENTO_LOGIN_EXITOSO = "LOGIN_SUCCESS";
-    private static final String EVENTO_LOGIN_FALLIDO = "LOGIN_FAILURE";
-    private static final String EVENTO_LOGIN_BLOQUEADO = "LOGIN_RATE_LIMITED";
-    private static final String EVENTO_REFRESH_EXITOSO = "REFRESH_SUCCESS";
-    private static final String EVENTO_REFRESH_FALLIDO = "REFRESH_FAILURE";
-    private static final String EVENTO_LOGOUT_EXITOSO = "LOGOUT_SUCCESS";
-    private static final String EVENTO_TOKEN_REVOCADO = "TOKEN_REVOKED";
+    private static final String EVENT_LOGIN_SUCCEEDED = "LOGIN_SUCCESS";
+    private static final String EVENT_LOGIN_FAILED = "LOGIN_FAILURE";
+    private static final String EVENT_LOGIN_BLOCKED = "LOGIN_RATE_LIMITED";
+    private static final String EVENT_REFRESH_SUCCEEDED = "REFRESH_SUCCESS";
+    private static final String EVENT_REFRESH_FAILED = "REFRESH_FAILURE";
+    private static final String EVENT_LOGOUT_SUCCEEDED = "LOGOUT_SUCCESS";
+    private static final String EVENT_TOKEN_REVOKED = "TOKEN_REVOKED";
 
-    private static final String RESULTADO_EXITO = "SUCCESS";
-    private static final String RESULTADO_FALLO = "FAILURE";
-    private static final String RESULTADO_BLOQUEADO = "BLOCKED";
+    private static final String RESULT_SUCCESS = "SUCCESS";
+    private static final String RESULT_FAILURE = "FAILURE";
+    private static final String RESULT_BLOCKED = "BLOCKED";
 
-    public void loginExitoso(String ip, String subject) {
-        logger.info(formatear(EVENTO_LOGIN_EXITOSO, RESULTADO_EXITO, ip, subject));
+    public void loginSucceeded(String ip, String subject) {
+        logger.info(format(EVENT_LOGIN_SUCCEEDED, RESULT_SUCCESS, ip, subject));
     }
 
-    public void loginFallido(String ip, String subject) {
-        logger.warn(formatear(EVENTO_LOGIN_FALLIDO, RESULTADO_FALLO, ip, subject));
+    public void loginFailed(String ip, String subject) {
+        logger.warn(format(EVENT_LOGIN_FAILED, RESULT_FAILURE, ip, subject));
     }
 
-    public void loginBloqueado(String ip, String subject) {
-        logger.warn(formatear(EVENTO_LOGIN_BLOQUEADO, RESULTADO_BLOQUEADO, ip, subject));
+    public void loginBlocked(String ip, String subject) {
+        logger.warn(format(EVENT_LOGIN_BLOCKED, RESULT_BLOCKED, ip, subject));
     }
 
-    public void refreshExitoso(String ip, String subject) {
-        logger.info(formatear(EVENTO_REFRESH_EXITOSO, RESULTADO_EXITO, ip, subject));
+    public void refreshSucceeded(String ip, String subject) {
+        logger.info(format(EVENT_REFRESH_SUCCEEDED, RESULT_SUCCESS, ip, subject));
     }
 
-    public void refreshFallido(String ip, String subject) {
-        logger.warn(formatear(EVENTO_REFRESH_FALLIDO, RESULTADO_FALLO, ip, subject));
+    public void refreshFailed(String ip, String subject) {
+        logger.warn(format(EVENT_REFRESH_FAILED, RESULT_FAILURE, ip, subject));
     }
 
-    public void logoutExitoso(String ip, String subject) {
-        logger.info(formatear(EVENTO_LOGOUT_EXITOSO, RESULTADO_EXITO, ip, subject));
+    public void logoutSucceeded(String ip, String subject) {
+        logger.info(format(EVENT_LOGOUT_SUCCEEDED, RESULT_SUCCESS, ip, subject));
     }
 
-    public void tokenRevocado(String ip, String subject) {
-        logger.warn(formatear(EVENTO_TOKEN_REVOCADO, RESULTADO_BLOQUEADO, ip, subject));
+    public void tokenRevoked(String ip, String subject) {
+        logger.warn(format(EVENT_TOKEN_REVOKED, RESULT_BLOCKED, ip, subject));
     }
 
-    private String formatear(String evento, String resultado, String ip, String subject) {
+    private String format(String event, String result, String ip, String subject) {
         return "AUTH_AUDIT timestamp=" + Instant.now()
-                + " event=" + evento
-                + " result=" + resultado
-                + " ip=" + normalizar(ip)
-                + " subject=" + normalizar(subject);
+                + " event=" + event
+                + " result=" + result
+                + " ip=" + normalize(ip)
+                + " subject=" + normalize(subject);
     }
 
-    private String normalizar(String valor) {
-        if (valor == null || valor.isBlank()) {
-            return DESCONOCIDO;
+    private String normalize(String value) {
+        if (value == null || value.isBlank()) {
+            return UNKNOWN;
         }
-        String sinCaracteresDeControl = valor.replaceAll("\\p{Cntrl}", "");
-        if (sinCaracteresDeControl.isBlank()) {
-            return DESCONOCIDO;
+        String sanitized = value.replaceAll("\\p{Cntrl}", "");
+        if (sanitized.isBlank()) {
+            return UNKNOWN;
         }
-        return sinCaracteresDeControl.length() > LONGITUD_MAXIMA
-                ? sinCaracteresDeControl.substring(0, LONGITUD_MAXIMA)
-                : sinCaracteresDeControl;
+        return sanitized.length() > MAX_LENGTH
+                ? sanitized.substring(0, MAX_LENGTH)
+                : sanitized;
     }
 }

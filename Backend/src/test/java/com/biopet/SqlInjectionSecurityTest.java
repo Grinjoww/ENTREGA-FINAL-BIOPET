@@ -1,11 +1,11 @@
 package com.biopet;
 
-import com.biopet.entity.Rol;
-import com.biopet.entity.Usuario;
-import com.biopet.repository.CitaRepository;
-import com.biopet.repository.ConsultaRepository;
-import com.biopet.repository.MascotaRepository;
-import com.biopet.repository.UsuarioRepository;
+import com.biopet.entity.Role;
+import com.biopet.entity.User;
+import com.biopet.repository.AppointmentRepository;
+import com.biopet.repository.ConsultationRepository;
+import com.biopet.repository.PetRepository;
+import com.biopet.repository.UserRepository;
 import com.biopet.security.LoginRateLimiterService;
 import com.biopet.security.TokenBlacklistService;
 import org.junit.jupiter.api.BeforeEach;
@@ -85,16 +85,16 @@ class SqlInjectionSecurityTest {
     MockMvc mockMvc;
 
     @Autowired
-    UsuarioRepository usuarioRepository;
+    UserRepository usuarioRepository;
 
     @Autowired
-    MascotaRepository mascotaRepository;
+    PetRepository mascotaRepository;
 
     @Autowired
-    CitaRepository citaRepository;
+    AppointmentRepository citaRepository;
 
     @Autowired
-    ConsultaRepository consultaRepository;
+    ConsultationRepository consultaRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -114,11 +114,11 @@ class SqlInjectionSecurityTest {
         mascotaRepository.deleteAll();
         usuarioRepository.deleteAll();
 
-        Usuario usuario = Usuario.builder()
+        User usuario = User.builder()
                 .nombre("Jaime Mariscal")
                 .email(EMAIL_VALIDO)
                 .passwordHash(passwordEncoder.encode(PASSWORD_VALIDO))
-                .rol(Rol.ROLE_ADMIN)
+                .rol(Role.ROLE_ADMIN)
                 .activo(true)
                 .build();
 
@@ -131,7 +131,7 @@ class SqlInjectionSecurityTest {
                 IP_LOGIN_INYECCION,
                 IP_LOGIN_POSTERIOR
         )) {
-            loginRateLimiterService.reiniciar(ip);
+            loginRateLimiterService.reset(ip);
         }
     }
 

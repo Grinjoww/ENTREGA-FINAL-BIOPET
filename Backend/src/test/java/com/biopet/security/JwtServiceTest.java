@@ -1,7 +1,7 @@
 package com.biopet.security;
 
-import com.biopet.entity.Rol;
-import com.biopet.entity.Usuario;
+import com.biopet.entity.Role;
+import com.biopet.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.IncorrectClaimException;
@@ -32,17 +32,17 @@ class JwtServiceTest {
     private static final long REFRESH_EXPIRATION_MS = 604_800_000L;
 
     private JwtService jwtService;
-    private Usuario usuario;
+    private User usuario;
 
     @BeforeEach
     void setUp() {
         jwtService = new JwtService(TEST_SECRET, EXPIRATION_MS, REFRESH_EXPIRATION_MS, ISSUER, AUDIENCE);
-        usuario = Usuario.builder()
+        usuario = User.builder()
                 .id(1L)
                 .nombre("Jaime Mariscal")
                 .email("jaime@biopet.com")
                 .passwordHash("hash-irrelevante-para-esta-prueba")
-                .rol(Rol.ROLE_ADMIN)
+                .rol(Role.ROLE_ADMIN)
                 .activo(true)
                 .build();
     }

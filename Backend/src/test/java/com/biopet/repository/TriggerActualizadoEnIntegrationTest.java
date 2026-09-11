@@ -1,8 +1,8 @@
 package com.biopet.repository;
 
-import com.biopet.entity.Mascota;
-import com.biopet.entity.Rol;
-import com.biopet.entity.Usuario;
+import com.biopet.entity.Pet;
+import com.biopet.entity.Role;
+import com.biopet.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Verifica el trigger set_actualizado_en (definido en V1__schema_inicial.sql /
  * db/schema.sql) de forma aislada, es decir, SIN pasar por Hibernate.
  *
- * Nota: la entidad Mascota tambien tiene un @PreUpdate en Java que setea
+ * Nota: la entidad Pet tambien tiene un @PreUpdate en Java que setea
  * actualizadoEn = Instant.now() antes de que Hibernate genere el UPDATE. Eso
  * hace que cualquier test que use mascotaRepository.save(...) para forzar un
  * UPDATE termine probando el @PreUpdate de Java, no el trigger de Postgres:
@@ -67,17 +67,17 @@ class TriggerActualizadoEnIntegrationTest {
     @Autowired
     JdbcTemplate jdbcTemplate;
     @Autowired
-    MascotaRepository mascotaRepository;
+    PetRepository mascotaRepository;
     @Autowired
-    UsuarioRepository usuarioRepository;
+    UserRepository usuarioRepository;
 
     @Test
     void triggerActualizaActualizadoEnSinIntervencionDeHibernate() throws InterruptedException {
-        Usuario duenio = usuarioRepository.save(Usuario.builder()
+        User duenio = usuarioRepository.save(User.builder()
                 .nombre("Test Trigger").email("test-trigger@biopet.ec")
-                .passwordHash("x").rol(Rol.ROLE_DUENO).activo(true).build());
+                .passwordHash("x").rol(Role.ROLE_DUENO).activo(true).build());
 
-        Mascota mascota = mascotaRepository.save(Mascota.builder()
+        Pet mascota = mascotaRepository.save(Pet.builder()
                 .duenio(duenio).nombre("Rocky").especie("Perro")
                 .raza("Mestizo").fechaNacimiento(LocalDate.of(2022, 5, 10)).activo(true).build());
 

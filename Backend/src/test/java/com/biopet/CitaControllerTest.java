@@ -1,14 +1,14 @@
 package com.biopet;
 
-import com.biopet.entity.Cita;
-import com.biopet.entity.EstadoCita;
-import com.biopet.entity.Mascota;
-import com.biopet.entity.Rol;
-import com.biopet.entity.Usuario;
-import com.biopet.repository.CitaRepository;
-import com.biopet.repository.ConsultaRepository;
-import com.biopet.repository.MascotaRepository;
-import com.biopet.repository.UsuarioRepository;
+import com.biopet.entity.Appointment;
+import com.biopet.entity.AppointmentStatus;
+import com.biopet.entity.Pet;
+import com.biopet.entity.Role;
+import com.biopet.entity.User;
+import com.biopet.repository.AppointmentRepository;
+import com.biopet.repository.ConsultationRepository;
+import com.biopet.repository.PetRepository;
+import com.biopet.repository.UserRepository;
 import com.biopet.security.TokenBlacklistService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * Cubre el CRUD de Citas (agendamiento previo de atención veterinaria).
- * Consulta corresponde al registro clínico posterior.
+ * Consultation corresponde al register clínico posterior.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -51,16 +51,16 @@ class CitaControllerTest {
     MockMvc mockMvc;
 
     @Autowired
-    UsuarioRepository usuarioRepository;
+    UserRepository usuarioRepository;
 
     @Autowired
-    MascotaRepository mascotaRepository;
+    PetRepository mascotaRepository;
 
     @Autowired
-    CitaRepository citaRepository;
+    AppointmentRepository citaRepository;
 
     @Autowired
-    ConsultaRepository consultaRepository;
+    ConsultationRepository consultaRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -84,11 +84,11 @@ class CitaControllerTest {
         mascotaRepository.deleteAll();
         usuarioRepository.deleteAll();
 
-        Usuario admin = Usuario.builder()
+        User admin = User.builder()
                 .nombre("Jaime Mariscal")
                 .email(EMAIL_ADMIN)
                 .passwordHash(passwordEncoder.encode(PASSWORD_ADMIN))
-                .rol(Rol.ROLE_ADMIN)
+                .rol(Role.ROLE_ADMIN)
                 .activo(true)
                 .build();
 
@@ -99,19 +99,19 @@ class CitaControllerTest {
         veterinarioId = crearUsuarioConRolYObtenerId(
                 "vet.principal@biopet.com",
                 "ClaveVet123*",
-                Rol.ROLE_VETERINARIO
+                Role.ROLE_VETERINARIO
         );
 
         duenoId = crearUsuarioConRolYObtenerId(
                 "dueno.principal@biopet.com",
                 "ClaveDueno123*",
-                Rol.ROLE_DUENO
+                Role.ROLE_DUENO
         );
 
         mascotaId = crearMascotaYObtenerId(duenoId, "Firulais");
     }
 
-    // ---------- listar / buscar ----------
+    // ---------- listAll / findById ----------
 
     @Test
     void adminListaCitas() throws Exception {
@@ -184,7 +184,7 @@ class CitaControllerTest {
         Long otroDuenoId = crearUsuarioConRolYObtenerId(
                 "otro.dueno@biopet.com",
                 "ClaveDueno456*",
-                Rol.ROLE_DUENO
+                Role.ROLE_DUENO
         );
 
         Long otraMascotaId = crearMascotaYObtenerId(
@@ -219,7 +219,7 @@ class CitaControllerTest {
         Long otroDuenoId = crearUsuarioConRolYObtenerId(
                 "listado.otro.dueno@biopet.com",
                 "ClaveDueno456*",
-                Rol.ROLE_DUENO
+                Role.ROLE_DUENO
         );
 
         Long otraMascotaId = crearMascotaYObtenerId(
@@ -294,7 +294,7 @@ class CitaControllerTest {
         crearUsuarioConRol(
                 "aux.crea@biopet.com",
                 "ClaveAux123*",
-                Rol.ROLE_AUXILIAR
+                Role.ROLE_AUXILIAR
         );
 
         String tokenAuxiliar = extractCookieValue(
@@ -366,7 +366,7 @@ class CitaControllerTest {
         Long auxiliarId = crearUsuarioConRolYObtenerId(
                 "aux.no.vet@biopet.com",
                 "ClaveAux123*",
-                Rol.ROLE_AUXILIAR
+                Role.ROLE_AUXILIAR
         );
 
         String tokenAdmin = extractCookieValue(
@@ -538,7 +538,7 @@ class CitaControllerTest {
         Long otroVeterinarioId = crearUsuarioConRolYObtenerId(
                 "otro.vet@biopet.com",
                 "ClaveVet456*",
-                Rol.ROLE_VETERINARIO
+                Role.ROLE_VETERINARIO
         );
 
         Long citaId = crearCitaYObtenerId(
@@ -613,7 +613,7 @@ class CitaControllerTest {
                         .header("Authorization", "Bearer " + tokenAdmin))
                 .andExpect(status().isNoContent());
 
-        Cita citaEliminada = citaRepository.findById(citaId)
+        Appointment citaEliminada = citaRepository.findById(citaId)
                 .orElseThrow(() -> new AssertionError(
                         "La cita fue eliminada físicamente de la base de datos: "
                                 + citaId
@@ -648,7 +648,7 @@ class CitaControllerTest {
         crearUsuarioConRol(
                 "aux.elimina@biopet.com",
                 "ClaveAux123*",
-                Rol.ROLE_AUXILIAR
+                Role.ROLE_AUXILIAR
         );
 
         String tokenAuxiliar = extractCookieValue(
@@ -702,19 +702,19 @@ class CitaControllerTest {
             Long mascotaId,
             Long veterinarioId
     ) {
-        Mascota mascota = mascotaRepository
+        Pet mascota = mascotaRepository
                 .findById(mascotaId)
                 .orElseThrow();
 
-        Usuario veterinario = usuarioRepository
+        User veterinario = usuarioRepository
                 .findById(veterinarioId)
                 .orElseThrow();
 
-        Cita cita = Cita.builder()
+        Appointment cita = Appointment.builder()
                 .mascota(mascota)
                 .veterinario(veterinario)
                 .fechaHora(Instant.now().plus(2, ChronoUnit.DAYS))
-                .estado(EstadoCita.PROGRAMADA)
+                .estado(AppointmentStatus.PROGRAMADA)
                 .motivo("Control de rutina")
                 .activo(true)
                 .build();
@@ -726,11 +726,11 @@ class CitaControllerTest {
             Long duenioId,
             String nombre
     ) {
-        Usuario duenio = usuarioRepository
+        User duenio = usuarioRepository
                 .findById(duenioId)
                 .orElseThrow();
 
-        Mascota mascota = Mascota.builder()
+        Pet mascota = Pet.builder()
                 .duenio(duenio)
                 .nombre(nombre)
                 .especie("Perro")
@@ -745,13 +745,13 @@ class CitaControllerTest {
     private Long crearUsuarioConRolYObtenerId(
             String email,
             String password,
-            Rol rol
+            Role rol
     ) {
         crearUsuarioConRol(email, password, rol);
 
         return usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new AssertionError(
-                        "Usuario no encontrado tras crearlo: " + email
+                        "User no encontrado tras crearlo: " + email
                 ))
                 .getId();
     }
@@ -759,10 +759,10 @@ class CitaControllerTest {
     private void crearUsuarioConRol(
             String email,
             String password,
-            Rol rol
+            Role rol
     ) {
-        Usuario usuario = Usuario.builder()
-                .nombre("Usuario Prueba")
+        User usuario = User.builder()
+                .nombre("User Prueba")
                 .email(email)
                 .passwordHash(passwordEncoder.encode(password))
                 .rol(rol)

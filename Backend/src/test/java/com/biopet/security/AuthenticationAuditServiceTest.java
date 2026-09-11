@@ -38,7 +38,7 @@ class AuthenticationAuditServiceTest {
 
     @Test
     void loginExitosoRegistraEventoEstructurado() {
-        service.loginExitoso("203.0.113.10", "usuario@biopet.com");
+        service.loginSucceeded("203.0.113.10", "usuario@biopet.com");
 
         ILoggingEvent evento = ultimoEvento();
         String mensaje = evento.getFormattedMessage();
@@ -54,7 +54,7 @@ class AuthenticationAuditServiceTest {
 
     @Test
     void loginFallidoRegistraEventoWarn() {
-        service.loginFallido("203.0.113.11", "usuario@biopet.com");
+        service.loginFailed("203.0.113.11", "usuario@biopet.com");
 
         ILoggingEvent evento = ultimoEvento();
         String mensaje = evento.getFormattedMessage();
@@ -66,7 +66,7 @@ class AuthenticationAuditServiceTest {
 
     @Test
     void loginBloqueadoRegistraEventoWarn() {
-        service.loginBloqueado("203.0.113.12", "usuario@biopet.com");
+        service.loginBlocked("203.0.113.12", "usuario@biopet.com");
 
         ILoggingEvent evento = ultimoEvento();
         String mensaje = evento.getFormattedMessage();
@@ -78,7 +78,7 @@ class AuthenticationAuditServiceTest {
 
     @Test
     void refreshExitosoRegistraEventoInfo() {
-        service.refreshExitoso("203.0.113.20", "usuario@biopet.com");
+        service.refreshSucceeded("203.0.113.20", "usuario@biopet.com");
 
         ILoggingEvent evento = ultimoEvento();
         String mensaje = evento.getFormattedMessage();
@@ -97,7 +97,7 @@ class AuthenticationAuditServiceTest {
 
     @Test
     void refreshFallidoRegistraEventoWarn() {
-        service.refreshFallido("203.0.113.21", "unknown");
+        service.refreshFailed("203.0.113.21", "unknown");
 
         ILoggingEvent evento = ultimoEvento();
         String mensaje = evento.getFormattedMessage();
@@ -116,7 +116,7 @@ class AuthenticationAuditServiceTest {
 
     @Test
     void logoutExitosoRegistraEventoInfo() {
-        service.logoutExitoso("203.0.113.22", "usuario@biopet.com");
+        service.logoutSucceeded("203.0.113.22", "usuario@biopet.com");
 
         ILoggingEvent evento = ultimoEvento();
         String mensaje = evento.getFormattedMessage();
@@ -135,7 +135,7 @@ class AuthenticationAuditServiceTest {
 
     @Test
     void tokenRevocadoRegistraEventoWarn() {
-        service.tokenRevocado("203.0.113.23", "usuario@biopet.com");
+        service.tokenRevoked("203.0.113.23", "usuario@biopet.com");
 
         ILoggingEvent evento = ultimoEvento();
         String mensaje = evento.getFormattedMessage();
@@ -155,7 +155,7 @@ class AuthenticationAuditServiceTest {
 
     @Test
     void valoresNulosSeNormalizanComoUnknown() {
-        service.loginFallido(null, null);
+        service.loginFailed(null, null);
 
         String mensaje = ultimoEvento().getFormattedMessage();
 
@@ -168,7 +168,7 @@ class AuthenticationAuditServiceTest {
         String ipMaliciosa = "203.0.113.13\r\nAUTH_AUDIT event=LOGIN_SUCCESS result=SUCCESS";
         String subjectMalicioso = "ataque@biopet.com\ninyectado\tvalor";
 
-        service.loginFallido(ipMaliciosa, subjectMalicioso);
+        service.loginFailed(ipMaliciosa, subjectMalicioso);
 
         String mensaje = ultimoEvento().getFormattedMessage();
 
@@ -180,7 +180,7 @@ class AuthenticationAuditServiceTest {
 
     @Test
     void noRegistraDatosSensibles() {
-        service.loginFallido("203.0.113.14", "usuario@biopet.com");
+        service.loginFailed("203.0.113.14", "usuario@biopet.com");
 
         String mensaje = ultimoEvento().getFormattedMessage();
 

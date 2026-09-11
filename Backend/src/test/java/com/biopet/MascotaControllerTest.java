@@ -1,12 +1,12 @@
 package com.biopet;
 
-import com.biopet.entity.Mascota;
-import com.biopet.entity.Rol;
-import com.biopet.entity.Usuario;
-import com.biopet.repository.CitaRepository;
-import com.biopet.repository.ConsultaRepository;
-import com.biopet.repository.MascotaRepository;
-import com.biopet.repository.UsuarioRepository;
+import com.biopet.entity.Pet;
+import com.biopet.entity.Role;
+import com.biopet.entity.User;
+import com.biopet.repository.AppointmentRepository;
+import com.biopet.repository.ConsultationRepository;
+import com.biopet.repository.PetRepository;
+import com.biopet.repository.UserRepository;
 import com.biopet.security.TokenBlacklistService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,16 +43,16 @@ class MascotaControllerTest {
     MockMvc mockMvc;
 
     @Autowired
-    UsuarioRepository usuarioRepository;
+    UserRepository usuarioRepository;
 
     @Autowired
-    MascotaRepository mascotaRepository;
+    PetRepository mascotaRepository;
 
     @Autowired
-    CitaRepository citaRepository;
+    AppointmentRepository citaRepository;
 
     @Autowired
-    ConsultaRepository consultaRepository;
+    ConsultationRepository consultaRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -69,11 +69,11 @@ class MascotaControllerTest {
         mascotaRepository.deleteAll();
         usuarioRepository.deleteAll();
 
-        Usuario usuario = Usuario.builder()
+        User usuario = User.builder()
                 .nombre("Jaime Mariscal")
                 .email("jaime@biopet.com")
                 .passwordHash(passwordEncoder.encode("ClaveCorrecta123*"))
-                .rol(Rol.ROLE_ADMIN)
+                .rol(Role.ROLE_ADMIN)
                 .activo(true)
                 .build();
 
@@ -371,7 +371,7 @@ class MascotaControllerTest {
         crearUsuarioConRol(
                 "veterinario@biopet.com",
                 "ClaveVet123*",
-                Rol.ROLE_VETERINARIO
+                Role.ROLE_VETERINARIO
         );
 
         String tokenVeterinario = extractCookieValue(
@@ -493,7 +493,7 @@ class MascotaControllerTest {
         Long adminId = crearUsuarioConRolYObtenerId(
                 "otro.admin@biopet.com",
                 "ClaveAdmin123*",
-                Rol.ROLE_ADMIN
+                Role.ROLE_ADMIN
         );
 
         String tokenAdmin = extractCookieValue(
@@ -525,7 +525,7 @@ class MascotaControllerTest {
         Long veterinarioId = crearUsuarioConRolYObtenerId(
                 "otro.veterinario@biopet.com",
                 "ClaveVet123*",
-                Rol.ROLE_VETERINARIO
+                Role.ROLE_VETERINARIO
         );
 
         String tokenAdmin = extractCookieValue(
@@ -557,7 +557,7 @@ class MascotaControllerTest {
         Long auxiliarId = crearUsuarioConRolYObtenerId(
                 "otro.auxiliar@biopet.com",
                 "ClaveAux123*",
-                Rol.ROLE_AUXILIAR
+                Role.ROLE_AUXILIAR
         );
 
         String tokenAdmin = extractCookieValue(
@@ -615,7 +615,7 @@ class MascotaControllerTest {
         Long duenoInactivoId = crearUsuarioInactivoYObtenerId(
                 "inactivo.dueno@biopet.com",
                 "ClaveDueno123*",
-                Rol.ROLE_DUENO
+                Role.ROLE_DUENO
         );
 
         String tokenAdmin = extractCookieValue(
@@ -687,7 +687,7 @@ class MascotaControllerTest {
         Long veterinarioId = crearUsuarioConRolYObtenerId(
                 "actualizar.rechazo.veterinario@biopet.com",
                 "ClaveVet123*",
-                Rol.ROLE_VETERINARIO
+                Role.ROLE_VETERINARIO
         );
 
         String tokenAdmin = extractCookieValue(
@@ -741,7 +741,7 @@ class MascotaControllerTest {
                         .header("Authorization", "Bearer " + tokenAdmin))
                 .andExpect(status().isNoContent());
 
-        Mascota mascotaEliminada = mascotaRepository.findById(mascotaId)
+        Pet mascotaEliminada = mascotaRepository.findById(mascotaId)
                 .orElseThrow(() -> new AssertionError(
                         "La mascota fue eliminada físicamente de la base de datos: "
                                 + mascotaId
@@ -803,7 +803,7 @@ class MascotaControllerTest {
         crearUsuarioConRol(
                 "auxiliar.listado@biopet.com",
                 "ClaveAux123*",
-                Rol.ROLE_AUXILIAR
+                Role.ROLE_AUXILIAR
         );
 
         String tokenAuxiliar = extractCookieValue(
@@ -823,13 +823,13 @@ class MascotaControllerTest {
     private Long crearUsuarioConRolYObtenerId(
             String email,
             String password,
-            Rol rol
+            Role rol
     ) {
         crearUsuarioConRol(email, password, rol);
 
         return usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new AssertionError(
-                        "Usuario no encontrado tras crearlo: " + email
+                        "User no encontrado tras crearlo: " + email
                 ))
                 .getId();
     }
@@ -837,16 +837,16 @@ class MascotaControllerTest {
     private Long crearUsuarioInactivoYObtenerId(
             String email,
             String password,
-            Rol rol
+            Role rol
     ) {
-        Usuario usuario = Usuario.builder()
-                .nombre("Usuario Inactivo")
+        User usuario = User.builder()
+                .nombre("User Inactivo")
                 .email(email)
                 .passwordHash(passwordEncoder.encode(password))
                 .rol(rol)
                 .build();
 
-        Usuario guardado = usuarioRepository.save(usuario);
+        User guardado = usuarioRepository.save(usuario);
         guardado.setActivo(false);
 
         return usuarioRepository.save(guardado).getId();
@@ -864,7 +864,7 @@ class MascotaControllerTest {
                 .filter(mascota -> mascota.getNombre().equals(nombre))
                 .findFirst()
                 .orElseThrow(() -> new AssertionError(
-                        "Mascota no encontrada tras crearla: " + nombre
+                        "Pet no encontrada tras crearla: " + nombre
                 ))
                 .getId();
     }
@@ -872,10 +872,10 @@ class MascotaControllerTest {
     private void crearUsuarioConRol(
             String email,
             String password,
-            Rol rol
+            Role rol
     ) {
-        Usuario usuario = Usuario.builder()
-                .nombre("Usuario Prueba")
+        User usuario = User.builder()
+                .nombre("User Prueba")
                 .email(email)
                 .passwordHash(passwordEncoder.encode(password))
                 .rol(rol)
@@ -899,7 +899,7 @@ class MascotaControllerTest {
 
         return usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new AssertionError(
-                        "Usuario no encontrado tras registro: " + email
+                        "User no encontrado tras registro: " + email
                 ))
                 .getId();
     }
