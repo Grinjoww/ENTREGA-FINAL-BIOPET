@@ -4,11 +4,11 @@ import com.biopet.dto.VaccineRequest;
 import com.biopet.dto.VaccineResponse;
 import com.biopet.entity.Pet;
 import com.biopet.entity.Rol;
-import com.biopet.entity.Usuario;
+import com.biopet.entity.User;
 import com.biopet.entity.Vaccine;
 import com.biopet.exception.ResourceNotFoundException;
 import com.biopet.repository.PetRepository;
-import com.biopet.repository.UsuarioRepository;
+import com.biopet.repository.UserRepository;
 import com.biopet.repository.VaccineRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,11 +29,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class VaccineService {
     private final VaccineRepository vacunaRepository;
     private final PetRepository mascotaRepository;
-    private final UsuarioRepository usuarioRepository;
+    private final UserRepository usuarioRepository;
 
     public VaccineService(VaccineRepository vacunaRepository,
                           PetRepository mascotaRepository,
-                          UsuarioRepository usuarioRepository) {
+                          UserRepository usuarioRepository) {
         this.vacunaRepository = vacunaRepository;
         this.mascotaRepository = mascotaRepository;
         this.usuarioRepository = usuarioRepository;
@@ -50,7 +50,7 @@ public class VaccineService {
      */
     @Transactional(readOnly = true)
     public Page<VaccineResponse> listar(Pageable pageable, String email) {
-        Usuario usuario = usuarioActivo(email);
+        User usuario = usuarioActivo(email);
         if (usuario.getRol() == Rol.ROLE_DUENO) {
             return vacunaRepository.findAllByMascota_Duenio_IdAndActivoTrue(usuario.getId(), pageable)
                     .map(this::toResponse);
@@ -71,7 +71,7 @@ public class VaccineService {
      */
     @Transactional(readOnly = true)
     public Page<VaccineResponse> listarPorMascota(Long mascotaId, Pageable pageable, String email) {
-        Usuario usuario = usuarioActivo(email);
+        User usuario = usuarioActivo(email);
         Pet mascota = mascotaActiva(mascotaId);
         verificarAcceso(usuario, mascota);
         return vacunaRepository.findAllByMascotaIdAndActivoTrue(mascotaId, pageable).map(this::toResponse);
@@ -89,7 +89,7 @@ public class VaccineService {
      */
     @Transactional(readOnly = true)
     public VaccineResponse buscar(Long id, String email) {
-        Usuario usuario = usuarioActivo(email);
+        User usuario = usuarioActivo(email);
         Vaccine vacuna = vacunaActiva(id);
         verificarAcceso(usuario, vacuna.getMascota());
         return toResponse(vacuna);
@@ -107,7 +107,7 @@ public class VaccineService {
     @Transactional
     public VaccineResponse crear(VaccineRequest request) {
         Pet mascota = mascotaActiva(request.mascotaId());
-        Usuario veterinario = resolverVeterinario(request.veterinarioId());
+        User veterinario = resolverVeterinario(request.veterinarioId());
         Vaccine vacuna = Vaccine.builder()
                 .mascota(mascota)
                 .veterinario(veterinario)
@@ -134,12 +134,12 @@ public class VaccineService {
      */
     @Transactional
     public VaccineResponse actualizar(Long id, VaccineRequest request, String email) {
-        Usuario usuario = usuarioActivo(email);
+        User usuario = usuarioActivo(email);
         Vaccine vacuna = vacunaActiva(id);
         verificarAcceso(usuario, vacuna.getMascota());
 
         Pet mascota = mascotaActiva(request.mascotaId());
-        Usuario veterinario = resolverVeterinario(request.veterinarioId());
+        User veterinario = resolverVeterinario(request.veterinarioId());
 
         vacuna.setMascota(mascota);
         vacuna.setVeterinario(veterinario);
@@ -161,7 +161,7 @@ public class VaccineService {
      */
     @Transactional
     public void eliminar(Long id, String email) {
-        Usuario usuario = usuarioActivo(email);
+        User usuario = usuarioActivo(email);
         Vaccine vacuna = vacunaActiva(id);
         verificarAcceso(usuario, vacuna.getMascota());
         vacuna.setActivo(false);
@@ -170,9 +170,9 @@ public class VaccineService {
 
     // ---------- Helpers ----------
 
-    private Usuario usuarioActivo(String email) {
+    private User usuarioActivo(String email) {
         return usuarioRepository.findByEmailAndActivoTrue(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("User no encontrado"));
     }
 
     private Pet mascotaActiva(Long mascotaId) {
@@ -185,10 +185,10 @@ public class VaccineService {
                 .orElseThrow(() -> new ResourceNotFoundException("Vaccine no encontrada: " + id));
     }
 
-    private Usuario resolverVeterinario(Long veterinarioId) {
+    private User resolverVeterinario(Long veterinarioId) {
         if (veterinarioId == null) return null;
-        Usuario veterinario = usuarioRepository.findById(veterinarioId)
-                .filter(Usuario::isActivo)
+        User veterinario = usuarioRepository.findById(veterinarioId)
+                .filter(User::isActivo)
                 .orElseThrow(() -> new ResourceNotFoundException("Veterinario no encontrado: " + veterinarioId));
         if (veterinario.getRol() != Rol.ROLE_VETERINARIO) {
             throw new IllegalArgumentException(
@@ -201,14 +201,14 @@ public class VaccineService {
         return rol == Rol.ROLE_ADMIN || rol == Rol.ROLE_VETERINARIO || rol == Rol.ROLE_AUXILIAR;
     }
 
-    private void verificarAcceso(Usuario usuario, Pet mascota) {
+    private void verificarAcceso(User usuario, Pet mascota) {
         if (!tieneAccesoGlobal(usuario.getRol()) && !mascota.getDuenio().getId().equals(usuario.getId())) {
             throw new AccessDeniedException("No tiene permisos para acceder a esta vacuna.");
         }
     }
 
     private VaccineResponse toResponse(Vaccine vacuna) {
-        Usuario veterinario = vacuna.getVeterinario();
+        User veterinario = vacuna.getVeterinario();
         return new VaccineResponse(
                 vacuna.getId(),
                 vacuna.getMascota().getId(),

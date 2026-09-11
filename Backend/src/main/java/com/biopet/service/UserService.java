@@ -1,11 +1,11 @@
 package com.biopet.service;
 
-import com.biopet.dto.UsuarioRequest;
-import com.biopet.dto.UsuarioResponse;
-import com.biopet.entity.Usuario;
+import com.biopet.dto.UserRequest;
+import com.biopet.dto.UserResponse;
+import com.biopet.entity.User;
 import com.biopet.exception.DuplicateEmailException;
 import com.biopet.exception.ResourceNotFoundException;
-import com.biopet.repository.UsuarioRepository;
+import com.biopet.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
@@ -15,17 +15,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * CRUD administrativo de usuarios (POST/PUT/DELETE /api/usuarios), restringido a
- * ROLE_ADMIN a nivel de {@code UsuarioController} (@PreAuthorize). No reemplaza ni
+ * ROLE_ADMIN a nivel de {@code UserController} (@PreAuthorize). No reemplaza ni
  * duplica {@code AuthService.registrar()}: aquella es el autoregistro público
  * (siempre ROLE_DUENO); este servicio permite a un administrador crear cuentas con
  * cualquier rol y gestionar cuentas existentes.
  */
 @Service
-public class UsuarioService {
-    private final UsuarioRepository usuarioRepository;
+public class UserService {
+    private final UserRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -37,7 +37,7 @@ public class UsuarioService {
      * @return page of user accounts
      */
     @Transactional(readOnly = true)
-    public Page<UsuarioResponse> listar(Pageable pageable) {
+    public Page<UserResponse> listar(Pageable pageable) {
         return usuarioRepository.findAllByActivoTrue(pageable).map(this::toResponse);
     }
 
@@ -49,9 +49,9 @@ public class UsuarioService {
      * @throws com.biopet.exception.ResourceNotFoundException if no active user exists with the given id
      */
     @Transactional(readOnly = true)
-    public UsuarioResponse buscar(Long id) {
-        Usuario usuario = usuarioRepository.findByIdAndActivoTrue(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado: " + id));
+    public UserResponse buscar(Long id) {
+        User usuario = usuarioRepository.findByIdAndActivoTrue(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User no encontrado: " + id));
         return toResponse(usuario);
     }
 
@@ -66,7 +66,7 @@ public class UsuarioService {
      * @throws IllegalArgumentException if no password is provided
      */
     @Transactional
-    public UsuarioResponse crear(UsuarioRequest request) {
+    public UserResponse crear(UserRequest request) {
         String email = request.email().toLowerCase();
         if (usuarioRepository.existsByEmail(email)) {
             throw new DuplicateEmailException(email);
@@ -75,7 +75,7 @@ public class UsuarioService {
             throw new IllegalArgumentException("La contraseña es obligatoria al crear un usuario.");
         }
 
-        Usuario usuario = Usuario.builder()
+        User usuario = User.builder()
                 .nombre(request.nombre())
                 .email(email)
                 .passwordHash(passwordEncoder.encode(request.password()))
@@ -98,12 +98,12 @@ public class UsuarioService {
      * @throws com.biopet.exception.DuplicateEmailException if the new email is already used by another account
      */
     @Transactional
-    public UsuarioResponse actualizar(Long id, UsuarioRequest request, String emailAutenticado) {
-        Usuario usuario = usuarioRepository.findByIdAndActivoTrue(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado: " + id));
+    public UserResponse actualizar(Long id, UserRequest request, String emailAutenticado) {
+        User usuario = usuarioRepository.findByIdAndActivoTrue(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User no encontrado: " + id));
 
-        Usuario autenticado = usuarioRepository.findByEmailAndActivoTrue(emailAutenticado)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado: " + emailAutenticado));
+        User autenticado = usuarioRepository.findByEmailAndActivoTrue(emailAutenticado)
+                .orElseThrow(() -> new ResourceNotFoundException("User no encontrado: " + emailAutenticado));
         if (autenticado.getId().equals(usuario.getId()) && request.rol() != usuario.getRol()) {
             throw new AccessDeniedException("No puede modificar su propio rol.");
         }
@@ -133,13 +133,13 @@ public class UsuarioService {
      */
     @Transactional
     public void eliminar(Long id) {
-        Usuario usuario = usuarioRepository.findByIdAndActivoTrue(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado: " + id));
+        User usuario = usuarioRepository.findByIdAndActivoTrue(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User no encontrado: " + id));
         usuario.setActivo(false);
         usuarioRepository.save(usuario);
     }
 
-    private UsuarioResponse toResponse(Usuario usuario) {
-        return new UsuarioResponse(usuario.getId(), usuario.getNombre(), usuario.getEmail(), usuario.getRol(), usuario.isActivo());
+    private UserResponse toResponse(User usuario) {
+        return new UserResponse(usuario.getId(), usuario.getNombre(), usuario.getEmail(), usuario.getRol(), usuario.isActivo());
     }
 }

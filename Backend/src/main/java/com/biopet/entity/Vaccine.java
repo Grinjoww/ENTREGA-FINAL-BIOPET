@@ -25,7 +25,7 @@ public class Vaccine {
     /** Quién aplicó la vacuna. Opcional: no siempre se registra al momento. */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "veterinario_id")
-    private Usuario veterinario;
+    private User veterinario;
 
     @Column(nullable = false, length = 60)
     private String tipo;

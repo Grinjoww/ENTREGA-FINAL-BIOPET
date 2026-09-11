@@ -2,7 +2,7 @@ package com.biopet.repository;
 
 import com.biopet.entity.Pet;
 import com.biopet.entity.Rol;
-import com.biopet.entity.Usuario;
+import com.biopet.entity.User;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +68,7 @@ class ResumenEspeciesIntegrationTest {
     @Autowired
     PetRepository mascotaRepository;
     @Autowired
-    UsuarioRepository usuarioRepository;
+    UserRepository usuarioRepository;
     @Autowired
     ProcedimientoBiopetRepository procedimientoBiopetRepository;
 
@@ -85,7 +85,7 @@ class ResumenEspeciesIntegrationTest {
     void resumenAgrupaPorEspecieYFiltraPorDuenio() {
         jdbcTemplate.execute(FUNCION_SQL);
 
-        Usuario duenio = usuarioRepository.save(Usuario.builder()
+        User duenio = usuarioRepository.save(User.builder()
                 .nombre("Test Duenio").email("test-duenio@biopet.ec")
                 .passwordHash("x").rol(Rol.ROLE_DUENO).activo(true).build());
 

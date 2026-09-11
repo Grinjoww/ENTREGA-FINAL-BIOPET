@@ -1,23 +1,22 @@
 package com.biopet.service;
 
-import com.biopet.entity.Usuario;
-import com.biopet.repository.UsuarioRepository;
-import org.springframework.security.core.userdetails.User;
+import com.biopet.entity.User;
+import com.biopet.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
- * Bridges BIOPET's {@link Usuario} entity to Spring Security's
+ * Bridges BIOPET's {@link User} entity to Spring Security's
  * {@link UserDetails}, used by the authentication provider to load
  * credentials and authorities during login.
  */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private final UsuarioRepository usuarioRepository;
+    private final UserRepository usuarioRepository;
 
-    public UserDetailsServiceImpl(UsuarioRepository usuarioRepository) {
+    public UserDetailsServiceImpl(UserRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
 
@@ -32,9 +31,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepository.findByEmailAndActivoTrue(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + email));
-        return User.builder()
+        User usuario = usuarioRepository.findByEmailAndActivoTrue(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User no encontrado: " + email));
+        return org.springframework.security.core.userdetails.User.builder()
                 .username(usuario.getEmail())
                 .password(usuario.getPasswordHash())
                 .authorities(usuario.getRol().name())

@@ -5,11 +5,11 @@ import com.biopet.dto.ConsultationResponse;
 import com.biopet.entity.Consultation;
 import com.biopet.entity.Pet;
 import com.biopet.entity.Rol;
-import com.biopet.entity.Usuario;
+import com.biopet.entity.User;
 import com.biopet.exception.ResourceNotFoundException;
 import com.biopet.repository.ConsultationRepository;
 import com.biopet.repository.PetRepository;
-import com.biopet.repository.UsuarioRepository;
+import com.biopet.repository.UserRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -34,11 +34,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class ConsultationService {
     private final ConsultationRepository consultaRepository;
     private final PetRepository mascotaRepository;
-    private final UsuarioRepository usuarioRepository;
+    private final UserRepository usuarioRepository;
 
     public ConsultationService(ConsultationRepository consultaRepository,
                             PetRepository mascotaRepository,
-                            UsuarioRepository usuarioRepository) {
+                            UserRepository usuarioRepository) {
         this.consultaRepository = consultaRepository;
         this.mascotaRepository = mascotaRepository;
         this.usuarioRepository = usuarioRepository;
@@ -56,7 +56,7 @@ public class ConsultationService {
     @Cacheable(value = "consultas", key = "#email + '-' + #pageable.pageNumber + '-' + #pageable.pageSize + '-' + #pageable.sort.toString()")
     @Transactional(readOnly = true)
     public Page<ConsultationResponse> listar(Pageable pageable, String email) {
-        Usuario usuario = usuarioActual(email);
+        User usuario = usuarioActual(email);
         if (usuario.getRol() == Rol.ROLE_DUENO) {
             // Un dueño solo ve consultas de sus propias mascotas
             return consultaRepository.findAllByActivoTrue(pageable)
@@ -77,7 +77,7 @@ public class ConsultationService {
      */
     @Transactional(readOnly = true)
     public ConsultationResponse buscar(Long id, String email) {
-        Usuario usuario = usuarioActual(email);
+        User usuario = usuarioActual(email);
         Consultation consulta = consultaRepository.findByIdAndActivoTrue(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Consultation no encontrada: " + id));
         verificarAcceso(usuario, consulta);
@@ -98,7 +98,7 @@ public class ConsultationService {
     public ConsultationResponse crear(ConsultationRequest request) {
         Pet mascota = mascotaRepository.findByIdAndActivoTrue(request.mascotaId())
                 .orElseThrow(() -> new ResourceNotFoundException("Pet no encontrada: " + request.mascotaId()));
-        Usuario veterinario = resolverVeterinario(request.veterinarioId());
+        User veterinario = resolverVeterinario(request.veterinarioId());
 
         Consultation consulta = Consultation.builder()
                 .mascota(mascota)
@@ -129,14 +129,14 @@ public class ConsultationService {
     @CacheEvict(value = "consultas", allEntries = true)
     @Transactional
     public ConsultationResponse actualizar(Long id, ConsultationRequest request, String email) {
-        Usuario usuario = usuarioActual(email);
+        User usuario = usuarioActual(email);
         Consultation consulta = consultaRepository.findByIdAndActivoTrue(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Consultation no encontrada: " + id));
         verificarAcceso(usuario, consulta);
 
         Pet mascota = mascotaRepository.findByIdAndActivoTrue(request.mascotaId())
                 .orElseThrow(() -> new ResourceNotFoundException("Pet no encontrada: " + request.mascotaId()));
-        Usuario veterinario = resolverVeterinario(request.veterinarioId());
+        User veterinario = resolverVeterinario(request.veterinarioId());
 
         consulta.setMascota(mascota);
         consulta.setVeterinario(veterinario);
@@ -161,7 +161,7 @@ public class ConsultationService {
     @CacheEvict(value = "consultas", allEntries = true)
     @Transactional
     public void eliminar(Long id, String email) {
-        Usuario usuario = usuarioActual(email);
+        User usuario = usuarioActual(email);
         Consultation consulta = consultaRepository.findByIdAndActivoTrue(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Consultation no encontrada: " + id));
         verificarAcceso(usuario, consulta);
@@ -169,14 +169,14 @@ public class ConsultationService {
         consultaRepository.save(consulta);
     }
 
-    private Usuario usuarioActual(String email) {
+    private User usuarioActual(String email) {
         return usuarioRepository.findByEmailAndActivoTrue(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("User no encontrado"));
     }
 
-    private Usuario resolverVeterinario(Long veterinarioId) {
-        Usuario veterinario = usuarioRepository.findById(veterinarioId)
-                .filter(Usuario::isActivo)
+    private User resolverVeterinario(Long veterinarioId) {
+        User veterinario = usuarioRepository.findById(veterinarioId)
+                .filter(User::isActivo)
                 .orElseThrow(() -> new ResourceNotFoundException("Veterinario no encontrado: " + veterinarioId));
         if (veterinario.getRol() != Rol.ROLE_VETERINARIO) {
             throw new IllegalArgumentException("El usuario asignado debe tener rol ROLE_VETERINARIO: " + veterinarioId);
@@ -184,7 +184,7 @@ public class ConsultationService {
         return veterinario;
     }
 
-    private void verificarAcceso(Usuario usuario, Consultation consulta) {
+    private void verificarAcceso(User usuario, Consultation consulta) {
         boolean accesoGlobal = usuario.getRol() == Rol.ROLE_ADMIN
                 || usuario.getRol() == Rol.ROLE_VETERINARIO
                 || usuario.getRol() == Rol.ROLE_AUXILIAR;

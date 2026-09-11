@@ -1,8 +1,8 @@
 package com.biopet.config;
 
 import com.biopet.entity.Rol;
-import com.biopet.entity.Usuario;
-import com.biopet.repository.UsuarioRepository;
+import com.biopet.entity.User;
+import com.biopet.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +15,7 @@ public class DataInitializer {
 
     @Bean
     @ConditionalOnProperty(name = "app.seed-admin.enabled", havingValue = "true", matchIfMissing = false)
-    CommandLineRunner seedAdmin(UsuarioRepository repo, PasswordEncoder enc, Environment env) {
+    CommandLineRunner seedAdmin(UserRepository repo, PasswordEncoder enc, Environment env) {
         return args -> {
             String email = env.getProperty("app.seed-admin.email");
             String password = env.getProperty("app.seed-admin.password");
@@ -28,7 +28,7 @@ public class DataInitializer {
             }
 
             if (!repo.existsByEmail(email)) {
-                repo.save(Usuario.builder()
+                repo.save(User.builder()
                         .nombre("Administrador BIOPET")
                         .email(email)
                         .passwordHash(enc.encode(password))

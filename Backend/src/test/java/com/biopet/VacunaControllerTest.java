@@ -2,12 +2,12 @@ package com.biopet;
 
 import com.biopet.entity.Pet;
 import com.biopet.entity.Rol;
-import com.biopet.entity.Usuario;
+import com.biopet.entity.User;
 import com.biopet.entity.Vaccine;
 import com.biopet.repository.AppointmentRepository;
 import com.biopet.repository.ConsultationRepository;
 import com.biopet.repository.PetRepository;
-import com.biopet.repository.UsuarioRepository;
+import com.biopet.repository.UserRepository;
 import com.biopet.repository.VaccineRepository;
 import com.biopet.security.TokenBlacklistService;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 class VacunaControllerTest {
     @Autowired MockMvc mockMvc;
-    @Autowired UsuarioRepository usuarioRepository;
+    @Autowired UserRepository usuarioRepository;
     @Autowired PetRepository mascotaRepository;
     @Autowired VaccineRepository vacunaRepository;
     @Autowired AppointmentRepository citaRepository;
@@ -70,7 +70,7 @@ class VacunaControllerTest {
         vacunaRepository.deleteAll();
         mascotaRepository.deleteAll();
         usuarioRepository.deleteAll();
-        Usuario admin = Usuario.builder()
+        User admin = User.builder()
                 .nombre("Zaida Admin")
                 .email("admin.vacunas@biopet.com")
                 .passwordHash(passwordEncoder.encode("ClaveCorrecta123*"))
@@ -234,7 +234,7 @@ class VacunaControllerTest {
                                 """.formatted(email, password)))
                 .andExpect(status().isCreated());
         return usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new AssertionError("Usuario no encontrado tras registro: " + email))
+                .orElseThrow(() -> new AssertionError("User no encontrado tras registro: " + email))
                 .getId();
     }
 

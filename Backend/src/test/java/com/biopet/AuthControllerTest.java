@@ -1,8 +1,8 @@
 package com.biopet;
 
 import com.biopet.entity.Rol;
-import com.biopet.entity.Usuario;
-import com.biopet.repository.UsuarioRepository;
+import com.biopet.entity.User;
+import com.biopet.repository.UserRepository;
 import com.biopet.security.AuthenticationAuditService;
 import com.biopet.security.JwtService;
 import com.biopet.security.LoginRateLimiterService;
@@ -46,7 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 class AuthControllerTest {
     @Autowired MockMvc mockMvc;
-    @Autowired UsuarioRepository usuarioRepository;
+    @Autowired UserRepository usuarioRepository;
     @Autowired PasswordEncoder passwordEncoder;
     @Autowired JwtService jwtService;
     @Autowired LoginRateLimiterService loginRateLimiterService;
@@ -73,7 +73,7 @@ class AuthControllerTest {
     @BeforeEach
     void setUp() {
         usuarioRepository.deleteAll();
-        Usuario usuario = Usuario.builder()
+        User usuario = User.builder()
                 .nombre("Jaime Mariscal")
                 .email(EMAIL_VALIDO)
                 .passwordHash(passwordEncoder.encode(PASSWORD_VALIDO))

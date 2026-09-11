@@ -4,11 +4,11 @@ import com.biopet.entity.Appointment;
 import com.biopet.entity.AppointmentStatus;
 import com.biopet.entity.Pet;
 import com.biopet.entity.Rol;
-import com.biopet.entity.Usuario;
+import com.biopet.entity.User;
 import com.biopet.repository.AppointmentRepository;
 import com.biopet.repository.ConsultationRepository;
 import com.biopet.repository.PetRepository;
-import com.biopet.repository.UsuarioRepository;
+import com.biopet.repository.UserRepository;
 import com.biopet.security.TokenBlacklistService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,7 +51,7 @@ class CitaControllerTest {
     MockMvc mockMvc;
 
     @Autowired
-    UsuarioRepository usuarioRepository;
+    UserRepository usuarioRepository;
 
     @Autowired
     PetRepository mascotaRepository;
@@ -84,7 +84,7 @@ class CitaControllerTest {
         mascotaRepository.deleteAll();
         usuarioRepository.deleteAll();
 
-        Usuario admin = Usuario.builder()
+        User admin = User.builder()
                 .nombre("Jaime Mariscal")
                 .email(EMAIL_ADMIN)
                 .passwordHash(passwordEncoder.encode(PASSWORD_ADMIN))
@@ -706,7 +706,7 @@ class CitaControllerTest {
                 .findById(mascotaId)
                 .orElseThrow();
 
-        Usuario veterinario = usuarioRepository
+        User veterinario = usuarioRepository
                 .findById(veterinarioId)
                 .orElseThrow();
 
@@ -726,7 +726,7 @@ class CitaControllerTest {
             Long duenioId,
             String nombre
     ) {
-        Usuario duenio = usuarioRepository
+        User duenio = usuarioRepository
                 .findById(duenioId)
                 .orElseThrow();
 
@@ -751,7 +751,7 @@ class CitaControllerTest {
 
         return usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new AssertionError(
-                        "Usuario no encontrado tras crearlo: " + email
+                        "User no encontrado tras crearlo: " + email
                 ))
                 .getId();
     }
@@ -761,8 +761,8 @@ class CitaControllerTest {
             String password,
             Rol rol
     ) {
-        Usuario usuario = Usuario.builder()
-                .nombre("Usuario Prueba")
+        User usuario = User.builder()
+                .nombre("User Prueba")
                 .email(email)
                 .passwordHash(passwordEncoder.encode(password))
                 .rol(rol)

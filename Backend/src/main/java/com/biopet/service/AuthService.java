@@ -2,11 +2,11 @@ package com.biopet.service;
 
 import com.biopet.entity.Rol;
 import com.biopet.dto.*;
-import com.biopet.entity.Usuario;
+import com.biopet.entity.User;
 import com.biopet.exception.DuplicateEmailException;
 import com.biopet.exception.RateLimitExceededException;
 import com.biopet.exception.ResourceNotFoundException;
-import com.biopet.repository.UsuarioRepository;
+import com.biopet.repository.UserRepository;
 import com.biopet.security.AuthenticationAuditService;
 import com.biopet.security.JwtService;
 import com.biopet.security.LoginRateLimiterService;
@@ -29,11 +29,11 @@ import java.time.Instant;
  * {@link TokenBlacklistService} (revocation), {@link LoginRateLimiterService}
  * (per-IP failed-attempt rate limiting) and
  * {@link AuthenticationAuditService} (audit logging) around the persisted
- * {@link Usuario}.
+ * {@link User}.
  */
 @Service
 public class AuthService {
-    private final UsuarioRepository usuarioRepository;
+    private final UserRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
@@ -41,7 +41,7 @@ public class AuthService {
     private final LoginRateLimiterService loginRateLimiterService;
     private final AuthenticationAuditService authenticationAuditService;
 
-    public AuthService(UsuarioRepository usuarioRepository,
+    public AuthService(UserRepository usuarioRepository,
                        PasswordEncoder passwordEncoder,
                        AuthenticationManager authenticationManager,
                        JwtService jwtService,
@@ -68,18 +68,18 @@ public class AuthService {
      *         exists
      */
     @Transactional
-    public UsuarioResponse registrar(RegistrationRequest request) {
+    public UserResponse registrar(RegistrationRequest request) {
         if (usuarioRepository.existsByEmail(request.email())) {
             throw new DuplicateEmailException(request.email());
         }
-        Usuario usuario = Usuario.builder()
+        User usuario = User.builder()
                 .nombre(request.nombre())
                 .email(request.email().toLowerCase())
                 .passwordHash(passwordEncoder.encode(request.password()))
                 .rol(Rol.ROLE_DUENO)
                 .activo(true)
                 .build();
-        Usuario guardado = usuarioRepository.save(usuario);
+        User guardado = usuarioRepository.save(usuario);
         return toResponse(guardado);
     }
 
@@ -129,8 +129,8 @@ public class AuthService {
         loginRateLimiterService.reiniciar(ip);
         authenticationAuditService.loginExitoso(ip, authentication.getName());
 
-        Usuario usuario = usuarioRepository.findByEmailAndActivoTrue(authentication.getName())
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario autenticado no existe"));
+        User usuario = usuarioRepository.findByEmailAndActivoTrue(authentication.getName())
+                .orElseThrow(() -> new ResourceNotFoundException("User autenticado no existe"));
         return new AuthResponse(
                 jwtService.generateAccessToken(usuario),
                 jwtService.generateRefreshToken(usuario),
@@ -170,8 +170,8 @@ public class AuthService {
             if (blacklistService.isRevoked(jti)) {
                 throw new IllegalArgumentException("Refresh token revocado");
             }
-            Usuario usuario = usuarioRepository.findByEmailAndActivoTrue(emailVerificado)
-                    .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+            User usuario = usuarioRepository.findByEmailAndActivoTrue(emailVerificado)
+                    .orElseThrow(() -> new ResourceNotFoundException("User no encontrado"));
 
             authenticationAuditService.refreshExitoso(ip, emailVerificado);
             return new AuthResponse(jwtService.generateAccessToken(usuario), refreshToken, jwtService.getExpirationMs() / 1000);
@@ -222,13 +222,13 @@ public class AuthService {
      * @throws ResourceNotFoundException if no active user exists with
      *         that email
      */
-    public UsuarioResponse perfil(String email) {
-        Usuario usuario = usuarioRepository.findByEmailAndActivoTrue(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+    public UserResponse perfil(String email) {
+        User usuario = usuarioRepository.findByEmailAndActivoTrue(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User no encontrado"));
         return toResponse(usuario);
     }
 
-    private UsuarioResponse toResponse(Usuario usuario) {
-        return new UsuarioResponse(usuario.getId(), usuario.getNombre(), usuario.getEmail(), usuario.getRol(), usuario.isActivo());
+    private UserResponse toResponse(User usuario) {
+        return new UserResponse(usuario.getId(), usuario.getNombre(), usuario.getEmail(), usuario.getRol(), usuario.isActivo());
     }
 }

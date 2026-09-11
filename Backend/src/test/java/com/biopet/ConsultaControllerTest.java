@@ -3,11 +3,11 @@ package com.biopet;
 import com.biopet.entity.Consultation;
 import com.biopet.entity.Pet;
 import com.biopet.entity.Rol;
-import com.biopet.entity.Usuario;
+import com.biopet.entity.User;
 import com.biopet.repository.AppointmentRepository;
 import com.biopet.repository.ConsultationRepository;
 import com.biopet.repository.PetRepository;
-import com.biopet.repository.UsuarioRepository;
+import com.biopet.repository.UserRepository;
 import com.biopet.security.TokenBlacklistService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,7 +40,7 @@ class ConsultaControllerTest {
     MockMvc mockMvc;
 
     @Autowired
-    UsuarioRepository usuarioRepository;
+    UserRepository usuarioRepository;
 
     @Autowired
     PetRepository mascotaRepository;
@@ -67,7 +67,7 @@ class ConsultaControllerTest {
         mascotaRepository.deleteAll();
         usuarioRepository.deleteAll();
 
-        Usuario admin = Usuario.builder()
+        User admin = User.builder()
                 .nombre("Jaime Mariscal")
                 .email("jaime@biopet.com")
                 .passwordHash(passwordEncoder.encode("ClaveCorrecta123*"))
@@ -76,7 +76,7 @@ class ConsultaControllerTest {
                 .build();
         usuarioRepository.save(admin);
 
-        Usuario veterinario = Usuario.builder()
+        User veterinario = User.builder()
                 .nombre("Vet Real")
                 .email("vet@biopet.com")
                 .passwordHash(passwordEncoder.encode("ClaveVet123*"))
@@ -86,7 +86,7 @@ class ConsultaControllerTest {
 
         veterinarioId = usuarioRepository.save(veterinario).getId();
 
-        Usuario dueno = Usuario.builder()
+        User dueno = User.builder()
                 .nombre("Dueño Real")
                 .email("dueno@biopet.com")
                 .passwordHash(passwordEncoder.encode("ClaveDueno123*"))
@@ -94,7 +94,7 @@ class ConsultaControllerTest {
                 .activo(true)
                 .build();
 
-        Usuario duenoGuardado = usuarioRepository.save(dueno);
+        User duenoGuardado = usuarioRepository.save(dueno);
 
         Pet mascota = Pet.builder()
                 .duenio(duenoGuardado)
@@ -201,7 +201,7 @@ class ConsultaControllerTest {
                 .orElseThrow(() -> new AssertionError("Consultation no fue creada"))
                 .getId();
 
-        Usuario otroDueno = Usuario.builder()
+        User otroDueno = User.builder()
                 .nombre("Otro Dueño")
                 .email("otro.dueno@biopet.com")
                 .passwordHash(passwordEncoder.encode("ClaveOtro123*"))

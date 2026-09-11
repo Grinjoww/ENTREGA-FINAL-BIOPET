@@ -6,11 +6,11 @@ import com.biopet.entity.Appointment;
 import com.biopet.entity.AppointmentStatus;
 import com.biopet.entity.Pet;
 import com.biopet.entity.Rol;
-import com.biopet.entity.Usuario;
+import com.biopet.entity.User;
 import com.biopet.exception.ResourceNotFoundException;
 import com.biopet.repository.AppointmentRepository;
 import com.biopet.repository.PetRepository;
-import com.biopet.repository.UsuarioRepository;
+import com.biopet.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
@@ -35,9 +35,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class AppointmentService {
     private final AppointmentRepository citaRepository;
     private final PetRepository mascotaRepository;
-    private final UsuarioRepository usuarioRepository;
+    private final UserRepository usuarioRepository;
 
-    public AppointmentService(AppointmentRepository citaRepository, PetRepository mascotaRepository, UsuarioRepository usuarioRepository) {
+    public AppointmentService(AppointmentRepository citaRepository, PetRepository mascotaRepository, UserRepository usuarioRepository) {
         this.citaRepository = citaRepository;
         this.mascotaRepository = mascotaRepository;
         this.usuarioRepository = usuarioRepository;
@@ -54,7 +54,7 @@ public class AppointmentService {
      */
     @Transactional(readOnly = true)
     public Page<AppointmentResponse> listar(Pageable pageable, String email) {
-        Usuario usuario = usuarioActual(email);
+        User usuario = usuarioActual(email);
         if (usuario.getRol() == Rol.ROLE_DUENO) {
             return citaRepository.findAllByMascota_Duenio_IdAndActivoTrue(usuario.getId(), pageable).map(this::toResponse);
         }
@@ -73,7 +73,7 @@ public class AppointmentService {
      */
     @Transactional(readOnly = true)
     public AppointmentResponse buscar(Long id, String email) {
-        Usuario usuario = usuarioActual(email);
+        User usuario = usuarioActual(email);
         Appointment cita = citaRepository.findByIdAndActivoTrue(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Appointment no encontrada: " + id));
         verificarAccesoLectura(usuario, cita);
@@ -92,7 +92,7 @@ public class AppointmentService {
     @Transactional
     public AppointmentResponse crear(AppointmentRequest request) {
         Pet mascota = resolverMascota(request.mascotaId());
-        Usuario veterinario = resolverVeterinario(request.veterinarioId());
+        User veterinario = resolverVeterinario(request.veterinarioId());
 
         Appointment cita = Appointment.builder()
                 .mascota(mascota)
@@ -119,13 +119,13 @@ public class AppointmentService {
      */
     @Transactional
     public AppointmentResponse actualizar(Long id, AppointmentRequest request, String email) {
-        Usuario usuario = usuarioActual(email);
+        User usuario = usuarioActual(email);
         Appointment cita = citaRepository.findByIdAndActivoTrue(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Appointment no encontrada: " + id));
         verificarPermisoEscritura(usuario, cita);
 
         Pet mascota = resolverMascota(request.mascotaId());
-        Usuario veterinario = resolverVeterinario(request.veterinarioId());
+        User veterinario = resolverVeterinario(request.veterinarioId());
 
         cita.setMascota(mascota);
         cita.setVeterinario(veterinario);
@@ -150,9 +150,9 @@ public class AppointmentService {
         citaRepository.save(cita);
     }
 
-    private Usuario usuarioActual(String email) {
+    private User usuarioActual(String email) {
         return usuarioRepository.findByEmailAndActivoTrue(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado: " + email));
+                .orElseThrow(() -> new ResourceNotFoundException("User no encontrado: " + email));
     }
 
     private Pet resolverMascota(Long mascotaId) {
@@ -160,9 +160,9 @@ public class AppointmentService {
                 .orElseThrow(() -> new ResourceNotFoundException("Pet no encontrada: " + mascotaId));
     }
 
-    private Usuario resolverVeterinario(Long veterinarioId) {
-        Usuario veterinario = usuarioRepository.findById(veterinarioId)
-                .filter(Usuario::isActivo)
+    private User resolverVeterinario(Long veterinarioId) {
+        User veterinario = usuarioRepository.findById(veterinarioId)
+                .filter(User::isActivo)
                 .orElseThrow(() -> new ResourceNotFoundException("Veterinario no encontrado: " + veterinarioId));
         if (veterinario.getRol() != Rol.ROLE_VETERINARIO) {
             throw new IllegalArgumentException(
@@ -175,13 +175,13 @@ public class AppointmentService {
         return rol == Rol.ROLE_ADMIN || rol == Rol.ROLE_VETERINARIO || rol == Rol.ROLE_AUXILIAR;
     }
 
-    private void verificarAccesoLectura(Usuario usuario, Appointment cita) {
+    private void verificarAccesoLectura(User usuario, Appointment cita) {
         if (!tieneAccesoGlobal(usuario.getRol()) && !cita.getMascota().getDuenio().getId().equals(usuario.getId())) {
             throw new AccessDeniedException("No tiene permisos para acceder a esta cita.");
         }
     }
 
-    private void verificarPermisoEscritura(Usuario usuario, Appointment cita) {
+    private void verificarPermisoEscritura(User usuario, Appointment cita) {
         if (usuario.getRol() == Rol.ROLE_VETERINARIO && !cita.getVeterinario().getId().equals(usuario.getId())) {
             throw new AccessDeniedException("Solo puede modificar las citas asignadas a usted.");
         }

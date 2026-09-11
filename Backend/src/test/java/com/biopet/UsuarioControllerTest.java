@@ -1,8 +1,8 @@
 package com.biopet;
 
 import com.biopet.entity.Rol;
-import com.biopet.entity.Usuario;
-import com.biopet.repository.UsuarioRepository;
+import com.biopet.entity.User;
+import com.biopet.repository.UserRepository;
 import com.biopet.security.TokenBlacklistService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 class UsuarioControllerTest {
     @Autowired MockMvc mockMvc;
-    @Autowired UsuarioRepository usuarioRepository;
+    @Autowired UserRepository usuarioRepository;
     @Autowired PasswordEncoder passwordEncoder;
 
     @MockBean TokenBlacklistService tokenBlacklistService;
@@ -51,7 +51,7 @@ class UsuarioControllerTest {
     @BeforeEach
     void setUp() {
         usuarioRepository.deleteAll();
-        Usuario admin = Usuario.builder()
+        User admin = User.builder()
                 .nombre("Jaime Mariscal")
                 .email(EMAIL_ADMIN)
                 .passwordHash(passwordEncoder.encode(PASSWORD_ADMIN))
@@ -222,7 +222,7 @@ class UsuarioControllerTest {
                 .andExpect(content().contentType("application/problem+json;charset=UTF-8"))
                 .andExpect(jsonPath("$.type").value("urn:biopet:error:forbidden"));
 
-        Usuario adminSinCambios = usuarioRepository.findByEmail(EMAIL_ADMIN).orElseThrow();
+        User adminSinCambios = usuarioRepository.findByEmail(EMAIL_ADMIN).orElseThrow();
         org.junit.jupiter.api.Assertions.assertEquals(Rol.ROLE_ADMIN, adminSinCambios.getRol());
     }
 
@@ -235,7 +235,7 @@ class UsuarioControllerTest {
                         .header("Authorization", "Bearer " + tokenAdmin))
                 .andExpect(status().isNoContent());
 
-        Usuario usuarioEliminado = usuarioRepository.findById(duenoId)
+        User usuarioEliminado = usuarioRepository.findById(duenoId)
                 .orElseThrow(() -> new AssertionError("El usuario fue eliminado físicamente de la base de datos: " + duenoId));
         assertFalse(usuarioEliminado.isActivo());
 
@@ -302,8 +302,8 @@ class UsuarioControllerTest {
     }
 
     private Long registrarUsuarioYObtenerId(String email, String password, Rol rol) {
-        Usuario usuario = Usuario.builder()
-                .nombre("Usuario Prueba")
+        User usuario = User.builder()
+                .nombre("User Prueba")
                 .email(email)
                 .passwordHash(passwordEncoder.encode(password))
                 .rol(rol)

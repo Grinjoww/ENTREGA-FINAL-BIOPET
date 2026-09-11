@@ -1,7 +1,7 @@
 package com.biopet;
 
 import com.biopet.entity.Rol;
-import com.biopet.entity.Usuario;
+import com.biopet.entity.User;
 import com.biopet.security.AuthenticationAuditService;
 import com.biopet.security.JwtService;
 import com.biopet.security.TokenBlacklistService;
@@ -139,9 +139,9 @@ class JwtCookieAuthenticationTest {
 
     @Test
     void tokenExpiradoNoInvocaAuditoriaDeRevocacion() throws Exception {
-        Usuario usuarioDePrueba = Usuario.builder()
+        User usuarioDePrueba = User.builder()
                 .id(999L)
-                .nombre("Usuario Expirado")
+                .nombre("User Expirado")
                 .email("cookie.expirada@biopet.com")
                 .passwordHash("hash-irrelevante-para-esta-prueba")
                 .rol(Rol.ROLE_DUENO)
@@ -188,7 +188,7 @@ class JwtCookieAuthenticationTest {
         mockMvc.perform(post("/api/auth/registro")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
-                                {"nombre":"Usuario Prueba","email":"%s","password":"%s","rol":"ROLE_DUENO"}
+                                {"nombre":"User Prueba","email":"%s","password":"%s","rol":"ROLE_DUENO"}
                                 """.formatted(email, password)))
                 .andExpect(status().isCreated());
     }

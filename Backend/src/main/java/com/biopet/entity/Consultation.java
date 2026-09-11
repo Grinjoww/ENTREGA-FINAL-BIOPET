@@ -23,7 +23,7 @@ public class Consultation {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "veterinario_id", nullable = false)
-    private Usuario veterinario;
+    private User veterinario;
 
     @Column(name = "fecha_consulta", nullable = false)
     private Instant fechaConsulta;

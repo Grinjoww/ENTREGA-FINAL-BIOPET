@@ -47,7 +47,7 @@ public class Pet {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "duenio_id", nullable = false)
-    private Usuario duenio;
+    private User duenio;
 
     @Column(nullable = false, length = 50)
     private String nombre;

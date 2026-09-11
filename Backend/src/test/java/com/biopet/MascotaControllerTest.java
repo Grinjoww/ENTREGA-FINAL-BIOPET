@@ -2,11 +2,11 @@ package com.biopet;
 
 import com.biopet.entity.Pet;
 import com.biopet.entity.Rol;
-import com.biopet.entity.Usuario;
+import com.biopet.entity.User;
 import com.biopet.repository.AppointmentRepository;
 import com.biopet.repository.ConsultationRepository;
 import com.biopet.repository.PetRepository;
-import com.biopet.repository.UsuarioRepository;
+import com.biopet.repository.UserRepository;
 import com.biopet.security.TokenBlacklistService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,7 +43,7 @@ class MascotaControllerTest {
     MockMvc mockMvc;
 
     @Autowired
-    UsuarioRepository usuarioRepository;
+    UserRepository usuarioRepository;
 
     @Autowired
     PetRepository mascotaRepository;
@@ -69,7 +69,7 @@ class MascotaControllerTest {
         mascotaRepository.deleteAll();
         usuarioRepository.deleteAll();
 
-        Usuario usuario = Usuario.builder()
+        User usuario = User.builder()
                 .nombre("Jaime Mariscal")
                 .email("jaime@biopet.com")
                 .passwordHash(passwordEncoder.encode("ClaveCorrecta123*"))
@@ -829,7 +829,7 @@ class MascotaControllerTest {
 
         return usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new AssertionError(
-                        "Usuario no encontrado tras crearlo: " + email
+                        "User no encontrado tras crearlo: " + email
                 ))
                 .getId();
     }
@@ -839,14 +839,14 @@ class MascotaControllerTest {
             String password,
             Rol rol
     ) {
-        Usuario usuario = Usuario.builder()
-                .nombre("Usuario Inactivo")
+        User usuario = User.builder()
+                .nombre("User Inactivo")
                 .email(email)
                 .passwordHash(passwordEncoder.encode(password))
                 .rol(rol)
                 .build();
 
-        Usuario guardado = usuarioRepository.save(usuario);
+        User guardado = usuarioRepository.save(usuario);
         guardado.setActivo(false);
 
         return usuarioRepository.save(guardado).getId();
@@ -874,8 +874,8 @@ class MascotaControllerTest {
             String password,
             Rol rol
     ) {
-        Usuario usuario = Usuario.builder()
-                .nombre("Usuario Prueba")
+        User usuario = User.builder()
+                .nombre("User Prueba")
                 .email(email)
                 .passwordHash(passwordEncoder.encode(password))
                 .rol(rol)
@@ -899,7 +899,7 @@ class MascotaControllerTest {
 
         return usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new AssertionError(
-                        "Usuario no encontrado tras registro: " + email
+                        "User no encontrado tras registro: " + email
                 ))
                 .getId();
     }

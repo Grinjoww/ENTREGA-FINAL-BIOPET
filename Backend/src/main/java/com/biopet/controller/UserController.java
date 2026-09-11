@@ -1,9 +1,9 @@
 package com.biopet.controller;
 
-import com.biopet.dto.UsuarioRequest;
-import com.biopet.dto.UsuarioResponse;
+import com.biopet.dto.UserRequest;
+import com.biopet.dto.UserResponse;
 import com.biopet.service.AuthService;
-import com.biopet.service.UsuarioService;
+import com.biopet.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,11 +21,11 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api/usuarios")
-public class UsuarioController {
+public class UserController {
     private final AuthService authService;
-    private final UsuarioService usuarioService;
+    private final UserService usuarioService;
 
-    public UsuarioController(AuthService authService, UsuarioService usuarioService) {
+    public UserController(AuthService authService, UserService usuarioService) {
         this.authService = authService;
         this.usuarioService = usuarioService;
     }
@@ -37,7 +37,7 @@ public class UsuarioController {
      * @return the authenticated user's own profile
      */
     @GetMapping("/me")
-    public UsuarioResponse me(@AuthenticationPrincipal UserDetails userDetails) {
+    public UserResponse me(@AuthenticationPrincipal UserDetails userDetails) {
         return authService.perfil(userDetails.getUsername());
     }
 
@@ -49,7 +49,7 @@ public class UsuarioController {
      */
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public Page<UsuarioResponse> listar(Pageable pageable) {
+    public Page<UserResponse> listar(Pageable pageable) {
         return usuarioService.listar(pageable);
     }
 
@@ -62,7 +62,7 @@ public class UsuarioController {
      */
     @GetMapping("/{id:\\d+}")
     @PreAuthorize("hasRole('ADMIN')")
-    public UsuarioResponse buscar(@PathVariable Long id) {
+    public UserResponse buscar(@PathVariable Long id) {
         return usuarioService.buscar(id);
     }
 
@@ -76,7 +76,7 @@ public class UsuarioController {
      */
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<UsuarioResponse> crear(@Valid @RequestBody UsuarioRequest request) {
+    public ResponseEntity<UserResponse> crear(@Valid @RequestBody UserRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.crear(request));
     }
 
@@ -93,7 +93,7 @@ public class UsuarioController {
      */
     @PutMapping("/{id:\\d+}")
     @PreAuthorize("hasRole('ADMIN')")
-    public UsuarioResponse actualizar(@PathVariable Long id, @Valid @RequestBody UsuarioRequest request,
+    public UserResponse actualizar(@PathVariable Long id, @Valid @RequestBody UserRequest request,
                                        @AuthenticationPrincipal UserDetails userDetails) {
         return usuarioService.actualizar(id, request, userDetails.getUsername());
     }

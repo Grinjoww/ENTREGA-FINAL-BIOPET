@@ -1,11 +1,11 @@
 package com.biopet;
 
 import com.biopet.entity.Rol;
-import com.biopet.entity.Usuario;
+import com.biopet.entity.User;
 import com.biopet.repository.AppointmentRepository;
 import com.biopet.repository.ConsultationRepository;
 import com.biopet.repository.PetRepository;
-import com.biopet.repository.UsuarioRepository;
+import com.biopet.repository.UserRepository;
 import com.biopet.security.LoginRateLimiterService;
 import com.biopet.security.TokenBlacklistService;
 import org.junit.jupiter.api.BeforeEach;
@@ -85,7 +85,7 @@ class SqlInjectionSecurityTest {
     MockMvc mockMvc;
 
     @Autowired
-    UsuarioRepository usuarioRepository;
+    UserRepository usuarioRepository;
 
     @Autowired
     PetRepository mascotaRepository;
@@ -114,7 +114,7 @@ class SqlInjectionSecurityTest {
         mascotaRepository.deleteAll();
         usuarioRepository.deleteAll();
 
-        Usuario usuario = Usuario.builder()
+        User usuario = User.builder()
                 .nombre("Jaime Mariscal")
                 .email(EMAIL_VALIDO)
                 .passwordHash(passwordEncoder.encode(PASSWORD_VALIDO))

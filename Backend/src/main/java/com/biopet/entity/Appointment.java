@@ -28,7 +28,7 @@ public class Appointment {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "veterinario_id", nullable = false)
-    private Usuario veterinario;
+    private User veterinario;
 
     @Column(name = "fecha_hora", nullable = false)
     private Instant fechaHora;
