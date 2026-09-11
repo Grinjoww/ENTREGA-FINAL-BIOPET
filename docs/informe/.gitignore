@@ -2,6 +2,11 @@
 # Los PDF finales SI se versionan, directamente en esta carpeta:
 # docs/informe/informe-final-v1.0.0.pdf (vigente) y
 # docs/informe/informe-entrega-3.pdf (historico, Tercera Entrega).
+
+# Generado por scripts/gen-informe-commit-info.py (commit/fecha del HEAD
+# real usados por caratula-entrega-final.tex); depende del checkout, no
+# se versiona.
+commit-info.tex
 *.aux
 *.log
 *.out

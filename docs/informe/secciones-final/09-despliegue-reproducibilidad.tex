@@ -93,8 +93,8 @@ docker pull ghcr.io/grinjoww/entregafinal-biopet-backend@sha256:ef1e857a95a307a1
 \end{verbatim}
 }
 
-El tag Git \texttt{v1.0.0} ya fue creado y publicado (apunta al commit
-\texttt{0d5cd52}, estado hist\'orico de cierre de la Entrega Final; ver
+El tag Git \texttt{v1.0.0} ya fue creado y publicado (identifica el
+commit evaluado al cierre de esta entrega/recalificaci\'on; ver
 secci\'on~\ref{sec:pendientes-honestos-publicacion}). Las etiquetas
 \texttt{1.0.0} y \texttt{latest} en GHCR se publican autom\'aticamente
 por el mismo workflow ante ese \emph{push} de tag; \texttt{sha-fe2f033}
@@ -126,21 +126,25 @@ Esto cierra la observaci\'on OBS-10 (archivado en Zenodo pendiente,
 Tercera Entrega), registrada como CERRADA en
 \texttt{docs/observaciones/OBSERVACIONES.md}.
 
-\section{Estado de publicaci\'on del tag hist\'orico}
+\section{Estado de publicaci\'on del tag}
 \label{sec:pendientes-honestos-publicacion}
 
-El tag Git \texttt{v1.0.0} \textbf{ya existe y ya fue publicado}: apunta
-al commit \texttt{0d5cd52}
-(verificable con \texttt{git rev-list -n 1 v1.0.0}), que registra el
-estado hist\'orico de cierre de la Entrega Final. Ese tag es inmutable:
-las correcciones de retroalimentaci\'on y de recalificaci\'on posteriores
-a su publicaci\'on (incluida la redacci\'on de este propio p\'arrafo) se
-realizan sobre commits subsiguientes de la rama de trabajo, sin mover,
-borrar ni recrear \texttt{v1.0.0}. A la fecha de cierre de este documento:
+El tag Git \texttt{v1.0.0} \textbf{ya existe y ya fue publicado}
+(verificable con \texttt{git rev-list -n 1 v1.0.0}). Se cre\'o
+originalmente el 2026-08-18 sobre el commit hist\'orico \texttt{0d5cd52},
+registrando el cierre de la Entrega Final original. Conforme a la
+r\'ubrica de esta recalificaci\'on -- que eval\'ua el commit al que
+apunte \texttt{v1.0.0} al cierre del examen final --, ese mismo tag se
+actualiza (\texttt{git tag -f}) para identificar el commit final de esta
+rama de correcciones, sin cambiar su nombre (\texttt{v1.0.0}) ni crear un
+tag adicional. El commit hist\'orico \texttt{0d5cd52} permanece
+documentado como tal (por ejemplo, en las cifras de pruebas y cobertura
+de la Entrega Final original citadas en el cap\'itulo~\ref{cap:pruebas-calidad}),
+aunque el tag ya no apunte a \'el una vez movido. A la fecha de
+cierre de este documento:
 
 \begin{itemize}[nosep]
-  \item El tag Git \texttt{v1.0.0} existe en el repositorio y apunta al
-    commit \texttt{0d5cd52}.
+  \item El tag Git \texttt{v1.0.0} existe en el repositorio.
   \item Al publicarse ese tag (\texttt{git push --tags}), el workflow
     \texttt{ghcr-publish.yml} publica autom\'aticamente las etiquetas
     \texttt{1.0.0} y \texttt{latest} en GHCR, sin intervenci\'on manual
