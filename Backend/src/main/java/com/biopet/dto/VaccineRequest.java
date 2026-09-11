@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
-public record VacunaRequest(
+public record VaccineRequest(
         @NotNull Long mascotaId,
         Long veterinarioId,
         @NotBlank @Size(max = 60) String tipo,

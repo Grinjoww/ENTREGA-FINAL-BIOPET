@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
 
-public record VacunaResponse(
+public record VaccineResponse(
         Long id,
         Long mascotaId,
         String mascotaNombre,

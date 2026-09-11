@@ -109,7 +109,7 @@ class ProcedimientosBiopetIntegrationTest {
     @Autowired
     ConsultaRepository consultaRepository;
     @Autowired
-    VacunaRepository vacunaRepository;
+    VaccineRepository vacunaRepository;
     @Autowired
     EntityManager entityManager;
 

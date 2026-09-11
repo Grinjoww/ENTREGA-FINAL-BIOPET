@@ -1,7 +1,7 @@
 package com.biopet.service;
 
-import com.biopet.dto.VacunaRequest;
-import com.biopet.dto.VacunaResponse;
+import com.biopet.dto.VaccineRequest;
+import com.biopet.dto.VaccineResponse;
 import com.biopet.entity.Mascota;
 import com.biopet.entity.Rol;
 import com.biopet.entity.Usuario;
@@ -9,7 +9,7 @@ import com.biopet.entity.Vaccine;
 import com.biopet.exception.ResourceNotFoundException;
 import com.biopet.repository.MascotaRepository;
 import com.biopet.repository.UsuarioRepository;
-import com.biopet.repository.VacunaRepository;
+import com.biopet.repository.VaccineRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
@@ -26,12 +26,12 @@ import org.springframework.transaction.annotation.Transactional;
  * </ul>
  */
 @Service
-public class VacunaService {
-    private final VacunaRepository vacunaRepository;
+public class VaccineService {
+    private final VaccineRepository vacunaRepository;
     private final MascotaRepository mascotaRepository;
     private final UsuarioRepository usuarioRepository;
 
-    public VacunaService(VacunaRepository vacunaRepository,
+    public VaccineService(VaccineRepository vacunaRepository,
                           MascotaRepository mascotaRepository,
                           UsuarioRepository usuarioRepository) {
         this.vacunaRepository = vacunaRepository;
@@ -49,7 +49,7 @@ public class VacunaService {
      * @throws com.biopet.exception.ResourceNotFoundException if the authenticated user cannot be resolved
      */
     @Transactional(readOnly = true)
-    public Page<VacunaResponse> listar(Pageable pageable, String email) {
+    public Page<VaccineResponse> listar(Pageable pageable, String email) {
         Usuario usuario = usuarioActivo(email);
         if (usuario.getRol() == Rol.ROLE_DUENO) {
             return vacunaRepository.findAllByMascota_Duenio_IdAndActivoTrue(usuario.getId(), pageable)
@@ -70,7 +70,7 @@ public class VacunaService {
      * @throws org.springframework.security.access.AccessDeniedException if the user does not have access to this pet
      */
     @Transactional(readOnly = true)
-    public Page<VacunaResponse> listarPorMascota(Long mascotaId, Pageable pageable, String email) {
+    public Page<VaccineResponse> listarPorMascota(Long mascotaId, Pageable pageable, String email) {
         Usuario usuario = usuarioActivo(email);
         Mascota mascota = mascotaActiva(mascotaId);
         verificarAcceso(usuario, mascota);
@@ -88,7 +88,7 @@ public class VacunaService {
      * @throws org.springframework.security.access.AccessDeniedException if the user does not have access to the associated pet
      */
     @Transactional(readOnly = true)
-    public VacunaResponse buscar(Long id, String email) {
+    public VaccineResponse buscar(Long id, String email) {
         Usuario usuario = usuarioActivo(email);
         Vaccine vacuna = vacunaActiva(id);
         verificarAcceso(usuario, vacuna.getMascota());
@@ -105,7 +105,7 @@ public class VacunaService {
      * @throws IllegalArgumentException if the referenced veterinarian does not have role ROLE_VETERINARIO
      */
     @Transactional
-    public VacunaResponse crear(VacunaRequest request) {
+    public VaccineResponse crear(VaccineRequest request) {
         Mascota mascota = mascotaActiva(request.mascotaId());
         Usuario veterinario = resolverVeterinario(request.veterinarioId());
         Vaccine vacuna = Vaccine.builder()
@@ -133,7 +133,7 @@ public class VacunaService {
      * @throws IllegalArgumentException if the referenced veterinarian does not have role ROLE_VETERINARIO
      */
     @Transactional
-    public VacunaResponse actualizar(Long id, VacunaRequest request, String email) {
+    public VaccineResponse actualizar(Long id, VaccineRequest request, String email) {
         Usuario usuario = usuarioActivo(email);
         Vaccine vacuna = vacunaActiva(id);
         verificarAcceso(usuario, vacuna.getMascota());
@@ -207,9 +207,9 @@ public class VacunaService {
         }
     }
 
-    private VacunaResponse toResponse(Vaccine vacuna) {
+    private VaccineResponse toResponse(Vaccine vacuna) {
         Usuario veterinario = vacuna.getVeterinario();
-        return new VacunaResponse(
+        return new VaccineResponse(
                 vacuna.getId(),
                 vacuna.getMascota().getId(),
                 vacuna.getMascota().getNombre(),

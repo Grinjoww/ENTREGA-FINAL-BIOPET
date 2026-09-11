@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface VacunaRepository extends JpaRepository<Vaccine, Long> {
+public interface VaccineRepository extends JpaRepository<Vaccine, Long> {
     Page<Vaccine> findAllByActivoTrue(Pageable pageable);
 
     Page<Vaccine> findAllByMascotaIdAndActivoTrue(Long mascotaId, Pageable pageable);

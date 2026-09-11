@@ -8,7 +8,7 @@ import com.biopet.repository.CitaRepository;
 import com.biopet.repository.ConsultaRepository;
 import com.biopet.repository.MascotaRepository;
 import com.biopet.repository.UsuarioRepository;
-import com.biopet.repository.VacunaRepository;
+import com.biopet.repository.VaccineRepository;
 import com.biopet.security.TokenBlacklistService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,7 +44,7 @@ class VacunaControllerTest {
     @Autowired MockMvc mockMvc;
     @Autowired UsuarioRepository usuarioRepository;
     @Autowired MascotaRepository mascotaRepository;
-    @Autowired VacunaRepository vacunaRepository;
+    @Autowired VaccineRepository vacunaRepository;
     @Autowired CitaRepository citaRepository;
     @Autowired ConsultaRepository consultaRepository;
     @Autowired PasswordEncoder passwordEncoder;
