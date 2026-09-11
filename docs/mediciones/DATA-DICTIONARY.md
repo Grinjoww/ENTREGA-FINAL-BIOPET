@@ -9,8 +9,9 @@ la sección correspondiente a su área.
 
 ## Rendimiento (`docs/mediciones/perf/`) — responsable: Fred
 
-Fuente: `k6-runN-{frio,caliente}.json` (datos crudos de k6), agregados por
-`scripts/perf-analysis.py` en `docs/mediciones/perf/REPORT.md`.
+Fuente: `k6-<fecha>-<entorno>-<version>-{frio,caliente}-<NN>.json` (datos
+crudos de k6, esquema de nombre real vigente — ver `k6/README.md`),
+agregados por `scripts/perf-analysis.py` en `docs/mediciones/perf/REPORT.md`.
 
 | Variable | Tipo de dato | Unidad | Rango esperado | Significado |
 |---|---|---|---|---|

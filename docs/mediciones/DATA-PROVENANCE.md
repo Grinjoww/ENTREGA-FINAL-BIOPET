@@ -38,7 +38,7 @@ datos que ya existen en el repositorio, verificado contra su origen real.
 |---|---|
 | Generado por | k6 (`k6 run k6/listado-mascotas.js`), 50 VUs, ~30–35 s por corrida |
 | Responsable | Fred Beltrán Montiel |
-| Fecha de generación | 2026-09-03 (corridas `k6-20260903T*-local-tls-v1.0.0-*`); corridas históricas `k6-20260817T*` y `k6-run{1,2,3}-{frio,caliente}.json` conservadas para comparación histórica |
+| Fecha de generación | 2026-09-03 (corridas `k6-20260903T*-local-tls-v1.0.0-*`); corridas históricas `k6-20260817T*-local-tls-v0.9.0-rc-*` conservadas para comparación histórica |
 | Entrada | Backend real vía `https://localhost:8443` (perfil `tls`, `docker-compose.tls.yml`), no un mock ni un stub |
 | Transformación aplicada | Agregación estadística (media, mediana, IC95% con distribución t de Student vía `scipy.stats.t`, percentiles, Wilcoxon pareado + corrección Holm-Bonferroni, Mann-Whitney U sensitivity) realizada por `scripts/perf-analysis.py` sobre los JSON crudos de k6, volcada a `REPORT.md` y `grafico.svg` |
 | Archivo crudo sin transformar | Los `.json` individuales (`k6-20260903T*.json`) — **no se editan manualmente**; son la salida directa de k6 |

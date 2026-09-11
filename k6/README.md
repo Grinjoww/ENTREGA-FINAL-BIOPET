@@ -51,8 +51,11 @@ k6-20260817T153000-local-tls-v0.9.0-rc-caliente-01.json
 k6-20260817T153000-local-tls-v0.9.0-rc-frio-01.json
 ```
 
-Nota: los archivos historicos `k6-run1..3-{caliente,frio}.json` del commit
-d7ae051 conservan su nombre original (evidencia previa, no se renombran).
+Nota: los archivos historicos `k6-run1..3-{caliente,frio}.json` (agregados en
+el commit d7ae051) ya no existen en el repositorio: fueron eliminados en el
+commit `0e28305` ("chore (data): limpiar 6 corridas k6 obsoletas"). Las
+corridas vigentes son las que siguen el esquema de nombre de esta sección,
+presentes en `docs/mediciones/perf/` (`v0.9.0-rc` y `v1.0.0`).
 
 ## Como correr las corridas oficiales
 
