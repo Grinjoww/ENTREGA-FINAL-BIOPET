@@ -11,6 +11,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class OpenApiConfig {
 
+    /**
+     * Builds the OpenAPI definition served under {@code /api/openapi} and rendered
+     * by Swagger UI, declaring the bearer JWT security scheme used by the API.
+     *
+     * @return the application OpenAPI definition
+     */
     @Bean
     public OpenAPI biopetOpenAPI() {
         final String securitySchemeName = "bearerAuth";

@@ -31,6 +31,13 @@ public class VaccineService {
     private final PetRepository mascotaRepository;
     private final UserRepository usuarioRepository;
 
+    /**
+     * Creates the service with the repositories used by vaccine use cases.
+     *
+     * @param vacunaRepository persistence of vaccine records
+     * @param mascotaRepository persistence of pets, used for ownership checks
+     * @param usuarioRepository persistence of users, used for role checks
+     */
     public VaccineService(VaccineRepository vacunaRepository,
                           PetRepository mascotaRepository,
                           UserRepository usuarioRepository) {

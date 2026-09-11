@@ -19,6 +19,11 @@ public enum ProblemType {
         this.uri = URI.create(urn);
     }
 
+    /**
+     * Returns the URN identifying this error type in problem responses.
+     *
+     * @return the {@code urn:biopet:error:*} identifier of the type
+     */
     public URI uri() {
         return uri;
     }

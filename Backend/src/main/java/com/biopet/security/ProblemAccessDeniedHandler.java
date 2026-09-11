@@ -19,10 +19,23 @@ import java.nio.charset.StandardCharsets;
 public class ProblemAccessDeniedHandler implements AccessDeniedHandler {
     private final ObjectMapper objectMapper;
 
+    /**
+     * Creates the handler with the JSON mapper used for problem responses.
+     *
+     * @param objectMapper mapper serializing problem details to the response body
+     */
     public ProblemAccessDeniedHandler(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 
+    /**
+     * Renders an authenticated but unauthorized request as an RFC 7807 forbidden response.
+     *
+     * @param request the incoming HTTP request
+     * @param response the HTTP response receiving the problem body
+     * @param accessDeniedException the authorization failure raised by Spring Security
+     * @throws IOException if the problem body cannot be written
+     */
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response,
                         AccessDeniedException accessDeniedException) throws IOException {

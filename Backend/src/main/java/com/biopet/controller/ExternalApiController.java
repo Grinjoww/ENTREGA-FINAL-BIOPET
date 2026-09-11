@@ -19,6 +19,11 @@ public class ExternalApiController {
 
     private final ExternalApiService externalApiService;
 
+    /**
+     * Creates the controller with the external species service.
+     *
+     * @param externalApiService cached lookup of external species information
+     */
     public ExternalApiController(ExternalApiService externalApiService) {
         this.externalApiService = externalApiService;
     }

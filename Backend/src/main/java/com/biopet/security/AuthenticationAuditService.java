@@ -26,30 +26,72 @@ public class AuthenticationAuditService {
     private static final String RESULT_FAILURE = "FAILURE";
     private static final String RESULT_BLOCKED = "BLOCKED";
 
+    /**
+     * Records a successful login.
+     *
+     * @param ip client address of the request, or {@code unknown} when unavailable
+     * @param subject authenticated user email, or {@code unknown} when unavailable
+     */
     public void loginSucceeded(String ip, String subject) {
         logger.info(format(EVENT_LOGIN_SUCCEEDED, RESULT_SUCCESS, ip, subject));
     }
 
+    /**
+     * Records a failed login attempt.
+     *
+     * @param ip client address of the request, or {@code unknown} when unavailable
+     * @param subject attempted user email, or {@code unknown} when unavailable
+     */
     public void loginFailed(String ip, String subject) {
         logger.warn(format(EVENT_LOGIN_FAILED, RESULT_FAILURE, ip, subject));
     }
 
+    /**
+     * Records a login rejected by rate limiting.
+     *
+     * @param ip client address of the request, or {@code unknown} when unavailable
+     * @param subject attempted user email, or {@code unknown} when unavailable
+     */
     public void loginBlocked(String ip, String subject) {
         logger.warn(format(EVENT_LOGIN_BLOCKED, RESULT_BLOCKED, ip, subject));
     }
 
+    /**
+     * Records a successful token refresh.
+     *
+     * @param ip client address of the request, or {@code unknown} when unavailable
+     * @param subject authenticated user email, or {@code unknown} when unavailable
+     */
     public void refreshSucceeded(String ip, String subject) {
         logger.info(format(EVENT_REFRESH_SUCCEEDED, RESULT_SUCCESS, ip, subject));
     }
 
+    /**
+     * Records a failed token refresh.
+     *
+     * @param ip client address of the request, or {@code unknown} when unavailable
+     * @param subject attempted user email, or {@code unknown} when unavailable
+     */
     public void refreshFailed(String ip, String subject) {
         logger.warn(format(EVENT_REFRESH_FAILED, RESULT_FAILURE, ip, subject));
     }
 
+    /**
+     * Records a successful logout.
+     *
+     * @param ip client address of the request, or {@code unknown} when unavailable
+     * @param subject authenticated user email, or {@code unknown} when unavailable
+     */
     public void logoutSucceeded(String ip, String subject) {
         logger.info(format(EVENT_LOGOUT_SUCCEEDED, RESULT_SUCCESS, ip, subject));
     }
 
+    /**
+     * Records the revocation of a refresh token.
+     *
+     * @param ip client address of the request, or {@code unknown} when unavailable
+     * @param subject owner email of the revoked token, or {@code unknown} when unavailable
+     */
     public void tokenRevoked(String ip, String subject) {
         logger.warn(format(EVENT_TOKEN_REVOKED, RESULT_BLOCKED, ip, subject));
     }

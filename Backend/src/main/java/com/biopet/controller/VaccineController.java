@@ -23,6 +23,11 @@ import org.springframework.web.bind.annotation.*;
 public class VaccineController {
     private final VaccineService vacunaService;
 
+    /**
+     * Creates the controller with the vaccine service.
+     *
+     * @param vacunaService service handling vaccine use cases
+     */
     public VaccineController(VaccineService vacunaService) {
         this.vacunaService = vacunaService;
     }

@@ -39,6 +39,14 @@ public class SecurityConfig {
     @Value("${app.cors.allowed-origins}")
     private String allowedOrigins;
 
+    /**
+     * Creates the security configuration with its collaborator beans.
+     *
+     * @param jwtAuthenticationFilter filter that validates the JWT access cookie on each request
+     * @param userDetailsService service that loads user credentials and authorities for authentication
+     * @param problemAuthenticationEntryPoint entry point that renders 401 failures as RFC 7807 problem responses
+     * @param problemAccessDeniedHandler handler that renders 403 failures as RFC 7807 problem responses
+     */
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
                           UserDetailsServiceImpl userDetailsService,
                           ProblemAuthenticationEntryPoint problemAuthenticationEntryPoint,
@@ -49,6 +57,19 @@ public class SecurityConfig {
         this.problemAccessDeniedHandler = problemAccessDeniedHandler;
     }
 
+    /**
+     * Builds the application security filter chain.
+     *
+     * <p>Disables CSRF (the API authenticates with {@code HttpOnly} cookies, not
+     * form sessions), enforces stateless sessions, applies the security headers
+     * (frame options, content type options, content security policy, HSTS and
+     * referrer policy), and allows anonymous access only to the authentication,
+     * documentation and health endpoints; every other request must be authenticated.
+     *
+     * @param http the security builder to configure
+     * @return the configured filter chain
+     * @throws Exception if the chain cannot be built
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -91,6 +112,12 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /**
+     * Builds the CORS policy from the configured allowed origins.
+     *
+     * @return source allowing the configured origins with credentials and the
+     *         HTTP methods and headers used by the frontend
+     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -104,6 +131,11 @@ public class SecurityConfig {
         return source;
     }
 
+    /**
+     * Builds the DAO authentication provider used for email and password login.
+     *
+     * @return provider wired to the application user details service with BCrypt verification
+     */
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -112,11 +144,23 @@ public class SecurityConfig {
         return provider;
     }
 
+    /**
+     * Exposes the authentication manager assembled by Spring Security.
+     *
+     * @param configuration the framework authentication configuration
+     * @return the application authentication manager
+     * @throws Exception if the manager cannot be assembled
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
 
+    /**
+     * Provides the password encoder used to hash and verify user passwords.
+     *
+     * @return BCrypt encoder with strength 12
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);

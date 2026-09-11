@@ -22,6 +22,13 @@ public class LoginRateLimiterService {
 
     private final ConcurrentHashMap<String, State> states = new ConcurrentHashMap<>();
 
+    /**
+     * Creates the limiter with the configured thresholds and the system clock.
+     *
+     * @param maxAttempts consecutive failures allowed before blocking an address
+     * @param window time window in which failures are counted
+     * @param blockDuration how long a blocked address stays blocked
+     */
     @Autowired
     public LoginRateLimiterService(
             @Value("${security.rate-limit.login.max-attempts:6}") int maxAttempts,
@@ -38,6 +45,12 @@ public class LoginRateLimiterService {
         this.clock = clock;
     }
 
+    /**
+     * Verifies that the address is not currently blocked.
+     *
+     * @param ip client address to check
+     * @throws com.biopet.exception.RateLimitExceededException when the address is blocked
+     */
     public void checkAllowed(String ip) {
         String clientKey = normalize(ip);
         State current = states.compute(clientKey, (key, state) -> cleanIfExpired(state));
@@ -46,6 +59,12 @@ public class LoginRateLimiterService {
         }
     }
 
+    /**
+     * Records a failed login for the address, blocking it once the threshold is reached.
+     *
+     * @param ip client address of the failed attempt
+     * @throws com.biopet.exception.RateLimitExceededException when the attempt triggers a block
+     */
     public void recordFailure(String ip) {
         String clientKey = normalize(ip);
         State[] result = new State[1];
@@ -68,6 +87,11 @@ public class LoginRateLimiterService {
         }
     }
 
+    /**
+     * Clears the failure history of the address, for example after a successful login.
+     *
+     * @param ip client address to clear
+     */
     public void reset(String ip) {
         states.remove(normalize(ip));
     }

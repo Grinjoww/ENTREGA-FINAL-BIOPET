@@ -41,6 +41,17 @@ public class AuthService {
     private final LoginRateLimiterService loginRateLimiterService;
     private final AuthenticationAuditService authenticationAuditService;
 
+    /**
+     * Creates the service with the collaborators of the authentication flow.
+     *
+     * @param usuarioRepository persistence of users
+     * @param passwordEncoder encoder verifying and hashing passwords
+     * @param authenticationManager manager authenticating email and password
+     * @param jwtService service issuing and verifying tokens
+     * @param blacklistService blacklist of revoked token identifiers
+     * @param loginRateLimiterService limiter blocking brute-force login attempts
+     * @param authenticationAuditService audit log of authentication events
+     */
     public AuthService(UserRepository usuarioRepository,
                        PasswordEncoder passwordEncoder,
                        AuthenticationManager authenticationManager,

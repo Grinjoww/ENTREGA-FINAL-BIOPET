@@ -14,6 +14,11 @@ import jakarta.validation.constraints.Size;
  * El campo {@code password} no lleva {@code @NotBlank} a propósito: es obligatorio
  * al crear (validado explícitamente en {@code UserService.crear}) pero opcional
  * al actualizar (vacío/null conserva la contraseña actual).
+ *
+ * @param nombre full name, up to 100 characters
+ * @param email account email, unique in the system
+ * @param password account password between 8 and 80 characters, required on creation
+ * @param rol account role
  */
 public record UserRequest(
         @NotBlank @Size(max = 100) String nombre,

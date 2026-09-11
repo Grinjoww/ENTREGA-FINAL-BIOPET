@@ -27,6 +27,12 @@ public class AuthController {
     private final AuthService authService;
     private final JwtCookieService jwtCookieService;
 
+    /**
+     * Creates the controller with the authentication service and cookie support.
+     *
+     * @param authService service handling registration, login, refresh and logout
+     * @param jwtCookieService service writing and reading authentication cookies
+     */
     public AuthController(AuthService authService, JwtCookieService jwtCookieService) {
         this.authService = authService;
         this.jwtCookieService = jwtCookieService;

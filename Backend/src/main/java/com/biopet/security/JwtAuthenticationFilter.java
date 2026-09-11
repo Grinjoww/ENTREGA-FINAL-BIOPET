@@ -24,6 +24,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtCookieService jwtCookieService;
     private final AuthenticationAuditService authenticationAuditService;
 
+    /**
+     * Creates the filter with the services needed to resolve and validate request tokens.
+     *
+     * @param jwtService service verifying tokens and reading their claims
+     * @param blacklistService blacklist of revoked token identifiers
+     * @param userDetailsService service loading user credentials for the security context
+     * @param jwtCookieService service reading tokens from request cookies
+     * @param authenticationAuditService audit log for revoked token sightings
+     */
     public JwtAuthenticationFilter(JwtService jwtService,
                                    TokenBlacklistService blacklistService,
                                    UserDetailsServiceImpl userDetailsService,
