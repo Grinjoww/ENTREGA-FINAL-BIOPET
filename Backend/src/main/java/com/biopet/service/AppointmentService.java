@@ -1,14 +1,14 @@
 package com.biopet.service;
 
-import com.biopet.dto.CitaRequest;
-import com.biopet.dto.CitaResponse;
-import com.biopet.entity.Cita;
+import com.biopet.dto.AppointmentRequest;
+import com.biopet.dto.AppointmentResponse;
+import com.biopet.entity.Appointment;
 import com.biopet.entity.AppointmentStatus;
 import com.biopet.entity.Mascota;
 import com.biopet.entity.Rol;
 import com.biopet.entity.Usuario;
 import com.biopet.exception.ResourceNotFoundException;
-import com.biopet.repository.CitaRepository;
+import com.biopet.repository.AppointmentRepository;
 import com.biopet.repository.MascotaRepository;
 import com.biopet.repository.UsuarioRepository;
 import org.springframework.data.domain.Page;
@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
  * pertenece a otro integrante del equipo.
  * <p>
  * Reglas de acceso (aplicadas aquí porque dependen de datos, no solo del rol;
- * el control por rol "puro" ya vive en {@code CitaController} vía @PreAuthorize):
+ * el control por rol "puro" ya vive en {@code AppointmentController} vía @PreAuthorize):
  * <ul>
  *   <li>DUENO: solo lee citas de sus propias mascotas (igual que MascotaService).</li>
  *   <li>VETERINARIO: lee todas, pero solo puede actualizar las citas donde él
@@ -32,12 +32,12 @@ import org.springframework.transaction.annotation.Transactional;
  * </ul>
  */
 @Service
-public class CitaService {
-    private final CitaRepository citaRepository;
+public class AppointmentService {
+    private final AppointmentRepository citaRepository;
     private final MascotaRepository mascotaRepository;
     private final UsuarioRepository usuarioRepository;
 
-    public CitaService(CitaRepository citaRepository, MascotaRepository mascotaRepository, UsuarioRepository usuarioRepository) {
+    public AppointmentService(AppointmentRepository citaRepository, MascotaRepository mascotaRepository, UsuarioRepository usuarioRepository) {
         this.citaRepository = citaRepository;
         this.mascotaRepository = mascotaRepository;
         this.usuarioRepository = usuarioRepository;
@@ -53,7 +53,7 @@ public class CitaService {
      * @throws com.biopet.exception.ResourceNotFoundException if the authenticated user cannot be resolved
      */
     @Transactional(readOnly = true)
-    public Page<CitaResponse> listar(Pageable pageable, String email) {
+    public Page<AppointmentResponse> listar(Pageable pageable, String email) {
         Usuario usuario = usuarioActual(email);
         if (usuario.getRol() == Rol.ROLE_DUENO) {
             return citaRepository.findAllByMascota_Duenio_IdAndActivoTrue(usuario.getId(), pageable).map(this::toResponse);
@@ -72,10 +72,10 @@ public class CitaService {
      * @throws org.springframework.security.access.AccessDeniedException if the user does not have access to this appointment
      */
     @Transactional(readOnly = true)
-    public CitaResponse buscar(Long id, String email) {
+    public AppointmentResponse buscar(Long id, String email) {
         Usuario usuario = usuarioActual(email);
-        Cita cita = citaRepository.findByIdAndActivoTrue(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Cita no encontrada: " + id));
+        Appointment cita = citaRepository.findByIdAndActivoTrue(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Appointment no encontrada: " + id));
         verificarAccesoLectura(usuario, cita);
         return toResponse(cita);
     }
@@ -90,11 +90,11 @@ public class CitaService {
      * @throws IllegalArgumentException if the referenced veterinarian does not have role ROLE_VETERINARIO
      */
     @Transactional
-    public CitaResponse crear(CitaRequest request) {
+    public AppointmentResponse crear(AppointmentRequest request) {
         Mascota mascota = resolverMascota(request.mascotaId());
         Usuario veterinario = resolverVeterinario(request.veterinarioId());
 
-        Cita cita = Cita.builder()
+        Appointment cita = Appointment.builder()
                 .mascota(mascota)
                 .veterinario(veterinario)
                 .fechaHora(request.fechaHora())
@@ -118,10 +118,10 @@ public class CitaService {
      * @throws IllegalArgumentException if the referenced veterinarian does not have role ROLE_VETERINARIO
      */
     @Transactional
-    public CitaResponse actualizar(Long id, CitaRequest request, String email) {
+    public AppointmentResponse actualizar(Long id, AppointmentRequest request, String email) {
         Usuario usuario = usuarioActual(email);
-        Cita cita = citaRepository.findByIdAndActivoTrue(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Cita no encontrada: " + id));
+        Appointment cita = citaRepository.findByIdAndActivoTrue(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Appointment no encontrada: " + id));
         verificarPermisoEscritura(usuario, cita);
 
         Mascota mascota = resolverMascota(request.mascotaId());
@@ -144,8 +144,8 @@ public class CitaService {
      */
     @Transactional
     public void eliminar(Long id) {
-        Cita cita = citaRepository.findByIdAndActivoTrue(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Cita no encontrada: " + id));
+        Appointment cita = citaRepository.findByIdAndActivoTrue(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Appointment no encontrada: " + id));
         cita.setActivo(false);
         citaRepository.save(cita);
     }
@@ -175,20 +175,20 @@ public class CitaService {
         return rol == Rol.ROLE_ADMIN || rol == Rol.ROLE_VETERINARIO || rol == Rol.ROLE_AUXILIAR;
     }
 
-    private void verificarAccesoLectura(Usuario usuario, Cita cita) {
+    private void verificarAccesoLectura(Usuario usuario, Appointment cita) {
         if (!tieneAccesoGlobal(usuario.getRol()) && !cita.getMascota().getDuenio().getId().equals(usuario.getId())) {
             throw new AccessDeniedException("No tiene permisos para acceder a esta cita.");
         }
     }
 
-    private void verificarPermisoEscritura(Usuario usuario, Cita cita) {
+    private void verificarPermisoEscritura(Usuario usuario, Appointment cita) {
         if (usuario.getRol() == Rol.ROLE_VETERINARIO && !cita.getVeterinario().getId().equals(usuario.getId())) {
             throw new AccessDeniedException("Solo puede modificar las citas asignadas a usted.");
         }
     }
 
-    private CitaResponse toResponse(Cita cita) {
-        return new CitaResponse(
+    private AppointmentResponse toResponse(Appointment cita) {
+        return new AppointmentResponse(
                 cita.getId(),
                 cita.getMascota().getId(),
                 cita.getMascota().getNombre(),

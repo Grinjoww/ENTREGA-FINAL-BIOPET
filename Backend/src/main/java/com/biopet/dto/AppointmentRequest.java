@@ -12,7 +12,7 @@ import java.time.Instant;
  * ignora y fuerza siempre {@code PROGRAMADA}, igual que {@code RegistrationRequest.rol()}
  * es ignorado por {@code AuthService.registrar()} y se fuerza a ROLE_DUENO.
  */
-public record CitaRequest(
+public record AppointmentRequest(
         @NotNull Long mascotaId,
         @NotNull Long veterinarioId,
         @NotNull Instant fechaHora,

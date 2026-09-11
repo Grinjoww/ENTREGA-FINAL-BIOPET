@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * CRUD for clinical consultation records. Access rules that depend on
  * data (not just role) live here, mirroring the pattern used by
- * {@link CitaService} and {@link MascotaService}:
+ * {@link AppointmentService} and {@link MascotaService}:
  * <ul>
  *   <li>DUENO: only reads/writes consultations for their own pets.</li>
  *   <li>ADMIN/VETERINARIO/AUXILIAR: no additional data restrictions.</li>

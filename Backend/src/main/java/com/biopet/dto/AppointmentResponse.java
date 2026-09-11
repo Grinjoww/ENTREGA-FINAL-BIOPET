@@ -5,7 +5,7 @@ import com.biopet.entity.AppointmentStatus;
 import java.io.Serializable;
 import java.time.Instant;
 
-public record CitaResponse(
+public record AppointmentResponse(
         Long id,
         Long mascotaId,
         String mascotaNombre,

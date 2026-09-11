@@ -1,8 +1,8 @@
 package com.biopet.controller;
 
-import com.biopet.dto.CitaRequest;
-import com.biopet.dto.CitaResponse;
-import com.biopet.service.CitaService;
+import com.biopet.dto.AppointmentRequest;
+import com.biopet.dto.AppointmentResponse;
+import com.biopet.service.AppointmentService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,17 +14,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * REST endpoints for veterinary appointment ({@code Cita}) scheduling and
+ * REST endpoints for veterinary appointment ({@code Appointment}) scheduling and
  * management. Role-based access is enforced here via {@code @PreAuthorize};
  * data-level ownership rules (e.g. a DUENO seeing only their own pets'
- * appointments) are enforced in {@link CitaService}.
+ * appointments) are enforced in {@link AppointmentService}.
  */
 @RestController
 @RequestMapping("/api/citas")
-public class CitaController {
-    private final CitaService citaService;
+public class AppointmentController {
+    private final AppointmentService citaService;
 
-    public CitaController(CitaService citaService) {
+    public AppointmentController(AppointmentService citaService) {
         this.citaService = citaService;
     }
 
@@ -38,7 +38,7 @@ public class CitaController {
      */
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR','DUENO')")
-    public Page<CitaResponse> listar(Pageable pageable, @AuthenticationPrincipal UserDetails userDetails) {
+    public Page<AppointmentResponse> listar(Pageable pageable, @AuthenticationPrincipal UserDetails userDetails) {
         return citaService.listar(pageable, userDetails.getUsername());
     }
 
@@ -53,7 +53,7 @@ public class CitaController {
      */
     @GetMapping("/{id:\\d+}")
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR','DUENO')")
-    public CitaResponse buscar(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
+    public AppointmentResponse buscar(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
         return citaService.buscar(id, userDetails.getUsername());
     }
 
@@ -65,7 +65,7 @@ public class CitaController {
      */
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN','AUXILIAR')")
-    public ResponseEntity<CitaResponse> crear(@Valid @RequestBody CitaRequest request) {
+    public ResponseEntity<AppointmentResponse> crear(@Valid @RequestBody AppointmentRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(citaService.crear(request));
     }
 
@@ -81,7 +81,7 @@ public class CitaController {
      */
     @PutMapping("/{id:\\d+}")
     @PreAuthorize("hasAnyRole('ADMIN','AUXILIAR','VETERINARIO')")
-    public CitaResponse actualizar(@PathVariable Long id, @Valid @RequestBody CitaRequest request,
+    public AppointmentResponse actualizar(@PathVariable Long id, @Valid @RequestBody AppointmentRequest request,
                                     @AuthenticationPrincipal UserDetails userDetails) {
         return citaService.actualizar(id, request, userDetails.getUsername());
     }

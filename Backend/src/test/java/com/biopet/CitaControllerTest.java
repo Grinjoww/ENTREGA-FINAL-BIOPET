@@ -1,11 +1,11 @@
 package com.biopet;
 
-import com.biopet.entity.Cita;
+import com.biopet.entity.Appointment;
 import com.biopet.entity.AppointmentStatus;
 import com.biopet.entity.Mascota;
 import com.biopet.entity.Rol;
 import com.biopet.entity.Usuario;
-import com.biopet.repository.CitaRepository;
+import com.biopet.repository.AppointmentRepository;
 import com.biopet.repository.ConsultaRepository;
 import com.biopet.repository.MascotaRepository;
 import com.biopet.repository.UsuarioRepository;
@@ -57,7 +57,7 @@ class CitaControllerTest {
     MascotaRepository mascotaRepository;
 
     @Autowired
-    CitaRepository citaRepository;
+    AppointmentRepository citaRepository;
 
     @Autowired
     ConsultaRepository consultaRepository;
@@ -613,7 +613,7 @@ class CitaControllerTest {
                         .header("Authorization", "Bearer " + tokenAdmin))
                 .andExpect(status().isNoContent());
 
-        Cita citaEliminada = citaRepository.findById(citaId)
+        Appointment citaEliminada = citaRepository.findById(citaId)
                 .orElseThrow(() -> new AssertionError(
                         "La cita fue eliminada físicamente de la base de datos: "
                                 + citaId
@@ -710,7 +710,7 @@ class CitaControllerTest {
                 .findById(veterinarioId)
                 .orElseThrow();
 
-        Cita cita = Cita.builder()
+        Appointment cita = Appointment.builder()
                 .mascota(mascota)
                 .veterinario(veterinario)
                 .fechaHora(Instant.now().plus(2, ChronoUnit.DAYS))

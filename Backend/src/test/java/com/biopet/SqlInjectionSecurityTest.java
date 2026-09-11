@@ -2,7 +2,7 @@ package com.biopet;
 
 import com.biopet.entity.Rol;
 import com.biopet.entity.Usuario;
-import com.biopet.repository.CitaRepository;
+import com.biopet.repository.AppointmentRepository;
 import com.biopet.repository.ConsultaRepository;
 import com.biopet.repository.MascotaRepository;
 import com.biopet.repository.UsuarioRepository;
@@ -91,7 +91,7 @@ class SqlInjectionSecurityTest {
     MascotaRepository mascotaRepository;
 
     @Autowired
-    CitaRepository citaRepository;
+    AppointmentRepository citaRepository;
 
     @Autowired
     ConsultaRepository consultaRepository;

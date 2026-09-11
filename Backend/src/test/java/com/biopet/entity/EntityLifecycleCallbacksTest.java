@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Cobertura de rama de los callbacks @PrePersist de las entidades de dominio:
  * cada entidad decide, con un `if (campo == null) campo = valor`, si debe
- * autocompletar timestamps (y en Cita/Usuario, también un valor por defecto
+ * autocompletar timestamps (y en Appointment/Usuario, también un valor por defecto
  * de estado/rol) o respetar un valor ya asignado explícitamente. Ambas ramas
  * (campo nulo / campo ya asignado) se ejercitan aquí para cada entidad,
  * invocando directamente el método de paquete `prePersist()` (visible desde
@@ -21,7 +21,7 @@ class EntityLifecycleCallbacksTest {
 
     @Test
     void citaPrePersistAutocompletaCuandoCamposSonNulos() {
-        Cita cita = new Cita();
+        Appointment cita = new Appointment();
 
         cita.prePersist();
 
@@ -35,7 +35,7 @@ class EntityLifecycleCallbacksTest {
     void citaPrePersistRespetaValoresYaAsignados() {
         Instant creado = Instant.parse("2026-01-01T00:00:00Z");
         Instant actualizado = Instant.parse("2026-01-02T00:00:00Z");
-        Cita cita = new Cita();
+        Appointment cita = new Appointment();
         cita.setCreadoEn(creado);
         cita.setActualizadoEn(actualizado);
         cita.setEstado(AppointmentStatus.COMPLETADA);
@@ -152,7 +152,7 @@ class EntityLifecycleCallbacksTest {
 
     @Test
     void citaPreUpdateActualizaMarcaDeTiempo() {
-        Cita cita = new Cita();
+        Appointment cita = new Appointment();
         cita.setActualizadoEn(Instant.parse("2020-01-01T00:00:00Z"));
 
         cita.preUpdate();

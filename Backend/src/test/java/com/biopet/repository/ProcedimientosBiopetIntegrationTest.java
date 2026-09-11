@@ -1,6 +1,6 @@
 package com.biopet.repository;
 
-import com.biopet.entity.Cita;
+import com.biopet.entity.Appointment;
 import com.biopet.entity.Consulta;
 import com.biopet.entity.AppointmentStatus;
 import com.biopet.entity.Mascota;
@@ -105,7 +105,7 @@ class ProcedimientosBiopetIntegrationTest {
     @Autowired
     MascotaRepository mascotaRepository;
     @Autowired
-    CitaRepository citaRepository;
+    AppointmentRepository citaRepository;
     @Autowired
     ConsultaRepository consultaRepository;
     @Autowired
@@ -152,7 +152,7 @@ class ProcedimientosBiopetIntegrationTest {
         vacunaRepository.save(Vaccine.builder().mascota(mascota).veterinario(vet).tipo("Rabia")
                 .fechaAplicacion(LocalDate.of(2026, 7, 1))
                 .proximaFecha(LocalDate.of(2027, 7, 1)).activo(true).build());
-        citaRepository.save(Cita.builder().mascota(mascota).veterinario(vet)
+        citaRepository.save(Appointment.builder().mascota(mascota).veterinario(vet)
                 .fechaHora(Instant.parse("2026-09-01T10:00:00Z"))
                 .estado(AppointmentStatus.PROGRAMADA).motivo("Control").activo(true).build());
 
@@ -187,7 +187,7 @@ class ProcedimientosBiopetIntegrationTest {
                 .motivo("Chequeo").activo(true).build());
         vacunaRepository.save(Vaccine.builder().mascota(mascota).veterinario(vet).tipo("Rabia")
                 .fechaAplicacion(LocalDate.of(2026, 8, 10)).activo(true).build());
-        citaRepository.save(Cita.builder().mascota(mascota).veterinario(vet)
+        citaRepository.save(Appointment.builder().mascota(mascota).veterinario(vet)
                 .fechaHora(Instant.parse("2026-08-20T10:00:00Z"))
                 .estado(AppointmentStatus.PROGRAMADA).activo(true).build());
 
@@ -241,11 +241,11 @@ class ProcedimientosBiopetIntegrationTest {
         Mascota mascota = guardarMascota(duenio, "Rex");
         Instant limite = Instant.now();
 
-        Cita pasadaProgramada = citaRepository.save(Cita.builder().mascota(mascota).veterinario(vet)
+        Appointment pasadaProgramada = citaRepository.save(Appointment.builder().mascota(mascota).veterinario(vet)
                 .fechaHora(limite.minusSeconds(3600)).estado(AppointmentStatus.PROGRAMADA).activo(true).build());
-        Cita futuraProgramada = citaRepository.save(Cita.builder().mascota(mascota).veterinario(vet)
+        Appointment futuraProgramada = citaRepository.save(Appointment.builder().mascota(mascota).veterinario(vet)
                 .fechaHora(limite.plusSeconds(3600)).estado(AppointmentStatus.PROGRAMADA).activo(true).build());
-        Cita pasadaCompletada = citaRepository.save(Cita.builder().mascota(mascota).veterinario(vet)
+        Appointment pasadaCompletada = citaRepository.save(Appointment.builder().mascota(mascota).veterinario(vet)
                 .fechaHora(limite.minusSeconds(7200)).estado(AppointmentStatus.COMPLETADA).activo(true).build());
 
         Long afectadas = procedimientoBiopetRepository.actualizarEstadoCitasMasivas(

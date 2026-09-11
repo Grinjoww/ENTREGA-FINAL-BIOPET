@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * CRUD for vaccination records. Access rules that depend on data (not
- * just role) mirror the pattern used by {@link CitaService} and
+ * just role) mirror the pattern used by {@link AppointmentService} and
  * {@link MascotaService}:
  * <ul>
  *   <li>DUENO: only reads/writes vaccination records for their own pets.</li>
