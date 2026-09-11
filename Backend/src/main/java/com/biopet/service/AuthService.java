@@ -104,9 +104,9 @@ public class AuthService {
         String emailSolicitado = request.email().toLowerCase();
 
         try {
-            loginRateLimiterService.verificarPermitido(ip);
+            loginRateLimiterService.checkAllowed(ip);
         } catch (RateLimitExceededException ex) {
-            authenticationAuditService.loginBloqueado(ip, emailSolicitado);
+            authenticationAuditService.loginBlocked(ip, emailSolicitado);
             throw ex;
         }
 
@@ -119,15 +119,15 @@ public class AuthService {
             try {
                 loginRateLimiterService.recordFailure(ip);
             } catch (RateLimitExceededException limiteExcedido) {
-                authenticationAuditService.loginBloqueado(ip, emailSolicitado);
+                authenticationAuditService.loginBlocked(ip, emailSolicitado);
                 throw limiteExcedido;
             }
-            authenticationAuditService.loginFallido(ip, emailSolicitado);
+            authenticationAuditService.loginFailed(ip, emailSolicitado);
             throw ex;
         }
 
-        loginRateLimiterService.reiniciar(ip);
-        authenticationAuditService.loginExitoso(ip, authentication.getName());
+        loginRateLimiterService.reset(ip);
+        authenticationAuditService.loginSucceeded(ip, authentication.getName());
 
         User usuario = usuarioRepository.findByEmailAndActivoTrue(authentication.getName())
                 .orElseThrow(() -> new ResourceNotFoundException("User autenticado no existe"));
@@ -173,10 +173,10 @@ public class AuthService {
             User usuario = usuarioRepository.findByEmailAndActivoTrue(emailVerificado)
                     .orElseThrow(() -> new ResourceNotFoundException("User no encontrado"));
 
-            authenticationAuditService.refreshExitoso(ip, emailVerificado);
+            authenticationAuditService.refreshSucceeded(ip, emailVerificado);
             return new AuthResponse(jwtService.generateAccessToken(usuario), refreshToken, jwtService.getExpirationMs() / 1000);
         } catch (RuntimeException ex) {
-            authenticationAuditService.refreshFallido(ip, emailVerificado);
+            authenticationAuditService.refreshFailed(ip, emailVerificado);
             throw ex;
         }
     }
@@ -196,7 +196,7 @@ public class AuthService {
         String subjectAccess = revokeAndGetSubject(accessToken);
         String subjectRefresh = revokeAndGetSubject(refreshToken);
         String subject = (subjectAccess != null) ? subjectAccess : subjectRefresh;
-        authenticationAuditService.logoutExitoso(ip, subject);
+        authenticationAuditService.logoutSucceeded(ip, subject);
     }
 
     private String revokeAndGetSubject(String token) {

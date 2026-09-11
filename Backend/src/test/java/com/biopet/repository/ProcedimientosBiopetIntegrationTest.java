@@ -220,8 +220,8 @@ class ProcedimientosBiopetIntegrationTest {
 
     @Test
     void siguienteNumeroFicha_formatoYSecuencia() {
-        String a = procedimientoBiopetRepository.siguienteNumeroFicha("FICHA");
-        String b = procedimientoBiopetRepository.siguienteNumeroFicha("HIST");
+        String a = procedimientoBiopetRepository.nextRecordNumber("FICHA");
+        String b = procedimientoBiopetRepository.nextRecordNumber("HIST");
 
         assertThat(a).matches("FICHA-\\d{6}");
         assertThat(b).matches("HIST-\\d{6}");
@@ -230,7 +230,7 @@ class ProcedimientosBiopetIntegrationTest {
 
     @Test
     void siguienteNumeroFicha_prefijoVacioUsaDefault() {
-        String codigo = procedimientoBiopetRepository.siguienteNumeroFicha("");
+        String codigo = procedimientoBiopetRepository.nextRecordNumber("");
         assertThat(codigo).matches("FICHA-\\d{6}");
     }
 

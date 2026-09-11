@@ -38,7 +38,7 @@ class LoginRateLimiterServiceTest {
             assertDoesNotThrow(() -> limiter.recordFailure(ip));
         }
 
-        assertDoesNotThrow(() -> limiter.verificarPermitido(ip));
+        assertDoesNotThrow(() -> limiter.checkAllowed(ip));
     }
 
     @Test
@@ -67,7 +67,7 @@ class LoginRateLimiterServiceTest {
         reloj.avanzar(Duration.ofMinutes(5));
 
         RateLimitExceededException ex = assertThrows(RateLimitExceededException.class,
-                () -> limiter.verificarPermitido(ip));
+                () -> limiter.checkAllowed(ip));
 
         assertEquals(Duration.ofMinutes(10).getSeconds(), ex.getSecondsRemaining());
         assertTrue(ex.getSecondsRemaining() > 0);
@@ -83,7 +83,7 @@ class LoginRateLimiterServiceTest {
         }
         assertThrows(RateLimitExceededException.class, () -> limiter.recordFailure(ipBloqueada));
 
-        assertDoesNotThrow(() -> limiter.verificarPermitido(ipLibre));
+        assertDoesNotThrow(() -> limiter.checkAllowed(ipLibre));
         assertDoesNotThrow(() -> limiter.recordFailure(ipLibre));
     }
 
@@ -96,13 +96,13 @@ class LoginRateLimiterServiceTest {
         }
         assertThrows(RateLimitExceededException.class, () -> limiter.recordFailure(ip));
 
-        limiter.reiniciar(ip);
+        limiter.reset(ip);
 
-        assertDoesNotThrow(() -> limiter.verificarPermitido(ip));
+        assertDoesNotThrow(() -> limiter.checkAllowed(ip));
         for (int i = 0; i < 5; i++) {
             assertDoesNotThrow(() -> limiter.recordFailure(ip));
         }
-        assertDoesNotThrow(() -> limiter.verificarPermitido(ip));
+        assertDoesNotThrow(() -> limiter.checkAllowed(ip));
     }
 
     @Test
@@ -132,7 +132,7 @@ class LoginRateLimiterServiceTest {
 
         reloj.avanzar(BLOCK_DURATION.plusSeconds(1));
 
-        assertDoesNotThrow(() -> limiter.verificarPermitido(ip));
+        assertDoesNotThrow(() -> limiter.checkAllowed(ip));
         for (int i = 0; i < 5; i++) {
             assertDoesNotThrow(() -> limiter.recordFailure(ip));
         }

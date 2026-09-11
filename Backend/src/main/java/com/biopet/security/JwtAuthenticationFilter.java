@@ -54,7 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             boolean revocado = esAccessToken && blacklistService.isRevoked(jti);
 
             if (revocado) {
-                authenticationAuditService.tokenRevocado(request.getRemoteAddr(), email);
+                authenticationAuditService.tokenRevoked(request.getRemoteAddr(), email);
             }
 
             boolean tokenValido = esAccessToken && !revocado;

@@ -85,7 +85,7 @@ class AuthControllerTest {
 
         for (String ip : List.of(IP_DEFECTO, IP_CINCO_FALLOS, IP_SEIS_FALLOS, IP_BLOQUEADA, IP_A, IP_B, IP_REINICIO,
                 IP_AUDITORIA_EXITO, IP_AUDITORIA_FALLO, IP_AUDITORIA_BLOQUEO, IP_AUDITORIA_IP_BLOQUEADA)) {
-            loginRateLimiterService.reiniciar(ip);
+            loginRateLimiterService.reset(ip);
         }
     }
 
@@ -102,7 +102,7 @@ class AuthControllerTest {
     }
 
     @Test
-    void loginExitoso() throws Exception {
+    void loginSucceeded() throws Exception {
         MvcResult result = mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
@@ -234,9 +234,9 @@ class AuthControllerTest {
         loginDesde(EMAIL_VALIDO, PASSWORD_VALIDO, IP_AUDITORIA_EXITO)
                 .andExpect(status().isOk());
 
-        verify(authenticationAuditService, times(1)).loginExitoso(eq(IP_AUDITORIA_EXITO), eq(EMAIL_VALIDO));
-        verify(authenticationAuditService, never()).loginFallido(anyString(), anyString());
-        verify(authenticationAuditService, never()).loginBloqueado(anyString(), anyString());
+        verify(authenticationAuditService, times(1)).loginSucceeded(eq(IP_AUDITORIA_EXITO), eq(EMAIL_VALIDO));
+        verify(authenticationAuditService, never()).loginFailed(anyString(), anyString());
+        verify(authenticationAuditService, never()).loginBlocked(anyString(), anyString());
     }
 
     @Test
@@ -244,9 +244,9 @@ class AuthControllerTest {
         loginDesde(EMAIL_VALIDO, PASSWORD_INVALIDO, IP_AUDITORIA_FALLO)
                 .andExpect(status().isUnauthorized());
 
-        verify(authenticationAuditService, times(1)).loginFallido(eq(IP_AUDITORIA_FALLO), eq(EMAIL_VALIDO));
-        verify(authenticationAuditService, never()).loginExitoso(anyString(), anyString());
-        verify(authenticationAuditService, never()).loginBloqueado(anyString(), anyString());
+        verify(authenticationAuditService, times(1)).loginFailed(eq(IP_AUDITORIA_FALLO), eq(EMAIL_VALIDO));
+        verify(authenticationAuditService, never()).loginSucceeded(anyString(), anyString());
+        verify(authenticationAuditService, never()).loginBlocked(anyString(), anyString());
     }
 
     @Test
@@ -255,13 +255,13 @@ class AuthControllerTest {
             loginDesde(EMAIL_VALIDO, PASSWORD_INVALIDO, IP_AUDITORIA_BLOQUEO)
                     .andExpect(status().isUnauthorized());
         }
-        verify(authenticationAuditService, times(5)).loginFallido(eq(IP_AUDITORIA_BLOQUEO), eq(EMAIL_VALIDO));
+        verify(authenticationAuditService, times(5)).loginFailed(eq(IP_AUDITORIA_BLOQUEO), eq(EMAIL_VALIDO));
 
         loginDesde(EMAIL_VALIDO, PASSWORD_INVALIDO, IP_AUDITORIA_BLOQUEO)
                 .andExpect(status().isTooManyRequests());
 
-        verify(authenticationAuditService, times(1)).loginBloqueado(eq(IP_AUDITORIA_BLOQUEO), eq(EMAIL_VALIDO));
-        verify(authenticationAuditService, times(5)).loginFallido(eq(IP_AUDITORIA_BLOQUEO), eq(EMAIL_VALIDO));
+        verify(authenticationAuditService, times(1)).loginBlocked(eq(IP_AUDITORIA_BLOQUEO), eq(EMAIL_VALIDO));
+        verify(authenticationAuditService, times(5)).loginFailed(eq(IP_AUDITORIA_BLOQUEO), eq(EMAIL_VALIDO));
     }
 
     @Test
@@ -276,8 +276,8 @@ class AuthControllerTest {
         loginDesde(EMAIL_VALIDO, PASSWORD_VALIDO, IP_AUDITORIA_IP_BLOQUEADA)
                 .andExpect(status().isTooManyRequests());
 
-        verify(authenticationAuditService, times(2)).loginBloqueado(eq(IP_AUDITORIA_IP_BLOQUEADA), eq(EMAIL_VALIDO));
-        verify(authenticationAuditService, never()).loginExitoso(anyString(), anyString());
+        verify(authenticationAuditService, times(2)).loginBlocked(eq(IP_AUDITORIA_IP_BLOQUEADA), eq(EMAIL_VALIDO));
+        verify(authenticationAuditService, never()).loginSucceeded(anyString(), anyString());
     }
 
     @Test
@@ -387,8 +387,8 @@ class AuthControllerTest {
         assertTrue(accessCookieHeader.contains("SameSite=Strict"));
         assertTrue(accessCookieHeader.contains("Path=/"));
 
-        verify(authenticationAuditService, times(1)).refreshExitoso(anyString(), eq(EMAIL_VALIDO));
-        verify(authenticationAuditService, never()).refreshFallido(anyString(), any());
+        verify(authenticationAuditService, times(1)).refreshSucceeded(anyString(), eq(EMAIL_VALIDO));
+        verify(authenticationAuditService, never()).refreshFailed(anyString(), any());
     }
 
     @Test
@@ -405,8 +405,8 @@ class AuthControllerTest {
 
         assertTrue(result.getResponse().getHeaders(HttpHeaders.SET_COOKIE).isEmpty());
 
-        verify(authenticationAuditService, times(1)).refreshFallido(anyString(), isNull());
-        verify(authenticationAuditService, never()).refreshExitoso(anyString(), anyString());
+        verify(authenticationAuditService, times(1)).refreshFailed(anyString(), isNull());
+        verify(authenticationAuditService, never()).refreshSucceeded(anyString(), anyString());
     }
 
     @Test
@@ -424,8 +424,8 @@ class AuthControllerTest {
 
         assertTrue(result.getResponse().getHeaders(HttpHeaders.SET_COOKIE).isEmpty());
 
-        verify(authenticationAuditService, times(1)).refreshFallido(anyString(), isNull());
-        verify(authenticationAuditService, never()).refreshExitoso(anyString(), anyString());
+        verify(authenticationAuditService, times(1)).refreshFailed(anyString(), isNull());
+        verify(authenticationAuditService, never()).refreshSucceeded(anyString(), anyString());
     }
 
     @Test
@@ -451,7 +451,7 @@ class AuthControllerTest {
 
         assertTrue(result.getResponse().getHeaders(HttpHeaders.SET_COOKIE).isEmpty());
 
-        verify(authenticationAuditService, times(1)).refreshFallido(anyString(), isNull());
+        verify(authenticationAuditService, times(1)).refreshFailed(anyString(), isNull());
     }
 
     @Test
@@ -479,7 +479,7 @@ class AuthControllerTest {
 
         assertTrue(result.getResponse().getHeaders(HttpHeaders.SET_COOKIE).isEmpty());
 
-        verify(authenticationAuditService, times(1)).refreshFallido(anyString(), eq(EMAIL_VALIDO));
+        verify(authenticationAuditService, times(1)).refreshFailed(anyString(), eq(EMAIL_VALIDO));
     }
 
     @Test
@@ -532,7 +532,7 @@ class AuthControllerTest {
         verify(tokenBlacklistService, times(1)).revoke(eq(refreshJti), any(Instant.class));
         verify(tokenBlacklistService, times(2)).revoke(anyString(), any(Instant.class));
 
-        verify(authenticationAuditService, times(1)).logoutExitoso(anyString(), eq(EMAIL_VALIDO));
+        verify(authenticationAuditService, times(1)).logoutSucceeded(anyString(), eq(EMAIL_VALIDO));
     }
 
     @Test
@@ -548,7 +548,7 @@ class AuthControllerTest {
 
         verify(tokenBlacklistService, never()).revoke(anyString(), any(Instant.class));
 
-        verify(authenticationAuditService, times(1)).logoutExitoso(anyString(), isNull());
+        verify(authenticationAuditService, times(1)).logoutSucceeded(anyString(), isNull());
     }
 
     @Test

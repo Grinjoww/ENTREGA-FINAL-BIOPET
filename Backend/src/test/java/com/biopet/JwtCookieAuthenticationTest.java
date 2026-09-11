@@ -64,7 +64,7 @@ class JwtCookieAuthenticationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value("cookie.valida@biopet.com"));
 
-        verify(authenticationAuditService, never()).tokenRevocado(any(), any());
+        verify(authenticationAuditService, never()).tokenRevoked(any(), any());
     }
 
     @Test
@@ -79,7 +79,7 @@ class JwtCookieAuthenticationTest {
                 .andExpect(jsonPath("$.detail").isNotEmpty())
                 .andExpect(jsonPath("$.instance").value("/api/usuarios/me"));
 
-        verify(authenticationAuditService, never()).tokenRevocado(any(), any());
+        verify(authenticationAuditService, never()).tokenRevoked(any(), any());
     }
 
     @Test
@@ -98,7 +98,7 @@ class JwtCookieAuthenticationTest {
                 .andExpect(jsonPath("$.detail").isNotEmpty())
                 .andExpect(jsonPath("$.instance").value("/api/usuarios/me"));
 
-        verify(authenticationAuditService, never()).tokenRevocado(any(), any());
+        verify(authenticationAuditService, never()).tokenRevoked(any(), any());
     }
 
     @Test
@@ -113,7 +113,7 @@ class JwtCookieAuthenticationTest {
                 .andExpect(content().contentType("application/problem+json;charset=UTF-8"))
                 .andExpect(jsonPath("$.status").value(401));
 
-        verify(authenticationAuditService, never()).tokenRevocado(any(), any());
+        verify(authenticationAuditService, never()).tokenRevoked(any(), any());
     }
 
     @Test
@@ -134,7 +134,7 @@ class JwtCookieAuthenticationTest {
                 .andExpect(jsonPath("$.detail").isNotEmpty())
                 .andExpect(jsonPath("$.instance").value("/api/usuarios/me"));
 
-        verify(authenticationAuditService, times(1)).tokenRevocado(anyString(), eq("cookie.revocada@biopet.com"));
+        verify(authenticationAuditService, times(1)).tokenRevoked(anyString(), eq("cookie.revocada@biopet.com"));
     }
 
     @Test
@@ -157,7 +157,7 @@ class JwtCookieAuthenticationTest {
                 .andExpect(content().contentType("application/problem+json;charset=UTF-8"))
                 .andExpect(jsonPath("$.status").value(401));
 
-        verify(authenticationAuditService, never()).tokenRevocado(any(), any());
+        verify(authenticationAuditService, never()).tokenRevoked(any(), any());
     }
 
     @Test

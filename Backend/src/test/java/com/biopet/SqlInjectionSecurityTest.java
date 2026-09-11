@@ -131,7 +131,7 @@ class SqlInjectionSecurityTest {
                 IP_LOGIN_INYECCION,
                 IP_LOGIN_POSTERIOR
         )) {
-            loginRateLimiterService.reiniciar(ip);
+            loginRateLimiterService.reset(ip);
         }
     }
 

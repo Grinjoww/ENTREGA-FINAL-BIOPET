@@ -47,7 +47,7 @@ import java.util.List;
  * (@Transactional(readOnly = true)), y como declaran explicitamente los
  * tests de integracion que los ejercitan.
  *
- * <p>{@code siguienteNumeroFicha} ya devolvia un escalar, por lo que su
+ * <p>{@code nextRecordNumber} ya devolvia un escalar, por lo que su
  * {@code PROCEDURE} usa {@code OUT p_codigo VARCHAR} directo (sin
  * refcursor, sin @NamedStoredProcedureQuery, sin requisito de transaccion
  * circundante), igual que los 2 {@code sp_*} (que ya eran {@code PROCEDURE}
@@ -65,7 +65,7 @@ public interface BiopetProcedureRepository extends Repository<Pet, Long> {
     List<DashboardReportView> dashboardReport(LocalDate desde, LocalDate hasta);
 
     @Procedure(procedureName = "fn_siguiente_numero_ficha", outputParameterName = "p_codigo")
-    String siguienteNumeroFicha(@Param("p_prefijo") String prefijo);
+    String nextRecordNumber(@Param("p_prefijo") String prefijo);
 
     @Procedure(procedureName = "sp_actualizar_estado_citas_masivas", outputParameterName = "p_afectadas")
     Long bulkUpdateAppointmentStatus(@Param("p_veterinario_id") Long veterinarioId,

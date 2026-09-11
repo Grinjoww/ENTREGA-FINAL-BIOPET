@@ -13,14 +13,14 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class LoginRateLimiterService {
 
-    private static final String CLAVE_DESCONOCIDA = "desconocida";
+    private static final String UNKNOWN_KEY = "desconocida";
 
     private final int maxAttempts;
     private final Duration window;
     private final Duration blockDuration;
     private final Clock clock;
 
-    private final ConcurrentHashMap<String, Estado> estados = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, State> states = new ConcurrentHashMap<>();
 
     @Autowired
     public LoginRateLimiterService(
@@ -38,70 +38,70 @@ public class LoginRateLimiterService {
         this.clock = clock;
     }
 
-    public void verificarPermitido(String ip) {
-        String clave = normalizar(ip);
-        Estado actual = estados.compute(clave, (key, estado) -> limpiarSiExpiro(estado));
-        if (actual != null && actual.bloqueadaHasta() != null) {
-            throw new RateLimitExceededException(secondsRemaining(actual.bloqueadaHasta()));
+    public void checkAllowed(String ip) {
+        String clientKey = normalize(ip);
+        State current = states.compute(clientKey, (key, state) -> cleanIfExpired(state));
+        if (current != null && current.blockedUntil() != null) {
+            throw new RateLimitExceededException(secondsRemaining(current.blockedUntil()));
         }
     }
 
     public void recordFailure(String ip) {
-        String clave = normalizar(ip);
-        Estado[] resultado = new Estado[1];
+        String clientKey = normalize(ip);
+        State[] result = new State[1];
 
-        estados.compute(clave, (key, estadoPrevio) -> {
-            Estado vigente = limpiarSiExpiro(estadoPrevio);
-            Instant ahora = clock.instant();
+        states.compute(clientKey, (key, previous) -> {
+            State current = cleanIfExpired(previous);
+            Instant now = clock.instant();
 
-            int nuevosFallos = (vigente == null) ? 1 : vigente.fallos() + 1;
-            Instant inicioVentana = (vigente == null) ? ahora : vigente.inicioVentana();
-            Instant bloqueadaHasta = (nuevosFallos >= maxAttempts) ? ahora.plus(blockDuration) : null;
+            int newFailures = (current == null) ? 1 : current.failures() + 1;
+            Instant windowStart = (current == null) ? now : current.windowStart();
+            Instant blockedUntil = (newFailures >= maxAttempts) ? now.plus(blockDuration) : null;
 
-            Estado nuevo = new Estado(nuevosFallos, inicioVentana, bloqueadaHasta);
-            resultado[0] = nuevo;
-            return nuevo;
+            State next = new State(newFailures, windowStart, blockedUntil);
+            result[0] = next;
+            return next;
         });
 
-        if (resultado[0].bloqueadaHasta() != null) {
-            throw new RateLimitExceededException(secondsRemaining(resultado[0].bloqueadaHasta()));
+        if (result[0].blockedUntil() != null) {
+            throw new RateLimitExceededException(secondsRemaining(result[0].blockedUntil()));
         }
     }
 
-    public void reiniciar(String ip) {
-        estados.remove(normalizar(ip));
+    public void reset(String ip) {
+        states.remove(normalize(ip));
     }
 
-    private Estado limpiarSiExpiro(Estado estado) {
-        if (estado == null) {
+    private State cleanIfExpired(State state) {
+        if (state == null) {
             return null;
         }
-        Instant ahora = clock.instant();
-        if (estado.bloqueadaHasta() != null) {
-            return ahora.isBefore(estado.bloqueadaHasta()) ? estado : null;
+        Instant now = clock.instant();
+        if (state.blockedUntil() != null) {
+            return now.isBefore(state.blockedUntil()) ? state : null;
         }
-        if (!ahora.isBefore(estado.inicioVentana().plus(window))) {
+        if (!now.isBefore(state.windowStart().plus(window))) {
             return null;
         }
-        return estado;
+        return state;
     }
 
-    private long secondsRemaining(Instant bloqueadaHasta) {
-        Duration restante = Duration.between(clock.instant(), bloqueadaHasta);
-        if (restante.isNegative() || restante.isZero()) {
+    private long secondsRemaining(Instant blockedUntil) {
+        Duration remaining = Duration.between(clock.instant(), blockedUntil);
+        if (remaining.isNegative() || remaining.isZero()) {
             return 1;
         }
-        long segundos = (restante.toMillis() + 999) / 1000;
-        return Math.max(segundos, 1);
+        long seconds = (remaining.toMillis() + 999) / 1000;
+        return Math.max(seconds, 1);
     }
 
-    private String normalizar(String ip) {
+    private String normalize(String ip) {
         if (ip == null || ip.isBlank()) {
-            return CLAVE_DESCONOCIDA;
+            return UNKNOWN_KEY;
         }
         return ip.trim();
     }
 
-    private record Estado(int fallos, Instant inicioVentana, Instant bloqueadaHasta) {
+    private record State(int failures, Instant windowStart, Instant blockedUntil) {
     }
 }
