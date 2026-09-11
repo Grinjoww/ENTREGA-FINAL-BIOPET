@@ -276,8 +276,8 @@ def generar_svg(ruta_svg, grupos):
     )
     lineas.append(
         f'<text x="{W / 2}" y="30" text-anchor="middle" font-family="sans-serif" '
-        f'font-size="18" font-weight="bold">BIOPET - latencia por percentil '
-        f'(caliente vs frio)</text>'
+        f'font-size="18" font-weight="bold">BIOPET - latency by percentile '
+        f'(warm vs cold)</text>'
     )
 
     # eje Y: 5 divisiones
@@ -329,20 +329,20 @@ def generar_svg(ruta_svg, grupos):
     )
     lineas.append(
         f'<text x="{margen_izq + 20}" y="{ly + 12}" font-family="sans-serif" '
-        f'font-size="12">caliente</text>'
+        f'font-size="12">warm</text>'
     )
     lineas.append(
         f'<rect x="{margen_izq + 110}" y="{ly}" width="14" height="14" fill="{COLOR_FRIO}"/>'
     )
     lineas.append(
         f'<text x="{margen_izq + 130}" y="{ly + 12}" font-family="sans-serif" '
-        f'font-size="12">frio</text>'
+        f'font-size="12">cold</text>'
     )
     lineas.append(
         f'<text x="{W - margen_der}" y="{ly + 12}" text-anchor="end" '
         f'font-family="sans-serif" font-size="10" fill="#666">'
-        f'latencia en ms (promedio entre corridas del mismo modo); grafico generado '
-        f'por scripts/perf-analysis.py</text>'
+        f'latency in ms (mean across runs of the same mode); chart generated '
+        f'by scripts/perf-analysis.py</text>'
     )
 
     lineas.append("</svg>")
@@ -516,7 +516,7 @@ def main():
                     f.write(f"| {clave} | {U} | {p_str} | {r} |\n")
 
             if args.grafico:
-                f.write(f"\n## Grafico\n\n![Latencia por percentil]({Path(args.grafico).name})\n")
+                f.write(f"\n## Grafico\n\n![Latency by percentile]({Path(args.grafico).name})\n")
 
         print(f"\nReporte generado en: {args.report}")
 

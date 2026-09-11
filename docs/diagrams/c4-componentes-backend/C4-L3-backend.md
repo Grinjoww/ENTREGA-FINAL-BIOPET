@@ -17,16 +17,16 @@ La fuente única y versionada del modelo (los tres niveles) es
 `.dot`/`.puml` son derivaciones manuales alineadas a esa fuente.
 
 Respecto a la Tercera Entrega, v1.0.0 añade los controladores/servicios/
-repositorios de la Unidad IV — citas (`CitaController`/`CitaService`/
-`CitaRepository`), consultas (`ConsultaController`/`ConsultaService`/
-`ConsultaRepository`) y vacunas (`VacunaController`/`VacunaService`/
-`VacunaRepository`) — más la integración externa (`ExternalApiController`/
+repositorios de la Unidad IV — citas (`AppointmentController`/`AppointmentService`/
+`AppointmentRepository`), consultas (`ConsultationController`/`ConsultationService`/
+`ConsultationRepository`) y vacunas (`VaccineController`/`VaccineService`/
+`VaccineRepository`) — más la integración externa (`ExternalApiController`/
 `ExternalApiService`/`ExternalApiClient`) y el acceso formal a
-procedimientos almacenados (`ProcedimientoBiopetRepository`).
+procedimientos almacenados (`BiopetProcedureRepository`).
 
 No es un diagrama de clases: no muestra atributos, métodos, constructores,
 anotaciones Java ni el detalle línea por línea del código. Los DTOs y
-entidades (`AuthResponse`, `LoginRequest`, `Usuario`, `Mascota`, etc.) se
+entidades (`AuthResponse`, `LoginRequest`, `User`, `Pet`, etc.) se
 mencionan aquí solo como modelos de datos que viajan entre componentes, sin
 representarse como cajas propias, para no saturar el diagrama.
 
@@ -60,17 +60,17 @@ generada desde [`../workspace.dsl`](../workspace.dsl).
 | Área | Componente | Responsabilidad | Tecnología |
 |---|---|---|---|
 | API REST | `AuthController` | Endpoints `/api/auth/registro`, `/login`, `/refresh`, `/logout` | Spring MVC REST |
-| API REST | `MascotaController` | Endpoints CRUD de `/api/mascotas` y `/api/mascotas/resumen-especies` | Spring MVC REST |
-| API REST | `UsuarioController` | Endpoint `GET /api/usuarios/me` (perfil autenticado) | Spring MVC REST |
-| API REST | `CitaController` | CRUD de `/api/citas` y actualización masiva de estado | Spring MVC REST |
-| API REST | `ConsultaController` | Registro y consulta de `/api/consultas` | Spring MVC REST |
-| API REST | `VacunaController` | CRUD de `/api/vacunas` | Spring MVC REST |
+| API REST | `PetController` | Endpoints CRUD de `/api/mascotas` y `/api/mascotas/resumen-especies` | Spring MVC REST |
+| API REST | `UserController` | Endpoint `GET /api/usuarios/me` (perfil autenticado) | Spring MVC REST |
+| API REST | `AppointmentController` | CRUD de `/api/citas` y actualización masiva de estado | Spring MVC REST |
+| API REST | `ConsultationController` | Registro y consulta de `/api/consultas` | Spring MVC REST |
+| API REST | `VaccineController` | CRUD de `/api/vacunas` | Spring MVC REST |
 | API REST | `ExternalApiController` | Endpoint `/api/externa/especies/*`, proxy cacheado hacia API Ninjas | Spring MVC REST |
 | Servicios | `AuthService` | Orquesta registro, login, refresh, logout: autenticación, JWT, rate limiting, auditoría y revocación | Spring `@Service` |
-| Servicios | `MascotaService` | Reglas de negocio de mascotas: autorización por propiedad, caché de listados, resumen por especie | Spring `@Service` + Spring Cache |
-| Servicios | `CitaService` | Reglas de negocio de citas: validación de veterinario, actualización masiva de estado | Spring `@Service` |
-| Servicios | `ConsultaService` | Valida mascota y veterinario activos antes de registrar una consulta | Spring `@Service` |
-| Servicios | `VacunaService` | Reglas de negocio de registros de vacunación | Spring `@Service` |
+| Servicios | `PetService` | Reglas de negocio de mascotas: autorización por propiedad, caché de listados, resumen por especie | Spring `@Service` + Spring Cache |
+| Servicios | `AppointmentService` | Reglas de negocio de citas: validación de veterinario, actualización masiva de estado | Spring `@Service` |
+| Servicios | `ConsultationService` | Valida mascota y veterinario activos antes de registrar una consulta | Spring `@Service` |
+| Servicios | `VaccineService` | Reglas de negocio de registros de vacunación | Spring `@Service` |
 | Servicios | `ExternalApiService` | Obtiene y cachea (Redis, TTL configurable) datos de especie desde la API externa | Spring `@Service` |
 | Servicios | `ExternalApiClient` | Cliente HTTP hacia API Ninjas (Animals API) | Spring `@Service` |
 | Seguridad | `SecurityConfig` | Cadena de filtros, CORS, cabeceras HTTP, autorización HTTP, wiring de entry point/access denied handler | Spring Security |
@@ -85,12 +85,12 @@ generada desde [`../workspace.dsl`](../workspace.dsl).
 | Seguridad | `ProblemAccessDeniedHandler` | Construye el `ProblemDetail` 403 para solicitudes autenticadas sin permiso | Spring Security `AccessDeniedHandler` |
 | Errores | `GlobalExceptionHandler` | Traduce excepciones de negocio/seguridad (validación, rate limit, parámetros inválidos, etc.) a `ProblemDetail` | Spring `@RestControllerAdvice` |
 | Errores | `ProblemDetailFactory` | Construye el `ProblemDetail` uniforme (`type`/`title`/`status`/`detail`/`instance`) | Utilitario estático |
-| Persistencia | `UsuarioRepository` | Acceso a la tabla `usuarios` | Spring Data JPA |
-| Persistencia | `MascotaRepository` | Acceso a la tabla `mascotas` + función nativa `fn_resumen_mascotas_por_especie` (parámetro enlazado `:duenioId`) | Spring Data JPA + `@Query` nativa |
-| Persistencia | `CitaRepository` | Acceso a la tabla `citas` | Spring Data JPA |
-| Persistencia | `ConsultaRepository` | Acceso a la tabla `consultas` | Spring Data JPA |
-| Persistencia | `VacunaRepository` | Acceso a la tabla `vacunas` | Spring Data JPA |
-| Persistencia | `ProcedimientoBiopetRepository` | Invocación formal de las 6 rutinas almacenadas de PostgreSQL | Spring Data JPA (`@Procedure`/`@NamedStoredProcedureQuery`) |
+| Persistencia | `UserRepository` | Acceso a la tabla `usuarios` | Spring Data JPA |
+| Persistencia | `PetRepository` | Acceso a la tabla `mascotas` + función nativa `fn_resumen_mascotas_por_especie` (parámetro enlazado `:duenioId`) | Spring Data JPA + `@Query` nativa |
+| Persistencia | `AppointmentRepository` | Acceso a la tabla `citas` | Spring Data JPA |
+| Persistencia | `ConsultationRepository` | Acceso a la tabla `consultas` | Spring Data JPA |
+| Persistencia | `VaccineRepository` | Acceso a la tabla `vacunas` | Spring Data JPA |
+| Persistencia | `BiopetProcedureRepository` | Invocación formal de las 6 rutinas almacenadas de PostgreSQL | Spring Data JPA (`@Procedure`/`@NamedStoredProcedureQuery`) |
 | Infraestructura | `TomcatDualConnectorConfig` | Añade el conector HTTP interno (8080) junto al conector HTTPS principal (8443) cuando el perfil `tls` está activo | Tomcat embebido (Spring Boot), `@Profile("tls")` |
 | Infraestructura | Flyway | Aplica el esquema (`V1__schema_inicial.sql`) sobre PostgreSQL una sola vez, al iniciar el backend, antes de que este atienda tráfico; no interviene en ninguna solicitud HTTP | Flyway 9.22.3 (`spring.flyway.locations: classpath:db/migration`) |
 
@@ -99,7 +99,7 @@ generada desde [`../workspace.dsl`](../workspace.dsl).
 1. **Login.** El Frontend envía `POST /api/auth/login` a `AuthController`,
    que delega en `AuthService`. `AuthService` primero consulta
    `LoginRateLimiterService` (si la IP ya está bloqueada, corta antes de
-   autenticar); si no lo está, autentica contra `UsuarioRepository`
+   autenticar); si no lo está, autentica contra `UserRepository`
    (vía `UserDetailsServiceImpl`, PostgreSQL). Un fallo se registra en
    `LoginRateLimiterService` y en `AuthenticationAuditService`
    (`LOGIN_FAILURE`/`LOGIN_RATE_LIMITED`); un éxito reinicia el contador,
@@ -116,10 +116,10 @@ generada desde [`../workspace.dsl`](../workspace.dsl).
    si corresponde. Si es válido, carga el usuario con
    `UserDetailsServiceImpl` y establece el contexto de seguridad.
 
-3. **Consulta o modificación de mascotas.** `MascotaController` delega en
-   `MascotaService`, que aplica autorización por rol y por propiedad
-   (consultando `UsuarioRepository`) antes de leer/escribir en
-   `MascotaRepository` (PostgreSQL). El listado usa caché declarativa de
+3. **Consulta o modificación de mascotas.** `PetController` delega en
+   `PetService`, que aplica autorización por rol y por propiedad
+   (consultando `UserRepository`) antes de leer/escribir en
+   `PetRepository` (PostgreSQL). El listado usa caché declarativa de
    Spring (`@Cacheable`/`@CacheEvict`) respaldada por Redis.
 
 4. **Logout y revocación.** `AuthController` obtiene ambas cookies (si
@@ -157,11 +157,11 @@ generada desde [`../workspace.dsl`](../workspace.dsl).
   este diagrama; consume la API REST y envía automáticamente las cookies
   de sesión en cada solicitud al mismo origen.
 - **PostgreSQL**: contenedor externo, alcanzado únicamente a través de
-  `UsuarioRepository`/`MascotaRepository` (Spring Data JPA/Hibernate). El
+  `UserRepository`/`PetRepository` (Spring Data JPA/Hibernate). El
   backend no abre conexiones JDBC fuera de esos repositorios.
 - **Redis**: contenedor externo, con dos usos reales confirmados en el
   código — `TokenBlacklistService` (blacklist de `jti` revocados) y la
-  caché declarativa de `MascotaService` (`@Cacheable`/`@CacheEvict`, vía
+  caché declarativa de `PetService` (`@Cacheable`/`@CacheEvict`, vía
   la abstracción de caché de Spring, configurada como `spring.cache.type: redis`).
 - **Flyway**: no es una clase propia de `com.biopet`, sino una dependencia
   gestionada por `spring-boot-starter-parent` (versión efectiva `9.22.3`,
@@ -191,7 +191,7 @@ generada desde [`../workspace.dsl`](../workspace.dsl).
   un *refresh token* de mayor duración, ambos verificados por
   `JwtService`.
 - La autorización combina **rol** (`SecurityConfig`/`@PreAuthorize`) y
-  **propiedad del recurso** (`MascotaService`, para `ROLE_DUENO`).
+  **propiedad del recurso** (`PetService`, para `ROLE_DUENO`).
 - La revocación de tokens depende de una **blacklist en Redis**
   (`TokenBlacklistService`), consultada en cada solicitud protegida.
 - El **rate limiting de login es en memoria**, por instancia del backend,
@@ -231,20 +231,20 @@ generada desde [`../workspace.dsl`](../workspace.dsl).
 
 **Controladores:**
 - `Backend/src/main/java/com/biopet/controller/AuthController.java`
-- `Backend/src/main/java/com/biopet/controller/MascotaController.java`
-- `Backend/src/main/java/com/biopet/controller/UsuarioController.java`
-- `Backend/src/main/java/com/biopet/controller/CitaController.java`
-- `Backend/src/main/java/com/biopet/controller/ConsultaController.java`
-- `Backend/src/main/java/com/biopet/controller/VacunaController.java`
+- `Backend/src/main/java/com/biopet/controller/PetController.java`
+- `Backend/src/main/java/com/biopet/controller/UserController.java`
+- `Backend/src/main/java/com/biopet/controller/AppointmentController.java`
+- `Backend/src/main/java/com/biopet/controller/ConsultationController.java`
+- `Backend/src/main/java/com/biopet/controller/VaccineController.java`
 - `Backend/src/main/java/com/biopet/controller/ExternalApiController.java`
 
 **Servicios:**
 - `Backend/src/main/java/com/biopet/service/AuthService.java`
-- `Backend/src/main/java/com/biopet/service/MascotaService.java`
+- `Backend/src/main/java/com/biopet/service/PetService.java`
 - `Backend/src/main/java/com/biopet/service/UserDetailsServiceImpl.java`
-- `Backend/src/main/java/com/biopet/service/CitaService.java`
-- `Backend/src/main/java/com/biopet/service/ConsultaService.java`
-- `Backend/src/main/java/com/biopet/service/VacunaService.java`
+- `Backend/src/main/java/com/biopet/service/AppointmentService.java`
+- `Backend/src/main/java/com/biopet/service/ConsultationService.java`
+- `Backend/src/main/java/com/biopet/service/VaccineService.java`
 - `Backend/src/main/java/com/biopet/integration/ExternalApiService.java`
 - `Backend/src/main/java/com/biopet/integration/ExternalApiClient.java`
 
@@ -263,12 +263,12 @@ generada desde [`../workspace.dsl`](../workspace.dsl).
 - `Backend/src/main/java/com/biopet/exception/ProblemDetailFactory.java`
 
 **Persistencia:**
-- `Backend/src/main/java/com/biopet/repository/UsuarioRepository.java`
-- `Backend/src/main/java/com/biopet/repository/MascotaRepository.java`
-- `Backend/src/main/java/com/biopet/repository/CitaRepository.java`
-- `Backend/src/main/java/com/biopet/repository/ConsultaRepository.java`
-- `Backend/src/main/java/com/biopet/repository/VacunaRepository.java`
-- `Backend/src/main/java/com/biopet/repository/ProcedimientoBiopetRepository.java`
+- `Backend/src/main/java/com/biopet/repository/UserRepository.java`
+- `Backend/src/main/java/com/biopet/repository/PetRepository.java`
+- `Backend/src/main/java/com/biopet/repository/AppointmentRepository.java`
+- `Backend/src/main/java/com/biopet/repository/ConsultationRepository.java`
+- `Backend/src/main/java/com/biopet/repository/VaccineRepository.java`
+- `Backend/src/main/java/com/biopet/repository/BiopetProcedureRepository.java`
 - `db/procs/fn_resumen_mascotas_por_especie.sql`
 - `Backend/src/main/resources/db/migration/` (Flyway V1..V6)
 

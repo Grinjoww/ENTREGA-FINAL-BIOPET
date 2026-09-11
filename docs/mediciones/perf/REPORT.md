@@ -43,4 +43,4 @@ Analisis de sensibilidad sin asumir pareo por indice (corridas independientes). 
 
 ## Grafico
 
-![Latencia por percentil](grafico.svg)
+![Latency by percentile](grafico.svg)

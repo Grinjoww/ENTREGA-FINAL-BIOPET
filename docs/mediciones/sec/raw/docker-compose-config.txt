@@ -2,7 +2,7 @@ name: entrega-final-biopet
 services:
   backend:
     build:
-      context: C:\Users\jaime\Desktop\ENTREGA-FINAL\ENTREGA-FINAL-BIOPET\Backend
+      context: USER_REDACTED\Desktop\ENTREGA-FINAL\ENTREGA-FINAL-BIOPET\Backend
       dockerfile: Dockerfile
     container_name: biopet-backend
     depends_on:
@@ -55,13 +55,13 @@ services:
         protocol: tcp
     volumes:
       - type: bind
-        source: C:\Users\jaime\Desktop\ENTREGA-FINAL\ENTREGA-FINAL-BIOPET\Backend\certs
+        source: USER_REDACTED\Desktop\ENTREGA-FINAL\ENTREGA-FINAL-BIOPET\Backend\certs
         target: /app/certs
         read_only: true
         bind: {}
   frontend:
     build:
-      context: C:\Users\jaime\Desktop\ENTREGA-FINAL\ENTREGA-FINAL-BIOPET\frontend
+      context: USER_REDACTED\Desktop\ENTREGA-FINAL\ENTREGA-FINAL-BIOPET\frontend
       dockerfile: Dockerfile
     container_name: biopet-frontend
     depends_on:
@@ -109,22 +109,22 @@ services:
         target: /var/lib/postgresql/data
         volume: {}
       - type: bind
-        source: C:\Users\jaime\Desktop\ENTREGA-FINAL\ENTREGA-FINAL-BIOPET\db\schema.sql
+        source: USER_REDACTED\Desktop\ENTREGA-FINAL\ENTREGA-FINAL-BIOPET\db\schema.sql
         target: /docker-entrypoint-initdb.d/00-schema.sql
         read_only: true
         bind: {}
       - type: bind
-        source: C:\Users\jaime\Desktop\ENTREGA-FINAL\ENTREGA-FINAL-BIOPET\db\seed.sql
+        source: USER_REDACTED\Desktop\ENTREGA-FINAL\ENTREGA-FINAL-BIOPET\db\seed.sql
         target: /docker-entrypoint-initdb.d/01-seed.sql
         read_only: true
         bind: {}
       - type: bind
-        source: C:\Users\jaime\Desktop\ENTREGA-FINAL\ENTREGA-FINAL-BIOPET\db\roles.sql
+        source: USER_REDACTED\Desktop\ENTREGA-FINAL\ENTREGA-FINAL-BIOPET\db\roles.sql
         target: /docker-entrypoint-initdb.d/02-roles.sql
         read_only: true
         bind: {}
       - type: bind
-        source: C:\Users\jaime\Desktop\ENTREGA-FINAL\ENTREGA-FINAL-BIOPET\db\procs\fn_resumen_mascotas_por_especie.sql
+        source: USER_REDACTED\Desktop\ENTREGA-FINAL\ENTREGA-FINAL-BIOPET\db\procs\fn_resumen_mascotas_por_especie.sql
         target: /docker-entrypoint-initdb.d/03-resumen-especies.sql
         read_only: true
         bind: {}

@@ -12,20 +12,20 @@ rectangle "API Ninjas (Animals API)\n[External System]" as animalApi
 
 package "REST API / Controllers" {
   rectangle "AuthController\n/api/auth/*" as AuthController
-  rectangle "MascotaController\n/api/mascotas/*" as MascotaController
-  rectangle "UsuarioController\n/api/usuarios/me" as UsuarioController
-  rectangle "CitaController\n/api/citas/*" as CitaController
-  rectangle "ConsultaController\n/api/consultas/*" as ConsultaController
-  rectangle "VacunaController\n/api/vacunas/*" as VacunaController
+  rectangle "PetController\n/api/mascotas/*" as PetController
+  rectangle "UserController\n/api/usuarios/me" as UserController
+  rectangle "AppointmentController\n/api/citas/*" as AppointmentController
+  rectangle "ConsultationController\n/api/consultas/*" as ConsultationController
+  rectangle "VaccineController\n/api/vacunas/*" as VaccineController
   rectangle "ExternalApiController\n/api/externa/especies/*" as ExternalApiController
 }
 
 package "Application services" {
   rectangle "AuthService" as AuthService
-  rectangle "MascotaService" as MascotaService
-  rectangle "CitaService" as CitaService
-  rectangle "ConsultaService" as ConsultaService
-  rectangle "VacunaService" as VacunaService
+  rectangle "PetService" as PetService
+  rectangle "AppointmentService" as AppointmentService
+  rectangle "ConsultationService" as ConsultationService
+  rectangle "VaccineService" as VaccineService
   rectangle "ExternalApiService\n(cache TTL)" as ExternalApiService
   rectangle "ExternalApiClient" as ExternalApiClient
 }
@@ -49,12 +49,12 @@ package "Error handling" {
 }
 
 package "Persistence (Spring Data JPA)" {
-  rectangle "UsuarioRepository" as UsuarioRepo
-  rectangle "MascotaRepository" as MascotaRepo
-  rectangle "CitaRepository" as CitaRepo
-  rectangle "ConsultaRepository" as ConsultaRepo
-  rectangle "VacunaRepository" as VacunaRepo
-  rectangle "ProcedimientoBiopetRepository\n(@Procedure /\n@NamedStoredProcedureQuery)" as ProcedimientoRepo
+  rectangle "UserRepository" as UserRepo
+  rectangle "PetRepository" as PetRepo
+  rectangle "AppointmentRepository" as AppointmentRepo
+  rectangle "ConsultationRepository" as ConsultationRepo
+  rectangle "VaccineRepository" as VaccineRepo
+  rectangle "BiopetProcedureRepository\n(@Procedure /\n@NamedStoredProcedureQuery)" as ProcedureRepo
 }
 
 package "Server infrastructure" {
@@ -62,38 +62,38 @@ package "Server infrastructure" {
 }
 
 frontend --> AuthController : HTTPS/JSON + cookies\naccess_token, refresh_token
-frontend --> MascotaController : HTTPS/JSON + cookie access_token
-frontend --> UsuarioController : HTTPS/JSON + cookie access_token
-frontend --> CitaController : HTTPS/JSON + cookie access_token
-frontend --> ConsultaController : HTTPS/JSON + cookie access_token
-frontend --> VacunaController : HTTPS/JSON + cookie access_token
+frontend --> PetController : HTTPS/JSON + cookie access_token
+frontend --> UserController : HTTPS/JSON + cookie access_token
+frontend --> AppointmentController : HTTPS/JSON + cookie access_token
+frontend --> ConsultationController : HTTPS/JSON + cookie access_token
+frontend --> VaccineController : HTTPS/JSON + cookie access_token
 frontend --> ExternalApiController : HTTPS/JSON + cookie access_token
 frontend --> TomcatDual : HTTPS :8443 (public)\nHTTP :8080 (internal)
 
 AuthController --> AuthService : register/login/refresh/logout
 AuthController --> JwtCookieService : reads/writes cookies
-MascotaController --> MascotaService : list/search/create/update/delete
-UsuarioController --> AuthService : profile (email)
-CitaController --> CitaService : CRUD / bulk status update
-ConsultaController --> ConsultaService : register/query consultations
-VacunaController --> VacunaService : CRUD vaccine records
+PetController --> PetService : list/search/create/update/delete
+UserController --> AuthService : profile (email)
+AppointmentController --> AppointmentService : CRUD / bulk status update
+ConsultationController --> ConsultationService : register/query consultations
+VaccineController --> VaccineService : CRUD vaccine records
 ExternalApiController --> ExternalApiService : get species info
 
-AuthService --> UsuarioRepo : finds/creates user
+AuthService --> UserRepo : finds/creates user
 AuthService --> JwtService : generates/validates JWT
 AuthService --> RateLimiter : checks/records login attempts
 AuthService --> AuditService : LOGIN_*/REFRESH_*/LOGOUT_SUCCESS
 AuthService --> Blacklist : revoke / isRevoked (refresh, logout)
 
-MascotaService --> MascotaRepo : CRUD
-MascotaService --> UsuarioRepo : validates owner/role
-MascotaService ..> redis : cache reads/writes\n(@Cacheable/@CacheEvict)
+PetService --> PetRepo : CRUD
+PetService --> UserRepo : validates owner/role
+PetService ..> redis : cache reads/writes\n(@Cacheable/@CacheEvict)
 
-CitaService --> CitaRepo : CRUD / bulk update
-CitaService --> UsuarioRepo : validates veterinarian role
-ConsultaService --> ConsultaRepo : CRUD
-ConsultaService --> UsuarioRepo : validates veterinarian/access
-VacunaService --> VacunaRepo : CRUD
+AppointmentService --> AppointmentRepo : CRUD / bulk update
+AppointmentService --> UserRepo : validates veterinarian role
+ConsultationService --> ConsultationRepo : CRUD
+ConsultationService --> UserRepo : validates veterinarian/access
+VaccineService --> VaccineRepo : CRUD
 
 ExternalApiService --> ExternalApiClient : fetches species data
 ExternalApiService ..> redis : caches response (TTL)
@@ -115,12 +115,12 @@ AccessDeniedHandler --> ProblemDetailFactory : builds 403
 GlobalExceptionHandler --> ProblemDetailFactory : builds 4xx/429
 
 Blacklist --> redis : StringRedisTemplate
-UsuarioRepo --> postgres : JDBC/JPA
-MascotaRepo --> postgres : JDBC/JPA
-CitaRepo --> postgres : JDBC/JPA
-ConsultaRepo --> postgres : JDBC/JPA
-VacunaRepo --> postgres : JDBC/JPA
-ProcedimientoRepo --> postgres : invokes stored procedures\n(@Procedure/@NamedStoredProcedureQuery)
+UserRepo --> postgres : JDBC/JPA
+PetRepo --> postgres : JDBC/JPA
+AppointmentRepo --> postgres : JDBC/JPA
+ConsultationRepo --> postgres : JDBC/JPA
+VaccineRepo --> postgres : JDBC/JPA
+ProcedureRepo --> postgres : invokes stored procedures\n(@Procedure/@NamedStoredProcedureQuery)
 
 AuditService --> logs : AUTH_AUDIT timestamp/event/result/ip/subject
 flyway ..> postgres : applies schema on startup\n(once, before serving traffic)

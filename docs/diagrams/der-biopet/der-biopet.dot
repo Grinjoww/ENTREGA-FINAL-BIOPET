@@ -1,31 +1,34 @@
 digraph ERD {
   graph [rankdir=LR, dpi=200, bgcolor="white", fontname="Arial", label="BIOPET - Entity-Relationship Diagram (v1.0.0)", labelloc=t, fontsize=22];
   node [shape=plaintext, fontname="Arial"];
-  usuarios [label=<
+  // NOTE: conceptual English labels. Physical schema (Flyway V1-V6) uses
+  // Spanish identifiers: users=usuarios, pets=mascotas, name=nombre,
+  // role=rol, active=activo, created_at=creado_en, updated_at=actualizado_en,
+  // owner_id=duenio_id, species=especie, breed=raza, birth_date=fecha_nacimiento.
+  users [label=<
   <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6">
-    <TR><TD BGCOLOR="#0F766E"><FONT COLOR="white"><B>usuarios</B></FONT></TD></TR>
+    <TR><TD BGCOLOR="#0F766E"><FONT COLOR="white"><B>users</B></FONT></TD></TR>
     <TR><TD ALIGN="LEFT">PK id BIGSERIAL</TD></TR>
-    <TR><TD ALIGN="LEFT">nombre VARCHAR(100) NOT NULL</TD></TR>
+    <TR><TD ALIGN="LEFT">name VARCHAR(100) NOT NULL</TD></TR>
     <TR><TD ALIGN="LEFT">email VARCHAR(255) UNIQUE NOT NULL</TD></TR>
     <TR><TD ALIGN="LEFT">password_hash VARCHAR(255) NOT NULL</TD></TR>
-    <TR><TD ALIGN="LEFT">rol VARCHAR(30) CHECK</TD></TR>
-    <TR><TD ALIGN="LEFT">activo BOOLEAN DEFAULT TRUE</TD></TR>
-    <TR><TD ALIGN="LEFT">creado_en TIMESTAMPTZ</TD></TR>
-    <TR><TD ALIGN="LEFT">actualizado_en TIMESTAMPTZ</TD></TR>
+    <TR><TD ALIGN="LEFT">role VARCHAR(30) CHECK</TD></TR>
+    <TR><TD ALIGN="LEFT">active BOOLEAN DEFAULT TRUE</TD></TR>
+    <TR><TD ALIGN="LEFT">created_at TIMESTAMPTZ</TD></TR>
+    <TR><TD ALIGN="LEFT">updated_at TIMESTAMPTZ</TD></TR>
   </TABLE>>];
-  mascotas [label=<
+  pets [label=<
   <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0" CELLPADDING="6">
-    <TR><TD BGCOLOR="#2563EB"><FONT COLOR="white"><B>mascotas</B></FONT></TD></TR>
+    <TR><TD BGCOLOR="#2563EB"><FONT COLOR="white"><B>pets</B></FONT></TD></TR>
     <TR><TD ALIGN="LEFT">PK id BIGSERIAL</TD></TR>
-    <TR><TD ALIGN="LEFT">FK duenio_id BIGINT</TD></TR>
-    <TR><TD ALIGN="LEFT">nombre VARCHAR(50) NOT NULL</TD></TR>
-    <TR><TD ALIGN="LEFT">especie VARCHAR(30) NOT NULL</TD></TR>
-    <TR><TD ALIGN="LEFT">raza VARCHAR(50) NOT NULL</TD></TR>
-    <TR><TD ALIGN="LEFT">fecha_nacimiento DATE NOT NULL</TD></TR>
-    <TR><TD ALIGN="LEFT">activo BOOLEAN DEFAULT TRUE</TD></TR>
-    <TR><TD ALIGN="LEFT">creado_en TIMESTAMPTZ</TD></TR>
-    <TR><TD ALIGN="LEFT">actualizado_en TIMESTAMPTZ</TD></TR>
+    <TR><TD ALIGN="LEFT">FK owner_id BIGINT</TD></TR>
+    <TR><TD ALIGN="LEFT">name VARCHAR(50) NOT NULL</TD></TR>
+    <TR><TD ALIGN="LEFT">species VARCHAR(30) NOT NULL</TD></TR>
+    <TR><TD ALIGN="LEFT">breed VARCHAR(50) NOT NULL</TD></TR>
+    <TR><TD ALIGN="LEFT">birth_date DATE NOT NULL</TD></TR>
+    <TR><TD ALIGN="LEFT">active BOOLEAN DEFAULT TRUE</TD></TR>
+    <TR><TD ALIGN="LEFT">created_at TIMESTAMPTZ</TD></TR>
+    <TR><TD ALIGN="LEFT">updated_at TIMESTAMPTZ</TD></TR>
   </TABLE>>];
-  usuarios -> mascotas [label="1 to N\nusuarios.id = mascotas.duenio_id", color="#334155"];
+  users -> pets [label="1 to N\nusers.id = pets.owner_id", color="#334155"];
 }
-

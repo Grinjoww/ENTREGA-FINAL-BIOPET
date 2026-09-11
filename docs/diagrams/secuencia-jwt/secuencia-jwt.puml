@@ -1,9 +1,12 @@
+' Conceptual English view of the cookie-based JWT flow implemented by
+' AuthController, AuthService, JwtService, JwtCookieService and
+' JwtAuthenticationFilter.
 @startuml
-actor Cliente as Angular
+actor Client as Angular
 participant "AuthController" as AC
 participant "AuthenticationManager" as AM
 participant "UserDetailsServiceImpl" as UDS
-participant "UsuarioRepository" as UR
+participant "UserRepository" as UR
 participant "PostgreSQL" as PG
 participant "PasswordEncoder BCrypt" as BC
 participant "JwtService" as JWT
@@ -14,19 +17,18 @@ participant "SecurityContext" as SC
 Angular -> AC: 1. POST /api/auth/login {email,password}
 AC -> AM: 2. authenticate(email,password)
 AM -> UDS: 3. loadUserByUsername(email)
-UDS -> UR: 4. findByEmailAndActivoTrue(email)
-UR -> PG: 5. SELECT usuarios WHERE email=?
-PG --> UR: usuario
-UR --> UDS: entidad Usuario
-AM -> BC: 6. matches(password, password_hash)
-BC --> AM: válido
+UDS -> UR: 4. findByEmail(email)
+UR -> PG: 5. SELECT user WHERE email=?
+PG --> UR: user
+UR --> UDS: User entity
+AM -> BC: 6. matches(password, passwordHash)
+BC --> AM: valid
 AC -> JWT: 7. generateAccessToken() + generateRefreshToken()
-JWT --> AC: JWT HS256 con jti
-AC --> Angular: 8. {accessToken, refreshToken, expiresIn}
-Angular -> Angular: 9. accessToken en memoria y refreshToken en cookie HttpOnly
-Angular -> F: 10. Authorization: Bearer [token]
-F -> JWT: 11. validar firma, expiración y claims
-F -> R: consultar jti en blacklist
-R --> F: no revocado
-F -> SC: establecer UsernamePasswordAuthenticationToken
+JWT --> AC: HS256 JWTs with jti
+AC --> Angular: 8. Set-Cookie access_token, refresh_token
+Angular -> F: 9. Cookie: access_token
+F -> JWT: 10. validate signature and expiry
+F -> R: 11. isRevoked(jti)
+R --> F: not revoked
+F -> SC: 12. set Authentication
 @enduml

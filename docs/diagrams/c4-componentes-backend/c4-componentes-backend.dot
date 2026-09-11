@@ -8,21 +8,21 @@ digraph C4L3 {
   subgraph cluster_controllers {
     label="REST API / Controllers"; style="rounded,filled"; fillcolor="#E0E7FF"; color="#3730A3"; fontname="Arial"; fontsize=13;
     AuthController [label="AuthController\n/api/auth/*", fillcolor="#C7D2FE"];
-    MascotaController [label="MascotaController\n/api/mascotas/*", fillcolor="#C7D2FE"];
-    UsuarioController [label="UsuarioController\n/api/usuarios/me", fillcolor="#C7D2FE"];
-    CitaController [label="CitaController\n/api/citas/*", fillcolor="#C7D2FE"];
-    ConsultaController [label="ConsultaController\n/api/consultas/*", fillcolor="#C7D2FE"];
-    VacunaController [label="VacunaController\n/api/vacunas/*", fillcolor="#C7D2FE"];
+    PetController [label="PetController\n/api/mascotas/*", fillcolor="#C7D2FE"];
+    UserController [label="UserController\n/api/usuarios/me", fillcolor="#C7D2FE"];
+    AppointmentController [label="AppointmentController\n/api/citas/*", fillcolor="#C7D2FE"];
+    ConsultationController [label="ConsultationController\n/api/consultas/*", fillcolor="#C7D2FE"];
+    VaccineController [label="VaccineController\n/api/vacunas/*", fillcolor="#C7D2FE"];
     ExternalApiController [label="ExternalApiController\n/api/externa/especies/*", fillcolor="#C7D2FE"];
   }
 
   subgraph cluster_services {
     label="Application services"; style="rounded,filled"; fillcolor="#DBEAFE"; color="#1D4ED8"; fontname="Arial"; fontsize=13;
     AuthService [label="AuthService", fillcolor="#BFDBFE"];
-    MascotaService [label="MascotaService", fillcolor="#BFDBFE"];
-    CitaService [label="CitaService", fillcolor="#BFDBFE"];
-    ConsultaService [label="ConsultaService", fillcolor="#BFDBFE"];
-    VacunaService [label="VacunaService", fillcolor="#BFDBFE"];
+    PetService [label="PetService", fillcolor="#BFDBFE"];
+    AppointmentService [label="AppointmentService", fillcolor="#BFDBFE"];
+    ConsultationService [label="ConsultationService", fillcolor="#BFDBFE"];
+    VaccineService [label="VaccineService", fillcolor="#BFDBFE"];
     ExternalApiService [label="ExternalApiService\n(cache TTL)", fillcolor="#BFDBFE"];
     ExternalApiClient [label="ExternalApiClient", fillcolor="#BFDBFE"];
   }
@@ -49,12 +49,12 @@ digraph C4L3 {
 
   subgraph cluster_persistence {
     label="Persistence (Spring Data JPA)"; style="rounded,filled"; fillcolor="#E9D5FF"; color="#6B21A8"; fontname="Arial"; fontsize=13;
-    UsuarioRepo [label="UsuarioRepository", fillcolor="#DDD6FE"];
-    MascotaRepo [label="MascotaRepository", fillcolor="#DDD6FE"];
-    CitaRepo [label="CitaRepository", fillcolor="#DDD6FE"];
-    ConsultaRepo [label="ConsultaRepository", fillcolor="#DDD6FE"];
-    VacunaRepo [label="VacunaRepository", fillcolor="#DDD6FE"];
-    ProcedimientoRepo [label="ProcedimientoBiopetRepository\n(@Procedure /\n@NamedStoredProcedureQuery)", fillcolor="#DDD6FE"];
+    UserRepo [label="UserRepository", fillcolor="#DDD6FE"];
+    PetRepo [label="PetRepository", fillcolor="#DDD6FE"];
+    AppointmentRepo [label="AppointmentRepository", fillcolor="#DDD6FE"];
+    ConsultationRepo [label="ConsultationRepository", fillcolor="#DDD6FE"];
+    VaccineRepo [label="VaccineRepository", fillcolor="#DDD6FE"];
+    ProcedureRepo [label="BiopetProcedureRepository\n(@Procedure /\n@NamedStoredProcedureQuery)", fillcolor="#DDD6FE"];
   }
 
   subgraph cluster_infra {
@@ -69,37 +69,37 @@ digraph C4L3 {
   animalApi [label="API Ninjas\n(Animals API)\n[External System]", shape=box, style="rounded,dashed", fillcolor="#F1F5F9", color="#94A3B8", fontcolor="#64748B"];
 
   frontend -> AuthController [label="HTTPS/JSON + cookies\naccess_token, refresh_token"];
-  frontend -> MascotaController [label="HTTPS/JSON + cookie access_token"];
-  frontend -> UsuarioController [label="HTTPS/JSON + cookie access_token"];
-  frontend -> CitaController [label="HTTPS/JSON + cookie access_token"];
-  frontend -> ConsultaController [label="HTTPS/JSON + cookie access_token"];
-  frontend -> VacunaController [label="HTTPS/JSON + cookie access_token"];
+  frontend -> PetController [label="HTTPS/JSON + cookie access_token"];
+  frontend -> UserController [label="HTTPS/JSON + cookie access_token"];
+  frontend -> AppointmentController [label="HTTPS/JSON + cookie access_token"];
+  frontend -> ConsultationController [label="HTTPS/JSON + cookie access_token"];
+  frontend -> VaccineController [label="HTTPS/JSON + cookie access_token"];
   frontend -> ExternalApiController [label="HTTPS/JSON + cookie access_token"];
 
   AuthController -> AuthService [label="register/login/refresh/logout"];
   AuthController -> JwtCookieService [label="reads/writes cookies"];
-  MascotaController -> MascotaService [label="list/search/create/update/delete"];
-  UsuarioController -> AuthService [label="profile (email)"];
-  CitaController -> CitaService [label="CRUD / bulk status update"];
-  ConsultaController -> ConsultaService [label="register/query consultations"];
-  VacunaController -> VacunaService [label="CRUD vaccine records"];
+  PetController -> PetService [label="list/search/create/update/delete"];
+  UserController -> AuthService [label="profile (email)"];
+  AppointmentController -> AppointmentService [label="CRUD / bulk status update"];
+  ConsultationController -> ConsultationService [label="register/query consultations"];
+  VaccineController -> VaccineService [label="CRUD vaccine records"];
   ExternalApiController -> ExternalApiService [label="get species info"];
 
-  AuthService -> UsuarioRepo [label="finds/creates user"];
+  AuthService -> UserRepo [label="finds/creates user"];
   AuthService -> JwtService [label="generates/validates JWT"];
   AuthService -> RateLimiter [label="checks/records login attempts"];
   AuthService -> AuditService [label="LOGIN_*/REFRESH_*/LOGOUT_SUCCESS"];
   AuthService -> Blacklist [label="revoke / isRevoked\n(refresh, logout)"];
 
-  MascotaService -> MascotaRepo [label="CRUD"];
-  MascotaService -> UsuarioRepo [label="validates owner/role"];
-  MascotaService -> redis [label="cache reads/writes\n(@Cacheable/@CacheEvict)", style=dashed];
+  PetService -> PetRepo [label="CRUD"];
+  PetService -> UserRepo [label="validates owner/role"];
+  PetService -> redis [label="cache reads/writes\n(@Cacheable/@CacheEvict)", style=dashed];
 
-  CitaService -> CitaRepo [label="CRUD / bulk update"];
-  CitaService -> UsuarioRepo [label="validates veterinarian role"];
-  ConsultaService -> ConsultaRepo [label="CRUD"];
-  ConsultaService -> UsuarioRepo [label="validates veterinarian/access"];
-  VacunaService -> VacunaRepo [label="CRUD"];
+  AppointmentService -> AppointmentRepo [label="CRUD / bulk update"];
+  AppointmentService -> UserRepo [label="validates veterinarian role"];
+  ConsultationService -> ConsultationRepo [label="CRUD"];
+  ConsultationService -> UserRepo [label="validates veterinarian/access"];
+  VaccineService -> VaccineRepo [label="CRUD"];
 
   ExternalApiService -> ExternalApiClient [label="fetches species data"];
   ExternalApiService -> redis [label="caches response (TTL)", style=dashed];
@@ -121,12 +121,12 @@ digraph C4L3 {
   GlobalExceptionHandler -> ProblemDetailFactory [label="builds 4xx/429"];
 
   Blacklist -> redis [label="StringRedisTemplate"];
-  UsuarioRepo -> postgres [label="JDBC/JPA"];
-  MascotaRepo -> postgres [label="JDBC/JPA"];
-  CitaRepo -> postgres [label="JDBC/JPA"];
-  ConsultaRepo -> postgres [label="JDBC/JPA"];
-  VacunaRepo -> postgres [label="JDBC/JPA"];
-  ProcedimientoRepo -> postgres [label="invokes stored procedures\n(@Procedure/@NamedStoredProcedureQuery)"];
+  UserRepo -> postgres [label="JDBC/JPA"];
+  PetRepo -> postgres [label="JDBC/JPA"];
+  AppointmentRepo -> postgres [label="JDBC/JPA"];
+  ConsultationRepo -> postgres [label="JDBC/JPA"];
+  VaccineRepo -> postgres [label="JDBC/JPA"];
+  ProcedureRepo -> postgres [label="invokes stored procedures\n(@Procedure/@NamedStoredProcedureQuery)"];
 
   AuditService -> logs [label="AUTH_AUDIT\ntimestamp/event/result/ip/subject"];
   frontend -> TomcatDual [label="HTTPS :8443 (public)\nHTTP :8080 (internal)", style=dashed];
