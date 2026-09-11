@@ -40,7 +40,7 @@ import java.time.LocalDate;
                 }
         )
 })
-public class Mascota {
+public class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

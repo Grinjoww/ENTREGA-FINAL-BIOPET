@@ -4,12 +4,12 @@ import com.biopet.dto.AppointmentRequest;
 import com.biopet.dto.AppointmentResponse;
 import com.biopet.entity.Appointment;
 import com.biopet.entity.AppointmentStatus;
-import com.biopet.entity.Mascota;
+import com.biopet.entity.Pet;
 import com.biopet.entity.Rol;
 import com.biopet.entity.Usuario;
 import com.biopet.exception.ResourceNotFoundException;
 import com.biopet.repository.AppointmentRepository;
-import com.biopet.repository.MascotaRepository;
+import com.biopet.repository.PetRepository;
 import com.biopet.repository.UsuarioRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Reglas de acceso (aplicadas aquí porque dependen de datos, no solo del rol;
  * el control por rol "puro" ya vive en {@code AppointmentController} vía @PreAuthorize):
  * <ul>
- *   <li>DUENO: solo lee citas de sus propias mascotas (igual que MascotaService).</li>
+ *   <li>DUENO: solo lee citas de sus propias mascotas (igual que PetService).</li>
  *   <li>VETERINARIO: lee todas, pero solo puede actualizar las citas donde él
  *       es el veterinario asignado.</li>
  *   <li>ADMIN/AUXILIAR: sin restricciones adicionales de datos.</li>
@@ -34,10 +34,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class AppointmentService {
     private final AppointmentRepository citaRepository;
-    private final MascotaRepository mascotaRepository;
+    private final PetRepository mascotaRepository;
     private final UsuarioRepository usuarioRepository;
 
-    public AppointmentService(AppointmentRepository citaRepository, MascotaRepository mascotaRepository, UsuarioRepository usuarioRepository) {
+    public AppointmentService(AppointmentRepository citaRepository, PetRepository mascotaRepository, UsuarioRepository usuarioRepository) {
         this.citaRepository = citaRepository;
         this.mascotaRepository = mascotaRepository;
         this.usuarioRepository = usuarioRepository;
@@ -91,7 +91,7 @@ public class AppointmentService {
      */
     @Transactional
     public AppointmentResponse crear(AppointmentRequest request) {
-        Mascota mascota = resolverMascota(request.mascotaId());
+        Pet mascota = resolverMascota(request.mascotaId());
         Usuario veterinario = resolverVeterinario(request.veterinarioId());
 
         Appointment cita = Appointment.builder()
@@ -124,7 +124,7 @@ public class AppointmentService {
                 .orElseThrow(() -> new ResourceNotFoundException("Appointment no encontrada: " + id));
         verificarPermisoEscritura(usuario, cita);
 
-        Mascota mascota = resolverMascota(request.mascotaId());
+        Pet mascota = resolverMascota(request.mascotaId());
         Usuario veterinario = resolverVeterinario(request.veterinarioId());
 
         cita.setMascota(mascota);
@@ -155,9 +155,9 @@ public class AppointmentService {
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado: " + email));
     }
 
-    private Mascota resolverMascota(Long mascotaId) {
+    private Pet resolverMascota(Long mascotaId) {
         return mascotaRepository.findByIdAndActivoTrue(mascotaId)
-                .orElseThrow(() -> new ResourceNotFoundException("Mascota no encontrada: " + mascotaId));
+                .orElseThrow(() -> new ResourceNotFoundException("Pet no encontrada: " + mascotaId));
     }
 
     private Usuario resolverVeterinario(Long veterinarioId) {

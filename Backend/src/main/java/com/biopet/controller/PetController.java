@@ -1,9 +1,9 @@
 package com.biopet.controller;
 
-import com.biopet.dto.MascotaRequest;
-import com.biopet.dto.MascotaResponse;
+import com.biopet.dto.PetRequest;
+import com.biopet.dto.PetResponse;
 import com.biopet.dto.SpeciesSummaryResponse;
-import com.biopet.service.MascotaService;
+import com.biopet.service.PetService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,16 +18,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * REST endpoints for pet ({@code Mascota}) records. Role-based access is
+ * REST endpoints for pet ({@code Pet}) records. Role-based access is
  * enforced here via {@code @PreAuthorize}; data-level ownership rules
- * (a DUENO only sees their own pets) are enforced in {@link MascotaService}.
+ * (a DUENO only sees their own pets) are enforced in {@link PetService}.
  */
 @RestController
 @RequestMapping("/api/mascotas")
-public class MascotaController {
-    private final MascotaService mascotaService;
+public class PetController {
+    private final PetService mascotaService;
 
-    public MascotaController(MascotaService mascotaService) {
+    public PetController(PetService mascotaService) {
         this.mascotaService = mascotaService;
     }
 
@@ -41,7 +41,7 @@ public class MascotaController {
      */
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR','DUENO')")
-    public Page<MascotaResponse> listar(Pageable pageable, @AuthenticationPrincipal UserDetails userDetails) {
+    public Page<PetResponse> listar(Pageable pageable, @AuthenticationPrincipal UserDetails userDetails) {
         return mascotaService.listar(pageable, userDetails.getUsername());
     }
 
@@ -56,7 +56,7 @@ public class MascotaController {
      */
     @GetMapping("/{id:\\d+}")
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR','DUENO')")
-    public MascotaResponse buscar(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
+    public PetResponse buscar(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
         return mascotaService.buscar(id, userDetails.getUsername());
     }
 
@@ -68,7 +68,7 @@ public class MascotaController {
      */
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR')")
-    public ResponseEntity<MascotaResponse> crear(@Valid @RequestBody MascotaRequest request) {
+    public ResponseEntity<PetResponse> crear(@Valid @RequestBody PetRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(mascotaService.crear(request));
     }
 
@@ -83,7 +83,7 @@ public class MascotaController {
      */
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR')")
-    public MascotaResponse actualizar(@PathVariable Long id, @Valid @RequestBody MascotaRequest request,
+    public PetResponse actualizar(@PathVariable Long id, @Valid @RequestBody PetRequest request,
                                        @AuthenticationPrincipal UserDetails userDetails) {
         return mascotaService.actualizar(id, request, userDetails.getUsername());
     }

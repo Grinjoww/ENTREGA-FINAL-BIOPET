@@ -1,6 +1,6 @@
 package com.biopet.repository;
 
-import com.biopet.entity.Mascota;
+import com.biopet.entity.Pet;
 import com.biopet.entity.Rol;
 import com.biopet.entity.Usuario;
 import org.junit.jupiter.api.BeforeAll;
@@ -66,7 +66,7 @@ class ResumenEspeciesIntegrationTest {
     @Autowired
     JdbcTemplate jdbcTemplate;
     @Autowired
-    MascotaRepository mascotaRepository;
+    PetRepository mascotaRepository;
     @Autowired
     UsuarioRepository usuarioRepository;
     @Autowired
@@ -89,10 +89,10 @@ class ResumenEspeciesIntegrationTest {
                 .nombre("Test Duenio").email("test-duenio@biopet.ec")
                 .passwordHash("x").rol(Rol.ROLE_DUENO).activo(true).build());
 
-        mascotaRepository.save(Mascota.builder()
+        mascotaRepository.save(Pet.builder()
         .duenio(duenio).nombre("Firulais").especie("Perro")
         .raza("Mestizo").fechaNacimiento(LocalDate.of(2020,1,1)).activo(true).build());
-        mascotaRepository.save(Mascota.builder()
+        mascotaRepository.save(Pet.builder()
         .duenio(duenio).nombre("Michi").especie("Gato")
         .raza("Mestizo").fechaNacimiento(LocalDate.of(2021,1,1)).activo(true).build());
         List<SpeciesSummary> resultado = procedimientoBiopetRepository.resumenPorEspecie(duenio.getId());

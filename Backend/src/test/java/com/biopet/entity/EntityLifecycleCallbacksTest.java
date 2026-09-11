@@ -102,7 +102,7 @@ class EntityLifecycleCallbacksTest {
 
     @Test
     void mascotaPrePersistAutocompletaCuandoCamposSonNulos() {
-        Mascota mascota = new Mascota();
+        Pet mascota = new Pet();
 
         mascota.prePersist();
 
@@ -115,7 +115,7 @@ class EntityLifecycleCallbacksTest {
     void mascotaPrePersistRespetaValoresYaAsignados() {
         Instant creado = Instant.parse("2026-01-01T00:00:00Z");
         Instant actualizado = Instant.parse("2026-01-02T00:00:00Z");
-        Mascota mascota = new Mascota();
+        Pet mascota = new Pet();
         mascota.setCreadoEn(creado);
         mascota.setActualizadoEn(actualizado);
 

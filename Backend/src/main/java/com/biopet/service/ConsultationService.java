@@ -3,12 +3,12 @@ package com.biopet.service;
 import com.biopet.dto.ConsultationRequest;
 import com.biopet.dto.ConsultationResponse;
 import com.biopet.entity.Consultation;
-import com.biopet.entity.Mascota;
+import com.biopet.entity.Pet;
 import com.biopet.entity.Rol;
 import com.biopet.entity.Usuario;
 import com.biopet.exception.ResourceNotFoundException;
 import com.biopet.repository.ConsultationRepository;
-import com.biopet.repository.MascotaRepository;
+import com.biopet.repository.PetRepository;
 import com.biopet.repository.UsuarioRepository;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * CRUD for clinical consultation records. Access rules that depend on
  * data (not just role) live here, mirroring the pattern used by
- * {@link AppointmentService} and {@link MascotaService}:
+ * {@link AppointmentService} and {@link PetService}:
  * <ul>
  *   <li>DUENO: only reads/writes consultations for their own pets.</li>
  *   <li>ADMIN/VETERINARIO/AUXILIAR: no additional data restrictions.</li>
@@ -33,11 +33,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ConsultationService {
     private final ConsultationRepository consultaRepository;
-    private final MascotaRepository mascotaRepository;
+    private final PetRepository mascotaRepository;
     private final UsuarioRepository usuarioRepository;
 
     public ConsultationService(ConsultationRepository consultaRepository,
-                            MascotaRepository mascotaRepository,
+                            PetRepository mascotaRepository,
                             UsuarioRepository usuarioRepository) {
         this.consultaRepository = consultaRepository;
         this.mascotaRepository = mascotaRepository;
@@ -96,8 +96,8 @@ public class ConsultationService {
     @CacheEvict(value = "consultas", allEntries = true)
     @Transactional
     public ConsultationResponse crear(ConsultationRequest request) {
-        Mascota mascota = mascotaRepository.findByIdAndActivoTrue(request.mascotaId())
-                .orElseThrow(() -> new ResourceNotFoundException("Mascota no encontrada: " + request.mascotaId()));
+        Pet mascota = mascotaRepository.findByIdAndActivoTrue(request.mascotaId())
+                .orElseThrow(() -> new ResourceNotFoundException("Pet no encontrada: " + request.mascotaId()));
         Usuario veterinario = resolverVeterinario(request.veterinarioId());
 
         Consultation consulta = Consultation.builder()
@@ -134,8 +134,8 @@ public class ConsultationService {
                 .orElseThrow(() -> new ResourceNotFoundException("Consultation no encontrada: " + id));
         verificarAcceso(usuario, consulta);
 
-        Mascota mascota = mascotaRepository.findByIdAndActivoTrue(request.mascotaId())
-                .orElseThrow(() -> new ResourceNotFoundException("Mascota no encontrada: " + request.mascotaId()));
+        Pet mascota = mascotaRepository.findByIdAndActivoTrue(request.mascotaId())
+                .orElseThrow(() -> new ResourceNotFoundException("Pet no encontrada: " + request.mascotaId()));
         Usuario veterinario = resolverVeterinario(request.veterinarioId());
 
         consulta.setMascota(mascota);

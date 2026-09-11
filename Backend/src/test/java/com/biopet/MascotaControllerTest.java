@@ -1,11 +1,11 @@
 package com.biopet;
 
-import com.biopet.entity.Mascota;
+import com.biopet.entity.Pet;
 import com.biopet.entity.Rol;
 import com.biopet.entity.Usuario;
 import com.biopet.repository.AppointmentRepository;
 import com.biopet.repository.ConsultationRepository;
-import com.biopet.repository.MascotaRepository;
+import com.biopet.repository.PetRepository;
 import com.biopet.repository.UsuarioRepository;
 import com.biopet.security.TokenBlacklistService;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,7 +46,7 @@ class MascotaControllerTest {
     UsuarioRepository usuarioRepository;
 
     @Autowired
-    MascotaRepository mascotaRepository;
+    PetRepository mascotaRepository;
 
     @Autowired
     AppointmentRepository citaRepository;
@@ -741,7 +741,7 @@ class MascotaControllerTest {
                         .header("Authorization", "Bearer " + tokenAdmin))
                 .andExpect(status().isNoContent());
 
-        Mascota mascotaEliminada = mascotaRepository.findById(mascotaId)
+        Pet mascotaEliminada = mascotaRepository.findById(mascotaId)
                 .orElseThrow(() -> new AssertionError(
                         "La mascota fue eliminada físicamente de la base de datos: "
                                 + mascotaId
@@ -864,7 +864,7 @@ class MascotaControllerTest {
                 .filter(mascota -> mascota.getNombre().equals(nombre))
                 .findFirst()
                 .orElseThrow(() -> new AssertionError(
-                        "Mascota no encontrada tras crearla: " + nombre
+                        "Pet no encontrada tras crearla: " + nombre
                 ))
                 .getId();
     }

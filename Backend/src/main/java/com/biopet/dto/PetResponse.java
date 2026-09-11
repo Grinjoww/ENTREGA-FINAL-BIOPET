@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
 
-public record MascotaResponse(
+public record PetResponse(
         Long id,
         Long duenioId,
         String duenioNombre,

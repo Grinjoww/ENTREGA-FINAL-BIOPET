@@ -1,12 +1,12 @@
 package com.biopet;
 
-import com.biopet.entity.Mascota;
+import com.biopet.entity.Pet;
 import com.biopet.entity.Rol;
 import com.biopet.entity.Usuario;
 import com.biopet.entity.Vaccine;
 import com.biopet.repository.AppointmentRepository;
 import com.biopet.repository.ConsultationRepository;
-import com.biopet.repository.MascotaRepository;
+import com.biopet.repository.PetRepository;
 import com.biopet.repository.UsuarioRepository;
 import com.biopet.repository.VaccineRepository;
 import com.biopet.security.TokenBlacklistService;
@@ -43,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class VacunaControllerTest {
     @Autowired MockMvc mockMvc;
     @Autowired UsuarioRepository usuarioRepository;
-    @Autowired MascotaRepository mascotaRepository;
+    @Autowired PetRepository mascotaRepository;
     @Autowired VaccineRepository vacunaRepository;
     @Autowired AppointmentRepository citaRepository;
     @Autowired ConsultationRepository consultaRepository;
@@ -60,7 +60,7 @@ class VacunaControllerTest {
         // configuracion, asi que Citas/Consultas creadas por otra clase
         // (p. ej. CitaControllerTest, ConsultaControllerTest,
         // MascotaControllerTest, SqlInjectionSecurityTest) pueden seguir
-        // referenciando una Mascota cuando le toca el turno a esta clase,
+        // referenciando una Pet cuando le toca el turno a esta clase,
         // segun el orden de ejecucion (no garantizado ni estable entre
         // entornos). Por eso se limpian primero las entidades hijas que
         // referencian mascotas por FK (consulta -> cita), igual que hacen
@@ -259,9 +259,9 @@ class VacunaControllerTest {
                 .andExpect(status().isCreated());
         return mascotaRepository.findAll().stream()
                 .filter(m -> m.getNombre().equals(nombre))
-                .map(Mascota::getId)
+                .map(Pet::getId)
                 .findFirst()
-                .orElseThrow(() -> new AssertionError("Mascota no encontrada tras crearla: " + nombre));
+                .orElseThrow(() -> new AssertionError("Pet no encontrada tras crearla: " + nombre));
     }
 
     private void crearVacuna(String tokenAdmin, Long mascotaId, String tipo) throws Exception {

@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
-public record MascotaRequest(
+public record PetRequest(
         @NotNull Long duenioId,
         @NotBlank @Size(max = 50) String nombre,
         @NotBlank @Size(max = 30) String especie,

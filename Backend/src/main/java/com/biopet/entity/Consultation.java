@@ -19,7 +19,7 @@ public class Consultation {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "mascota_id", nullable = false)
-    private Mascota mascota;
+    private Pet mascota;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "veterinario_id", nullable = false)

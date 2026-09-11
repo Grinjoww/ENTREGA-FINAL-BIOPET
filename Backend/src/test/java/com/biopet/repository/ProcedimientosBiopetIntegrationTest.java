@@ -3,7 +3,7 @@ package com.biopet.repository;
 import com.biopet.entity.Appointment;
 import com.biopet.entity.Consultation;
 import com.biopet.entity.AppointmentStatus;
-import com.biopet.entity.Mascota;
+import com.biopet.entity.Pet;
 import com.biopet.entity.Rol;
 import com.biopet.entity.Usuario;
 import com.biopet.entity.Vaccine;
@@ -103,7 +103,7 @@ class ProcedimientosBiopetIntegrationTest {
     @Autowired
     UsuarioRepository usuarioRepository;
     @Autowired
-    MascotaRepository mascotaRepository;
+    PetRepository mascotaRepository;
     @Autowired
     AppointmentRepository citaRepository;
     @Autowired
@@ -123,8 +123,8 @@ class ProcedimientosBiopetIntegrationTest {
                 .build());
     }
 
-    private Mascota guardarMascota(Usuario duenio, String nombre) {
-        return mascotaRepository.save(Mascota.builder()
+    private Pet guardarMascota(Usuario duenio, String nombre) {
+        return mascotaRepository.save(Pet.builder()
                 .duenio(duenio)
                 .nombre(nombre)
                 .especie("Perro")
@@ -144,7 +144,7 @@ class ProcedimientosBiopetIntegrationTest {
     void historialClinico_mascotaConDatos_consolidaHistorial() {
         Usuario duenio = guardarUsuario("duenio-historial@biopet.ec", Rol.ROLE_DUENO);
         Usuario vet = guardarUsuario("vet-historial@biopet.ec", Rol.ROLE_VETERINARIO);
-        Mascota mascota = guardarMascota(duenio, "Rex");
+        Pet mascota = guardarMascota(duenio, "Rex");
 
         consultaRepository.save(Consultation.builder().mascota(mascota).veterinario(vet)
                 .fechaConsulta(Instant.parse("2026-08-01T10:00:00Z"))
@@ -180,7 +180,7 @@ class ProcedimientosBiopetIntegrationTest {
     void reporteDashboard_conDatos_calculaIndicadores() {
         Usuario duenio = guardarUsuario("duenio-reporte@biopet.ec", Rol.ROLE_DUENO);
         Usuario vet = guardarUsuario("vet-reporte@biopet.ec", Rol.ROLE_VETERINARIO);
-        Mascota mascota = guardarMascota(duenio, "Rex");
+        Pet mascota = guardarMascota(duenio, "Rex");
 
         consultaRepository.save(Consultation.builder().mascota(mascota).veterinario(vet)
                 .fechaConsulta(Instant.parse("2026-08-15T10:00:00Z"))
@@ -238,7 +238,7 @@ class ProcedimientosBiopetIntegrationTest {
     void actualizarEstadoCitasMasivas_soloActualizaLasQueCumplenFiltro() {
         Usuario duenio = guardarUsuario("duenio-citas@biopet.ec", Rol.ROLE_DUENO);
         Usuario vet = guardarUsuario("vet-citas@biopet.ec", Rol.ROLE_VETERINARIO);
-        Mascota mascota = guardarMascota(duenio, "Rex");
+        Pet mascota = guardarMascota(duenio, "Rex");
         Instant limite = Instant.now();
 
         Appointment pasadaProgramada = citaRepository.save(Appointment.builder().mascota(mascota).veterinario(vet)
@@ -272,7 +272,7 @@ class ProcedimientosBiopetIntegrationTest {
     void registrarConsultaValidada_casoFeliz_retornaIdYPersiste() {
         Usuario duenio = guardarUsuario("duenio-consulta@biopet.ec", Rol.ROLE_DUENO);
         Usuario vet = guardarUsuario("vet-consulta@biopet.ec", Rol.ROLE_VETERINARIO);
-        Mascota mascota = guardarMascota(duenio, "Rex");
+        Pet mascota = guardarMascota(duenio, "Rex");
 
         Long consultaId = procedimientoBiopetRepository.registrarConsultaValidada(
                 mascota.getId(), vet.getId(), "Chequeo anual", "Sano", "Ninguno", null);
@@ -295,7 +295,7 @@ class ProcedimientosBiopetIntegrationTest {
     @Test
     void registrarConsultaValidada_rolNoAutorizado_lanzaExcepcion() {
         Usuario duenio = guardarUsuario("duenio-consulta-noaut@biopet.ec", Rol.ROLE_DUENO);
-        Mascota mascota = guardarMascota(duenio, "Rex");
+        Pet mascota = guardarMascota(duenio, "Rex");
 
         assertThatThrownBy(() -> procedimientoBiopetRepository.registrarConsultaValidada(
                 mascota.getId(), duenio.getId(), "Chequeo", null, null, null))

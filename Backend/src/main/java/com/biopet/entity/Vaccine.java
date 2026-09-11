@@ -20,7 +20,7 @@ public class Vaccine {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "mascota_id", nullable = false)
-    private Mascota mascota;
+    private Pet mascota;
 
     /** Quién aplicó la vacuna. Opcional: no siempre se registra al momento. */
     @ManyToOne(fetch = FetchType.LAZY)

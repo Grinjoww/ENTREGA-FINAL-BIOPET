@@ -1,6 +1,6 @@
 package com.biopet.repository;
 
-import com.biopet.entity.Mascota;
+import com.biopet.entity.Pet;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
@@ -30,7 +30,7 @@ import java.util.List;
  * {@code reporteDashboard}) exponen un unico {@code OUT refcursor} (un
  * {@code PROCEDURE} no admite {@code RETURNS TABLE}) y se invocan con
  * {@code @Procedure(name = "...")} referenciando un
- * {@code @NamedStoredProcedureQuery} declarado en {@link Mascota} con
+ * {@code @NamedStoredProcedureQuery} declarado en {@link Pet} con
  * {@code ParameterMode.REF_CURSOR} explicito: probar {@code @Procedure} sin
  * un {@code @NamedStoredProcedureQuery} (parametros auto-derivados de los
  * metadatos JDBC) genera una sentencia {@code CALL} que omite el
@@ -43,7 +43,7 @@ import java.util.List;
  * repositorio no es reconocida como "transaccion circundante" por Spring
  * Data y falla con {@code InvalidDataAccessApiUsageException}) sino que
  * dependen de que el codigo llamador ya este dentro de una transaccion —
- * como ya lo esta {@code MascotaService.resumenPorEspecie}
+ * como ya lo esta {@code PetService.resumenPorEspecie}
  * (@Transactional(readOnly = true)), y como declaran explicitamente los
  * tests de integracion que los ejercitan.
  *
@@ -53,7 +53,7 @@ import java.util.List;
  * circundante), igual que los 2 {@code sp_*} (que ya eran {@code PROCEDURE}
  * y no cambiaron).
  */
-public interface ProcedimientoBiopetRepository extends Repository<Mascota, Long> {
+public interface ProcedimientoBiopetRepository extends Repository<Pet, Long> {
 
     @Procedure(name = "fn_resumen_mascotas_por_especie")
     List<SpeciesSummary> resumenPorEspecie(Long duenioId);

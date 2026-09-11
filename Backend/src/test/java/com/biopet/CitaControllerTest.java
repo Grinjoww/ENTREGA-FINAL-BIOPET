@@ -2,12 +2,12 @@ package com.biopet;
 
 import com.biopet.entity.Appointment;
 import com.biopet.entity.AppointmentStatus;
-import com.biopet.entity.Mascota;
+import com.biopet.entity.Pet;
 import com.biopet.entity.Rol;
 import com.biopet.entity.Usuario;
 import com.biopet.repository.AppointmentRepository;
 import com.biopet.repository.ConsultationRepository;
-import com.biopet.repository.MascotaRepository;
+import com.biopet.repository.PetRepository;
 import com.biopet.repository.UsuarioRepository;
 import com.biopet.security.TokenBlacklistService;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,7 +54,7 @@ class CitaControllerTest {
     UsuarioRepository usuarioRepository;
 
     @Autowired
-    MascotaRepository mascotaRepository;
+    PetRepository mascotaRepository;
 
     @Autowired
     AppointmentRepository citaRepository;
@@ -702,7 +702,7 @@ class CitaControllerTest {
             Long mascotaId,
             Long veterinarioId
     ) {
-        Mascota mascota = mascotaRepository
+        Pet mascota = mascotaRepository
                 .findById(mascotaId)
                 .orElseThrow();
 
@@ -730,7 +730,7 @@ class CitaControllerTest {
                 .findById(duenioId)
                 .orElseThrow();
 
-        Mascota mascota = Mascota.builder()
+        Pet mascota = Pet.builder()
                 .duenio(duenio)
                 .nombre(nombre)
                 .especie("Perro")
