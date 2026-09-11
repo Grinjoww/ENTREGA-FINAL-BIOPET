@@ -3,7 +3,7 @@ package com.biopet.dto;
 import java.io.Serializable;
 import java.time.Instant;
 
-public record ConsultaResponse(
+public record ConsultationResponse(
         Long id,
         Long mascotaId,
         String mascotaNombre,

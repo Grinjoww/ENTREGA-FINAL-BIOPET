@@ -4,7 +4,7 @@ import com.biopet.entity.Mascota;
 import com.biopet.entity.Rol;
 import com.biopet.entity.Usuario;
 import com.biopet.repository.AppointmentRepository;
-import com.biopet.repository.ConsultaRepository;
+import com.biopet.repository.ConsultationRepository;
 import com.biopet.repository.MascotaRepository;
 import com.biopet.repository.UsuarioRepository;
 import com.biopet.security.TokenBlacklistService;
@@ -52,7 +52,7 @@ class MascotaControllerTest {
     AppointmentRepository citaRepository;
 
     @Autowired
-    ConsultaRepository consultaRepository;
+    ConsultationRepository consultaRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;

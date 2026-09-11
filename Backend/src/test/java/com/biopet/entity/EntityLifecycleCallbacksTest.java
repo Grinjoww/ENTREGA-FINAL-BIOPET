@@ -77,7 +77,7 @@ class EntityLifecycleCallbacksTest {
 
     @Test
     void consultaPrePersistAutocompletaCuandoCamposSonNulos() {
-        Consulta consulta = new Consulta();
+        Consultation consulta = new Consultation();
 
         consulta.prePersist();
 
@@ -90,7 +90,7 @@ class EntityLifecycleCallbacksTest {
     void consultaPrePersistRespetaValoresYaAsignados() {
         Instant creado = Instant.parse("2026-01-01T00:00:00Z");
         Instant actualizado = Instant.parse("2026-01-02T00:00:00Z");
-        Consulta consulta = new Consulta();
+        Consultation consulta = new Consultation();
         consulta.setCreadoEn(creado);
         consulta.setActualizadoEn(actualizado);
 

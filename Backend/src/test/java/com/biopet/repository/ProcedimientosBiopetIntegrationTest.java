@@ -1,7 +1,7 @@
 package com.biopet.repository;
 
 import com.biopet.entity.Appointment;
-import com.biopet.entity.Consulta;
+import com.biopet.entity.Consultation;
 import com.biopet.entity.AppointmentStatus;
 import com.biopet.entity.Mascota;
 import com.biopet.entity.Rol;
@@ -107,7 +107,7 @@ class ProcedimientosBiopetIntegrationTest {
     @Autowired
     AppointmentRepository citaRepository;
     @Autowired
-    ConsultaRepository consultaRepository;
+    ConsultationRepository consultaRepository;
     @Autowired
     VaccineRepository vacunaRepository;
     @Autowired
@@ -146,7 +146,7 @@ class ProcedimientosBiopetIntegrationTest {
         Usuario vet = guardarUsuario("vet-historial@biopet.ec", Rol.ROLE_VETERINARIO);
         Mascota mascota = guardarMascota(duenio, "Rex");
 
-        consultaRepository.save(Consulta.builder().mascota(mascota).veterinario(vet)
+        consultaRepository.save(Consultation.builder().mascota(mascota).veterinario(vet)
                 .fechaConsulta(Instant.parse("2026-08-01T10:00:00Z"))
                 .motivo("Chequeo").diagnostico("Sano").activo(true).build());
         vacunaRepository.save(Vaccine.builder().mascota(mascota).veterinario(vet).tipo("Rabia")
@@ -182,7 +182,7 @@ class ProcedimientosBiopetIntegrationTest {
         Usuario vet = guardarUsuario("vet-reporte@biopet.ec", Rol.ROLE_VETERINARIO);
         Mascota mascota = guardarMascota(duenio, "Rex");
 
-        consultaRepository.save(Consulta.builder().mascota(mascota).veterinario(vet)
+        consultaRepository.save(Consultation.builder().mascota(mascota).veterinario(vet)
                 .fechaConsulta(Instant.parse("2026-08-15T10:00:00Z"))
                 .motivo("Chequeo").activo(true).build());
         vacunaRepository.save(Vaccine.builder().mascota(mascota).veterinario(vet).tipo("Rabia")
@@ -278,7 +278,7 @@ class ProcedimientosBiopetIntegrationTest {
                 mascota.getId(), vet.getId(), "Chequeo anual", "Sano", "Ninguno", null);
 
         assertThat(consultaId).isNotNull();
-        Consulta guardada = consultaRepository.findByIdAndActivoTrue(consultaId).orElseThrow();
+        Consultation guardada = consultaRepository.findByIdAndActivoTrue(consultaId).orElseThrow();
         assertThat(guardada.getMotivo()).isEqualTo("Chequeo anual");
         assertThat(guardada.getDiagnostico()).isEqualTo("Sano");
     }

@@ -1,8 +1,8 @@
 package com.biopet.controller;
 
-import com.biopet.dto.ConsultaRequest;
-import com.biopet.dto.ConsultaResponse;
-import com.biopet.service.ConsultaService;
+import com.biopet.dto.ConsultationRequest;
+import com.biopet.dto.ConsultationResponse;
+import com.biopet.service.ConsultationService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,16 +14,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * REST endpoints for clinical consultation ({@code Consulta}) records.
+ * REST endpoints for clinical consultation ({@code Consultation}) records.
  * Role-based access is enforced here via {@code @PreAuthorize};
- * data-level ownership rules are enforced in {@link ConsultaService}.
+ * data-level ownership rules are enforced in {@link ConsultationService}.
  */
 @RestController
 @RequestMapping("/api/consultas")
-public class ConsultaController {
-    private final ConsultaService consultaService;
+public class ConsultationController {
+    private final ConsultationService consultaService;
 
-    public ConsultaController(ConsultaService consultaService) {
+    public ConsultationController(ConsultationService consultaService) {
         this.consultaService = consultaService;
     }
 
@@ -36,7 +36,7 @@ public class ConsultaController {
      */
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR','DUENO')")
-    public Page<ConsultaResponse> listar(Pageable pageable, @AuthenticationPrincipal UserDetails userDetails) {
+    public Page<ConsultationResponse> listar(Pageable pageable, @AuthenticationPrincipal UserDetails userDetails) {
         return consultaService.listar(pageable, userDetails.getUsername());
     }
 
@@ -51,7 +51,7 @@ public class ConsultaController {
      */
     @GetMapping("/{id:\\d+}")
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR','DUENO')")
-    public ConsultaResponse buscar(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
+    public ConsultationResponse buscar(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
         return consultaService.buscar(id, userDetails.getUsername());
     }
 
@@ -64,7 +64,7 @@ public class ConsultaController {
      */
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR')")
-    public ResponseEntity<ConsultaResponse> crear(@Valid @RequestBody ConsultaRequest request) {
+    public ResponseEntity<ConsultationResponse> crear(@Valid @RequestBody ConsultationRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(consultaService.crear(request));
     }
 
@@ -79,7 +79,7 @@ public class ConsultaController {
      */
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR')")
-    public ConsultaResponse actualizar(@PathVariable Long id, @Valid @RequestBody ConsultaRequest request,
+    public ConsultationResponse actualizar(@PathVariable Long id, @Valid @RequestBody ConsultationRequest request,
                                         @AuthenticationPrincipal UserDetails userDetails) {
         return consultaService.actualizar(id, request, userDetails.getUsername());
     }

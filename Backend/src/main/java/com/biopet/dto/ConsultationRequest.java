@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 
 import java.time.Instant;
 
-public record ConsultaRequest(
+public record ConsultationRequest(
         @NotNull Long mascotaId,
         @NotNull Long veterinarioId,
         @NotNull @PastOrPresent Instant fechaConsulta,

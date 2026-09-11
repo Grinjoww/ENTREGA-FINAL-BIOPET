@@ -1,11 +1,11 @@
 package com.biopet;
 
-import com.biopet.entity.Consulta;
+import com.biopet.entity.Consultation;
 import com.biopet.entity.Mascota;
 import com.biopet.entity.Rol;
 import com.biopet.entity.Usuario;
 import com.biopet.repository.AppointmentRepository;
-import com.biopet.repository.ConsultaRepository;
+import com.biopet.repository.ConsultationRepository;
 import com.biopet.repository.MascotaRepository;
 import com.biopet.repository.UsuarioRepository;
 import com.biopet.security.TokenBlacklistService;
@@ -46,7 +46,7 @@ class ConsultaControllerTest {
     MascotaRepository mascotaRepository;
 
     @Autowired
-    ConsultaRepository consultaRepository;
+    ConsultationRepository consultaRepository;
 
     @Autowired
     AppointmentRepository citaRepository;
@@ -198,7 +198,7 @@ class ConsultaControllerTest {
 
         Long consultaId = consultaRepository.findAll().stream()
                 .findFirst()
-                .orElseThrow(() -> new AssertionError("Consulta no fue creada"))
+                .orElseThrow(() -> new AssertionError("Consultation no fue creada"))
                 .getId();
 
         Usuario otroDueno = Usuario.builder()
@@ -238,16 +238,16 @@ class ConsultaControllerTest {
 
         Long consultaId = consultaRepository.findAll().stream()
                 .findFirst()
-                .orElseThrow(() -> new AssertionError("Consulta no fue creada"))
+                .orElseThrow(() -> new AssertionError("Consultation no fue creada"))
                 .getId();
 
         mockMvc.perform(delete("/api/consultas/" + consultaId)
                         .header("Authorization", "Bearer " + tokenAdmin))
                 .andExpect(status().isNoContent());
 
-        Consulta eliminada = consultaRepository.findById(consultaId)
+        Consultation eliminada = consultaRepository.findById(consultaId)
                 .orElseThrow(() ->
-                        new AssertionError("Consulta eliminada físicamente: " + consultaId)
+                        new AssertionError("Consultation eliminada físicamente: " + consultaId)
                 );
 
         assertFalse(eliminada.isActivo());

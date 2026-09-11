@@ -5,7 +5,7 @@ import com.biopet.entity.Rol;
 import com.biopet.entity.Usuario;
 import com.biopet.entity.Vaccine;
 import com.biopet.repository.AppointmentRepository;
-import com.biopet.repository.ConsultaRepository;
+import com.biopet.repository.ConsultationRepository;
 import com.biopet.repository.MascotaRepository;
 import com.biopet.repository.UsuarioRepository;
 import com.biopet.repository.VaccineRepository;
@@ -46,7 +46,7 @@ class VacunaControllerTest {
     @Autowired MascotaRepository mascotaRepository;
     @Autowired VaccineRepository vacunaRepository;
     @Autowired AppointmentRepository citaRepository;
-    @Autowired ConsultaRepository consultaRepository;
+    @Autowired ConsultationRepository consultaRepository;
     @Autowired PasswordEncoder passwordEncoder;
 
     @MockBean TokenBlacklistService tokenBlacklistService;

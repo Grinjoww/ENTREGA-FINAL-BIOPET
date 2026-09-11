@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * CRUD de citas (agendamiento previo de atención veterinaria). No reemplaza ni
- * duplica el futuro módulo de "Consulta" (registro clínico posterior), que
+ * duplica el futuro módulo de "Consultation" (registro clínico posterior), que
  * pertenece a otro integrante del equipo.
  * <p>
  * Reglas de acceso (aplicadas aquí porque dependen de datos, no solo del rol;

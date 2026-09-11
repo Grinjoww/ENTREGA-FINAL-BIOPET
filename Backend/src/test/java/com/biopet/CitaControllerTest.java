@@ -6,7 +6,7 @@ import com.biopet.entity.Mascota;
 import com.biopet.entity.Rol;
 import com.biopet.entity.Usuario;
 import com.biopet.repository.AppointmentRepository;
-import com.biopet.repository.ConsultaRepository;
+import com.biopet.repository.ConsultationRepository;
 import com.biopet.repository.MascotaRepository;
 import com.biopet.repository.UsuarioRepository;
 import com.biopet.security.TokenBlacklistService;
@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * Cubre el CRUD de Citas (agendamiento previo de atención veterinaria).
- * Consulta corresponde al registro clínico posterior.
+ * Consultation corresponde al registro clínico posterior.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -60,7 +60,7 @@ class CitaControllerTest {
     AppointmentRepository citaRepository;
 
     @Autowired
-    ConsultaRepository consultaRepository;
+    ConsultationRepository consultaRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;

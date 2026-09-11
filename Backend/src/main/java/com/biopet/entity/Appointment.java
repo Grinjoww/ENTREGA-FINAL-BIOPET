@@ -7,7 +7,7 @@ import java.time.Instant;
 
 /**
  * Agendamiento previo de una atención veterinaria (mascota + veterinario + fecha/hora).
- * No confundir con "Consulta" (registro clínico posterior a la atención, módulo
+ * No confundir con "Consultation" (registro clínico posterior a la atención, módulo
  * separado a cargo de otro integrante del equipo).
  */
 @Getter

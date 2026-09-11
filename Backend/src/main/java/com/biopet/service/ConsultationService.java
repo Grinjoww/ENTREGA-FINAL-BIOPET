@@ -1,13 +1,13 @@
 package com.biopet.service;
 
-import com.biopet.dto.ConsultaRequest;
-import com.biopet.dto.ConsultaResponse;
-import com.biopet.entity.Consulta;
+import com.biopet.dto.ConsultationRequest;
+import com.biopet.dto.ConsultationResponse;
+import com.biopet.entity.Consultation;
 import com.biopet.entity.Mascota;
 import com.biopet.entity.Rol;
 import com.biopet.entity.Usuario;
 import com.biopet.exception.ResourceNotFoundException;
-import com.biopet.repository.ConsultaRepository;
+import com.biopet.repository.ConsultationRepository;
 import com.biopet.repository.MascotaRepository;
 import com.biopet.repository.UsuarioRepository;
 import org.springframework.cache.annotation.CacheEvict;
@@ -31,12 +31,12 @@ import org.springframework.transaction.annotation.Transactional;
  * any write.
  */
 @Service
-public class ConsultaService {
-    private final ConsultaRepository consultaRepository;
+public class ConsultationService {
+    private final ConsultationRepository consultaRepository;
     private final MascotaRepository mascotaRepository;
     private final UsuarioRepository usuarioRepository;
 
-    public ConsultaService(ConsultaRepository consultaRepository,
+    public ConsultationService(ConsultationRepository consultaRepository,
                             MascotaRepository mascotaRepository,
                             UsuarioRepository usuarioRepository) {
         this.consultaRepository = consultaRepository;
@@ -55,7 +55,7 @@ public class ConsultaService {
      */
     @Cacheable(value = "consultas", key = "#email + '-' + #pageable.pageNumber + '-' + #pageable.pageSize + '-' + #pageable.sort.toString()")
     @Transactional(readOnly = true)
-    public Page<ConsultaResponse> listar(Pageable pageable, String email) {
+    public Page<ConsultationResponse> listar(Pageable pageable, String email) {
         Usuario usuario = usuarioActual(email);
         if (usuario.getRol() == Rol.ROLE_DUENO) {
             // Un dueño solo ve consultas de sus propias mascotas
@@ -76,10 +76,10 @@ public class ConsultaService {
      * @throws org.springframework.security.access.AccessDeniedException if the user is not allowed to access this consultation
      */
     @Transactional(readOnly = true)
-    public ConsultaResponse buscar(Long id, String email) {
+    public ConsultationResponse buscar(Long id, String email) {
         Usuario usuario = usuarioActual(email);
-        Consulta consulta = consultaRepository.findByIdAndActivoTrue(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Consulta no encontrada: " + id));
+        Consultation consulta = consultaRepository.findByIdAndActivoTrue(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Consultation no encontrada: " + id));
         verificarAcceso(usuario, consulta);
         return toResponse(consulta);
     }
@@ -95,12 +95,12 @@ public class ConsultaService {
      */
     @CacheEvict(value = "consultas", allEntries = true)
     @Transactional
-    public ConsultaResponse crear(ConsultaRequest request) {
+    public ConsultationResponse crear(ConsultationRequest request) {
         Mascota mascota = mascotaRepository.findByIdAndActivoTrue(request.mascotaId())
                 .orElseThrow(() -> new ResourceNotFoundException("Mascota no encontrada: " + request.mascotaId()));
         Usuario veterinario = resolverVeterinario(request.veterinarioId());
 
-        Consulta consulta = Consulta.builder()
+        Consultation consulta = Consultation.builder()
                 .mascota(mascota)
                 .veterinario(veterinario)
                 .fechaConsulta(request.fechaConsulta())
@@ -128,10 +128,10 @@ public class ConsultaService {
      */
     @CacheEvict(value = "consultas", allEntries = true)
     @Transactional
-    public ConsultaResponse actualizar(Long id, ConsultaRequest request, String email) {
+    public ConsultationResponse actualizar(Long id, ConsultationRequest request, String email) {
         Usuario usuario = usuarioActual(email);
-        Consulta consulta = consultaRepository.findByIdAndActivoTrue(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Consulta no encontrada: " + id));
+        Consultation consulta = consultaRepository.findByIdAndActivoTrue(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Consultation no encontrada: " + id));
         verificarAcceso(usuario, consulta);
 
         Mascota mascota = mascotaRepository.findByIdAndActivoTrue(request.mascotaId())
@@ -162,8 +162,8 @@ public class ConsultaService {
     @Transactional
     public void eliminar(Long id, String email) {
         Usuario usuario = usuarioActual(email);
-        Consulta consulta = consultaRepository.findByIdAndActivoTrue(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Consulta no encontrada: " + id));
+        Consultation consulta = consultaRepository.findByIdAndActivoTrue(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Consultation no encontrada: " + id));
         verificarAcceso(usuario, consulta);
         consulta.setActivo(false);
         consultaRepository.save(consulta);
@@ -184,7 +184,7 @@ public class ConsultaService {
         return veterinario;
     }
 
-    private void verificarAcceso(Usuario usuario, Consulta consulta) {
+    private void verificarAcceso(Usuario usuario, Consultation consulta) {
         boolean accesoGlobal = usuario.getRol() == Rol.ROLE_ADMIN
                 || usuario.getRol() == Rol.ROLE_VETERINARIO
                 || usuario.getRol() == Rol.ROLE_AUXILIAR;
@@ -194,8 +194,8 @@ public class ConsultaService {
         }
     }
 
-    private ConsultaResponse toResponse(Consulta consulta) {
-        return new ConsultaResponse(
+    private ConsultationResponse toResponse(Consultation consulta) {
+        return new ConsultationResponse(
                 consulta.getId(),
                 consulta.getMascota().getId(),
                 consulta.getMascota().getNombre(),
