@@ -68,7 +68,7 @@ public class AuthService {
      *         exists
      */
     @Transactional
-    public UsuarioResponse registrar(RegistroRequest request) {
+    public UsuarioResponse registrar(RegistrationRequest request) {
         if (usuarioRepository.existsByEmail(request.email())) {
             throw new DuplicateEmailException(request.email());
         }

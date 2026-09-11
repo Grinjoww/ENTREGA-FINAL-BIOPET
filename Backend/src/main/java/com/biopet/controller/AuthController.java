@@ -42,7 +42,7 @@ public class AuthController {
      *         that email already exists
      */
     @PostMapping("/registro")
-    public ResponseEntity<UsuarioResponse> registro(@Valid @RequestBody RegistroRequest request) {
+    public ResponseEntity<UsuarioResponse> registro(@Valid @RequestBody RegistrationRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(authService.registrar(request));
     }
 

@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 
 /**
  * DTO de entrada para el CRUD administrativo de usuarios (POST/PUT /api/usuarios).
- * No confundir con {@code RegistroRequest}: ese es el autoregistro público
+ * No confundir con {@code RegistrationRequest}: ese es el autoregistro público
  * (siempre ROLE_DUENO); este es la administración de cuentas por parte de un ADMIN.
  * <p>
  * El campo {@code password} no lleva {@code @NotBlank} a propósito: es obligatorio
