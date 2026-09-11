@@ -76,14 +76,14 @@ class UsuarioControllerTest {
 
     @Test
     void buscarUsuarioPorId() throws Exception {
-        Long duenoId = registrarUsuarioYObtenerId("buscar.dueno@biopet.com", "ClaveDueno123*", Role.ROLE_DUENO);
+        Long duenoId = registrarUsuarioYObtenerId("findById.dueno@biopet.com", "ClaveDueno123*", Role.ROLE_DUENO);
         String tokenAdmin = extractCookieValue(iniciarSesion(EMAIL_ADMIN, PASSWORD_ADMIN), "access_token");
 
         mockMvc.perform(get("/api/usuarios/" + duenoId)
                         .header("Authorization", "Bearer " + tokenAdmin))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(duenoId))
-                .andExpect(jsonPath("$.email").value("buscar.dueno@biopet.com"))
+                .andExpect(jsonPath("$.email").value("findById.dueno@biopet.com"))
                 .andExpect(jsonPath("$.rol").value("ROLE_DUENO"))
                 .andExpect(jsonPath("$.passwordHash").doesNotExist());
     }

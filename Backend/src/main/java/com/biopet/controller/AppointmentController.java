@@ -38,8 +38,8 @@ public class AppointmentController {
      */
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR','DUENO')")
-    public Page<AppointmentResponse> listar(Pageable pageable, @AuthenticationPrincipal UserDetails userDetails) {
-        return citaService.listar(pageable, userDetails.getUsername());
+    public Page<AppointmentResponse> listAll(Pageable pageable, @AuthenticationPrincipal UserDetails userDetails) {
+        return citaService.listAll(pageable, userDetails.getUsername());
     }
 
     /**
@@ -53,8 +53,8 @@ public class AppointmentController {
      */
     @GetMapping("/{id:\\d+}")
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR','DUENO')")
-    public AppointmentResponse buscar(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
-        return citaService.buscar(id, userDetails.getUsername());
+    public AppointmentResponse findById(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
+        return citaService.findById(id, userDetails.getUsername());
     }
 
     /**

@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * CRUD de citas (agendamiento previo de atención veterinaria). No reemplaza ni
- * duplica el futuro módulo de "Consultation" (registro clínico posterior), que
+ * duplica el futuro módulo de "Consultation" (register clínico posterior), que
  * pertenece a otro integrante del equipo.
  * <p>
  * Reglas de acceso (aplicadas aquí porque dependen de datos, no solo del rol;
@@ -53,8 +53,8 @@ public class AppointmentService {
      * @throws com.biopet.exception.ResourceNotFoundException if the authenticated user cannot be resolved
      */
     @Transactional(readOnly = true)
-    public Page<AppointmentResponse> listar(Pageable pageable, String email) {
-        User usuario = usuarioActual(email);
+    public Page<AppointmentResponse> listAll(Pageable pageable, String email) {
+        User usuario = currentUser(email);
         if (usuario.getRol() == Role.ROLE_DUENO) {
             return citaRepository.findAllByMascota_Duenio_IdAndActivoTrue(usuario.getId(), pageable).map(this::toResponse);
         }
@@ -72,8 +72,8 @@ public class AppointmentService {
      * @throws org.springframework.security.access.AccessDeniedException if the user does not have access to this appointment
      */
     @Transactional(readOnly = true)
-    public AppointmentResponse buscar(Long id, String email) {
-        User usuario = usuarioActual(email);
+    public AppointmentResponse findById(Long id, String email) {
+        User usuario = currentUser(email);
         Appointment cita = citaRepository.findByIdAndActivoTrue(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Appointment no encontrada: " + id));
         verificarAccesoLectura(usuario, cita);
@@ -91,8 +91,8 @@ public class AppointmentService {
      */
     @Transactional
     public AppointmentResponse crear(AppointmentRequest request) {
-        Pet mascota = resolverMascota(request.mascotaId());
-        User veterinario = resolverVeterinario(request.veterinarioId());
+        Pet mascota = resolvePet(request.mascotaId());
+        User veterinario = resolveVeterinarian(request.veterinarioId());
 
         Appointment cita = Appointment.builder()
                 .mascota(mascota)
@@ -119,13 +119,13 @@ public class AppointmentService {
      */
     @Transactional
     public AppointmentResponse actualizar(Long id, AppointmentRequest request, String email) {
-        User usuario = usuarioActual(email);
+        User usuario = currentUser(email);
         Appointment cita = citaRepository.findByIdAndActivoTrue(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Appointment no encontrada: " + id));
         verificarPermisoEscritura(usuario, cita);
 
-        Pet mascota = resolverMascota(request.mascotaId());
-        User veterinario = resolverVeterinario(request.veterinarioId());
+        Pet mascota = resolvePet(request.mascotaId());
+        User veterinario = resolveVeterinarian(request.veterinarioId());
 
         cita.setMascota(mascota);
         cita.setVeterinario(veterinario);
@@ -150,17 +150,17 @@ public class AppointmentService {
         citaRepository.save(cita);
     }
 
-    private User usuarioActual(String email) {
+    private User currentUser(String email) {
         return usuarioRepository.findByEmailAndActivoTrue(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User no encontrado: " + email));
     }
 
-    private Pet resolverMascota(Long mascotaId) {
+    private Pet resolvePet(Long mascotaId) {
         return mascotaRepository.findByIdAndActivoTrue(mascotaId)
                 .orElseThrow(() -> new ResourceNotFoundException("Pet no encontrada: " + mascotaId));
     }
 
-    private User resolverVeterinario(Long veterinarioId) {
+    private User resolveVeterinarian(Long veterinarioId) {
         User veterinario = usuarioRepository.findById(veterinarioId)
                 .filter(User::isActivo)
                 .orElseThrow(() -> new ResourceNotFoundException("Veterinario no encontrado: " + veterinarioId));

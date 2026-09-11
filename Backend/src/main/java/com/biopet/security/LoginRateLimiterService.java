@@ -46,7 +46,7 @@ public class LoginRateLimiterService {
         }
     }
 
-    public void registrarFallo(String ip) {
+    public void recordFailure(String ip) {
         String clave = normalizar(ip);
         Estado[] resultado = new Estado[1];
 

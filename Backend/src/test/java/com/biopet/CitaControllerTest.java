@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * Cubre el CRUD de Citas (agendamiento previo de atención veterinaria).
- * Consultation corresponde al registro clínico posterior.
+ * Consultation corresponde al register clínico posterior.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -111,7 +111,7 @@ class CitaControllerTest {
         mascotaId = crearMascotaYObtenerId(duenoId, "Firulais");
     }
 
-    // ---------- listar / buscar ----------
+    // ---------- listAll / findById ----------
 
     @Test
     void adminListaCitas() throws Exception {

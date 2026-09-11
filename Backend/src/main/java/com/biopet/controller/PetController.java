@@ -41,8 +41,8 @@ public class PetController {
      */
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR','DUENO')")
-    public Page<PetResponse> listar(Pageable pageable, @AuthenticationPrincipal UserDetails userDetails) {
-        return mascotaService.listar(pageable, userDetails.getUsername());
+    public Page<PetResponse> listAll(Pageable pageable, @AuthenticationPrincipal UserDetails userDetails) {
+        return mascotaService.listAll(pageable, userDetails.getUsername());
     }
 
     /**
@@ -56,8 +56,8 @@ public class PetController {
      */
     @GetMapping("/{id:\\d+}")
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR','DUENO')")
-    public PetResponse buscar(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
-        return mascotaService.buscar(id, userDetails.getUsername());
+    public PetResponse findById(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
+        return mascotaService.findById(id, userDetails.getUsername());
     }
 
     /**
@@ -113,9 +113,9 @@ public class PetController {
      */
     @GetMapping("/resumen-especies")
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR','DUENO')")
-    public List<SpeciesSummaryResponse> resumenPorEspecies(
+    public List<SpeciesSummaryResponse> speciesSummary(
             @RequestParam(required = false) Long duenioId,
             Authentication authentication) {
-        return mascotaService.resumenPorEspecie(duenioId, authentication.getName());
+        return mascotaService.speciesSummary(duenioId, authentication.getName());
     }
 }

@@ -28,7 +28,7 @@ import java.util.List;
  *   <li>DUENO: only reads/writes their own pets.</li>
  *   <li>ADMIN/VETERINARIO/AUXILIAR: no additional data restrictions.</li>
  * </ul>
- * The {@code listar}/{@code crear}/{@code actualizar}/{@code eliminar}
+ * The {@code listAll}/{@code crear}/{@code actualizar}/{@code eliminar}
  * results are cached in the {@code mascotas} Redis cache and evicted on
  * any write.
  */
@@ -58,7 +58,7 @@ public class PetService {
      */
     @Cacheable(value = "mascotas", key = "#email + '-' + #pageable.pageNumber + '-' + #pageable.pageSize + '-' + #pageable.sort.toString()")
     @Transactional(readOnly = true)
-    public Page<PetResponse> listar(Pageable pageable, String email) {
+    public Page<PetResponse> listAll(Pageable pageable, String email) {
         User usuario = usuarioRepository.findByEmailAndActivoTrue(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User no encontrado"));
 
@@ -79,7 +79,7 @@ public class PetService {
      * @throws org.springframework.security.access.AccessDeniedException if the user does not own this pet
      */
     @Transactional(readOnly = true)
-    public PetResponse buscar(Long id, String email) {
+    public PetResponse findById(Long id, String email) {
         User usuario = usuarioRepository.findByEmailAndActivoTrue(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User no encontrado"));
         Pet mascota = mascotaRepository.findByIdAndActivoTrue(id)
@@ -99,7 +99,7 @@ public class PetService {
     @CacheEvict(value = "mascotas", allEntries = true)
     @Transactional
     public PetResponse crear(PetRequest request) {
-        User duenio = resolverDuenio(request.duenioId());
+        User duenio = resolveOwner(request.duenioId());
         Pet mascota = Pet.builder()
                 .duenio(duenio)
                 .nombre(request.nombre())
@@ -131,7 +131,7 @@ public class PetService {
         Pet mascota = mascotaRepository.findByIdAndActivoTrue(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Pet no encontrada: " + id));
         verificarPropiedad(usuario, mascota);
-        User duenio = resolverDuenio(request.duenioId());
+        User duenio = resolveOwner(request.duenioId());
         mascota.setDuenio(duenio);
         mascota.setNombre(request.nombre());
         mascota.setEspecie(request.especie());
@@ -173,7 +173,7 @@ public class PetService {
      * @throws com.biopet.exception.ResourceNotFoundException if the authenticated user cannot be resolved
      */
     @Transactional(readOnly = true)
-    public List<SpeciesSummaryResponse> resumenPorEspecie(Long duenioIdSolicitado, String emailAutenticado) {
+    public List<SpeciesSummaryResponse> speciesSummary(Long duenioIdSolicitado, String emailAutenticado) {
         User usuarioAutenticado = usuarioRepository.findByEmailAndActivoTrue(emailAutenticado)
                 .orElseThrow(() -> new ResourceNotFoundException("User no encontrado: " + emailAutenticado));
 
@@ -181,7 +181,7 @@ public class PetService {
                 ? duenioIdSolicitado
                 : usuarioAutenticado.getId();
 
-        return procedimientoBiopetRepository.resumenPorEspecie(duenioIdEfectivo).stream()
+        return procedimientoBiopetRepository.speciesSummary(duenioIdEfectivo).stream()
                 .map(r -> new SpeciesSummaryResponse(r.getEspecie(), r.getTotal()))
                 .toList();
     }
@@ -196,7 +196,7 @@ public class PetService {
         }
     }
 
-    private User resolverDuenio(Long duenioId) {
+    private User resolveOwner(Long duenioId) {
         User duenio = usuarioRepository.findById(duenioId)
                 .filter(User::isActivo)
                 .orElseThrow(() -> new ResourceNotFoundException("Dueño no encontrado: " + duenioId));

@@ -26,8 +26,8 @@ import java.util.List;
  * conservando su nombre {@code fn_...}.
  *
  * <p>Las 3 rutinas que devuelven un conjunto de filas
- * ({@code resumenPorEspecie}, {@code historialClinicoMascota},
- * {@code reporteDashboard}) exponen un unico {@code OUT refcursor} (un
+ * ({@code speciesSummary}, {@code petClinicalHistory},
+ * {@code dashboardReport}) exponen un unico {@code OUT refcursor} (un
  * {@code PROCEDURE} no admite {@code RETURNS TABLE}) y se invocan con
  * {@code @Procedure(name = "...")} referenciando un
  * {@code @NamedStoredProcedureQuery} declarado en {@link Pet} con
@@ -43,7 +43,7 @@ import java.util.List;
  * repositorio no es reconocida como "transaccion circundante" por Spring
  * Data y falla con {@code InvalidDataAccessApiUsageException}) sino que
  * dependen de que el codigo llamador ya este dentro de una transaccion —
- * como ya lo esta {@code PetService.resumenPorEspecie}
+ * como ya lo esta {@code PetService.speciesSummary}
  * (@Transactional(readOnly = true)), y como declaran explicitamente los
  * tests de integracion que los ejercitan.
  *
@@ -56,25 +56,25 @@ import java.util.List;
 public interface BiopetProcedureRepository extends Repository<Pet, Long> {
 
     @Procedure(name = "fn_resumen_mascotas_por_especie")
-    List<SpeciesSummary> resumenPorEspecie(Long duenioId);
+    List<SpeciesSummary> speciesSummary(Long duenioId);
 
     @Procedure(name = "fn_historial_clinico_mascota")
-    List<ClinicalHistoryView> historialClinicoMascota(Long mascotaId);
+    List<ClinicalHistoryView> petClinicalHistory(Long mascotaId);
 
     @Procedure(name = "fn_reporte_dashboard")
-    List<DashboardReportView> reporteDashboard(LocalDate desde, LocalDate hasta);
+    List<DashboardReportView> dashboardReport(LocalDate desde, LocalDate hasta);
 
     @Procedure(procedureName = "fn_siguiente_numero_ficha", outputParameterName = "p_codigo")
     String siguienteNumeroFicha(@Param("p_prefijo") String prefijo);
 
     @Procedure(procedureName = "sp_actualizar_estado_citas_masivas", outputParameterName = "p_afectadas")
-    Long actualizarEstadoCitasMasivas(@Param("p_veterinario_id") Long veterinarioId,
+    Long bulkUpdateAppointmentStatus(@Param("p_veterinario_id") Long veterinarioId,
                                       @Param("p_estado_anterior") String estadoAnterior,
                                       @Param("p_estado_nuevo") String estadoNuevo,
                                       @Param("p_fecha_limite") Instant fechaLimite);
 
     @Procedure(procedureName = "sp_registrar_consulta_validada", outputParameterName = "p_consulta_id")
-    Long registrarConsultaValidada(@Param("p_mascota_id") Long mascotaId,
+    Long registerValidatedConsultation(@Param("p_mascota_id") Long mascotaId,
                                    @Param("p_veterinario_id") Long veterinarioId,
                                    @Param("p_motivo") String motivo,
                                    @Param("p_diagnostico") String diagnostico,

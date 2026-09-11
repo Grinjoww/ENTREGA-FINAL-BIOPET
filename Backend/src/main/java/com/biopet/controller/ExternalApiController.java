@@ -33,7 +33,7 @@ public class ExternalApiController {
      */
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR','DUENO')")
-    public ExternalApiResponse infoEspecie(@RequestParam String especie) {
-        return externalApiService.obtenerInfoEspecie(especie);
+    public ExternalApiResponse speciesInfo(@RequestParam String especie) {
+        return externalApiService.getSpeciesInfo(especie);
     }
 }

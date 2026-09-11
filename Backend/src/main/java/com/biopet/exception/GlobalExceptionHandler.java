@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
      * @return a 409 Conflict problem response
      */
     @ExceptionHandler(DuplicateEmailException.class)
-    public ResponseEntity<ProblemDetail> emailDuplicado(DuplicateEmailException ex, HttpServletRequest request) {
+    public ResponseEntity<ProblemDetail> duplicateEmail(DuplicateEmailException ex, HttpServletRequest request) {
         return problemResponse(HttpStatus.CONFLICT, ProblemType.CONFLICT, "Conflicto de datos", ex.getMessage(), request);
     }
 

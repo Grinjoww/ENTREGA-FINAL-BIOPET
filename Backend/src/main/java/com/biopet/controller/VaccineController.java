@@ -36,8 +36,8 @@ public class VaccineController {
      */
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR','DUENO')")
-    public Page<VaccineResponse> listar(Pageable pageable, @AuthenticationPrincipal UserDetails userDetails) {
-        return vacunaService.listar(pageable, userDetails.getUsername());
+    public Page<VaccineResponse> listAll(Pageable pageable, @AuthenticationPrincipal UserDetails userDetails) {
+        return vacunaService.listAll(pageable, userDetails.getUsername());
     }
 
     /**
@@ -52,9 +52,9 @@ public class VaccineController {
      */
     @GetMapping("/mascota/{mascotaId:\\d+}")
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR','DUENO')")
-    public Page<VaccineResponse> listarPorMascota(@PathVariable Long mascotaId, Pageable pageable,
+    public Page<VaccineResponse> listByPet(@PathVariable Long mascotaId, Pageable pageable,
                                                   @AuthenticationPrincipal UserDetails userDetails) {
-        return vacunaService.listarPorMascota(mascotaId, pageable, userDetails.getUsername());
+        return vacunaService.listByPet(mascotaId, pageable, userDetails.getUsername());
     }
 
     /**
@@ -68,8 +68,8 @@ public class VaccineController {
      */
     @GetMapping("/{id:\\d+}")
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR','DUENO')")
-    public VaccineResponse buscar(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
-        return vacunaService.buscar(id, userDetails.getUsername());
+    public VaccineResponse findById(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
+        return vacunaService.findById(id, userDetails.getUsername());
     }
 
     /**

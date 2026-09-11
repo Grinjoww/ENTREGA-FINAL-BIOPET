@@ -95,7 +95,7 @@ class ResumenEspeciesIntegrationTest {
         mascotaRepository.save(Pet.builder()
         .duenio(duenio).nombre("Michi").especie("Gato")
         .raza("Mestizo").fechaNacimiento(LocalDate.of(2021,1,1)).activo(true).build());
-        List<SpeciesSummary> resultado = procedimientoBiopetRepository.resumenPorEspecie(duenio.getId());
+        List<SpeciesSummary> resultado = procedimientoBiopetRepository.speciesSummary(duenio.getId());
 
         assertThat(resultado).hasSize(2);
         assertThat(resultado).anyMatch(r -> r.getEspecie().equals("Perro") && r.getTotal() == 1);

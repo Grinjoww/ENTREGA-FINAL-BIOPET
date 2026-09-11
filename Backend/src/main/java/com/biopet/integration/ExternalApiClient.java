@@ -44,7 +44,7 @@ public class ExternalApiClient {
      * @return matching animal records (possibly empty if none found)
      * @throws ExternalApiException if the external API times out, rate-limits, or returns a client/server error
      */
-    public List<AnimalApiNinjasDto> buscarPorEspecie(String especie) {
+    public List<AnimalApiNinjasDto> findBySpecies(String especie) {
         String url = UriComponentsBuilder.fromHttpUrl(baseUrl)
                 .queryParam("name", especie)
                 .toUriString();

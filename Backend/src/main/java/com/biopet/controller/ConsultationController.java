@@ -36,8 +36,8 @@ public class ConsultationController {
      */
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR','DUENO')")
-    public Page<ConsultationResponse> listar(Pageable pageable, @AuthenticationPrincipal UserDetails userDetails) {
-        return consultaService.listar(pageable, userDetails.getUsername());
+    public Page<ConsultationResponse> listAll(Pageable pageable, @AuthenticationPrincipal UserDetails userDetails) {
+        return consultaService.listAll(pageable, userDetails.getUsername());
     }
 
     /**
@@ -51,8 +51,8 @@ public class ConsultationController {
      */
     @GetMapping("/{id:\\d+}")
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR','DUENO')")
-    public ConsultationResponse buscar(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
-        return consultaService.buscar(id, userDetails.getUsername());
+    public ConsultationResponse findById(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
+        return consultaService.findById(id, userDetails.getUsername());
     }
 
     /**

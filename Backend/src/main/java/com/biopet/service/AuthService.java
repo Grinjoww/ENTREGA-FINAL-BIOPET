@@ -68,7 +68,7 @@ public class AuthService {
      *         exists
      */
     @Transactional
-    public UserResponse registrar(RegistrationRequest request) {
+    public UserResponse register(RegistrationRequest request) {
         if (usuarioRepository.existsByEmail(request.email())) {
             throw new DuplicateEmailException(request.email());
         }
@@ -117,7 +117,7 @@ public class AuthService {
             );
         } catch (BadCredentialsException ex) {
             try {
-                loginRateLimiterService.registrarFallo(ip);
+                loginRateLimiterService.recordFailure(ip);
             } catch (RateLimitExceededException limiteExcedido) {
                 authenticationAuditService.loginBloqueado(ip, emailSolicitado);
                 throw limiteExcedido;
@@ -183,7 +183,7 @@ public class AuthService {
 
     /**
      * Revokes the given access and refresh tokens (via
-     * {@link #revocarYObtenerSubject}) and records the outcome via
+     * {@link #revokeAndGetSubject}) and records the outcome via
      * {@link AuthenticationAuditService}. A token that is {@code null},
      * empty, or otherwise invalid/expired is silently skipped rather than
      * rejected; this method never throws for that reason.
@@ -193,13 +193,13 @@ public class AuthService {
      * @param ip caller's IP address, used for audit
      */
     public void logout(String accessToken, String refreshToken, String ip) {
-        String subjectAccess = revocarYObtenerSubject(accessToken);
-        String subjectRefresh = revocarYObtenerSubject(refreshToken);
+        String subjectAccess = revokeAndGetSubject(accessToken);
+        String subjectRefresh = revokeAndGetSubject(refreshToken);
         String subject = (subjectAccess != null) ? subjectAccess : subjectRefresh;
         authenticationAuditService.logoutExitoso(ip, subject);
     }
 
-    private String revocarYObtenerSubject(String token) {
+    private String revokeAndGetSubject(String token) {
         if (token == null || token.isEmpty()) {
             return null;
         }

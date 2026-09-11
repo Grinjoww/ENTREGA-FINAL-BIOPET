@@ -49,8 +49,8 @@ public class UserController {
      */
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public Page<UserResponse> listar(Pageable pageable) {
-        return usuarioService.listar(pageable);
+    public Page<UserResponse> listAll(Pageable pageable) {
+        return usuarioService.listAll(pageable);
     }
 
     /**
@@ -62,8 +62,8 @@ public class UserController {
      */
     @GetMapping("/{id:\\d+}")
     @PreAuthorize("hasRole('ADMIN')")
-    public UserResponse buscar(@PathVariable Long id) {
-        return usuarioService.buscar(id);
+    public UserResponse findById(@PathVariable Long id) {
+        return usuarioService.findById(id);
     }
 
     /**

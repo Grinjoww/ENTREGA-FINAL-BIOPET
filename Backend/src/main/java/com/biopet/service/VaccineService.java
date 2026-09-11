@@ -49,8 +49,8 @@ public class VaccineService {
      * @throws com.biopet.exception.ResourceNotFoundException if the authenticated user cannot be resolved
      */
     @Transactional(readOnly = true)
-    public Page<VaccineResponse> listar(Pageable pageable, String email) {
-        User usuario = usuarioActivo(email);
+    public Page<VaccineResponse> listAll(Pageable pageable, String email) {
+        User usuario = activeUser(email);
         if (usuario.getRol() == Role.ROLE_DUENO) {
             return vacunaRepository.findAllByMascota_Duenio_IdAndActivoTrue(usuario.getId(), pageable)
                     .map(this::toResponse);
@@ -70,9 +70,9 @@ public class VaccineService {
      * @throws org.springframework.security.access.AccessDeniedException if the user does not have access to this pet
      */
     @Transactional(readOnly = true)
-    public Page<VaccineResponse> listarPorMascota(Long mascotaId, Pageable pageable, String email) {
-        User usuario = usuarioActivo(email);
-        Pet mascota = mascotaActiva(mascotaId);
+    public Page<VaccineResponse> listByPet(Long mascotaId, Pageable pageable, String email) {
+        User usuario = activeUser(email);
+        Pet mascota = activePet(mascotaId);
         verificarAcceso(usuario, mascota);
         return vacunaRepository.findAllByMascotaIdAndActivoTrue(mascotaId, pageable).map(this::toResponse);
     }
@@ -88,9 +88,9 @@ public class VaccineService {
      * @throws org.springframework.security.access.AccessDeniedException if the user does not have access to the associated pet
      */
     @Transactional(readOnly = true)
-    public VaccineResponse buscar(Long id, String email) {
-        User usuario = usuarioActivo(email);
-        Vaccine vacuna = vacunaActiva(id);
+    public VaccineResponse findById(Long id, String email) {
+        User usuario = activeUser(email);
+        Vaccine vacuna = activeVaccine(id);
         verificarAcceso(usuario, vacuna.getMascota());
         return toResponse(vacuna);
     }
@@ -106,8 +106,8 @@ public class VaccineService {
      */
     @Transactional
     public VaccineResponse crear(VaccineRequest request) {
-        Pet mascota = mascotaActiva(request.mascotaId());
-        User veterinario = resolverVeterinario(request.veterinarioId());
+        Pet mascota = activePet(request.mascotaId());
+        User veterinario = resolveVeterinarian(request.veterinarioId());
         Vaccine vacuna = Vaccine.builder()
                 .mascota(mascota)
                 .veterinario(veterinario)
@@ -134,12 +134,12 @@ public class VaccineService {
      */
     @Transactional
     public VaccineResponse actualizar(Long id, VaccineRequest request, String email) {
-        User usuario = usuarioActivo(email);
-        Vaccine vacuna = vacunaActiva(id);
+        User usuario = activeUser(email);
+        Vaccine vacuna = activeVaccine(id);
         verificarAcceso(usuario, vacuna.getMascota());
 
-        Pet mascota = mascotaActiva(request.mascotaId());
-        User veterinario = resolverVeterinario(request.veterinarioId());
+        Pet mascota = activePet(request.mascotaId());
+        User veterinario = resolveVeterinarian(request.veterinarioId());
 
         vacuna.setMascota(mascota);
         vacuna.setVeterinario(veterinario);
@@ -161,8 +161,8 @@ public class VaccineService {
      */
     @Transactional
     public void eliminar(Long id, String email) {
-        User usuario = usuarioActivo(email);
-        Vaccine vacuna = vacunaActiva(id);
+        User usuario = activeUser(email);
+        Vaccine vacuna = activeVaccine(id);
         verificarAcceso(usuario, vacuna.getMascota());
         vacuna.setActivo(false);
         vacunaRepository.save(vacuna);
@@ -170,22 +170,22 @@ public class VaccineService {
 
     // ---------- Helpers ----------
 
-    private User usuarioActivo(String email) {
+    private User activeUser(String email) {
         return usuarioRepository.findByEmailAndActivoTrue(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User no encontrado"));
     }
 
-    private Pet mascotaActiva(Long mascotaId) {
+    private Pet activePet(Long mascotaId) {
         return mascotaRepository.findByIdAndActivoTrue(mascotaId)
                 .orElseThrow(() -> new ResourceNotFoundException("Pet no encontrada: " + mascotaId));
     }
 
-    private Vaccine vacunaActiva(Long id) {
+    private Vaccine activeVaccine(Long id) {
         return vacunaRepository.findByIdAndActivoTrue(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Vaccine no encontrada: " + id));
     }
 
-    private User resolverVeterinario(Long veterinarioId) {
+    private User resolveVeterinarian(Long veterinarioId) {
         if (veterinarioId == null) return null;
         User veterinario = usuarioRepository.findById(veterinarioId)
                 .filter(User::isActivo)

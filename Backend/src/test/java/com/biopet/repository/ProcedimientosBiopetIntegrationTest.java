@@ -136,7 +136,7 @@ class ProcedimientosBiopetIntegrationTest {
 
     @Test
     void resumenPorEspecie_duenioInexistente_devuelveListaVacia() {
-        List<SpeciesSummary> resultado = procedimientoBiopetRepository.resumenPorEspecie(999999L);
+        List<SpeciesSummary> resultado = procedimientoBiopetRepository.speciesSummary(999999L);
         assertThat(resultado).isEmpty();
     }
 
@@ -156,7 +156,7 @@ class ProcedimientosBiopetIntegrationTest {
                 .fechaHora(Instant.parse("2026-09-01T10:00:00Z"))
                 .estado(AppointmentStatus.PROGRAMADA).motivo("Control").activo(true).build());
 
-        List<ClinicalHistoryView> resultado = procedimientoBiopetRepository.historialClinicoMascota(mascota.getId());
+        List<ClinicalHistoryView> resultado = procedimientoBiopetRepository.petClinicalHistory(mascota.getId());
 
         assertThat(resultado).hasSize(1);
         ClinicalHistoryView h = resultado.get(0);
@@ -173,7 +173,7 @@ class ProcedimientosBiopetIntegrationTest {
 
     @Test
     void historialClinico_mascotaInexistente_devuelveListaVacia() {
-        assertThat(procedimientoBiopetRepository.historialClinicoMascota(999999L)).isEmpty();
+        assertThat(procedimientoBiopetRepository.petClinicalHistory(999999L)).isEmpty();
     }
 
     @Test
@@ -191,7 +191,7 @@ class ProcedimientosBiopetIntegrationTest {
                 .fechaHora(Instant.parse("2026-08-20T10:00:00Z"))
                 .estado(AppointmentStatus.PROGRAMADA).activo(true).build());
 
-        List<DashboardReportView> resultado = procedimientoBiopetRepository.reporteDashboard(
+        List<DashboardReportView> resultado = procedimientoBiopetRepository.dashboardReport(
                 LocalDate.of(2026, 8, 1), LocalDate.of(2026, 8, 31));
 
         assertThat(resultado).hasSize(1);
@@ -208,7 +208,7 @@ class ProcedimientosBiopetIntegrationTest {
         User duenio = guardarUsuario("duenio-rango@biopet.ec", Role.ROLE_DUENO);
         guardarMascota(duenio, "Rex");
 
-        List<DashboardReportView> resultado = procedimientoBiopetRepository.reporteDashboard(
+        List<DashboardReportView> resultado = procedimientoBiopetRepository.dashboardReport(
                 LocalDate.of(2026, 12, 31), LocalDate.of(2026, 1, 1));
 
         assertThat(resultado).hasSize(1);
@@ -248,7 +248,7 @@ class ProcedimientosBiopetIntegrationTest {
         Appointment pasadaCompletada = citaRepository.save(Appointment.builder().mascota(mascota).veterinario(vet)
                 .fechaHora(limite.minusSeconds(7200)).estado(AppointmentStatus.COMPLETADA).activo(true).build());
 
-        Long afectadas = procedimientoBiopetRepository.actualizarEstadoCitasMasivas(
+        Long afectadas = procedimientoBiopetRepository.bulkUpdateAppointmentStatus(
                 vet.getId(), "PROGRAMADA", "COMPLETADA", limite);
 
         assertThat(afectadas).isEqualTo(1);
@@ -263,7 +263,7 @@ class ProcedimientosBiopetIntegrationTest {
 
     @Test
     void actualizarEstadoCitasMasivas_estadoInvalido_lanzaExcepcion() {
-        assertThatThrownBy(() -> procedimientoBiopetRepository.actualizarEstadoCitasMasivas(
+        assertThatThrownBy(() -> procedimientoBiopetRepository.bulkUpdateAppointmentStatus(
                 1L, "PROGRAMADA", "ESTADO_INEXISTENTE", Instant.now()))
                 .isInstanceOf(DataAccessException.class);
     }
@@ -274,7 +274,7 @@ class ProcedimientosBiopetIntegrationTest {
         User vet = guardarUsuario("vet-consulta@biopet.ec", Role.ROLE_VETERINARIO);
         Pet mascota = guardarMascota(duenio, "Rex");
 
-        Long consultaId = procedimientoBiopetRepository.registrarConsultaValidada(
+        Long consultaId = procedimientoBiopetRepository.registerValidatedConsultation(
                 mascota.getId(), vet.getId(), "Chequeo anual", "Sano", "Ninguno", null);
 
         assertThat(consultaId).isNotNull();
@@ -287,7 +287,7 @@ class ProcedimientosBiopetIntegrationTest {
     void registrarConsultaValidada_mascotaInexistente_lanzaExcepcion() {
         User vet = guardarUsuario("vet-consulta-inexistente@biopet.ec", Role.ROLE_VETERINARIO);
 
-        assertThatThrownBy(() -> procedimientoBiopetRepository.registrarConsultaValidada(
+        assertThatThrownBy(() -> procedimientoBiopetRepository.registerValidatedConsultation(
                 999999L, vet.getId(), "Chequeo", null, null, null))
                 .isInstanceOf(DataAccessException.class);
     }
@@ -297,7 +297,7 @@ class ProcedimientosBiopetIntegrationTest {
         User duenio = guardarUsuario("duenio-consulta-noaut@biopet.ec", Role.ROLE_DUENO);
         Pet mascota = guardarMascota(duenio, "Rex");
 
-        assertThatThrownBy(() -> procedimientoBiopetRepository.registrarConsultaValidada(
+        assertThatThrownBy(() -> procedimientoBiopetRepository.registerValidatedConsultation(
                 mascota.getId(), duenio.getId(), "Chequeo", null, null, null))
                 .isInstanceOf(DataAccessException.class);
     }

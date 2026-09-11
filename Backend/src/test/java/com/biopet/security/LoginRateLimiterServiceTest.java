@@ -35,7 +35,7 @@ class LoginRateLimiterServiceTest {
         String ip = "203.0.113.10";
 
         for (int i = 0; i < 5; i++) {
-            assertDoesNotThrow(() -> limiter.registrarFallo(ip));
+            assertDoesNotThrow(() -> limiter.recordFailure(ip));
         }
 
         assertDoesNotThrow(() -> limiter.verificarPermitido(ip));
@@ -46,11 +46,11 @@ class LoginRateLimiterServiceTest {
         String ip = "203.0.113.11";
 
         for (int i = 0; i < 5; i++) {
-            limiter.registrarFallo(ip);
+            limiter.recordFailure(ip);
         }
 
         RateLimitExceededException ex = assertThrows(RateLimitExceededException.class,
-                () -> limiter.registrarFallo(ip));
+                () -> limiter.recordFailure(ip));
 
         assertEquals(BLOCK_DURATION.getSeconds(), ex.getSecondsRemaining());
     }
@@ -60,9 +60,9 @@ class LoginRateLimiterServiceTest {
         String ip = "203.0.113.12";
 
         for (int i = 0; i < 5; i++) {
-            limiter.registrarFallo(ip);
+            limiter.recordFailure(ip);
         }
-        assertThrows(RateLimitExceededException.class, () -> limiter.registrarFallo(ip));
+        assertThrows(RateLimitExceededException.class, () -> limiter.recordFailure(ip));
 
         reloj.avanzar(Duration.ofMinutes(5));
 
@@ -79,12 +79,12 @@ class LoginRateLimiterServiceTest {
         String ipLibre = "203.0.113.21";
 
         for (int i = 0; i < 5; i++) {
-            limiter.registrarFallo(ipBloqueada);
+            limiter.recordFailure(ipBloqueada);
         }
-        assertThrows(RateLimitExceededException.class, () -> limiter.registrarFallo(ipBloqueada));
+        assertThrows(RateLimitExceededException.class, () -> limiter.recordFailure(ipBloqueada));
 
         assertDoesNotThrow(() -> limiter.verificarPermitido(ipLibre));
-        assertDoesNotThrow(() -> limiter.registrarFallo(ipLibre));
+        assertDoesNotThrow(() -> limiter.recordFailure(ipLibre));
     }
 
     @Test
@@ -92,15 +92,15 @@ class LoginRateLimiterServiceTest {
         String ip = "203.0.113.30";
 
         for (int i = 0; i < 5; i++) {
-            limiter.registrarFallo(ip);
+            limiter.recordFailure(ip);
         }
-        assertThrows(RateLimitExceededException.class, () -> limiter.registrarFallo(ip));
+        assertThrows(RateLimitExceededException.class, () -> limiter.recordFailure(ip));
 
         limiter.reiniciar(ip);
 
         assertDoesNotThrow(() -> limiter.verificarPermitido(ip));
         for (int i = 0; i < 5; i++) {
-            assertDoesNotThrow(() -> limiter.registrarFallo(ip));
+            assertDoesNotThrow(() -> limiter.recordFailure(ip));
         }
         assertDoesNotThrow(() -> limiter.verificarPermitido(ip));
     }
@@ -110,15 +110,15 @@ class LoginRateLimiterServiceTest {
         String ip = "203.0.113.40";
 
         for (int i = 0; i < 3; i++) {
-            limiter.registrarFallo(ip);
+            limiter.recordFailure(ip);
         }
 
         reloj.avanzar(WINDOW.plusMinutes(1));
 
         for (int i = 0; i < 5; i++) {
-            assertDoesNotThrow(() -> limiter.registrarFallo(ip));
+            assertDoesNotThrow(() -> limiter.recordFailure(ip));
         }
-        assertThrows(RateLimitExceededException.class, () -> limiter.registrarFallo(ip));
+        assertThrows(RateLimitExceededException.class, () -> limiter.recordFailure(ip));
     }
 
     @Test
@@ -126,17 +126,17 @@ class LoginRateLimiterServiceTest {
         String ip = "203.0.113.50";
 
         for (int i = 0; i < 5; i++) {
-            limiter.registrarFallo(ip);
+            limiter.recordFailure(ip);
         }
-        assertThrows(RateLimitExceededException.class, () -> limiter.registrarFallo(ip));
+        assertThrows(RateLimitExceededException.class, () -> limiter.recordFailure(ip));
 
         reloj.avanzar(BLOCK_DURATION.plusSeconds(1));
 
         assertDoesNotThrow(() -> limiter.verificarPermitido(ip));
         for (int i = 0; i < 5; i++) {
-            assertDoesNotThrow(() -> limiter.registrarFallo(ip));
+            assertDoesNotThrow(() -> limiter.recordFailure(ip));
         }
-        assertThrows(RateLimitExceededException.class, () -> limiter.registrarFallo(ip));
+        assertThrows(RateLimitExceededException.class, () -> limiter.recordFailure(ip));
     }
 
     private static final class MutableClock extends Clock {

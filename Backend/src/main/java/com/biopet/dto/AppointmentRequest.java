@@ -10,7 +10,7 @@ import java.time.Instant;
  * DTO de entrada para crear/actualizar una cita. El campo {@code estado} solo
  * tiene efecto en {@code PUT} (permite cancelar/completar); {@code POST} lo
  * ignora y fuerza siempre {@code PROGRAMADA}, igual que {@code RegistrationRequest.rol()}
- * es ignorado por {@code AuthService.registrar()} y se fuerza a ROLE_DUENO.
+ * es ignorado por {@code AuthService.register()} y se fuerza a ROLE_DUENO.
  */
 public record AppointmentRequest(
         @NotNull Long mascotaId,

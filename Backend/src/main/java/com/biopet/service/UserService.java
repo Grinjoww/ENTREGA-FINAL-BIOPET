@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * CRUD administrativo de usuarios (POST/PUT/DELETE /api/usuarios), restringido a
  * ROLE_ADMIN a nivel de {@code UserController} (@PreAuthorize). No reemplaza ni
- * duplica {@code AuthService.registrar()}: aquella es el autoregistro público
+ * duplica {@code AuthService.register()}: aquella es el autoregistro público
  * (siempre ROLE_DUENO); este servicio permite a un administrador crear cuentas con
  * cualquier rol y gestionar cuentas existentes.
  */
@@ -37,7 +37,7 @@ public class UserService {
      * @return page of user accounts
      */
     @Transactional(readOnly = true)
-    public Page<UserResponse> listar(Pageable pageable) {
+    public Page<UserResponse> listAll(Pageable pageable) {
         return usuarioRepository.findAllByActivoTrue(pageable).map(this::toResponse);
     }
 
@@ -49,7 +49,7 @@ public class UserService {
      * @throws com.biopet.exception.ResourceNotFoundException if no active user exists with the given id
      */
     @Transactional(readOnly = true)
-    public UserResponse buscar(Long id) {
+    public UserResponse findById(Long id) {
         User usuario = usuarioRepository.findByIdAndActivoTrue(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User no encontrado: " + id));
         return toResponse(usuario);
