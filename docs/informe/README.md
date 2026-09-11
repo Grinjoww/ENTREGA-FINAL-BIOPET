@@ -81,6 +81,36 @@ estimación).
 
 ---
 
+## Compilación de la carátula de recalificación (`caratula-entrega-final.tex`)
+
+Documento independiente de una sola página (no forma parte de
+`informe-final-v1.0.0.tex`). Su tabla incluye el **commit HEAD real** al
+momento de compilar — necesario porque el tag `v1.0.0` se actualiza al
+cierre de esta recalificación para apuntar a ese mismo commit, y un valor
+hardcodeado quedaría obsoleto en cuanto eso ocurra. Por eso, a diferencia
+del Informe Final, esta carátula requiere un paso previo:
+
+```bash
+# 1. Desde la RAÍZ del repositorio: genera docs/informe/commit-info.tex
+#    con el hash corto y la fecha del commit HEAD actual. Multiplataforma
+#    (Python 3, biblioteca estándar únicamente; no requiere Bash/WSL).
+python scripts/gen-informe-commit-info.py
+
+# 2. Compila la carátula (sin bibtex: no tiene citas).
+cd docs/informe
+pdflatex -interaction=nonstopmode caratula-entrega-final.tex
+```
+
+`commit-info.tex` no se versiona (ver `.gitignore` de esta carpeta): debe
+regenerarse en cada checkout desde el que se quiera producir la carátula,
+incluido el checkout final sobre el que se mueva el tag `v1.0.0`. Si se
+omite el paso 1, la carátula compila igual (usa `\IfFileExists`, sin
+requerir `shell-escape`) pero muestra un valor de respaldo visible
+(`PENDIENTE-EJECUTAR-scripts/gen-informe-commit-info.py`) en vez de un
+commit inventado.
+
+---
+
 ## Organización de las secciones (Informe Final)
 
 ```

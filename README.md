@@ -4,10 +4,12 @@ Este repositorio corresponde a la **Entrega Final académica de BIOPET** y
 conserva la trazabilidad, evidencias, documentación y correcciones realizadas
 a partir de la retroalimentación docente.
 
-El tag histórico `v1.0.0` se mantiene inmutable para preservar la
-reproducibilidad de la versión evaluada. Las correcciones documentales y de
-trazabilidad posteriores se encuentran incorporadas en `main` sin alterar
-dicho tag.
+El tag `v1.0.0` identifica el commit evaluado al cierre de este proceso de
+recalificación (ver [Historial de entregas / tags](#historial-de-entregas--tags)).
+Se creó originalmente el 18 de agosto de 2026 sobre el commit histórico
+`0d5cd52` (cierre de la Entrega Final original) y, conforme a la rúbrica
+de esta recalificación, se actualiza al cierre para identificar el
+commit final de `main`, sin cambiar su nombre ni crear un tag adicional.
 
 ### Versión funcional evolucionada
 
@@ -36,8 +38,10 @@ Para revisión del estado funcional y visual más reciente del sistema:
 Proyecto Fin de Curso — Aplicaciones Web
 **Entrega Final — `v1.0.0`**
 
-> Estado: Entrega Final publicada. El tag `v1.0.0` fue creado y publicado
-> (commit `0d5cd52`, ver [Historial de entregas / tags](#historial-de-entregas--tags)).
+> Estado: Entrega Final / Recalificación. El tag `v1.0.0` identifica el
+> commit evaluado al cierre de este proceso (ver [Historial de entregas /
+> tags](#historial-de-entregas--tags)); el commit histórico de la Entrega
+> Final original (18 de agosto de 2026) fue `0d5cd52`.
 
 ---
 
@@ -187,12 +191,12 @@ correspondientes más abajo).
 
 Las cifras de pruebas y cobertura se reportan en **dos columnas** porque
 corresponden a dos puntos distintos del proyecto, y mezclarlas sería
-engañoso: la columna *tag `v1.0.0`* es la evidencia histórica de la Entrega
-Final (commit `0d5cd52`), y la columna *HEAD recalificación* es la ejecución
-real de la rama de recalificación, que añade pruebas nuevas sobre aquella
-base. Ninguna sustituye a la otra.
+engañoso: la columna *histórico* es la evidencia de la Entrega Final
+original (commit `0d5cd52`, 18 de agosto de 2026), y la columna *HEAD
+recalificación* es la ejecución real de la rama de recalificación, que
+añade pruebas nuevas sobre aquella base. Ninguna sustituye a la otra.
 
-| Validación | Histórico — tag `v1.0.0` (`0d5cd52`) | HEAD de recalificación |
+| Validación | Histórico — commit `0d5cd52` (18-ago-2026) | HEAD de recalificación |
 |---|---|---|
 | Tests backend | 205 / 205 | **217 / 217** |
 | Failures | 0 | 0 |
@@ -205,7 +209,7 @@ base. Ninguna sustituye a la otra.
 Ambas columnas superan el gate obligatorio de JaCoCo (≥ 70 % LINE y BRANCH,
 `Backend/pom.xml`). Las diferencias entre columnas corresponden al estado
 actual del código y de su suite de pruebas respecto del corte histórico
-del tag `v1.0.0`; la diferencia está medida, no estimada. Las 12 pruebas
+del commit `0d5cd52`; la diferencia está medida, no estimada. Las 12 pruebas
 adicionales (205 → 217) provienen de las clases incorporadas durante la
 recalificación. Reproducción exacta del HEAD:
 `cd frontend && npm ci && npm run build` y después `cd Backend && mvn clean verify`
@@ -230,8 +234,9 @@ Fuentes: ejecución real de `make all` sobre este repositorio;
 [`docs/mediciones/sus/REPORT.md`](docs/mediciones/sus/REPORT.md);
 [`docs/mediciones/lighthouse/`](docs/mediciones/lighthouse/) (`lhci-20260818-0538-*.json`).
 
-**Tests backend — 205/205 verificado por reproducción sobre el tag `v1.0.0`**
-(commit `0d5cd52`): `mvn clean verify` → `BUILD SUCCESS`, confirmado por
+**Tests backend — 205/205 verificado por reproducción sobre el commit
+histórico `0d5cd52`** (Entrega Final original, 18-ago-2026): `mvn clean
+verify` → `BUILD SUCCESS`, confirmado por
 consola Maven, suma por clase y los 22 XML de Surefire — ver
 [`docs/mediciones/sec/reproduccion-v1.0.0/`](docs/mediciones/sec/reproduccion-v1.0.0/).
 El log histórico de agosto (`docs/mediciones/sec/raw/mvn-clean-verify.txt`,
@@ -320,7 +325,7 @@ Lighthouse **no** forma parte de CI todavía (ver [Lighthouse](#lighthouse)).
 | `v0.7.0` | Entrega previa |
 | `v0.7.1` | Entrega previa |
 | `v0.9.0-rc` | Tercera Entrega (release candidate) |
-| `v1.0.0` | **Entrega Final publicada** (commit `0d5cd52`) |
+| `v1.0.0` | **Entrega Final / Recalificación** — identifica el commit evaluado al cierre (commit histórico de la Entrega Final original, 18-ago-2026: `0d5cd52`) |
 
 ---
 
@@ -368,13 +373,14 @@ Imagen del backend publicada en GitHub Container Registry:
 docker pull ghcr.io/grinjoww/entregafinal-biopet-backend@sha256:ef1e857a95a307a115ebe01599a41506eab824808b70a3c8e317dcc55bef5163
 ```
 
-El tag Git `v1.0.0` ya fue publicado (commit `0d5cd52`), lo que dispara
-automáticamente (`.github/workflows/ghcr-publish.yml`, disparador
-`push: tags: v*`) la publicación de las etiquetas `1.0.0` y `latest` en
-GHCR. No hay evidencia local de que esa corrida de GitHub Actions ya haya
-terminado: **publicación automática disparada por el tag `v1.0.0`**, sin
-afirmar que las etiquetas `1.0.0`/`latest` ya estén visibles en el
-registro hasta confirmarlo directamente en GHCR.
+El tag Git `v1.0.0` ya fue publicado, lo que dispara automáticamente
+(`.github/workflows/ghcr-publish.yml`, disparador `push: tags: v*`) la
+publicación de las etiquetas `1.0.0` y `latest` en GHCR cada vez que ese
+tag se publica (incluida una republicación tras moverlo). No hay
+evidencia local de que esa corrida de GitHub Actions ya haya terminado:
+**publicación automática disparada por el tag `v1.0.0`**, sin afirmar que
+las etiquetas `1.0.0`/`latest` ya estén visibles en el registro hasta
+confirmarlo directamente en GHCR.
 
 ---
 
@@ -481,6 +487,18 @@ El PDF resultante se copia a la raíz de `docs/informe/` como
 `informe-final-v1.0.0.pdf`. El archivo `informe-entrega-3.tex` (Tercera
 Entrega) se conserva sin modificar como registro histórico.
 
+### Carátula de recalificación (`caratula-entrega-final.tex`)
+
+Documento independiente de una sola página; su tabla muestra el commit
+HEAD real, generado **antes** de compilar (nunca hardcodeado — detalle en
+[`docs/informe/README.md`](docs/informe/README.md)):
+
+```bash
+python scripts/gen-informe-commit-info.py
+cd docs/informe
+pdflatex -interaction=nonstopmode caratula-entrega-final.tex
+```
+
 ---
 
 ## Aclaración sobre datos SUS (usabilidad)
@@ -517,4 +535,6 @@ El tag `v1.0.0` fue publicado; [`CITATION.cff`](CITATION.cff) contiene los
 metadatos de citación del software (versión, autores, licencia, DOI). El
 DOI del software y del dataset ya están archivados en Zenodo (ver
 [DOI / Zenodo](#doi--zenodo)). El campo `date-released` de `CITATION.cff`
-todavía no tiene valor asignado; no se afirma aquí que ya esté completado.
+ya tiene valor asignado (fecha real de creación del tag anotado, obtenida
+con `git for-each-ref`); se recalculará con el mismo comando cuando
+`v1.0.0` se mueva al commit final de esta recalificación.

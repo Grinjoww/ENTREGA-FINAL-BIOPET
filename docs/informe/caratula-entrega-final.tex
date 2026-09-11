@@ -7,13 +7,23 @@
 % grande (docs/informe/informe-final-v1.0.0.tex), pero como archivo
 % separado, para servir como caratula de entrega de una sola pagina.
 %
-% Compilacion (desde docs/informe/):
-%   pdflatex -interaction=nonstopmode caratula-entrega-final.tex
-% (no requiere bibtex: no tiene citas ni bibliografia)
+% Compilacion (desde la RAIZ del repositorio, para generar primero el
+% commit/fecha vigentes; ver docs/informe/README.md):
+%   python scripts/gen-informe-commit-info.py
+%   cd docs/informe && pdflatex -interaction=nonstopmode caratula-entrega-final.tex
+% (no requiere bibtex: no tiene citas ni bibliografia; no requiere
+% shell-escape ni Bash/WSL: el commit/fecha se generan ANTES de invocar
+% pdflatex, con Python 3 estandar, mediante \IfFileExists + \input sobre
+% docs/informe/commit-info.tex, el mismo mecanismo nativo de LaTeX que ya
+% usa \evidencia en informe-final-v1.0.0.tex)
 %
 % Todos los datos aqui impresos ya estan documentados en otras partes del
 % repositorio (CITATION.cff, README.md, informe-final-v1.0.0.tex, tag Git
 % v1.0.0); este documento no introduce cifras ni identificadores nuevos.
+% El commit mostrado es el commit HEAD real al momento de compilar (ver
+% \commitactual mas abajo), no un valor fijo: al cerrar la recalificacion,
+% v1.0.0 se movera a ese mismo commit, por lo que la caratula debe
+% regenerarse justo antes/despues de mover el tag para que ambos coincidan.
 
 \documentclass[12pt,a4paper]{article}
 
@@ -32,6 +42,15 @@
 
 % Sin numero de pagina: esta caratula es de una sola pagina.
 \pagestyle{empty}
+
+% \commitactual / \fechaactual: hash corto y fecha del commit HEAD real,
+% generados por scripts/gen-informe-commit-info.py en
+% docs/informe/commit-info.tex (no versionado). Los valores de respaldo
+% de abajo NUNCA deben quedar impresos en un PDF final: si aparecen,
+% significa que no se ejecuto el script de generacion antes de compilar.
+\providecommand{\commitactual}{PENDIENTE-EJECUTAR-scripts/gen-informe-commit-info.py}
+\providecommand{\fechaactual}{PENDIENTE-EJECUTAR-scripts/gen-informe-commit-info.py}
+\IfFileExists{commit-info.tex}{\input{commit-info.tex}}{}
 
 \begin{document}
 \shorthandoff{"}
@@ -73,8 +92,8 @@
   {\footnotesize
     \begin{tabular}{ll}
       Repositorio & \texttt{https://github.com/\allowbreak Grinjoww/\allowbreak ENTREGA-FINAL-BIOPET} \\
-      Tag hist\'orico & \texttt{v1.0.0} \\
-      Commit asociado al tag & \texttt{0d5cd52} \\
+      Tag evaluado & \texttt{v1.0.0} \\
+      Commit evaluado (HEAD al cierre) & \texttt{\commitactual} \\
       DOI del software (Zenodo) & \texttt{10.5281/zenodo.21988746} \\
       DOI del \emph{dataset} de evidencias (Zenodo) & \texttt{10.5281/zenodo.21988785} \\
     \end{tabular}
@@ -90,7 +109,7 @@
 
   \vfill
 
-  {\normalsize Quevedo, 18 de agosto de 2026 \par}
+  {\normalsize \fechaactual \par}
 \end{center}
 
 \end{document}

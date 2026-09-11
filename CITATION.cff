@@ -18,15 +18,14 @@ authors:
     affiliation: "Universidad Técnica Estatal de Quevedo"
     email: "ztaipem@uteq.edu.ec"
     orcid: "https://orcid.org/0009-0000-1227-3258"
-# version: version publicada de la Entrega Final. El tag "v1.0.0" YA fue
-# publicado en este repositorio y apunta al commit 0d5cd52 (verificable
-# con "git rev-list -n 1 v1.0.0"); este campo cita esa release ya
-# existente, no una version objetivo futura.
+# version: version publicada de la Entrega Final/Recalificacion. El tag
+# anotado "v1.0.0" identifica el commit evaluado al cierre de este
+# proceso (verificable con "git rev-list -n 1 v1.0.0").
 version: 1.0.0
-# date-released: fecha real de creacion del tag anotado "v1.0.0"
-# (commit 0d5cd52), obtenida con
-# "git for-each-ref refs/tags/v1.0.0 --format=%(creatordate:iso8601)".
-date-released: "2026-08-18"
+# date-released: fecha de cierre de la Entrega Final/Recalificacion
+# (2026-09-11), fecha a la que se actualiza el tag anotado "v1.0.0" al
+# commit final evaluado.
+date-released: "2026-09-11"
 license: MIT
 repository-code: "https://github.com/Grinjoww/ENTREGA-FINAL-BIOPET"
 keywords:

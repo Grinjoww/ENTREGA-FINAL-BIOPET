@@ -4,8 +4,9 @@
 \section{Pruebas automatizadas del backend}
 
 La suite completa del backend, ejecutada con \texttt{mvn clean verify}
-sobre el commit exacto del tag hist\'orico e inmutable \texttt{v1.0.0}
-(\texttt{0d5cd52}) y verificada directamente contra
+sobre el commit hist\'orico exacto \texttt{0d5cd52} (cierre de la Entrega
+Final original, al que apunt\'o el tag \texttt{v1.0.0} hasta el cierre de
+esta recalificaci\'on) y verificada directamente contra
 \texttt{Backend/target/surefire-reports/} de esa reproducci\'on
 (\texttt{docs/mediciones/sec/reproduccion-v1.0.0/}), reporta el resultado
 que resume la tabla~\ref{tab:pruebas-final}:
@@ -94,7 +95,8 @@ por una prueba no implica que est\'e libre de errores l\'ogicos no
 contemplados por la aserci\'on de esa prueba.
 
 Esta cobertura (LINE 91{,}80\,\%, BRANCH 79{,}39\,\%) corresponde al
-estado hist\'orico e inmutable del tag \texttt{v1.0.0}. Recalculada sobre
+estado hist\'orico del commit \texttt{0d5cd52} (Entrega Final original).
+Recalculada sobre
 el \texttt{HEAD} actual de la rama de recalificaci\'on, \texttt{jacoco.csv}
 arroja LINE~\textbf{90{,}22\,\%} (876/971) y BRANCH~\textbf{76{,}27\,\%}
 (180/236); ambas siguen superando con margen el umbral de 70\,\% del
