@@ -48,7 +48,7 @@ public class VacunaController {
      * @param pageable pagination and sorting parameters
      * @param userDetails authenticated user extracted from the security context
      * @return page of vaccination records for the given pet
-     * @throws com.biopet.exception.RecursoNoEncontradoException if no active pet exists with the given id
+     * @throws com.biopet.exception.ResourceNotFoundException if no active pet exists with the given id
      */
     @GetMapping("/mascota/{mascotaId:\\d+}")
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR','DUENO')")
@@ -64,7 +64,7 @@ public class VacunaController {
      * @param id vaccination record identifier
      * @param userDetails authenticated user extracted from the security context
      * @return the requested vaccination record
-     * @throws com.biopet.exception.RecursoNoEncontradoException if no active vaccination record exists with the given id
+     * @throws com.biopet.exception.ResourceNotFoundException if no active vaccination record exists with the given id
      */
     @GetMapping("/{id:\\d+}")
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR','DUENO')")
@@ -91,7 +91,7 @@ public class VacunaController {
      * @param request updated vaccination data
      * @param userDetails authenticated user extracted from the security context
      * @return the updated vaccination record
-     * @throws com.biopet.exception.RecursoNoEncontradoException if no active vaccination record exists with the given id
+     * @throws com.biopet.exception.ResourceNotFoundException if no active vaccination record exists with the given id
      */
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR')")

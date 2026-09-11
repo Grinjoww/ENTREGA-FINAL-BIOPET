@@ -38,7 +38,7 @@ public class AuthController {
      * @param request registration data (name, email, password), already
      *                 validated by {@code @Valid}
      * @return the created user, with HTTP 201 (Created)
-     * @throws com.biopet.exception.EmailDuplicadoException if a user with
+     * @throws com.biopet.exception.DuplicateEmailException if a user with
      *         that email already exists
      */
     @PostMapping("/registro")

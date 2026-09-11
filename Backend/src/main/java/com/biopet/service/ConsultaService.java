@@ -6,7 +6,7 @@ import com.biopet.entity.Consulta;
 import com.biopet.entity.Mascota;
 import com.biopet.entity.Rol;
 import com.biopet.entity.Usuario;
-import com.biopet.exception.RecursoNoEncontradoException;
+import com.biopet.exception.ResourceNotFoundException;
 import com.biopet.repository.ConsultaRepository;
 import com.biopet.repository.MascotaRepository;
 import com.biopet.repository.UsuarioRepository;
@@ -51,7 +51,7 @@ public class ConsultaService {
      * @param pageable pagination and sorting parameters
      * @param email authenticated user's email
      * @return page of consultations
-     * @throws com.biopet.exception.RecursoNoEncontradoException if the authenticated user cannot be resolved
+     * @throws com.biopet.exception.ResourceNotFoundException if the authenticated user cannot be resolved
      */
     @Cacheable(value = "consultas", key = "#email + '-' + #pageable.pageNumber + '-' + #pageable.pageSize + '-' + #pageable.sort.toString()")
     @Transactional(readOnly = true)
@@ -72,14 +72,14 @@ public class ConsultaService {
      * @param id consultation identifier
      * @param email authenticated user's email
      * @return the requested consultation
-     * @throws com.biopet.exception.RecursoNoEncontradoException if no active consultation exists with the given id
+     * @throws com.biopet.exception.ResourceNotFoundException if no active consultation exists with the given id
      * @throws org.springframework.security.access.AccessDeniedException if the user is not allowed to access this consultation
      */
     @Transactional(readOnly = true)
     public ConsultaResponse buscar(Long id, String email) {
         Usuario usuario = usuarioActual(email);
         Consulta consulta = consultaRepository.findByIdAndActivoTrue(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Consulta no encontrada: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Consulta no encontrada: " + id));
         verificarAcceso(usuario, consulta);
         return toResponse(consulta);
     }
@@ -90,14 +90,14 @@ public class ConsultaService {
      *
      * @param request consultation data to create
      * @return the created consultation
-     * @throws com.biopet.exception.RecursoNoEncontradoException if the referenced pet or veterinarian does not exist
+     * @throws com.biopet.exception.ResourceNotFoundException if the referenced pet or veterinarian does not exist
      * @throws IllegalArgumentException if the referenced veterinarian does not have role ROLE_VETERINARIO
      */
     @CacheEvict(value = "consultas", allEntries = true)
     @Transactional
     public ConsultaResponse crear(ConsultaRequest request) {
         Mascota mascota = mascotaRepository.findByIdAndActivoTrue(request.mascotaId())
-                .orElseThrow(() -> new RecursoNoEncontradoException("Mascota no encontrada: " + request.mascotaId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Mascota no encontrada: " + request.mascotaId()));
         Usuario veterinario = resolverVeterinario(request.veterinarioId());
 
         Consulta consulta = Consulta.builder()
@@ -122,7 +122,7 @@ public class ConsultaService {
      * @param request updated consultation data
      * @param email authenticated user's email
      * @return the updated consultation
-     * @throws com.biopet.exception.RecursoNoEncontradoException if the consultation, pet or veterinarian does not exist
+     * @throws com.biopet.exception.ResourceNotFoundException if the consultation, pet or veterinarian does not exist
      * @throws org.springframework.security.access.AccessDeniedException if the user is not allowed to modify this consultation
      * @throws IllegalArgumentException if the referenced veterinarian does not have role ROLE_VETERINARIO
      */
@@ -131,11 +131,11 @@ public class ConsultaService {
     public ConsultaResponse actualizar(Long id, ConsultaRequest request, String email) {
         Usuario usuario = usuarioActual(email);
         Consulta consulta = consultaRepository.findByIdAndActivoTrue(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Consulta no encontrada: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Consulta no encontrada: " + id));
         verificarAcceso(usuario, consulta);
 
         Mascota mascota = mascotaRepository.findByIdAndActivoTrue(request.mascotaId())
-                .orElseThrow(() -> new RecursoNoEncontradoException("Mascota no encontrada: " + request.mascotaId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Mascota no encontrada: " + request.mascotaId()));
         Usuario veterinario = resolverVeterinario(request.veterinarioId());
 
         consulta.setMascota(mascota);
@@ -155,7 +155,7 @@ public class ConsultaService {
      *
      * @param id consultation identifier
      * @param email authenticated user's email
-     * @throws com.biopet.exception.RecursoNoEncontradoException if no active consultation exists with the given id
+     * @throws com.biopet.exception.ResourceNotFoundException if no active consultation exists with the given id
      * @throws org.springframework.security.access.AccessDeniedException if the user is not allowed to delete this consultation
      */
     @CacheEvict(value = "consultas", allEntries = true)
@@ -163,7 +163,7 @@ public class ConsultaService {
     public void eliminar(Long id, String email) {
         Usuario usuario = usuarioActual(email);
         Consulta consulta = consultaRepository.findByIdAndActivoTrue(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Consulta no encontrada: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Consulta no encontrada: " + id));
         verificarAcceso(usuario, consulta);
         consulta.setActivo(false);
         consultaRepository.save(consulta);
@@ -171,13 +171,13 @@ public class ConsultaService {
 
     private Usuario usuarioActual(String email) {
         return usuarioRepository.findByEmailAndActivoTrue(email)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
     }
 
     private Usuario resolverVeterinario(Long veterinarioId) {
         Usuario veterinario = usuarioRepository.findById(veterinarioId)
                 .filter(Usuario::isActivo)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Veterinario no encontrado: " + veterinarioId));
+                .orElseThrow(() -> new ResourceNotFoundException("Veterinario no encontrado: " + veterinarioId));
         if (veterinario.getRol() != Rol.ROLE_VETERINARIO) {
             throw new IllegalArgumentException("El usuario asignado debe tener rol ROLE_VETERINARIO: " + veterinarioId);
         }

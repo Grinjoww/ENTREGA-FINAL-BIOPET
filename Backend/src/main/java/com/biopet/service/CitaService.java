@@ -7,7 +7,7 @@ import com.biopet.entity.EstadoCita;
 import com.biopet.entity.Mascota;
 import com.biopet.entity.Rol;
 import com.biopet.entity.Usuario;
-import com.biopet.exception.RecursoNoEncontradoException;
+import com.biopet.exception.ResourceNotFoundException;
 import com.biopet.repository.CitaRepository;
 import com.biopet.repository.MascotaRepository;
 import com.biopet.repository.UsuarioRepository;
@@ -50,7 +50,7 @@ public class CitaService {
      * @param pageable pagination and sorting parameters
      * @param email authenticated user's email
      * @return page of appointments
-     * @throws com.biopet.exception.RecursoNoEncontradoException if the authenticated user cannot be resolved
+     * @throws com.biopet.exception.ResourceNotFoundException if the authenticated user cannot be resolved
      */
     @Transactional(readOnly = true)
     public Page<CitaResponse> listar(Pageable pageable, String email) {
@@ -68,14 +68,14 @@ public class CitaService {
      * @param id appointment identifier
      * @param email authenticated user's email
      * @return the requested appointment
-     * @throws com.biopet.exception.RecursoNoEncontradoException if no active appointment exists with the given id
+     * @throws com.biopet.exception.ResourceNotFoundException if no active appointment exists with the given id
      * @throws org.springframework.security.access.AccessDeniedException if the user does not have access to this appointment
      */
     @Transactional(readOnly = true)
     public CitaResponse buscar(Long id, String email) {
         Usuario usuario = usuarioActual(email);
         Cita cita = citaRepository.findByIdAndActivoTrue(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Cita no encontrada: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Cita no encontrada: " + id));
         verificarAccesoLectura(usuario, cita);
         return toResponse(cita);
     }
@@ -86,7 +86,7 @@ public class CitaService {
      *
      * @param request appointment data to create
      * @return the created appointment
-     * @throws com.biopet.exception.RecursoNoEncontradoException if the referenced pet or veterinarian does not exist
+     * @throws com.biopet.exception.ResourceNotFoundException if the referenced pet or veterinarian does not exist
      * @throws IllegalArgumentException if the referenced veterinarian does not have role ROLE_VETERINARIO
      */
     @Transactional
@@ -113,7 +113,7 @@ public class CitaService {
      * @param request updated appointment data
      * @param email authenticated user's email
      * @return the updated appointment
-     * @throws com.biopet.exception.RecursoNoEncontradoException if the appointment, pet or veterinarian does not exist
+     * @throws com.biopet.exception.ResourceNotFoundException if the appointment, pet or veterinarian does not exist
      * @throws org.springframework.security.access.AccessDeniedException if a VETERINARIO attempts to modify an appointment not assigned to them
      * @throws IllegalArgumentException if the referenced veterinarian does not have role ROLE_VETERINARIO
      */
@@ -121,7 +121,7 @@ public class CitaService {
     public CitaResponse actualizar(Long id, CitaRequest request, String email) {
         Usuario usuario = usuarioActual(email);
         Cita cita = citaRepository.findByIdAndActivoTrue(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Cita no encontrada: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Cita no encontrada: " + id));
         verificarPermisoEscritura(usuario, cita);
 
         Mascota mascota = resolverMascota(request.mascotaId());
@@ -140,30 +140,30 @@ public class CitaService {
      * the row).
      *
      * @param id appointment identifier
-     * @throws com.biopet.exception.RecursoNoEncontradoException if no active appointment exists with the given id
+     * @throws com.biopet.exception.ResourceNotFoundException if no active appointment exists with the given id
      */
     @Transactional
     public void eliminar(Long id) {
         Cita cita = citaRepository.findByIdAndActivoTrue(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Cita no encontrada: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Cita no encontrada: " + id));
         cita.setActivo(false);
         citaRepository.save(cita);
     }
 
     private Usuario usuarioActual(String email) {
         return usuarioRepository.findByEmailAndActivoTrue(email)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado: " + email));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado: " + email));
     }
 
     private Mascota resolverMascota(Long mascotaId) {
         return mascotaRepository.findByIdAndActivoTrue(mascotaId)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Mascota no encontrada: " + mascotaId));
+                .orElseThrow(() -> new ResourceNotFoundException("Mascota no encontrada: " + mascotaId));
     }
 
     private Usuario resolverVeterinario(Long veterinarioId) {
         Usuario veterinario = usuarioRepository.findById(veterinarioId)
                 .filter(Usuario::isActivo)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Veterinario no encontrado: " + veterinarioId));
+                .orElseThrow(() -> new ResourceNotFoundException("Veterinario no encontrado: " + veterinarioId));
         if (veterinario.getRol() != Rol.ROLE_VETERINARIO) {
             throw new IllegalArgumentException(
                     "El usuario asignado como veterinario debe tener rol ROLE_VETERINARIO: " + veterinarioId);

@@ -6,7 +6,7 @@ import com.biopet.dto.ResumenEspecieResponse;
 import com.biopet.entity.Mascota;
 import com.biopet.entity.Rol;
 import com.biopet.entity.Usuario;
-import com.biopet.exception.RecursoNoEncontradoException;
+import com.biopet.exception.ResourceNotFoundException;
 import com.biopet.repository.MascotaRepository;
 import com.biopet.repository.ProcedimientoBiopetRepository;
 import com.biopet.repository.UsuarioRepository;
@@ -54,13 +54,13 @@ public class MascotaService {
      * @param pageable pagination and sorting parameters
      * @param email authenticated user's email
      * @return page of pets
-     * @throws com.biopet.exception.RecursoNoEncontradoException if the authenticated user cannot be resolved
+     * @throws com.biopet.exception.ResourceNotFoundException if the authenticated user cannot be resolved
      */
     @Cacheable(value = "mascotas", key = "#email + '-' + #pageable.pageNumber + '-' + #pageable.pageSize + '-' + #pageable.sort.toString()")
     @Transactional(readOnly = true)
     public Page<MascotaResponse> listar(Pageable pageable, String email) {
         Usuario usuario = usuarioRepository.findByEmailAndActivoTrue(email)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
 
         if (usuario.getRol() == Rol.ROLE_DUENO) {
             return mascotaRepository.findAllByDuenioIdAndActivoTrue(usuario.getId(), pageable).map(this::toResponse);
@@ -75,15 +75,15 @@ public class MascotaService {
      * @param id pet identifier
      * @param email authenticated user's email
      * @return the requested pet
-     * @throws com.biopet.exception.RecursoNoEncontradoException if no active pet exists with the given id
+     * @throws com.biopet.exception.ResourceNotFoundException if no active pet exists with the given id
      * @throws org.springframework.security.access.AccessDeniedException if the user does not own this pet
      */
     @Transactional(readOnly = true)
     public MascotaResponse buscar(Long id, String email) {
         Usuario usuario = usuarioRepository.findByEmailAndActivoTrue(email)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
         Mascota mascota = mascotaRepository.findByIdAndActivoTrue(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Mascota no encontrada: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Mascota no encontrada: " + id));
         verificarPropiedad(usuario, mascota);
         return toResponse(mascota);
     }
@@ -93,7 +93,7 @@ public class MascotaService {
      *
      * @param request pet data to create
      * @return the created pet
-     * @throws com.biopet.exception.RecursoNoEncontradoException if the referenced owner does not exist
+     * @throws com.biopet.exception.ResourceNotFoundException if the referenced owner does not exist
      * @throws IllegalArgumentException if the referenced owner does not have role ROLE_DUENO
      */
     @CacheEvict(value = "mascotas", allEntries = true)
@@ -119,7 +119,7 @@ public class MascotaService {
      * @param request updated pet data
      * @param email authenticated user's email
      * @return the updated pet
-     * @throws com.biopet.exception.RecursoNoEncontradoException if the pet or the new owner does not exist
+     * @throws com.biopet.exception.ResourceNotFoundException if the pet or the new owner does not exist
      * @throws org.springframework.security.access.AccessDeniedException if the user does not own this pet
      * @throws IllegalArgumentException if the referenced owner does not have role ROLE_DUENO
      */
@@ -127,9 +127,9 @@ public class MascotaService {
     @Transactional
     public MascotaResponse actualizar(Long id, MascotaRequest request, String email) {
         Usuario usuario = usuarioRepository.findByEmailAndActivoTrue(email)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
         Mascota mascota = mascotaRepository.findByIdAndActivoTrue(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Mascota no encontrada: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Mascota no encontrada: " + id));
         verificarPropiedad(usuario, mascota);
         Usuario duenio = resolverDuenio(request.duenioId());
         mascota.setDuenio(duenio);
@@ -146,16 +146,16 @@ public class MascotaService {
      *
      * @param id pet identifier
      * @param email authenticated user's email
-     * @throws com.biopet.exception.RecursoNoEncontradoException if no active pet exists with the given id
+     * @throws com.biopet.exception.ResourceNotFoundException if no active pet exists with the given id
      * @throws org.springframework.security.access.AccessDeniedException if the user does not own this pet
      */
     @CacheEvict(value = "mascotas", allEntries = true)
     @Transactional
     public void eliminar(Long id, String email) {
         Usuario usuario = usuarioRepository.findByEmailAndActivoTrue(email)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
         Mascota mascota = mascotaRepository.findByIdAndActivoTrue(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Mascota no encontrada: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Mascota no encontrada: " + id));
         verificarPropiedad(usuario, mascota);
         mascota.setActivo(false);
         mascotaRepository.save(mascota);
@@ -170,12 +170,12 @@ public class MascotaService {
      * @param duenioIdSolicitado owner id requested (honored only for ADMIN)
      * @param emailAutenticado authenticated user's email
      * @return species and their active pet counts
-     * @throws com.biopet.exception.RecursoNoEncontradoException if the authenticated user cannot be resolved
+     * @throws com.biopet.exception.ResourceNotFoundException if the authenticated user cannot be resolved
      */
     @Transactional(readOnly = true)
     public List<ResumenEspecieResponse> resumenPorEspecie(Long duenioIdSolicitado, String emailAutenticado) {
         Usuario usuarioAutenticado = usuarioRepository.findByEmailAndActivoTrue(emailAutenticado)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado: " + emailAutenticado));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado: " + emailAutenticado));
 
         Long duenioIdEfectivo = (usuarioAutenticado.getRol() == Rol.ROLE_ADMIN)
                 ? duenioIdSolicitado
@@ -199,7 +199,7 @@ public class MascotaService {
     private Usuario resolverDuenio(Long duenioId) {
         Usuario duenio = usuarioRepository.findById(duenioId)
                 .filter(Usuario::isActivo)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Dueño no encontrado: " + duenioId));
+                .orElseThrow(() -> new ResourceNotFoundException("Dueño no encontrado: " + duenioId));
         if (duenio.getRol() != Rol.ROLE_DUENO) {
             throw new IllegalArgumentException("El usuario asignado como dueño debe tener rol ROLE_DUENO: " + duenioId);
         }

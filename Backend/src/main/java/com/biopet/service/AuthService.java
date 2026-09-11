@@ -3,9 +3,9 @@ package com.biopet.service;
 import com.biopet.entity.Rol;
 import com.biopet.dto.*;
 import com.biopet.entity.Usuario;
-import com.biopet.exception.EmailDuplicadoException;
+import com.biopet.exception.DuplicateEmailException;
 import com.biopet.exception.RateLimitExcedidoException;
-import com.biopet.exception.RecursoNoEncontradoException;
+import com.biopet.exception.ResourceNotFoundException;
 import com.biopet.repository.UsuarioRepository;
 import com.biopet.security.AuthenticationAuditService;
 import com.biopet.security.JwtService;
@@ -64,13 +64,13 @@ public class AuthService {
      *
      * @param request registration data (name, email, password)
      * @return the newly created user
-     * @throws EmailDuplicadoException if a user with that email already
+     * @throws DuplicateEmailException if a user with that email already
      *         exists
      */
     @Transactional
     public UsuarioResponse registrar(RegistroRequest request) {
         if (usuarioRepository.existsByEmail(request.email())) {
-            throw new EmailDuplicadoException(request.email());
+            throw new DuplicateEmailException(request.email());
         }
         Usuario usuario = Usuario.builder()
                 .nombre(request.nombre())
@@ -97,7 +97,7 @@ public class AuthService {
      *         limit was already exceeded, before or after this attempt
      * @throws org.springframework.security.authentication.BadCredentialsException
      *         if the email/password pair is invalid
-     * @throws RecursoNoEncontradoException if authentication succeeds but
+     * @throws ResourceNotFoundException if authentication succeeds but
      *         no active user exists for that email
      */
     public AuthResponse login(LoginRequest request, String ip) {
@@ -130,7 +130,7 @@ public class AuthService {
         authenticationAuditService.loginExitoso(ip, authentication.getName());
 
         Usuario usuario = usuarioRepository.findByEmailAndActivoTrue(authentication.getName())
-                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario autenticado no existe"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario autenticado no existe"));
         return new AuthResponse(
                 jwtService.generateAccessToken(usuario),
                 jwtService.generateRefreshToken(usuario),
@@ -152,7 +152,7 @@ public class AuthService {
      * @throws io.jsonwebtoken.JwtException if the token is malformed,
      *         expired, or fails signature/issuer/audience verification
      *         (propagated from {@link JwtService#extractClaims})
-     * @throws RecursoNoEncontradoException if the token is otherwise
+     * @throws ResourceNotFoundException if the token is otherwise
      *         valid but no active user exists for its subject
      */
     public AuthResponse refresh(RefreshRequest request, String ip) {
@@ -171,7 +171,7 @@ public class AuthService {
                 throw new IllegalArgumentException("Refresh token revocado");
             }
             Usuario usuario = usuarioRepository.findByEmailAndActivoTrue(emailVerificado)
-                    .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
 
             authenticationAuditService.refreshExitoso(ip, emailVerificado);
             return new AuthResponse(jwtService.generateAccessToken(usuario), refreshToken, jwtService.getExpirationMs() / 1000);
@@ -219,12 +219,12 @@ public class AuthService {
      *
      * @param email the user's email
      * @return the user's profile
-     * @throws RecursoNoEncontradoException if no active user exists with
+     * @throws ResourceNotFoundException if no active user exists with
      *         that email
      */
     public UsuarioResponse perfil(String email) {
         Usuario usuario = usuarioRepository.findByEmailAndActivoTrue(email)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
         return toResponse(usuario);
     }
 

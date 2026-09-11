@@ -6,7 +6,7 @@ import com.biopet.entity.Mascota;
 import com.biopet.entity.Rol;
 import com.biopet.entity.Usuario;
 import com.biopet.entity.Vacuna;
-import com.biopet.exception.RecursoNoEncontradoException;
+import com.biopet.exception.ResourceNotFoundException;
 import com.biopet.repository.MascotaRepository;
 import com.biopet.repository.UsuarioRepository;
 import com.biopet.repository.VacunaRepository;
@@ -46,7 +46,7 @@ public class VacunaService {
      * @param pageable pagination and sorting parameters
      * @param email authenticated user's email
      * @return page of vaccination records
-     * @throws com.biopet.exception.RecursoNoEncontradoException if the authenticated user cannot be resolved
+     * @throws com.biopet.exception.ResourceNotFoundException if the authenticated user cannot be resolved
      */
     @Transactional(readOnly = true)
     public Page<VacunaResponse> listar(Pageable pageable, String email) {
@@ -66,7 +66,7 @@ public class VacunaService {
      * @param pageable pagination and sorting parameters
      * @param email authenticated user's email
      * @return page of vaccination records for the given pet
-     * @throws com.biopet.exception.RecursoNoEncontradoException if the authenticated user or the pet cannot be resolved
+     * @throws com.biopet.exception.ResourceNotFoundException if the authenticated user or the pet cannot be resolved
      * @throws org.springframework.security.access.AccessDeniedException if the user does not have access to this pet
      */
     @Transactional(readOnly = true)
@@ -84,7 +84,7 @@ public class VacunaService {
      * @param id vaccination record identifier
      * @param email authenticated user's email
      * @return the requested vaccination record
-     * @throws com.biopet.exception.RecursoNoEncontradoException if no active vaccination record exists with the given id
+     * @throws com.biopet.exception.ResourceNotFoundException if no active vaccination record exists with the given id
      * @throws org.springframework.security.access.AccessDeniedException if the user does not have access to the associated pet
      */
     @Transactional(readOnly = true)
@@ -101,7 +101,7 @@ public class VacunaService {
      *
      * @param request vaccination data to create
      * @return the created vaccination record
-     * @throws com.biopet.exception.RecursoNoEncontradoException if the referenced pet or veterinarian does not exist
+     * @throws com.biopet.exception.ResourceNotFoundException if the referenced pet or veterinarian does not exist
      * @throws IllegalArgumentException if the referenced veterinarian does not have role ROLE_VETERINARIO
      */
     @Transactional
@@ -128,7 +128,7 @@ public class VacunaService {
      * @param request updated vaccination data
      * @param email authenticated user's email
      * @return the updated vaccination record
-     * @throws com.biopet.exception.RecursoNoEncontradoException if the vaccination record, pet or veterinarian does not exist
+     * @throws com.biopet.exception.ResourceNotFoundException if the vaccination record, pet or veterinarian does not exist
      * @throws org.springframework.security.access.AccessDeniedException if the user does not have access to the associated pet
      * @throws IllegalArgumentException if the referenced veterinarian does not have role ROLE_VETERINARIO
      */
@@ -156,7 +156,7 @@ public class VacunaService {
      *
      * @param id vaccination record identifier
      * @param email authenticated user's email
-     * @throws com.biopet.exception.RecursoNoEncontradoException if no active vaccination record exists with the given id
+     * @throws com.biopet.exception.ResourceNotFoundException if no active vaccination record exists with the given id
      * @throws org.springframework.security.access.AccessDeniedException if the user does not have access to the associated pet
      */
     @Transactional
@@ -172,24 +172,24 @@ public class VacunaService {
 
     private Usuario usuarioActivo(String email) {
         return usuarioRepository.findByEmailAndActivoTrue(email)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
     }
 
     private Mascota mascotaActiva(Long mascotaId) {
         return mascotaRepository.findByIdAndActivoTrue(mascotaId)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Mascota no encontrada: " + mascotaId));
+                .orElseThrow(() -> new ResourceNotFoundException("Mascota no encontrada: " + mascotaId));
     }
 
     private Vacuna vacunaActiva(Long id) {
         return vacunaRepository.findByIdAndActivoTrue(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Vacuna no encontrada: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Vacuna no encontrada: " + id));
     }
 
     private Usuario resolverVeterinario(Long veterinarioId) {
         if (veterinarioId == null) return null;
         Usuario veterinario = usuarioRepository.findById(veterinarioId)
                 .filter(Usuario::isActivo)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Veterinario no encontrado: " + veterinarioId));
+                .orElseThrow(() -> new ResourceNotFoundException("Veterinario no encontrado: " + veterinarioId));
         if (veterinario.getRol() != Rol.ROLE_VETERINARIO) {
             throw new IllegalArgumentException(
                     "El usuario asignado como veterinario debe tener rol ROLE_VETERINARIO: " + veterinarioId);

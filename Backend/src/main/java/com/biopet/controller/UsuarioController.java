@@ -58,7 +58,7 @@ public class UsuarioController {
      *
      * @param id user identifier
      * @return the requested user account
-     * @throws com.biopet.exception.RecursoNoEncontradoException if no active user exists with the given id
+     * @throws com.biopet.exception.ResourceNotFoundException if no active user exists with the given id
      */
     @GetMapping("/{id:\\d+}")
     @PreAuthorize("hasRole('ADMIN')")
@@ -72,7 +72,7 @@ public class UsuarioController {
      *
      * @param request user data to create, including email, password and role
      * @return the created user account, with HTTP 201 status
-     * @throws com.biopet.exception.EmailDuplicadoException if the email is already registered
+     * @throws com.biopet.exception.DuplicateEmailException if the email is already registered
      */
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
@@ -88,8 +88,8 @@ public class UsuarioController {
      * @param request updated user data
      * @param userDetails authenticated administrator extracted from the security context
      * @return the updated user account
-     * @throws com.biopet.exception.RecursoNoEncontradoException if no active user exists with the given id
-     * @throws com.biopet.exception.EmailDuplicadoException if the new email is already used by another account
+     * @throws com.biopet.exception.ResourceNotFoundException if no active user exists with the given id
+     * @throws com.biopet.exception.DuplicateEmailException if the new email is already used by another account
      */
     @PutMapping("/{id:\\d+}")
     @PreAuthorize("hasRole('ADMIN')")

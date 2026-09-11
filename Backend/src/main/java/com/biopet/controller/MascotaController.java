@@ -52,7 +52,7 @@ public class MascotaController {
      * @param id pet identifier
      * @param userDetails authenticated user extracted from the security context
      * @return the requested pet
-     * @throws com.biopet.exception.RecursoNoEncontradoException if no active pet exists with the given id
+     * @throws com.biopet.exception.ResourceNotFoundException if no active pet exists with the given id
      */
     @GetMapping("/{id:\\d+}")
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR','DUENO')")
@@ -79,7 +79,7 @@ public class MascotaController {
      * @param request updated pet data
      * @param userDetails authenticated user extracted from the security context
      * @return the updated pet
-     * @throws com.biopet.exception.RecursoNoEncontradoException if no active pet exists with the given id
+     * @throws com.biopet.exception.ResourceNotFoundException if no active pet exists with the given id
      */
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR')")

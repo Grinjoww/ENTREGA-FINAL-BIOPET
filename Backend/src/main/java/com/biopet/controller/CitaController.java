@@ -49,7 +49,7 @@ public class CitaController {
      * @param id appointment identifier
      * @param userDetails authenticated user extracted from the security context
      * @return the requested appointment
-     * @throws com.biopet.exception.RecursoNoEncontradoException if no active appointment exists with the given id
+     * @throws com.biopet.exception.ResourceNotFoundException if no active appointment exists with the given id
      */
     @GetMapping("/{id:\\d+}")
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR','DUENO')")
@@ -77,7 +77,7 @@ public class CitaController {
      * @param request updated appointment data
      * @param userDetails authenticated user extracted from the security context
      * @return the updated appointment
-     * @throws com.biopet.exception.RecursoNoEncontradoException if no active appointment exists with the given id
+     * @throws com.biopet.exception.ResourceNotFoundException if no active appointment exists with the given id
      */
     @PutMapping("/{id:\\d+}")
     @PreAuthorize("hasAnyRole('ADMIN','AUXILIAR','VETERINARIO')")

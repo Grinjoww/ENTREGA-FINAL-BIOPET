@@ -3,8 +3,8 @@ package com.biopet.service;
 import com.biopet.dto.UsuarioRequest;
 import com.biopet.dto.UsuarioResponse;
 import com.biopet.entity.Usuario;
-import com.biopet.exception.EmailDuplicadoException;
-import com.biopet.exception.RecursoNoEncontradoException;
+import com.biopet.exception.DuplicateEmailException;
+import com.biopet.exception.ResourceNotFoundException;
 import com.biopet.repository.UsuarioRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,12 +46,12 @@ public class UsuarioService {
      *
      * @param id user identifier
      * @return the requested user account
-     * @throws com.biopet.exception.RecursoNoEncontradoException if no active user exists with the given id
+     * @throws com.biopet.exception.ResourceNotFoundException if no active user exists with the given id
      */
     @Transactional(readOnly = true)
     public UsuarioResponse buscar(Long id) {
         Usuario usuario = usuarioRepository.findByIdAndActivoTrue(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado: " + id));
         return toResponse(usuario);
     }
 
@@ -62,14 +62,14 @@ public class UsuarioService {
      *
      * @param request user data to create, including email, password and role
      * @return the created user account
-     * @throws com.biopet.exception.EmailDuplicadoException if the email is already registered
+     * @throws com.biopet.exception.DuplicateEmailException if the email is already registered
      * @throws IllegalArgumentException if no password is provided
      */
     @Transactional
     public UsuarioResponse crear(UsuarioRequest request) {
         String email = request.email().toLowerCase();
         if (usuarioRepository.existsByEmail(email)) {
-            throw new EmailDuplicadoException(email);
+            throw new DuplicateEmailException(email);
         }
         if (request.password() == null || request.password().isBlank()) {
             throw new IllegalArgumentException("La contraseña es obligatoria al crear un usuario.");
@@ -93,17 +93,17 @@ public class UsuarioService {
      * @param request updated user data
      * @param emailAutenticado authenticated administrator's email
      * @return the updated user account
-     * @throws com.biopet.exception.RecursoNoEncontradoException if the user or the authenticated administrator cannot be resolved
+     * @throws com.biopet.exception.ResourceNotFoundException if the user or the authenticated administrator cannot be resolved
      * @throws org.springframework.security.access.AccessDeniedException if the administrator attempts to change their own role
-     * @throws com.biopet.exception.EmailDuplicadoException if the new email is already used by another account
+     * @throws com.biopet.exception.DuplicateEmailException if the new email is already used by another account
      */
     @Transactional
     public UsuarioResponse actualizar(Long id, UsuarioRequest request, String emailAutenticado) {
         Usuario usuario = usuarioRepository.findByIdAndActivoTrue(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado: " + id));
 
         Usuario autenticado = usuarioRepository.findByEmailAndActivoTrue(emailAutenticado)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado: " + emailAutenticado));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado: " + emailAutenticado));
         if (autenticado.getId().equals(usuario.getId()) && request.rol() != usuario.getRol()) {
             throw new AccessDeniedException("No puede modificar su propio rol.");
         }
@@ -112,7 +112,7 @@ public class UsuarioService {
         usuarioRepository.findByEmail(nuevoEmail)
                 .filter(otro -> !otro.getId().equals(usuario.getId()))
                 .ifPresent(otro -> {
-                    throw new EmailDuplicadoException(nuevoEmail);
+                    throw new DuplicateEmailException(nuevoEmail);
                 });
 
         usuario.setNombre(request.nombre());
@@ -129,12 +129,12 @@ public class UsuarioService {
      * the row).
      *
      * @param id user identifier
-     * @throws com.biopet.exception.RecursoNoEncontradoException if no active user exists with the given id
+     * @throws com.biopet.exception.ResourceNotFoundException if no active user exists with the given id
      */
     @Transactional
     public void eliminar(Long id) {
         Usuario usuario = usuarioRepository.findByIdAndActivoTrue(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado: " + id));
         usuario.setActivo(false);
         usuarioRepository.save(usuario);
     }

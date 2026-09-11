@@ -47,7 +47,7 @@ public class ConsultaController {
      * @param id consultation identifier
      * @param userDetails authenticated user extracted from the security context
      * @return the requested consultation
-     * @throws com.biopet.exception.RecursoNoEncontradoException if no active consultation exists with the given id
+     * @throws com.biopet.exception.ResourceNotFoundException if no active consultation exists with the given id
      */
     @GetMapping("/{id:\\d+}")
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR','DUENO')")
@@ -75,7 +75,7 @@ public class ConsultaController {
      * @param request updated consultation data
      * @param userDetails authenticated user extracted from the security context
      * @return the updated consultation
-     * @throws com.biopet.exception.RecursoNoEncontradoException if no active consultation exists with the given id
+     * @throws com.biopet.exception.ResourceNotFoundException if no active consultation exists with the given id
      */
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR')")
