@@ -4,7 +4,7 @@ import com.biopet.entity.Rol;
 import com.biopet.dto.*;
 import com.biopet.entity.Usuario;
 import com.biopet.exception.DuplicateEmailException;
-import com.biopet.exception.RateLimitExcedidoException;
+import com.biopet.exception.RateLimitExceededException;
 import com.biopet.exception.ResourceNotFoundException;
 import com.biopet.repository.UsuarioRepository;
 import com.biopet.security.AuthenticationAuditService;
@@ -93,7 +93,7 @@ public class AuthService {
      * @param ip caller's IP address, used for rate limiting and audit
      * @return a new access token, a new refresh token, and the access
      *         token's expiration in seconds
-     * @throws RateLimitExcedidoException if the per-IP failed-attempt
+     * @throws RateLimitExceededException if the per-IP failed-attempt
      *         limit was already exceeded, before or after this attempt
      * @throws org.springframework.security.authentication.BadCredentialsException
      *         if the email/password pair is invalid
@@ -105,7 +105,7 @@ public class AuthService {
 
         try {
             loginRateLimiterService.verificarPermitido(ip);
-        } catch (RateLimitExcedidoException ex) {
+        } catch (RateLimitExceededException ex) {
             authenticationAuditService.loginBloqueado(ip, emailSolicitado);
             throw ex;
         }
@@ -118,7 +118,7 @@ public class AuthService {
         } catch (BadCredentialsException ex) {
             try {
                 loginRateLimiterService.registrarFallo(ip);
-            } catch (RateLimitExcedidoException limiteExcedido) {
+            } catch (RateLimitExceededException limiteExcedido) {
                 authenticationAuditService.loginBloqueado(ip, emailSolicitado);
                 throw limiteExcedido;
             }

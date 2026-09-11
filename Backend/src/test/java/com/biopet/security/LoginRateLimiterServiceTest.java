@@ -1,6 +1,6 @@
 package com.biopet.security;
 
-import com.biopet.exception.RateLimitExcedidoException;
+import com.biopet.exception.RateLimitExceededException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -49,10 +49,10 @@ class LoginRateLimiterServiceTest {
             limiter.registrarFallo(ip);
         }
 
-        RateLimitExcedidoException ex = assertThrows(RateLimitExcedidoException.class,
+        RateLimitExceededException ex = assertThrows(RateLimitExceededException.class,
                 () -> limiter.registrarFallo(ip));
 
-        assertEquals(BLOCK_DURATION.getSeconds(), ex.getSegundosRestantes());
+        assertEquals(BLOCK_DURATION.getSeconds(), ex.getSecondsRemaining());
     }
 
     @Test
@@ -62,15 +62,15 @@ class LoginRateLimiterServiceTest {
         for (int i = 0; i < 5; i++) {
             limiter.registrarFallo(ip);
         }
-        assertThrows(RateLimitExcedidoException.class, () -> limiter.registrarFallo(ip));
+        assertThrows(RateLimitExceededException.class, () -> limiter.registrarFallo(ip));
 
         reloj.avanzar(Duration.ofMinutes(5));
 
-        RateLimitExcedidoException ex = assertThrows(RateLimitExcedidoException.class,
+        RateLimitExceededException ex = assertThrows(RateLimitExceededException.class,
                 () -> limiter.verificarPermitido(ip));
 
-        assertEquals(Duration.ofMinutes(10).getSeconds(), ex.getSegundosRestantes());
-        assertTrue(ex.getSegundosRestantes() > 0);
+        assertEquals(Duration.ofMinutes(10).getSeconds(), ex.getSecondsRemaining());
+        assertTrue(ex.getSecondsRemaining() > 0);
     }
 
     @Test
@@ -81,7 +81,7 @@ class LoginRateLimiterServiceTest {
         for (int i = 0; i < 5; i++) {
             limiter.registrarFallo(ipBloqueada);
         }
-        assertThrows(RateLimitExcedidoException.class, () -> limiter.registrarFallo(ipBloqueada));
+        assertThrows(RateLimitExceededException.class, () -> limiter.registrarFallo(ipBloqueada));
 
         assertDoesNotThrow(() -> limiter.verificarPermitido(ipLibre));
         assertDoesNotThrow(() -> limiter.registrarFallo(ipLibre));
@@ -94,7 +94,7 @@ class LoginRateLimiterServiceTest {
         for (int i = 0; i < 5; i++) {
             limiter.registrarFallo(ip);
         }
-        assertThrows(RateLimitExcedidoException.class, () -> limiter.registrarFallo(ip));
+        assertThrows(RateLimitExceededException.class, () -> limiter.registrarFallo(ip));
 
         limiter.reiniciar(ip);
 
@@ -118,7 +118,7 @@ class LoginRateLimiterServiceTest {
         for (int i = 0; i < 5; i++) {
             assertDoesNotThrow(() -> limiter.registrarFallo(ip));
         }
-        assertThrows(RateLimitExcedidoException.class, () -> limiter.registrarFallo(ip));
+        assertThrows(RateLimitExceededException.class, () -> limiter.registrarFallo(ip));
     }
 
     @Test
@@ -128,7 +128,7 @@ class LoginRateLimiterServiceTest {
         for (int i = 0; i < 5; i++) {
             limiter.registrarFallo(ip);
         }
-        assertThrows(RateLimitExcedidoException.class, () -> limiter.registrarFallo(ip));
+        assertThrows(RateLimitExceededException.class, () -> limiter.registrarFallo(ip));
 
         reloj.avanzar(BLOCK_DURATION.plusSeconds(1));
 
@@ -136,7 +136,7 @@ class LoginRateLimiterServiceTest {
         for (int i = 0; i < 5; i++) {
             assertDoesNotThrow(() -> limiter.registrarFallo(ip));
         }
-        assertThrows(RateLimitExcedidoException.class, () -> limiter.registrarFallo(ip));
+        assertThrows(RateLimitExceededException.class, () -> limiter.registrarFallo(ip));
     }
 
     private static final class MutableClock extends Clock {

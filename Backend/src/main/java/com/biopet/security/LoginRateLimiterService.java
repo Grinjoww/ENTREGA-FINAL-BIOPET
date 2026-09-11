@@ -1,6 +1,6 @@
 package com.biopet.security;
 
-import com.biopet.exception.RateLimitExcedidoException;
+import com.biopet.exception.RateLimitExceededException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -42,7 +42,7 @@ public class LoginRateLimiterService {
         String clave = normalizar(ip);
         Estado actual = estados.compute(clave, (key, estado) -> limpiarSiExpiro(estado));
         if (actual != null && actual.bloqueadaHasta() != null) {
-            throw new RateLimitExcedidoException(segundosRestantes(actual.bloqueadaHasta()));
+            throw new RateLimitExceededException(secondsRemaining(actual.bloqueadaHasta()));
         }
     }
 
@@ -64,7 +64,7 @@ public class LoginRateLimiterService {
         });
 
         if (resultado[0].bloqueadaHasta() != null) {
-            throw new RateLimitExcedidoException(segundosRestantes(resultado[0].bloqueadaHasta()));
+            throw new RateLimitExceededException(secondsRemaining(resultado[0].bloqueadaHasta()));
         }
     }
 
@@ -86,7 +86,7 @@ public class LoginRateLimiterService {
         return estado;
     }
 
-    private long segundosRestantes(Instant bloqueadaHasta) {
+    private long secondsRemaining(Instant bloqueadaHasta) {
         Duration restante = Duration.between(clock.instant(), bloqueadaHasta);
         if (restante.isNegative() || restante.isZero()) {
             return 1;

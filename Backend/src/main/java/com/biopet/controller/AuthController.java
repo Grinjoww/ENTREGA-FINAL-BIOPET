@@ -59,7 +59,7 @@ public class AuthController {
      * @return HTTP 200 (OK) with the access token's expiration in seconds
      * @throws org.springframework.security.authentication.BadCredentialsException
      *         if the email/password pair is invalid
-     * @throws com.biopet.exception.RateLimitExcedidoException if too many
+     * @throws com.biopet.exception.RateLimitExceededException if too many
      *         failed attempts were already made from this IP
      */
     @PostMapping("/login")

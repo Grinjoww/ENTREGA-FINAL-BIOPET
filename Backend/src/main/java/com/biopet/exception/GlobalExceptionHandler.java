@@ -128,8 +128,8 @@ public class GlobalExceptionHandler {
      * @param request the current HTTP request, used to populate the problem instance URI
      * @return a 429 Too Many Requests problem response with a {@code Retry-After} header
      */
-    @ExceptionHandler(RateLimitExcedidoException.class)
-    public ResponseEntity<ProblemDetail> demasiadosIntentos(RateLimitExcedidoException ex, HttpServletRequest request) {
+    @ExceptionHandler(RateLimitExceededException.class)
+    public ResponseEntity<ProblemDetail> demasiadosIntentos(RateLimitExceededException ex, HttpServletRequest request) {
         ProblemDetail problemDetail = ProblemDetailFactory.build(
                 HttpStatus.TOO_MANY_REQUESTS,
                 ProblemType.RATE_LIMITED,
@@ -139,7 +139,7 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
                 .contentType(MediaType.APPLICATION_PROBLEM_JSON)
-                .header(HttpHeaders.RETRY_AFTER, String.valueOf(ex.getSegundosRestantes()))
+                .header(HttpHeaders.RETRY_AFTER, String.valueOf(ex.getSecondsRemaining()))
                 .body(problemDetail);
     }
 
