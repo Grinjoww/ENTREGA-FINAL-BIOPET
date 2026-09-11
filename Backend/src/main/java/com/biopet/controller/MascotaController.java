@@ -2,7 +2,7 @@ package com.biopet.controller;
 
 import com.biopet.dto.MascotaRequest;
 import com.biopet.dto.MascotaResponse;
-import com.biopet.dto.ResumenEspecieResponse;
+import com.biopet.dto.SpeciesSummaryResponse;
 import com.biopet.service.MascotaService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -113,7 +113,7 @@ public class MascotaController {
      */
     @GetMapping("/resumen-especies")
     @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO','AUXILIAR','DUENO')")
-    public List<ResumenEspecieResponse> resumenPorEspecies(
+    public List<SpeciesSummaryResponse> resumenPorEspecies(
             @RequestParam(required = false) Long duenioId,
             Authentication authentication) {
         return mascotaService.resumenPorEspecie(duenioId, authentication.getName());

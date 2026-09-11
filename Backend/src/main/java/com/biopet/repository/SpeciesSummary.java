@@ -1,6 +1,6 @@
 package com.biopet.repository;
 
-public interface ResumenEspecie {
+public interface SpeciesSummary {
     String getEspecie();
     Long getTotal();
 }

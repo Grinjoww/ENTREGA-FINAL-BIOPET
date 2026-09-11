@@ -56,7 +56,7 @@ import java.util.List;
 public interface ProcedimientoBiopetRepository extends Repository<Mascota, Long> {
 
     @Procedure(name = "fn_resumen_mascotas_por_especie")
-    List<ResumenEspecie> resumenPorEspecie(Long duenioId);
+    List<SpeciesSummary> resumenPorEspecie(Long duenioId);
 
     @Procedure(name = "fn_historial_clinico_mascota")
     List<ClinicalHistoryView> historialClinicoMascota(Long mascotaId);

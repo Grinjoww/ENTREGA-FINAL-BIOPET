@@ -2,7 +2,7 @@ package com.biopet.service;
 
 import com.biopet.dto.MascotaRequest;
 import com.biopet.dto.MascotaResponse;
-import com.biopet.dto.ResumenEspecieResponse;
+import com.biopet.dto.SpeciesSummaryResponse;
 import com.biopet.entity.Mascota;
 import com.biopet.entity.Rol;
 import com.biopet.entity.Usuario;
@@ -173,7 +173,7 @@ public class MascotaService {
      * @throws com.biopet.exception.ResourceNotFoundException if the authenticated user cannot be resolved
      */
     @Transactional(readOnly = true)
-    public List<ResumenEspecieResponse> resumenPorEspecie(Long duenioIdSolicitado, String emailAutenticado) {
+    public List<SpeciesSummaryResponse> resumenPorEspecie(Long duenioIdSolicitado, String emailAutenticado) {
         Usuario usuarioAutenticado = usuarioRepository.findByEmailAndActivoTrue(emailAutenticado)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado: " + emailAutenticado));
 
@@ -182,7 +182,7 @@ public class MascotaService {
                 : usuarioAutenticado.getId();
 
         return procedimientoBiopetRepository.resumenPorEspecie(duenioIdEfectivo).stream()
-                .map(r -> new ResumenEspecieResponse(r.getEspecie(), r.getTotal()))
+                .map(r -> new SpeciesSummaryResponse(r.getEspecie(), r.getTotal()))
                 .toList();
     }
 

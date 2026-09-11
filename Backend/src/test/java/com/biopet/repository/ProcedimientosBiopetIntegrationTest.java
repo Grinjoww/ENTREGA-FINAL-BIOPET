@@ -136,7 +136,7 @@ class ProcedimientosBiopetIntegrationTest {
 
     @Test
     void resumenPorEspecie_duenioInexistente_devuelveListaVacia() {
-        List<ResumenEspecie> resultado = procedimientoBiopetRepository.resumenPorEspecie(999999L);
+        List<SpeciesSummary> resultado = procedimientoBiopetRepository.resumenPorEspecie(999999L);
         assertThat(resultado).isEmpty();
     }
 
