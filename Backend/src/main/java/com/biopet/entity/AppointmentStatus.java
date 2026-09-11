@@ -1,6 +1,6 @@
 package com.biopet.entity;
 
-public enum EstadoCita {
+public enum AppointmentStatus {
     PROGRAMADA,
     CANCELADA,
     COMPLETADA

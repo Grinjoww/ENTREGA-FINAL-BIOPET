@@ -28,7 +28,7 @@ class EntityLifecycleCallbacksTest {
         assertNotNull(cita.getCreadoEn());
         assertNotNull(cita.getActualizadoEn());
         assertTrue(cita.isActivo());
-        assertEquals(EstadoCita.PROGRAMADA, cita.getEstado());
+        assertEquals(AppointmentStatus.PROGRAMADA, cita.getEstado());
     }
 
     @Test
@@ -38,13 +38,13 @@ class EntityLifecycleCallbacksTest {
         Cita cita = new Cita();
         cita.setCreadoEn(creado);
         cita.setActualizadoEn(actualizado);
-        cita.setEstado(EstadoCita.COMPLETADA);
+        cita.setEstado(AppointmentStatus.COMPLETADA);
 
         cita.prePersist();
 
         assertEquals(creado, cita.getCreadoEn());
         assertEquals(actualizado, cita.getActualizadoEn());
-        assertEquals(EstadoCita.COMPLETADA, cita.getEstado());
+        assertEquals(AppointmentStatus.COMPLETADA, cita.getEstado());
     }
 
     @Test
@@ -127,7 +127,7 @@ class EntityLifecycleCallbacksTest {
 
     @Test
     void vacunaPrePersistAutocompletaCuandoCamposSonNulos() {
-        Vacuna vacuna = new Vacuna();
+        Vaccine vacuna = new Vaccine();
 
         vacuna.prePersist();
 
@@ -140,7 +140,7 @@ class EntityLifecycleCallbacksTest {
     void vacunaPrePersistRespetaValoresYaAsignados() {
         Instant creado = Instant.parse("2026-01-01T00:00:00Z");
         Instant actualizado = Instant.parse("2026-01-02T00:00:00Z");
-        Vacuna vacuna = new Vacuna();
+        Vaccine vacuna = new Vaccine();
         vacuna.setCreadoEn(creado);
         vacuna.setActualizadoEn(actualizado);
 

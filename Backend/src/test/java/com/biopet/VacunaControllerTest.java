@@ -3,7 +3,7 @@ package com.biopet;
 import com.biopet.entity.Mascota;
 import com.biopet.entity.Rol;
 import com.biopet.entity.Usuario;
-import com.biopet.entity.Vacuna;
+import com.biopet.entity.Vaccine;
 import com.biopet.repository.CitaRepository;
 import com.biopet.repository.ConsultaRepository;
 import com.biopet.repository.MascotaRepository;
@@ -210,7 +210,7 @@ class VacunaControllerTest {
         mockMvc.perform(delete("/api/vacunas/" + vacunaId).header("Authorization", "Bearer " + tokenAdmin))
                 .andExpect(status().isNoContent());
 
-        Vacuna vacunaEliminada = vacunaRepository.findById(vacunaId)
+        Vaccine vacunaEliminada = vacunaRepository.findById(vacunaId)
                 .orElseThrow(() -> new AssertionError("La vacuna fue eliminada físicamente: " + vacunaId));
         assertFalse(vacunaEliminada.isActivo());
     }
@@ -278,9 +278,9 @@ class VacunaControllerTest {
         crearVacuna(tokenAdmin, mascotaId, tipo);
         return vacunaRepository.findAll().stream()
                 .filter(v -> v.getMascota().getId().equals(mascotaId) && v.getTipo().equals(tipo))
-                .map(Vacuna::getId)
+                .map(Vaccine::getId)
                 .findFirst()
-                .orElseThrow(() -> new AssertionError("Vacuna no encontrada tras crearla"));
+                .orElseThrow(() -> new AssertionError("Vaccine no encontrada tras crearla"));
     }
 
     private String extractCookieValue(MvcResult result, String cookieName) {

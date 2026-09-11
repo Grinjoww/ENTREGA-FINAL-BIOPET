@@ -1,6 +1,6 @@
 package com.biopet.dto;
 
-import com.biopet.entity.EstadoCita;
+import com.biopet.entity.AppointmentStatus;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -12,7 +12,7 @@ public record CitaResponse(
         Long veterinarioId,
         String veterinarioNombre,
         Instant fechaHora,
-        EstadoCita estado,
+        AppointmentStatus estado,
         String motivo,
         boolean activo,
         Instant creadoEn,

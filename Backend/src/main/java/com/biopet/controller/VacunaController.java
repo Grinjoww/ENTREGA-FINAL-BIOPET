@@ -14,7 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * REST endpoints for vaccination ({@code Vacuna}) records. Role-based
+ * REST endpoints for vaccination ({@code Vaccine}) records. Role-based
  * access is enforced here via {@code @PreAuthorize}; data-level
  * ownership rules are enforced in {@link VacunaService}.
  */

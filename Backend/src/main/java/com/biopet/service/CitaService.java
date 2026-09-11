@@ -3,7 +3,7 @@ package com.biopet.service;
 import com.biopet.dto.CitaRequest;
 import com.biopet.dto.CitaResponse;
 import com.biopet.entity.Cita;
-import com.biopet.entity.EstadoCita;
+import com.biopet.entity.AppointmentStatus;
 import com.biopet.entity.Mascota;
 import com.biopet.entity.Rol;
 import com.biopet.entity.Usuario;
@@ -98,7 +98,7 @@ public class CitaService {
                 .mascota(mascota)
                 .veterinario(veterinario)
                 .fechaHora(request.fechaHora())
-                .estado(EstadoCita.PROGRAMADA)
+                .estado(AppointmentStatus.PROGRAMADA)
                 .motivo(request.motivo())
                 .activo(true)
                 .build();

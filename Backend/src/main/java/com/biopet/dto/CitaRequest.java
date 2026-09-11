@@ -1,6 +1,6 @@
 package com.biopet.dto;
 
-import com.biopet.entity.EstadoCita;
+import com.biopet.entity.AppointmentStatus;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -16,6 +16,6 @@ public record CitaRequest(
         @NotNull Long mascotaId,
         @NotNull Long veterinarioId,
         @NotNull Instant fechaHora,
-        @NotNull EstadoCita estado,
+        @NotNull AppointmentStatus estado,
         @Size(max = 255) String motivo
 ) {}

@@ -1,7 +1,7 @@
 package com.biopet;
 
 import com.biopet.entity.Cita;
-import com.biopet.entity.EstadoCita;
+import com.biopet.entity.AppointmentStatus;
 import com.biopet.entity.Mascota;
 import com.biopet.entity.Rol;
 import com.biopet.entity.Usuario;
@@ -714,7 +714,7 @@ class CitaControllerTest {
                 .mascota(mascota)
                 .veterinario(veterinario)
                 .fechaHora(Instant.now().plus(2, ChronoUnit.DAYS))
-                .estado(EstadoCita.PROGRAMADA)
+                .estado(AppointmentStatus.PROGRAMADA)
                 .motivo("Control de rutina")
                 .activo(true)
                 .build();

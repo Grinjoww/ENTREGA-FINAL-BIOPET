@@ -5,7 +5,7 @@ import com.biopet.dto.VacunaResponse;
 import com.biopet.entity.Mascota;
 import com.biopet.entity.Rol;
 import com.biopet.entity.Usuario;
-import com.biopet.entity.Vacuna;
+import com.biopet.entity.Vaccine;
 import com.biopet.exception.ResourceNotFoundException;
 import com.biopet.repository.MascotaRepository;
 import com.biopet.repository.UsuarioRepository;
@@ -90,7 +90,7 @@ public class VacunaService {
     @Transactional(readOnly = true)
     public VacunaResponse buscar(Long id, String email) {
         Usuario usuario = usuarioActivo(email);
-        Vacuna vacuna = vacunaActiva(id);
+        Vaccine vacuna = vacunaActiva(id);
         verificarAcceso(usuario, vacuna.getMascota());
         return toResponse(vacuna);
     }
@@ -108,7 +108,7 @@ public class VacunaService {
     public VacunaResponse crear(VacunaRequest request) {
         Mascota mascota = mascotaActiva(request.mascotaId());
         Usuario veterinario = resolverVeterinario(request.veterinarioId());
-        Vacuna vacuna = Vacuna.builder()
+        Vaccine vacuna = Vaccine.builder()
                 .mascota(mascota)
                 .veterinario(veterinario)
                 .tipo(request.tipo())
@@ -135,7 +135,7 @@ public class VacunaService {
     @Transactional
     public VacunaResponse actualizar(Long id, VacunaRequest request, String email) {
         Usuario usuario = usuarioActivo(email);
-        Vacuna vacuna = vacunaActiva(id);
+        Vaccine vacuna = vacunaActiva(id);
         verificarAcceso(usuario, vacuna.getMascota());
 
         Mascota mascota = mascotaActiva(request.mascotaId());
@@ -162,7 +162,7 @@ public class VacunaService {
     @Transactional
     public void eliminar(Long id, String email) {
         Usuario usuario = usuarioActivo(email);
-        Vacuna vacuna = vacunaActiva(id);
+        Vaccine vacuna = vacunaActiva(id);
         verificarAcceso(usuario, vacuna.getMascota());
         vacuna.setActivo(false);
         vacunaRepository.save(vacuna);
@@ -180,9 +180,9 @@ public class VacunaService {
                 .orElseThrow(() -> new ResourceNotFoundException("Mascota no encontrada: " + mascotaId));
     }
 
-    private Vacuna vacunaActiva(Long id) {
+    private Vaccine vacunaActiva(Long id) {
         return vacunaRepository.findByIdAndActivoTrue(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Vacuna no encontrada: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Vaccine no encontrada: " + id));
     }
 
     private Usuario resolverVeterinario(Long veterinarioId) {
@@ -207,7 +207,7 @@ public class VacunaService {
         }
     }
 
-    private VacunaResponse toResponse(Vacuna vacuna) {
+    private VacunaResponse toResponse(Vaccine vacuna) {
         Usuario veterinario = vacuna.getVeterinario();
         return new VacunaResponse(
                 vacuna.getId(),

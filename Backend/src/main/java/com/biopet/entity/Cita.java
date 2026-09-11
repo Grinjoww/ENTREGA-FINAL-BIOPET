@@ -35,7 +35,7 @@ public class Cita {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private EstadoCita estado;
+    private AppointmentStatus estado;
 
     @Column(length = 255)
     private String motivo;
@@ -55,7 +55,7 @@ public class Cita {
         if (creadoEn == null) creadoEn = now;
         if (actualizadoEn == null) actualizadoEn = now;
         activo = true;
-        if (estado == null) estado = EstadoCita.PROGRAMADA;
+        if (estado == null) estado = AppointmentStatus.PROGRAMADA;
     }
 
     @PreUpdate

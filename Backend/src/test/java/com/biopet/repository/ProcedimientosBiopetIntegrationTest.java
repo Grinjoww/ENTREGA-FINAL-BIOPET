@@ -2,11 +2,11 @@ package com.biopet.repository;
 
 import com.biopet.entity.Cita;
 import com.biopet.entity.Consulta;
-import com.biopet.entity.EstadoCita;
+import com.biopet.entity.AppointmentStatus;
 import com.biopet.entity.Mascota;
 import com.biopet.entity.Rol;
 import com.biopet.entity.Usuario;
-import com.biopet.entity.Vacuna;
+import com.biopet.entity.Vaccine;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -149,12 +149,12 @@ class ProcedimientosBiopetIntegrationTest {
         consultaRepository.save(Consulta.builder().mascota(mascota).veterinario(vet)
                 .fechaConsulta(Instant.parse("2026-08-01T10:00:00Z"))
                 .motivo("Chequeo").diagnostico("Sano").activo(true).build());
-        vacunaRepository.save(Vacuna.builder().mascota(mascota).veterinario(vet).tipo("Rabia")
+        vacunaRepository.save(Vaccine.builder().mascota(mascota).veterinario(vet).tipo("Rabia")
                 .fechaAplicacion(LocalDate.of(2026, 7, 1))
                 .proximaFecha(LocalDate.of(2027, 7, 1)).activo(true).build());
         citaRepository.save(Cita.builder().mascota(mascota).veterinario(vet)
                 .fechaHora(Instant.parse("2026-09-01T10:00:00Z"))
-                .estado(EstadoCita.PROGRAMADA).motivo("Control").activo(true).build());
+                .estado(AppointmentStatus.PROGRAMADA).motivo("Control").activo(true).build());
 
         List<ClinicalHistoryView> resultado = procedimientoBiopetRepository.historialClinicoMascota(mascota.getId());
 
@@ -185,11 +185,11 @@ class ProcedimientosBiopetIntegrationTest {
         consultaRepository.save(Consulta.builder().mascota(mascota).veterinario(vet)
                 .fechaConsulta(Instant.parse("2026-08-15T10:00:00Z"))
                 .motivo("Chequeo").activo(true).build());
-        vacunaRepository.save(Vacuna.builder().mascota(mascota).veterinario(vet).tipo("Rabia")
+        vacunaRepository.save(Vaccine.builder().mascota(mascota).veterinario(vet).tipo("Rabia")
                 .fechaAplicacion(LocalDate.of(2026, 8, 10)).activo(true).build());
         citaRepository.save(Cita.builder().mascota(mascota).veterinario(vet)
                 .fechaHora(Instant.parse("2026-08-20T10:00:00Z"))
-                .estado(EstadoCita.PROGRAMADA).activo(true).build());
+                .estado(AppointmentStatus.PROGRAMADA).activo(true).build());
 
         List<DashboardReportView> resultado = procedimientoBiopetRepository.reporteDashboard(
                 LocalDate.of(2026, 8, 1), LocalDate.of(2026, 8, 31));
@@ -242,11 +242,11 @@ class ProcedimientosBiopetIntegrationTest {
         Instant limite = Instant.now();
 
         Cita pasadaProgramada = citaRepository.save(Cita.builder().mascota(mascota).veterinario(vet)
-                .fechaHora(limite.minusSeconds(3600)).estado(EstadoCita.PROGRAMADA).activo(true).build());
+                .fechaHora(limite.minusSeconds(3600)).estado(AppointmentStatus.PROGRAMADA).activo(true).build());
         Cita futuraProgramada = citaRepository.save(Cita.builder().mascota(mascota).veterinario(vet)
-                .fechaHora(limite.plusSeconds(3600)).estado(EstadoCita.PROGRAMADA).activo(true).build());
+                .fechaHora(limite.plusSeconds(3600)).estado(AppointmentStatus.PROGRAMADA).activo(true).build());
         Cita pasadaCompletada = citaRepository.save(Cita.builder().mascota(mascota).veterinario(vet)
-                .fechaHora(limite.minusSeconds(7200)).estado(EstadoCita.COMPLETADA).activo(true).build());
+                .fechaHora(limite.minusSeconds(7200)).estado(AppointmentStatus.COMPLETADA).activo(true).build());
 
         Long afectadas = procedimientoBiopetRepository.actualizarEstadoCitasMasivas(
                 vet.getId(), "PROGRAMADA", "COMPLETADA", limite);
@@ -254,11 +254,11 @@ class ProcedimientosBiopetIntegrationTest {
         assertThat(afectadas).isEqualTo(1);
         entityManager.clear();
         assertThat(citaRepository.findByIdAndActivoTrue(pasadaProgramada.getId()).orElseThrow().getEstado())
-                .isEqualTo(EstadoCita.COMPLETADA);
+                .isEqualTo(AppointmentStatus.COMPLETADA);
         assertThat(citaRepository.findByIdAndActivoTrue(futuraProgramada.getId()).orElseThrow().getEstado())
-                .isEqualTo(EstadoCita.PROGRAMADA);
+                .isEqualTo(AppointmentStatus.PROGRAMADA);
         assertThat(citaRepository.findByIdAndActivoTrue(pasadaCompletada.getId()).orElseThrow().getEstado())
-                .isEqualTo(EstadoCita.COMPLETADA);
+                .isEqualTo(AppointmentStatus.COMPLETADA);
     }
 
     @Test
