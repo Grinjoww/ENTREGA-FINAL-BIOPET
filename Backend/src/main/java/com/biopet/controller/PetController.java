@@ -27,6 +27,11 @@ import java.util.List;
 public class PetController {
     private final PetService mascotaService;
 
+    /**
+     * Creates the controller with the pet service.
+     *
+     * @param mascotaService service handling pet use cases
+     */
     public PetController(PetService mascotaService) {
         this.mascotaService = mascotaService;
     }

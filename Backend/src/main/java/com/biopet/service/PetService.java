@@ -38,6 +38,13 @@ public class PetService {
     private final UserRepository usuarioRepository;
     private final BiopetProcedureRepository procedimientoBiopetRepository;
 
+    /**
+     * Creates the service with the repositories used by pet use cases.
+     *
+     * @param mascotaRepository repository persisting pet records
+     * @param usuarioRepository persistence of users, used for ownership checks
+     * @param procedimientoBiopetRepository invocation of the species summary procedure
+     */
     public PetService(PetRepository mascotaRepository,
                           UserRepository usuarioRepository,
                           BiopetProcedureRepository procedimientoBiopetRepository) {

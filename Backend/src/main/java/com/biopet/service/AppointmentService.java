@@ -37,6 +37,13 @@ public class AppointmentService {
     private final PetRepository mascotaRepository;
     private final UserRepository usuarioRepository;
 
+    /**
+     * Creates the service with the repositories used by appointment use cases.
+     *
+     * @param citaRepository persistence of appointments
+     * @param mascotaRepository persistence of pets, used for ownership checks
+     * @param usuarioRepository persistence of users, used for role checks
+     */
     public AppointmentService(AppointmentRepository citaRepository, PetRepository mascotaRepository, UserRepository usuarioRepository) {
         this.citaRepository = citaRepository;
         this.mascotaRepository = mascotaRepository;

@@ -28,6 +28,13 @@ public class ExternalApiService {
     @Value("${app.external-api.cache-ttl-seconds:600}") // 10 min por defecto, igual al criterio de datos "en vivo" de la guía
     private long ttlSegundos;
 
+    /**
+     * Creates the service with the API client, cache and JSON mapper.
+     *
+     * @param externalApiClient low-level client for the external animals API
+     * @param redisTemplate cache storing species responses within the TTL
+     * @param objectMapper mapper serializing cached responses
+     */
     public ExternalApiService(ExternalApiClient externalApiClient,
                                StringRedisTemplate redisTemplate,
                                ObjectMapper objectMapper) {

@@ -16,6 +16,11 @@ import org.springframework.stereotype.Service;
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository usuarioRepository;
 
+    /**
+     * Creates the bridge with the user repository.
+     *
+     * @param usuarioRepository persistence used to load credentials by email
+     */
     public UserDetailsServiceImpl(UserRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }

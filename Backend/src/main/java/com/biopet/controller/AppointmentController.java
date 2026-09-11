@@ -24,6 +24,11 @@ import org.springframework.web.bind.annotation.*;
 public class AppointmentController {
     private final AppointmentService citaService;
 
+    /**
+     * Creates the controller with the appointment service.
+     *
+     * @param citaService service handling appointment use cases
+     */
     public AppointmentController(AppointmentService citaService) {
         this.citaService = citaService;
     }

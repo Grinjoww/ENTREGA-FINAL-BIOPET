@@ -25,6 +25,12 @@ public class UserService {
     private final UserRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * Creates the service with user persistence and password hashing.
+     *
+     * @param usuarioRepository persistence of users
+     * @param passwordEncoder encoder hashing passwords on creation and update
+     */
     public UserService(UserRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;

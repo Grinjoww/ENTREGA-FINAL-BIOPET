@@ -36,6 +36,13 @@ public class ConsultationService {
     private final PetRepository mascotaRepository;
     private final UserRepository usuarioRepository;
 
+    /**
+     * Creates the service with the repositories used by consultation use cases.
+     *
+     * @param consultaRepository persistence of consultations
+     * @param mascotaRepository persistence of pets, used for ownership checks
+     * @param usuarioRepository persistence of users, used for role checks
+     */
     public ConsultationService(ConsultationRepository consultaRepository,
                             PetRepository mascotaRepository,
                             UserRepository usuarioRepository) {

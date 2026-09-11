@@ -17,11 +17,21 @@ public class TomcatDualConnectorConfig {
 
     private final int puertoHttp;
 
+    /**
+     * Creates the dual-connector configuration with the plain HTTP port.
+     *
+     * @param puertoHttp the additional plain HTTP port, from {@code tls.http-port} (8080 by default)
+     */
     public TomcatDualConnectorConfig(@Value("${tls.http-port:8080}") int puertoHttp) {
         validarPuerto(puertoHttp);
         this.puertoHttp = puertoHttp;
     }
 
+    /**
+     * Registers the additional plain HTTP connector alongside the main TLS connector.
+     *
+     * @return customizer adding the extra connector to the embedded Tomcat factory
+     */
     @Bean
     public WebServerFactoryCustomizer<TomcatServletWebServerFactory> conectorHttpAdicional() {
         return factory -> factory.addAdditionalTomcatConnectors(crearConectorHttp(puertoHttp));

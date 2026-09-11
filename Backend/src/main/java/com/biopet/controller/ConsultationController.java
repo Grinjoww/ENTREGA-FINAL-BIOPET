@@ -23,6 +23,11 @@ import org.springframework.web.bind.annotation.*;
 public class ConsultationController {
     private final ConsultationService consultaService;
 
+    /**
+     * Creates the controller with the consultation service.
+     *
+     * @param consultaService service handling consultation use cases
+     */
     public ConsultationController(ConsultationService consultaService) {
         this.consultaService = consultaService;
     }

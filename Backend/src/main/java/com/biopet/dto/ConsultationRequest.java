@@ -7,6 +7,17 @@ import jakarta.validation.constraints.Size;
 
 import java.time.Instant;
 
+/**
+ * Input to register a clinical consultation.
+ *
+ * @param mascotaId identifier of the examined pet
+ * @param veterinarioId identifier of the veterinarian performing it
+ * @param fechaConsulta date and time of the consultation, not in the future
+ * @param motivo reason for the visit, up to 200 characters
+ * @param diagnostico diagnosis, up to 500 characters
+ * @param tratamiento prescribed treatment, up to 500 characters
+ * @param observaciones additional notes, up to 500 characters
+ */
 public record ConsultationRequest(
         @NotNull Long mascotaId,
         @NotNull Long veterinarioId,

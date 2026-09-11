@@ -25,6 +25,12 @@ public class UserController {
     private final AuthService authService;
     private final UserService usuarioService;
 
+    /**
+     * Creates the controller with the authentication and user services.
+     *
+     * @param authService service used for the current-user profile lookup
+     * @param usuarioService service handling user administration use cases
+     */
     public UserController(AuthService authService, UserService usuarioService) {
         this.authService = authService;
         this.usuarioService = usuarioService;

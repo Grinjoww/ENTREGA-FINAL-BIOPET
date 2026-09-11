@@ -19,10 +19,23 @@ import java.nio.charset.StandardCharsets;
 public class ProblemAuthenticationEntryPoint implements AuthenticationEntryPoint {
     private final ObjectMapper objectMapper;
 
+    /**
+     * Creates the entry point with the JSON mapper used for problem responses.
+     *
+     * @param objectMapper mapper serializing problem details to the response body
+     */
     public ProblemAuthenticationEntryPoint(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 
+    /**
+     * Renders an unauthenticated request as an RFC 7807 unauthorized response.
+     *
+     * @param request the incoming HTTP request
+     * @param response the HTTP response receiving the problem body
+     * @param authException the authentication failure raised by Spring Security
+     * @throws IOException if the problem body cannot be written
+     */
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                           AuthenticationException authException) throws IOException {

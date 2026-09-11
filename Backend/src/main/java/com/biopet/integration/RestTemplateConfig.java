@@ -10,6 +10,12 @@ import java.time.Duration;
 @Configuration
 public class RestTemplateConfig {
 
+    /**
+     * Builds the HTTP client used to call the external species API.
+     *
+     * @param builder the Spring Boot REST template builder
+     * @return template with 3-second connect and 5-second read timeouts
+     */
     @Bean
     public RestTemplate externalApiRestTemplate(RestTemplateBuilder builder) {
         return builder

@@ -33,6 +33,11 @@ public class ExternalApiClient {
     @Value("${app.external-api.key:}")
     private String apiKey;
 
+    /**
+     * Creates the client with the HTTP template used for external calls.
+     *
+     * @param externalApiRestTemplate template with the timeouts for the external API
+     */
     public ExternalApiClient(RestTemplate externalApiRestTemplate) {
         this.restTemplate = externalApiRestTemplate;
     }
@@ -69,6 +74,14 @@ public class ExternalApiClient {
         }
     }
 
+    /**
+     * Raw animal record returned by the external API; unknown fields are ignored.
+     *
+     * @param name common name of the animal
+     * @param taxonomy taxonomic classification of the animal
+     * @param characteristics physical and behavioral characteristics
+     * @param locations places where the animal can be found
+     */
     @JsonIgnoreProperties(ignoreUnknown = true)
     public record AnimalApiNinjasDto(
             String name,
@@ -76,9 +89,25 @@ public class ExternalApiClient {
             Characteristics characteristics,
             List<String> locations
     ) {
+        /**
+         * Taxonomic classification of the animal.
+         *
+         * @param kingdom taxonomic kingdom
+         * @param phylum taxonomic phylum
+         * @param scientific_name scientific name of the species
+         * @param order taxonomic order
+         */
         @JsonIgnoreProperties(ignoreUnknown = true)
         public record Taxonomy(String kingdom, String phylum, String scientific_name, String order) {}
 
+        /**
+         * Physical and behavioral characteristics of the animal.
+         *
+         * @param diet typical diet of the animal
+         * @param habitat natural habitat of the animal
+         * @param lifespan expected lifespan of the animal
+         * @param slogan short descriptive phrase returned by the API
+         */
         @JsonIgnoreProperties(ignoreUnknown = true)
         public record Characteristics(String diet, String habitat, String lifespan, String slogan) {}
     }
