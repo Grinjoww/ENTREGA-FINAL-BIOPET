@@ -54,6 +54,20 @@ Proyecto Fin de Curso — Aplicaciones Web
 Docente responsable (evaluación, no autoría del software): Dr. Gleiston
 Cicerón Guerrero Ulloa, Ph.D.
 
+### Identidad Git y autoría
+
+Las variantes históricas de identidad Git de Jaime Mariscal se normalizan
+mediante el `.mailmap` versionado del repositorio a `Jaime Josue Mariscal
+Cabrera <jmariscalc@uteq.edu.ec>`. Esta normalización no reescribe los
+commits históricos ni modifica sus SHA. Para la trazabilidad completa y
+los comandos de verificación, consulte [`CONTRIBUTORS.md`](CONTRIBUTORS.md)
+y [`docs/observaciones/OBSERVACIONES.md`](docs/observaciones/OBSERVACIONES.md)
+(OBS-15).
+
+```
+git shortlog -sne v1.0.0
+```
+
 ---
 
 ## Descripción

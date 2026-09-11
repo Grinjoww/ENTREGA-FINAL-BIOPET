@@ -722,11 +722,12 @@ Ver Parte 5 para el detalle completo de OBS-09 a OBS-15 (fuente: retroalimentaci
   commits anteriores a esta corrección, firmados con
   `mariscaljaime34@gmail.com`, **conservan su autor original sin
   modificación**. No se ejecutó ningún `git commit --amend`, `git rebase`
-  ni reescritura de historial, ni se usó `.mailmap` para enmascarar u
-  ocultar esa autoría histórica: ambos correos (`mariscaljaime34@gmail.com`
-  en commits antiguos, `jmariscalc@uteq.edu.ec` en commits recientes de
-  esta Entrega Final) coexisten visibles en `git log`, tal como Git los
-  registró en su momento.
+  ni reescritura de historial. En el cierre original de OBS-15 todavía
+  no se había incorporado `.mailmap`; las identidades registradas en los
+  objetos commit permanecieron intactas y auditables. La incorporación
+  posterior de `.mailmap` durante la recalificación se documenta en la
+  nota posterior de este mismo bloque y únicamente normaliza la
+  presentación de la identidad, sin modificar commits ni SHA.
 - **Decisión del equipo para esta fase:** Verificar con `git log` (lectura
   únicamente, sin escritura) que ya existen commits reales con el correo
   institucional, y cerrar la observación con esa evidencia.
@@ -754,9 +755,34 @@ Ver Parte 5 para el detalle completo de OBS-09 a OBS-15 (fuente: retroalimentaci
   verificables, que existen múltiples commits de la Entrega Final
   firmados con `Jaime Mariscal <jmariscalc@uteq.edu.ec>`, incluidos merges
   de pull request. Los commits históricos anteriores conservan su autor
-  original sin alteración; no se reescribió el historial ni se usó
-  `.mailmap` para ocultar la evidencia previa. La observación pedía
-  trazabilidad real en los commits, y esa trazabilidad ya existe.
+  original sin alteración: en el cierre original de OBS-15 no se había
+  incorporado `.mailmap` y tampoco se reescribió el historial; las
+  identidades históricas permanecieron intactas y auditables. La
+  observación pedía trazabilidad real en los commits, y esa trazabilidad
+  ya existe.
+- **Nota posterior (recalificación; no altera el estado CERRADA de
+  arriba):** al momento del cierre original de OBS-15 todavía no se había
+  incorporado `.mailmap` y no se reescribió el historial. Posteriormente,
+  durante la recalificación, se incorporó el `.mailmap` versionado del
+  repositorio (raíz del proyecto) para normalizar la presentación de las
+  variantes históricas de Jaime bajo la identidad institucional `Jaime
+  Josue Mariscal Cabrera <jmariscalc@uteq.edu.ec>`. Esta normalización no
+  altera los objetos commit, sus SHA ni la trazabilidad histórica; las
+  identidades originalmente almacenadas siguen siendo auditables mediante
+  los campos crudos de Git. El correo personal histórico
+  (`mariscaljaime34@gmail.com`) y las variantes de nombre corresponden al
+  mismo integrante (Jaime Mariscal), no a otro miembro del equipo; no hubo
+  commits de Jaime atribuidos a Fred ni a Zaida.
+
+  Verificación reproducible (solo lectura):
+  ```
+  git shortlog -sne v1.0.0
+  git log v1.0.0 --format="%aN <%aE>" | sort -u
+  git check-mailmap "Jaime Mariscal <mariscaljaime34@gmail.com>"
+  ```
+  `%an`/`%ae` = metadatos crudos almacenados en cada commit, sin
+  normalizar; `%aN`/`%aE` = identidad canónica resultante de aplicar
+  `.mailmap`.
 
 ---
 
