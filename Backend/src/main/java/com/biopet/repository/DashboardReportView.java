@@ -1,6 +1,6 @@
 package com.biopet.repository;
 
-public interface ReporteDashboard {
+public interface DashboardReportView {
     Long getMascotasActivas();
     Long getCitasProgramadas();
     Long getConsultasEnRango();

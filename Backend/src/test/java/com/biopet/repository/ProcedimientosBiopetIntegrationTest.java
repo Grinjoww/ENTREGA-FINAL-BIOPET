@@ -156,10 +156,10 @@ class ProcedimientosBiopetIntegrationTest {
                 .fechaHora(Instant.parse("2026-09-01T10:00:00Z"))
                 .estado(EstadoCita.PROGRAMADA).motivo("Control").activo(true).build());
 
-        List<HistorialClinico> resultado = procedimientoBiopetRepository.historialClinicoMascota(mascota.getId());
+        List<ClinicalHistoryView> resultado = procedimientoBiopetRepository.historialClinicoMascota(mascota.getId());
 
         assertThat(resultado).hasSize(1);
-        HistorialClinico h = resultado.get(0);
+        ClinicalHistoryView h = resultado.get(0);
         assertThat(h.getMascota()).isEqualTo("Rex");
         assertThat(h.getEspecie()).isEqualTo("Perro");
         assertThat(h.getRaza()).isEqualTo("Mestizo");
@@ -191,11 +191,11 @@ class ProcedimientosBiopetIntegrationTest {
                 .fechaHora(Instant.parse("2026-08-20T10:00:00Z"))
                 .estado(EstadoCita.PROGRAMADA).activo(true).build());
 
-        List<ReporteDashboard> resultado = procedimientoBiopetRepository.reporteDashboard(
+        List<DashboardReportView> resultado = procedimientoBiopetRepository.reporteDashboard(
                 LocalDate.of(2026, 8, 1), LocalDate.of(2026, 8, 31));
 
         assertThat(resultado).hasSize(1);
-        ReporteDashboard r = resultado.get(0);
+        DashboardReportView r = resultado.get(0);
         assertThat(r.getMascotasActivas()).isEqualTo(1);
         assertThat(r.getCitasProgramadas()).isEqualTo(1);
         assertThat(r.getConsultasEnRango()).isEqualTo(1);
@@ -208,11 +208,11 @@ class ProcedimientosBiopetIntegrationTest {
         Usuario duenio = guardarUsuario("duenio-rango@biopet.ec", Rol.ROLE_DUENO);
         guardarMascota(duenio, "Rex");
 
-        List<ReporteDashboard> resultado = procedimientoBiopetRepository.reporteDashboard(
+        List<DashboardReportView> resultado = procedimientoBiopetRepository.reporteDashboard(
                 LocalDate.of(2026, 12, 31), LocalDate.of(2026, 1, 1));
 
         assertThat(resultado).hasSize(1);
-        ReporteDashboard r = resultado.get(0);
+        DashboardReportView r = resultado.get(0);
         assertThat(r.getMascotasActivas()).isEqualTo(1);
         assertThat(r.getConsultasEnRango()).isZero();
         assertThat(r.getVacunasEnRango()).isZero();

@@ -3,7 +3,7 @@ package com.biopet.repository;
 import java.time.Instant;
 import java.time.LocalDate;
 
-public interface HistorialClinico {
+public interface ClinicalHistoryView {
     String getMascota();
     String getEspecie();
     String getRaza();

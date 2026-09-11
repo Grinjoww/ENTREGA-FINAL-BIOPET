@@ -59,10 +59,10 @@ public interface ProcedimientoBiopetRepository extends Repository<Mascota, Long>
     List<ResumenEspecie> resumenPorEspecie(Long duenioId);
 
     @Procedure(name = "fn_historial_clinico_mascota")
-    List<HistorialClinico> historialClinicoMascota(Long mascotaId);
+    List<ClinicalHistoryView> historialClinicoMascota(Long mascotaId);
 
     @Procedure(name = "fn_reporte_dashboard")
-    List<ReporteDashboard> reporteDashboard(LocalDate desde, LocalDate hasta);
+    List<DashboardReportView> reporteDashboard(LocalDate desde, LocalDate hasta);
 
     @Procedure(procedureName = "fn_siguiente_numero_ficha", outputParameterName = "p_codigo")
     String siguienteNumeroFicha(@Param("p_prefijo") String prefijo);
