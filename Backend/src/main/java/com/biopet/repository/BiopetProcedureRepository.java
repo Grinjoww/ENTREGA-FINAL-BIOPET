@@ -55,24 +55,75 @@ import java.util.List;
  */
 public interface BiopetProcedureRepository extends Repository<Pet, Long> {
 
+    /**
+     * Summarizes active pets grouped by species via stored procedure.
+     *
+     * @param duenioId identifier of the owning user scoping the summary
+     * @return one row per species with its pet count
+     * @throws org.springframework.dao.DataAccessException if the call fails
+     */
     @Procedure(name = "fn_resumen_mascotas_por_especie")
     List<SpeciesSummary> speciesSummary(Long duenioId);
 
+    /**
+     * Reads the clinical history of one pet via stored procedure.
+     *
+     * @param mascotaId identifier of the pet
+     * @return clinical history rows of the pet
+     * @throws org.springframework.dao.DataAccessException if the call fails
+     */
     @Procedure(name = "fn_historial_clinico_mascota")
     List<ClinicalHistoryView> petClinicalHistory(Long mascotaId);
 
+    /**
+     * Reads the dashboard report for a date range via stored procedure.
+     *
+     * @param desde start of the reported range
+     * @param hasta end of the reported range
+     * @return dashboard report rows for the range
+     * @throws org.springframework.dao.DataAccessException if the call fails
+     */
     @Procedure(name = "fn_reporte_dashboard")
     List<DashboardReportView> dashboardReport(LocalDate desde, LocalDate hasta);
 
+    /**
+     * Generates the next sequential record code via stored procedure.
+     *
+     * @param prefijo code prefix qualifying the sequence
+     * @return the next code of the sequence
+     * @throws org.springframework.dao.DataAccessException if the call fails
+     */
     @Procedure(procedureName = "fn_siguiente_numero_ficha", outputParameterName = "p_codigo")
     String nextRecordNumber(@Param("p_prefijo") String prefijo);
 
+    /**
+     * Bulk-updates the status of appointments via stored procedure.
+     *
+     * @param veterinarioId identifier of the veterinarian owning the appointments
+     * @param estadoAnterior only appointments currently in this status are updated
+     * @param estadoNuevo status assigned to the matching appointments
+     * @param fechaLimite only appointments up to this instant are updated
+     * @return number of affected appointments
+     * @throws org.springframework.dao.DataAccessException if the call fails
+     */
     @Procedure(procedureName = "sp_actualizar_estado_citas_masivas", outputParameterName = "p_afectadas")
     Long bulkUpdateAppointmentStatus(@Param("p_veterinario_id") Long veterinarioId,
                                       @Param("p_estado_anterior") String estadoAnterior,
                                       @Param("p_estado_nuevo") String estadoNuevo,
                                       @Param("p_fecha_limite") Instant fechaLimite);
 
+    /**
+     * Registers a validated clinical consultation via stored procedure.
+     *
+     * @param mascotaId identifier of the examined pet
+     * @param veterinarioId identifier of the responsible veterinarian
+     * @param motivo reason for the visit
+     * @param diagnostico recorded diagnosis
+     * @param tratamiento prescribed treatment
+     * @param observaciones additional notes
+     * @return identifier of the created consultation
+     * @throws org.springframework.dao.DataAccessException if the call fails
+     */
     @Procedure(procedureName = "sp_registrar_consulta_validada", outputParameterName = "p_consulta_id")
     Long registerValidatedConsultation(@Param("p_mascota_id") Long mascotaId,
                                    @Param("p_veterinario_id") Long veterinarioId,

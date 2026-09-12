@@ -242,6 +242,7 @@ reset-db:
 # El target compila el PDF siguiendo exactamente las instrucciones del README.
 pdf:
 	@echo "[pdf] Compilando informe con latexmk..."
+	python scripts/gen-informe-commit-info.py
 	cd docs/informe && latexmk -pdf -interaction=nonstopmode -halt-on-error informe-final-v1.0.0.tex
 	@echo "[pdf] PDF generado en docs/informe/informe-final-v1.0.0.pdf"
 

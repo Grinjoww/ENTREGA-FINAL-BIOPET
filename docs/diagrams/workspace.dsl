@@ -190,14 +190,12 @@ workspace "BIOPET" "Veterinary pet-management system (v1.0.0) - C4 model source 
         }
     }
 
-    // Reproducible export (documented per Z1 acceptance criterion; run from docs/diagrams/):
-    //   1. Download structurizr-cli:  https://github.com/structurizr/cli/releases (requires JRE 11+)
-    //   2. Export to PlantUML:        structurizr.sh export -workspace workspace.dsl -format plantuml
-    //   3. Export to Mermaid:         structurizr.sh export -workspace workspace.dsl -format mermaid
-    //   4. Render PlantUML -> PNG:    plantuml structurizr-L1-SystemContext.puml (etc.)
-    // The .dot/.puml/.png files committed under c4-contexto/, c4-contenedores/ and
-    // c4-componentes-backend/ are hand-aligned derivations of this DSL (rendered with
-    // Graphviz, via @hpcc-js/wasm + @resvg/resvg-js since no system Graphviz/Structurizr
-    // CLI was available at authoring time); they must stay in sync with this file on every
-    // change and are the single reproducible source for the three levels of the C4 model.
+    // Reproducible export (verified 2026-09-11 with structurizr-cli v2025.11.09,
+    // PlantUML 1.2026.8 and Graphviz 16.1.0; run from the repository root):
+    //   STRUCTURIZR_CLI=/ruta/a/structurizr.sh PLANTUML_JAR=/ruta/a/plantuml.jar
+    //     bash docs/diagrams/export-c4-desde-dsl.sh
+    // which exports L1/L2/L3 to docs/diagrams/structurizr-export/*.puml
+    // (byte-identical to a fresh CLI export) and renders the evaluated PNGs
+    // with PlantUML+Graphviz. The .dot files per level are editable mirrors
+    // of this file and must stay in sync with it on every change.
 }

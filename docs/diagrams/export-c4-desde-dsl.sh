@@ -41,7 +41,8 @@ mv "$EXP/tmp-export/structurizr-L3-BackendComponents.puml" "$EXP/L3-BackendCompo
 rmdir "$EXP/tmp-export"
 
 render() { # $1=puml $2=png-destino
-  java -jar "$PLANTUML_JAR" -Tpng -o "$(dirname "$2")" "$1" >/dev/null
+  # PLANTUML_LIMIT_SIZE evita el recorte del nivel L3 (el mas grande).
+  java -DPLANTUML_LIMIT_SIZE=16384 -jar "$PLANTUML_JAR" -Tpng -o "$(dirname "$2")" "$1" >/dev/null
   base="$(basename "$1" .puml).png"
   mv "$(dirname "$1")/$base" "$2"
 }

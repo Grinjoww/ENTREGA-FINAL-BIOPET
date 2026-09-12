@@ -119,9 +119,9 @@ echo "Backend local healthy por HTTPS (actuator/health = 200)."
 # El directorio temporal se crea DENTRO del arbol del repo (no en /tmp):
 # con MSYS_NO_PATHCONV=1 (necesario para que las rutas DESTINO dentro del
 # contenedor, como "/zap/wrk", no se reescriban como rutas de Windows),
-# una ruta host tipo "/tmp/..." deja de convertirse a "C:\..." y Docker
-# Desktop no la reconoce; las rutas "/c/Users/..." (dentro de este repo)
-# si las reconoce, mismo comportamiento ya verificado por
+# una ruta host tipo "/tmp/..." deja de convertirse a formato Windows con
+# unidad y Docker Desktop no la reconoce; las rutas estilo MSYS del perfil
+# de usuario (dentro de este repo) si las reconoce, mismo comportamiento ya verificado por
 # scripts/run-zap-baseline.sh con "$ZAP_DIR". Se elimina por completo en
 # la limpieza (trap), nunca se commitea.
 TMP_DIR="$(mktemp -d "$REPO_ROOT/.zap-auth-local-tmp.XXXXXX")"
