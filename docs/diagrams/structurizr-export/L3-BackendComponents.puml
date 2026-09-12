@@ -1,0 +1,191 @@
+@startuml
+title <size:24>BIOPET - C4 Level 3: Backend Components (v1.0.0)</size>
+
+set separator none
+top to bottom direction
+skinparam ranksep 60
+skinparam nodesep 30
+hide stereotype
+
+<style>
+  root {
+    BackgroundColor: #ffffff;
+    FontColor: #444444;
+  }
+  // Element,Component
+  .Element-RWxlbWVudCxDb21wb25lbnQ= {
+    BackgroundColor: #f8fafc;
+    LineColor: #adafb0;
+    LineStyle: 0;
+    LineThickness: 2;
+    FontColor: #444444;
+    FontSize: 24;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+    MaximumWidth: 450;
+  }
+  // Element,Container
+  .Element-RWxlbWVudCxDb250YWluZXI= {
+    BackgroundColor: #f8fafc;
+    LineColor: #adafb0;
+    LineStyle: 0;
+    LineThickness: 2;
+    FontColor: #444444;
+    FontSize: 24;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+    MaximumWidth: 450;
+  }
+  // Element,Container,Database
+  .Element-RWxlbWVudCxDb250YWluZXIsRGF0YWJhc2U= {
+    BackgroundColor: #fde68a;
+    LineColor: #b1a160;
+    LineStyle: 0;
+    LineThickness: 2;
+    FontColor: #444444;
+    FontSize: 24;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+    MaximumWidth: 450;
+  }
+  // Element,Software System,External System
+  .Element-RWxlbWVudCxTb2Z0d2FyZSBTeXN0ZW0sRXh0ZXJuYWwgU3lzdGVt {
+    BackgroundColor: #f1f5f9;
+    LineColor: #a8abae;
+    LineStyle: 10-10;
+    LineThickness: 2;
+    FontColor: #64748b;
+    FontSize: 24;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+    MaximumWidth: 450;
+  }
+  // Relationship
+  .Relationship-UmVsYXRpb25zaGlw {
+    LineThickness: 2;
+    LineStyle: 10-10;
+    LineColor: #444444;
+    FontColor: #444444;
+    FontSize: 24;
+  }
+  // BIOPET
+  .Boundary-QklPUEVU {
+    BackgroundColor: #ffffff;
+    LineColor: #99a3b1;
+    LineStyle: 0;
+    LineThickness: 2;
+    FontColor: #444444;
+    FontSize: 24;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+  }
+  // Backend API
+  .Boundary-QmFja2VuZCBBUEk= {
+    BackgroundColor: #ffffff;
+    LineColor: #adafb0;
+    LineStyle: 0;
+    LineThickness: 2;
+    FontColor: #444444;
+    FontSize: 24;
+    HorizontalAlignment: center;
+    Shadowing: 0;
+  }
+</style>
+
+rectangle "==API Ninjas (Animals API)\n<size:16>[Software System]</size>\n\nExternal REST API. Provides species taxonomy, habitat and diet data." <<Element-RWxlbWVudCxTb2Z0d2FyZSBTeXN0ZW0sRXh0ZXJuYWwgU3lzdGVt>> as APINinjasAnimalsAPI
+
+rectangle "BIOPET\n<size:16>[Software System]</size>" <<Boundary-QklPUEVU>> {
+  rectangle "Backend API\n<size:16>[Container: Spring Boot 3.2, Java 21]</size>" <<Boundary-QmFja2VuZCBBUEk=>> {
+    rectangle "==PetController\n<size:16>[Component: Spring MVC REST Controller]</size>\n\nCRUD and search endpoints for pets." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.PetController
+    rectangle "==UserController\n<size:16>[Component: Spring MVC REST Controller]</size>\n\nExposes the authenticated user's profile." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.UserController
+    rectangle "==AppointmentController\n<size:16>[Component: Spring MVC REST Controller]</size>\n\nCRUD and bulk status update for appointments." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.AppointmentController
+    rectangle "==ConsultationController\n<size:16>[Component: Spring MVC REST Controller]</size>\n\nRegisters and queries clinical consultations." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.ConsultationController
+    rectangle "==VaccineController\n<size:16>[Component: Spring MVC REST Controller]</size>\n\nCRUD for vaccine records." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.VaccineController
+    rectangle "==ExternalApiController\n<size:16>[Component: Spring MVC REST Controller]</size>\n\nExposes species information sourced from the external API." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.ExternalApiController
+    rectangle "==AuthService\n<size:16>[Component: Spring Service]</size>\n\nRegistration, login, token refresh, logout and profile lookup." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.AuthService
+    rectangle "==PetService\n<size:16>[Component: Spring Service]</size>\n\nPet business rules, ownership checks and the read cache." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.PetService
+    rectangle "==AppointmentService\n<size:16>[Component: Spring Service]</size>\n\nAppointment business rules, scheduling and bulk status updates." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.AppointmentService
+    rectangle "==ConsultationService\n<size:16>[Component: Spring Service]</size>\n\nClinical-consultation validation (active pet and veterinarian)." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.ConsultationService
+    rectangle "==VaccineService\n<size:16>[Component: Spring Service]</size>\n\nVaccine record business rules." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.VaccineService
+    rectangle "==ExternalApiService\n<size:16>[Component: Spring Service]</size>\n\nFetches and caches (Redis, TTL) species data from the external API." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.ExternalApiService
+    rectangle "==ExternalApiClient\n<size:16>[Component: Spring Service]</size>\n\nHTTP client for API Ninjas." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.ExternalApiClient
+    rectangle "==SecurityConfig\n<size:16>[Component: Spring Configuration]</size>\n\nSpring Security filter chain, providers and CORS policy." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.SecurityConfig
+    rectangle "==JwtAuthenticationFilter\n<size:16>[Component: Spring Security Filter]</size>\n\nAuthenticates each request from the JWT stored in a cookie." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.JwtAuthenticationFilter
+    rectangle "==JwtService\n<size:16>[Component: Spring Service]</size>\n\nIssues and validates JWTs (HMAC-SHA256, claims, expiry)." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.JwtService
+    rectangle "==JwtCookieService\n<size:16>[Component: Spring Service]</size>\n\nReads/writes the HttpOnly+Secure+SameSite=Strict auth cookies." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.JwtCookieService
+    rectangle "==UserDetailsServiceImpl\n<size:16>[Component: Spring Service]</size>\n\nLoads user + authorities for Spring Security." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.UserDetailsServiceImpl
+    rectangle "==LoginRateLimiterService\n<size:16>[Component: Spring Service]</size>\n\nIn-memory per-IP login rate limiting." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.LoginRateLimiterService
+    rectangle "==TokenBlacklistService\n<size:16>[Component: Spring Service]</size>\n\nJWT revocation via a Redis blacklist keyed by jti." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.TokenBlacklistService
+    rectangle "==AuthenticationAuditService\n<size:16>[Component: Spring Service]</size>\n\nStructured authentication audit logging." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.AuthenticationAuditService
+    rectangle "==ProblemAuthenticationEntryPoint\n<size:16>[Component: Spring Security Component]</size>\n\nBuilds the RFC 7807 response for 401 Unauthorized." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.ProblemAuthenticationEntryPoint
+    rectangle "==ProblemAccessDeniedHandler\n<size:16>[Component: Spring Security Component]</size>\n\nBuilds the RFC 7807 response for 403 Forbidden." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.ProblemAccessDeniedHandler
+    rectangle "==GlobalExceptionHandler\n<size:16>[Component: Spring @ControllerAdvice]</size>\n\nMaps application exceptions to RFC 7807 ProblemDetail responses." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.GlobalExceptionHandler
+    rectangle "==ProblemDetailFactory\n<size:16>[Component: Spring Component]</size>\n\nBuilds uniform RFC 7807 ProblemDetail payloads." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.ProblemDetailFactory
+    rectangle "==UserRepository\n<size:16>[Component: Spring Data JPA Repository]</size>\n\nUser persistence." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.UserRepository
+    rectangle "==PetRepository\n<size:16>[Component: Spring Data JPA Repository]</size>\n\nPet persistence." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.PetRepository
+    rectangle "==AppointmentRepository\n<size:16>[Component: Spring Data JPA Repository]</size>\n\nAppointment persistence." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.AppointmentRepository
+    rectangle "==ConsultationRepository\n<size:16>[Component: Spring Data JPA Repository]</size>\n\nClinical-consultation persistence." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.ConsultationRepository
+    rectangle "==VaccineRepository\n<size:16>[Component: Spring Data JPA Repository]</size>\n\nVaccine-record persistence." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.VaccineRepository
+    rectangle "==BiopetProcedureRepository\n<size:16>[Component: Spring Data JPA Repository]</size>\n\nFormal JPA access (@Procedure / @NamedStoredProcedureQuery) to the 6 PostgreSQL stored procedures." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.BiopetProcedureRepository
+    rectangle "==TomcatDualConnectorConfig\n<size:16>[Component: Spring Configuration]</size>\n\nDual HTTP/HTTPS Tomcat connector configuration (profile 'tls')." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.TomcatDualConnectorConfig
+    rectangle "==AuthController\n<size:16>[Component: Spring MVC REST Controller]</size>\n\nRegistration, login, refresh and logout endpoints." <<Element-RWxlbWVudCxDb21wb25lbnQ=>> as BIOPET.BackendAPI.AuthController
+  }
+
+  database "==PostgreSQL\n<size:16>[Container: PostgreSQL 16 (dev) / 18 (prod)]</size>\n\nRelational database. Schema and stored procedures managed by Flyway migrations V1-V6." <<Element-RWxlbWVudCxDb250YWluZXIsRGF0YWJhc2U=>> as BIOPET.PostgreSQL
+  database "==Redis / Valkey\n<size:16>[Container: Redis 7 (dev) / Valkey 8 (prod)]</size>\n\nJWT-blacklist store (by jti) and read-through cache for pets and external species data." <<Element-RWxlbWVudCxDb250YWluZXIsRGF0YWJhc2U=>> as BIOPET.RedisValkey
+  rectangle "==Frontend\n<size:16>[Container: Angular 17, Nginx]</size>\n\nSingle-page application for authentication and for managing pets, appointments, consultations and vaccines." <<Element-RWxlbWVudCxDb250YWluZXI=>> as BIOPET.Frontend
+}
+
+BIOPET.BackendAPI.TokenBlacklistService --> BIOPET.RedisValkey <<Relationship-UmVsYXRpb25zaGlw>> : "StringRedisTemplate"
+BIOPET.BackendAPI.UserRepository --> BIOPET.PostgreSQL <<Relationship-UmVsYXRpb25zaGlw>> : "JDBC/JPA"
+BIOPET.BackendAPI.PetRepository --> BIOPET.PostgreSQL <<Relationship-UmVsYXRpb25zaGlw>> : "JDBC/JPA"
+BIOPET.BackendAPI.AppointmentRepository --> BIOPET.PostgreSQL <<Relationship-UmVsYXRpb25zaGlw>> : "JDBC/JPA"
+BIOPET.BackendAPI.ConsultationRepository --> BIOPET.PostgreSQL <<Relationship-UmVsYXRpb25zaGlw>> : "JDBC/JPA"
+BIOPET.BackendAPI.VaccineRepository --> BIOPET.PostgreSQL <<Relationship-UmVsYXRpb25zaGlw>> : "JDBC/JPA"
+BIOPET.BackendAPI.BiopetProcedureRepository --> BIOPET.PostgreSQL <<Relationship-UmVsYXRpb25zaGlw>> : "Invokes stored procedures (@Procedure/@NamedStoredProcedureQuery)"
+BIOPET.Frontend --> BIOPET.BackendAPI.TomcatDualConnectorConfig <<Relationship-UmVsYXRpb25zaGlw>> : "HTTPS :8443 (public) / HTTP :8080 (internal)"
+BIOPET.Frontend --> BIOPET.BackendAPI.AuthController <<Relationship-UmVsYXRpb25zaGlw>> : "Calls\n<size:16>[HTTPS/JSON + cookies (access_token, refresh_token)]</size>"
+BIOPET.Frontend --> BIOPET.BackendAPI.PetController <<Relationship-UmVsYXRpb25zaGlw>> : "Calls\n<size:16>[HTTPS/JSON + cookie access_token]</size>"
+BIOPET.Frontend --> BIOPET.BackendAPI.UserController <<Relationship-UmVsYXRpb25zaGlw>> : "Calls\n<size:16>[HTTPS/JSON + cookie access_token]</size>"
+BIOPET.Frontend --> BIOPET.BackendAPI.AppointmentController <<Relationship-UmVsYXRpb25zaGlw>> : "Calls\n<size:16>[HTTPS/JSON + cookie access_token]</size>"
+BIOPET.Frontend --> BIOPET.BackendAPI.ConsultationController <<Relationship-UmVsYXRpb25zaGlw>> : "Calls\n<size:16>[HTTPS/JSON + cookie access_token]</size>"
+BIOPET.Frontend --> BIOPET.BackendAPI.VaccineController <<Relationship-UmVsYXRpb25zaGlw>> : "Calls\n<size:16>[HTTPS/JSON + cookie access_token]</size>"
+BIOPET.Frontend --> BIOPET.BackendAPI.ExternalApiController <<Relationship-UmVsYXRpb25zaGlw>> : "Calls\n<size:16>[HTTPS/JSON + cookie access_token]</size>"
+BIOPET.BackendAPI.AuthController --> BIOPET.BackendAPI.AuthService <<Relationship-UmVsYXRpb25zaGlw>> : "Register / login / refresh / logout"
+BIOPET.BackendAPI.AuthController --> BIOPET.BackendAPI.JwtCookieService <<Relationship-UmVsYXRpb25zaGlw>> : "Reads/writes auth cookies"
+BIOPET.BackendAPI.PetController --> BIOPET.BackendAPI.PetService <<Relationship-UmVsYXRpb25zaGlw>> : "List / search / create / update / delete"
+BIOPET.BackendAPI.UserController --> BIOPET.BackendAPI.AuthService <<Relationship-UmVsYXRpb25zaGlw>> : "Get profile (email)"
+BIOPET.BackendAPI.AppointmentController --> BIOPET.BackendAPI.AppointmentService <<Relationship-UmVsYXRpb25zaGlw>> : "CRUD / bulk status update"
+BIOPET.BackendAPI.ConsultationController --> BIOPET.BackendAPI.ConsultationService <<Relationship-UmVsYXRpb25zaGlw>> : "Register / query consultations"
+BIOPET.BackendAPI.VaccineController --> BIOPET.BackendAPI.VaccineService <<Relationship-UmVsYXRpb25zaGlw>> : "CRUD vaccine records"
+BIOPET.BackendAPI.ExternalApiController --> BIOPET.BackendAPI.ExternalApiService <<Relationship-UmVsYXRpb25zaGlw>> : "Get species info"
+BIOPET.BackendAPI.AuthService --> BIOPET.BackendAPI.UserRepository <<Relationship-UmVsYXRpb25zaGlw>> : "Finds/creates user"
+BIOPET.BackendAPI.AuthService --> BIOPET.BackendAPI.JwtService <<Relationship-UmVsYXRpb25zaGlw>> : "Generates/validates JWT"
+BIOPET.BackendAPI.AuthService --> BIOPET.BackendAPI.LoginRateLimiterService <<Relationship-UmVsYXRpb25zaGlw>> : "Checks/records login attempts"
+BIOPET.BackendAPI.AuthService --> BIOPET.BackendAPI.AuthenticationAuditService <<Relationship-UmVsYXRpb25zaGlw>> : "Logs LOGIN_*/REFRESH_*/LOGOUT_SUCCESS"
+BIOPET.BackendAPI.AuthService --> BIOPET.BackendAPI.TokenBlacklistService <<Relationship-UmVsYXRpb25zaGlw>> : "Revokes / checks isRevoked (refresh, logout)"
+BIOPET.BackendAPI.PetService --> BIOPET.BackendAPI.PetRepository <<Relationship-UmVsYXRpb25zaGlw>> : "CRUD"
+BIOPET.BackendAPI.PetService --> BIOPET.BackendAPI.UserRepository <<Relationship-UmVsYXRpb25zaGlw>> : "Validates owner/role"
+BIOPET.BackendAPI.PetService --> BIOPET.RedisValkey <<Relationship-UmVsYXRpb25zaGlw>> : "Cache reads/writes (@Cacheable/@CacheEvict)"
+BIOPET.BackendAPI.AppointmentService --> BIOPET.BackendAPI.AppointmentRepository <<Relationship-UmVsYXRpb25zaGlw>> : "CRUD / bulk update"
+BIOPET.BackendAPI.AppointmentService --> BIOPET.BackendAPI.UserRepository <<Relationship-UmVsYXRpb25zaGlw>> : "Validates veterinarian role"
+BIOPET.BackendAPI.ConsultationService --> BIOPET.BackendAPI.ConsultationRepository <<Relationship-UmVsYXRpb25zaGlw>> : "CRUD"
+BIOPET.BackendAPI.ConsultationService --> BIOPET.BackendAPI.UserRepository <<Relationship-UmVsYXRpb25zaGlw>> : "Validates veterinarian/access"
+BIOPET.BackendAPI.VaccineService --> BIOPET.BackendAPI.VaccineRepository <<Relationship-UmVsYXRpb25zaGlw>> : "CRUD"
+BIOPET.BackendAPI.ExternalApiService --> BIOPET.BackendAPI.ExternalApiClient <<Relationship-UmVsYXRpb25zaGlw>> : "Fetches species data"
+BIOPET.BackendAPI.ExternalApiService --> BIOPET.RedisValkey <<Relationship-UmVsYXRpb25zaGlw>> : "Caches responses (TTL)"
+BIOPET.BackendAPI.ExternalApiClient --> APINinjasAnimalsAPI <<Relationship-UmVsYXRpb25zaGlw>> : "GET species data\n<size:16>[HTTPS/JSON]</size>"
+BIOPET.BackendAPI.JwtAuthenticationFilter --> BIOPET.BackendAPI.JwtCookieService <<Relationship-UmVsYXRpb25zaGlw>> : "Reads access_token cookie"
+BIOPET.BackendAPI.JwtAuthenticationFilter --> BIOPET.BackendAPI.JwtService <<Relationship-UmVsYXRpb25zaGlw>> : "Validates signature/claims/type"
+BIOPET.BackendAPI.JwtAuthenticationFilter --> BIOPET.BackendAPI.TokenBlacklistService <<Relationship-UmVsYXRpb25zaGlw>> : "isRevoked(jti)"
+BIOPET.BackendAPI.JwtAuthenticationFilter --> BIOPET.BackendAPI.AuthenticationAuditService <<Relationship-UmVsYXRpb25zaGlw>> : "Logs TOKEN_REVOKED"
+BIOPET.BackendAPI.JwtAuthenticationFilter --> BIOPET.BackendAPI.UserDetailsServiceImpl <<Relationship-UmVsYXRpb25zaGlw>> : "loadUserByUsername"
+BIOPET.BackendAPI.SecurityConfig --> BIOPET.BackendAPI.JwtAuthenticationFilter <<Relationship-UmVsYXRpb25zaGlw>> : "Registers in the filter chain"
+BIOPET.BackendAPI.SecurityConfig --> BIOPET.BackendAPI.ProblemAuthenticationEntryPoint <<Relationship-UmVsYXRpb25zaGlw>> : "401 entry point"
+BIOPET.BackendAPI.SecurityConfig --> BIOPET.BackendAPI.ProblemAccessDeniedHandler <<Relationship-UmVsYXRpb25zaGlw>> : "403 access-denied handler"
+BIOPET.BackendAPI.SecurityConfig --> BIOPET.BackendAPI.UserDetailsServiceImpl <<Relationship-UmVsYXRpb25zaGlw>> : "DaoAuthenticationProvider"
+BIOPET.BackendAPI.ProblemAuthenticationEntryPoint --> BIOPET.BackendAPI.ProblemDetailFactory <<Relationship-UmVsYXRpb25zaGlw>> : "Builds 401 response"
+BIOPET.BackendAPI.ProblemAccessDeniedHandler --> BIOPET.BackendAPI.ProblemDetailFactory <<Relationship-UmVsYXRpb25zaGlw>> : "Builds 403 response"
+BIOPET.BackendAPI.GlobalExceptionHandler --> BIOPET.BackendAPI.ProblemDetailFactory <<Relationship-UmVsYXRpb25zaGlw>> : "Builds 4xx/429 responses"
+
+@enduml

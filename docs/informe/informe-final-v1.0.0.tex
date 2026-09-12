@@ -176,15 +176,17 @@
 \newcommand{\orcidjaime}{0009-0007-2206-3941}
 \newcommand{\orcidfred}{0009-0007-8303-2137}
 \newcommand{\orcidzaida}{0009-0000-1227-3258}
-% \commithashcorto: hash corto del commit AL QUE APUNTA el tag historico
-% v1.0.0 (verificado con "git rev-list -n 1 v1.0.0"), NO el HEAD actual
-% de esta rama de recalificacion. El tag v1.0.0 ya existe y es inmutable;
-% este valor identifica ese estado historico de cierre de la Entrega
-% Final, distinto de los commits posteriores de correccion/recalificacion
-% que se agregan encima sin mover el tag. La fila de la portada rotula
-% explicitamente el valor como "Tag v1.0.0 / commit" para que no se
-% confunda con el HEAD vigente.
-\newcommand{\commithashcorto}{0d5cd52}
+% \commithashcorto: hash corto del commit HEAD real al compilar, tomado de
+% docs/informe/commit-info.tex (generado por scripts/gen-informe-commit-info.py,
+% mismo mecanismo que la caratula independiente). Asi la fila de la portada
+% ("Tag v1.0.0 / commit") coincide siempre con el checkout compilado: tras el
+% merge final se mueve v1.0.0 a ese mismo HEAD y no hay hash hardcodeado que
+% quede obsoleto. El respaldo de abajo NUNCA debe quedar impreso en un PDF
+% final: si aparece, no se ejecuto el script de generacion antes de compilar.
+\providecommand{\commitactual}{PENDIENTE-EJECUTAR-scripts/gen-informe-commit-info.py}
+\providecommand{\fechaactual}{Quevedo, 18 de agosto de 2026}
+\IfFileExists{commit-info.tex}{\input{commit-info.tex}}{}
+\newcommand{\commithashcorto}{\commitactual}
 
 \begin{document}
 % Desactiva el atajo "-shorthand" del modulo spanish de babel (usa """
@@ -250,7 +252,7 @@
 
   \vfill
 
-  {\normalsize \ciudadfecha \par}
+  {\normalsize \fechaactual \par}
   \vspace{0.5cm}
 
 \end{titlepage}
