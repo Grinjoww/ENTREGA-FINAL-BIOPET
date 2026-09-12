@@ -14,7 +14,11 @@ Ninjas (Animals API)* (ver C4 Nivel 1, `docs/diagrams/c4-contexto/`).
 
 La fuente única y versionada del modelo (los tres niveles) es
 [`../workspace.dsl`](../workspace.dsl) (Structurizr DSL, en inglés); este
-`.dot`/`.puml` son derivaciones manuales alineadas a esa fuente.
+el PNG evaluado se genera desde esa fuente con
+`bash docs/diagrams/export-c4-desde-dsl.sh` (exporta
+`docs/diagrams/structurizr-export/L3-BackendComponents.puml` sin editar
+y lo renderiza con PlantUML+Graphviz). El `.dot`/`.puml` de esta carpeta
+son espejos editables de la misma fuente.
 
 Respecto a la Tercera Entrega, v1.0.0 añade los controladores/servicios/
 repositorios de la Unidad IV — citas (`AppointmentController`/`AppointmentService`/

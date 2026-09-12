@@ -30,6 +30,17 @@ recompilarlo — pero no son el procedimiento vigente.
 
 ## Compilación del Informe Final (`informe-final-v1.0.0.tex`)
 
+> Paso previo obligatorio (una vez por checkout): la portada del informe toma
+> el hash del commit de `docs/informe/commit-info.tex` (mismo mecanismo que la
+> carátula). Generarlo desde la raíz del repositorio antes de compilar:
+>
+> ```bash
+> python scripts/gen-informe-commit-info.py
+> ```
+>
+> Sin este paso, la portada imprime el marcador
+> `PENDIENTE-EJECUTAR-scripts/gen-informe-commit-info.py` en lugar del hash.
+
 ### Opción recomendada: `latexmk`
 
 ```bash

@@ -13,8 +13,11 @@ C4 Nivel 2, `docs/diagrams/c4-contenedores/`) ni en componentes del backend
 
 Los tres niveles del modelo C4 (contexto, contenedores y componentes del
 backend) se modelan primero en `docs/diagrams/workspace.dsl` (Structurizr
-DSL, en inglés). Los `.dot`/`.puml` de esta carpeta son derivaciones
-manuales alineadas a esa fuente única — ver la cabecera de
+DSL, en inglés). Los PNG evaluados se generan desde esa fuente con
+`bash docs/diagrams/export-c4-desde-dsl.sh` (Structurizr CLI exporta
+los tres niveles a `docs/diagrams/structurizr-export/*.puml`, sin editar,
+y PlantUML+Graphviz los renderiza a PNG). Los `.dot` de cada nivel son
+espejos editables de la misma fuente. — ver la cabecera de
 `workspace.dsl` para el comando de exportación reproducible
 (`structurizr-cli export`) y el detalle de cómo se generaron los PNG
 actuales (Graphviz vía `@hpcc-js/wasm` + `@resvg/resvg-js`, sin binario

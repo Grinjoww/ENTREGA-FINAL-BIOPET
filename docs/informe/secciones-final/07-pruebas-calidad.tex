@@ -13,7 +13,7 @@ que resume la tabla~\ref{tab:pruebas-final}:
 
 \begin{table}[H]
   \centering
-  \caption{Resultado real de la suite de pruebas del backend sobre el commit del tag \texttt{v1.0.0} (evidencia hist\'orica; ver estado del \texttt{HEAD} actual m\'as abajo).}
+  \caption{Resultado real de la suite de pruebas del backend sobre el commit hist\'orico \texttt{0d5cd52} (evidencia hist\'orica; ver estado del \texttt{HEAD} actual m\'as abajo).}
   \label{tab:pruebas-final}
   \begin{tabular}{@{}ll@{}}
     \toprule
@@ -38,11 +38,11 @@ manuales.
 % repositorio como artefacto historico pero ya no se referencia aqui)
 % Ruta esperada: figuras/jaime/07-maven-verify-final.png
 \evidencia{figuras/jaime/07-maven-verify-final.png}%
-{Resultado real de \texttt{mvn clean verify} sobre el commit del tag \texttt{v1.0.0}: 205 pruebas, 0 fallos, 0 errores, 0 omitidas, \texttt{BUILD SUCCESS} (regenerada por \texttt{docs/informe/scripts/generar-figuras-evidencia.py} desde el log crudo versionado).}%
+{Resultado real de \texttt{mvn clean verify} sobre el commit hist\'orico \texttt{0d5cd52}: 205 pruebas, 0 fallos, 0 errores, 0 omitidas, \texttt{BUILD SUCCESS} (regenerada por \texttt{docs/informe/scripts/generar-figuras-evidencia.py} desde el log crudo versionado).}%
 {fig:maven-verify-final}
 
-Estas 205 pruebas corresponden al estado hist\'orico e inmutable del tag
-\texttt{v1.0.0}. Ejecutar \texttt{mvn clean verify} sobre el
+Estas 205 pruebas corresponden al estado hist\'orico del commit
+\texttt{0d5cd52} (cierre de la Entrega Final original). Ejecutar \texttt{mvn clean verify} sobre el
 \texttt{HEAD} actual de la rama de recalificaci\'on -- que incorpora
 pruebas nuevas sobre esa misma base, sin sustituirla -- produce
 \textbf{217} pruebas (0 fallos, 0 errores, 0 omitidas),
@@ -63,7 +63,7 @@ tabla~\ref{tab:jacoco-final} resume el resultado medido.
 
 \begin{table}[H]
   \centering
-  \caption{Cobertura medida por \texttt{jacoco:check} sobre el commit del tag \texttt{v1.0.0} (evidencia hist\'orica; fuente: \texttt{docs/mediciones/jacoco/METRICS.md}). Ver estado del \texttt{HEAD} actual m\'as abajo.}
+  \caption{Cobertura medida por \texttt{jacoco:check} sobre el commit hist\'orico \texttt{0d5cd52} (evidencia hist\'orica; fuente: \texttt{docs/mediciones/jacoco/METRICS.md}). Ver estado del \texttt{HEAD} actual m\'as abajo.}
   \label{tab:jacoco-final}
   \begin{tabular}{@{}lrrrr@{}}
     \toprule
