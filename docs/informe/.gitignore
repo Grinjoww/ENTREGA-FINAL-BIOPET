@@ -25,6 +25,7 @@ commit-info.tex
 *.toc
 *.lof
 *.lot
+*.lol
 *.bbl
 *.blg
 *.bcf
