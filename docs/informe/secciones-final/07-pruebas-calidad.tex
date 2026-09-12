@@ -42,13 +42,24 @@ manuales.
 {fig:maven-verify-final}
 
 Estas 205 pruebas corresponden al estado hist\'orico del commit
-\texttt{0d5cd52} (cierre de la Entrega Final original). Ejecutar \texttt{mvn clean verify} sobre el
-\texttt{HEAD} actual de la rama de recalificaci\'on -- que incorpora
-pruebas nuevas sobre esa misma base, sin sustituirla -- produce
-\textbf{217} pruebas (0 fallos, 0 errores, 0 omitidas),
-\texttt{BUILD SUCCESS}; ambas cifras son correctas dentro de su alcance
-temporal respectivo. Detalle de la diferencia (205~$\rightarrow$~217) y
-reproducci\'on de ambos estados en
+\texttt{0d5cd52} (cierre de la Entrega Final original) y constituyen la
+\'unica ejecuci\'on reproducible archivada en este repositorio: 205
+pruebas, 0 fallos, 0 errores y 0 omitidas, con el log crudo de
+Maven/Surefire versionado. El \texttt{HEAD} actual de la rama de
+recalificaci\'on incorpora pruebas nuevas sobre esa misma base, sin
+sustituirla, y contiene un \textbf{inventario est\'atico de 217 anotaciones
+\texttt{@Test} distribuidas en 24 clases de prueba},
+contabilizables en cualquier \emph{checkout} sobre
+\rutalarga{Backend/src/test/java/com/biopet/}. Esa cifra describe el
+inventario actual del c\'odigo y \textbf{no debe interpretarse como una
+corrida reproducible archivada}: para el \texttt{HEAD} no se conserva un
+log de Maven/Surefire equivalente al de \texttt{0d5cd52}, por lo que no
+se le atribuye aqu\'i ning\'un resultado de ejecuci\'on ni
+\texttt{BUILD SUCCESS}. Ambas cifras son correctas dentro de su alcance
+respectivo --- 205 como resultado de ejecuci\'on hist\'orica verificada,
+217 como conteo est\'atico vigente ---, y no son magnitudes
+homologables entre s\'i. Detalle de la relaci\'on
+(205~$\rightarrow$~217) y procedencia de cada estado en
 \texttt{docs/mediciones/TEST-COUNT-PROVENANCE.md} y en la tabla de
 \texttt{README.md} (secci\'on ``Estado t\'ecnico verificado'').
 
