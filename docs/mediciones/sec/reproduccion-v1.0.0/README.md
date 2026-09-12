@@ -2,9 +2,14 @@
 
 Esta carpeta contiene la salida de una **reproducción posterior**,
 realizada para verificar el número de pruebas del backend que reporta
-`mvn clean verify` sobre el commit exacto al que apunta el tag histórico
-e inmutable `v1.0.0`. **No es evidencia de agosto de 2026** y no
-reemplaza ni modifica ningún log archivado en esa fecha.
+`mvn clean verify` sobre el commit histórico `0d5cd52`, al que apuntó el
+tag `v1.0.0` durante el cierre de la Entrega Final original (18-ago-2026).
+Conforme a la rúbrica de esta recalificación, ese mismo tag se
+actualizará al cierre para identificar el commit final evaluado; esta
+reproducción documenta el commit histórico específico sobre el que
+corrió, no el estado actual o futuro del puntero del tag. **No es
+evidencia de agosto de 2026** y no reemplaza ni modifica ningún log
+archivado en esa fecha.
 
 ## Distinción explícita con la evidencia histórica
 
@@ -12,15 +17,16 @@ reemplaza ni modifica ningún log archivado en esa fecha.
 |---|---|---|
 | Ruta | [`docs/mediciones/sec/raw/mvn-clean-verify.txt`](../raw/mvn-clean-verify.txt) | `docs/mediciones/sec/reproduccion-v1.0.0/mvn-clean-verify.txt` |
 | Cuándo se generó | 2026-08-16 (commit `bb43baa`) | 2026-08-31 (esta auditoría) |
-| Sobre qué commit corrió | El `HEAD` de ese momento (anterior al tag `v1.0.0`) | El commit exacto del tag `v1.0.0` |
+| Sobre qué commit corrió | El `HEAD` de ese momento (anterior al commit histórico `0d5cd52`) | El commit histórico `0d5cd52` (al que apuntó `v1.0.0` durante el cierre original) |
 | Resultado | 189 / 189 | 205 / 205 |
-| Estado | Se conserva sin modificar, como registro histórico | Evidencia nueva, generada ahora, de la reproducibilidad del tag |
+| Estado | Se conserva sin modificar, como registro histórico | Evidencia generada en 2026-08-31 sobre ese commit histórico específico |
 
 Ninguno de los dos logs es "más verdadero" que el otro: cada uno es
 correcto **para el commit sobre el que corrió**. El log histórico de 189
-no describe el estado del código en el tag `v1.0.0` porque ese commit
-(`bb43baa`) es anterior a la adición de dos clases de prueba (ver más
-abajo); esta reproducción sí corre exactamente sobre el commit del tag.
+no describe el estado del código en el commit histórico `0d5cd52` porque
+el commit sobre el que corrió (`bb43baa`) es anterior a la adición de dos
+clases de prueba (ver más abajo); esta reproducción sí corre exactamente
+sobre `0d5cd52`.
 
 ## Procedencia de esta reproducción
 
@@ -34,7 +40,7 @@ abajo); esta reproducción sí corre exactamente sobre el commit del tag.
 | Java | Temurin 21.0.11 |
 | Maven | Apache Maven 3.9.16 |
 | Servicios externos | Docker Desktop 4.83.0 (daemon accesible), usado por Testcontainers para las 4 clases de integración contra PostgreSQL real (`ResumenEspeciesIntegrationTest`, `TriggerActualizadoEnIntegrationTest`, `BiopetAppRolMinimoPrivilegiosIntegrationTest`, `ProcedimientosBiopetIntegrationTest`); el resto de la suite usa H2 en memoria (`src/test/resources/application-test.yml`); no se requirió Redis real |
-| Configuración modificada | Ninguna — se ejecutó el `pom.xml` tal cual existe en el commit del tag |
+| Configuración modificada | Ninguna — se ejecutó el `pom.xml` tal cual existe en el commit histórico `0d5cd52` |
 
 ## Resultado
 
@@ -89,16 +95,18 @@ commit `bb43baa`, 2026-08-16 22:34:30) contra esta reproducción:
   reportan **exactamente el mismo número de tests**, clase por clase, en
   esta reproducción. Ninguna cambió.
 - Aparecen **dos clases nuevas**, ausentes en el log histórico y
-  presentes en el árbol del tag `v1.0.0`:
+  presentes en el árbol del commit histórico `0d5cd52`:
   - `com.biopet.repository.BiopetAppRolMinimoPrivilegiosIntegrationTest` — **4** pruebas
   - `com.biopet.repository.ProcedimientosBiopetIntegrationTest` — **12** pruebas
 - `189 + 4 + 12 = 205`.
 - Ambas clases fueron introducidas en el commit `5340b710850a86934a33548e21c72b98e699f96e`
   ("test(backend): integracion Testcontainers de los 6 SP y rol minimo
   biopet_app", 2026-08-16 22:59:34 -0500), verificado como ancestro del
-  tag `v1.0.0` (`git merge-base --is-ancestor 5340b71 v1.0.0`); el commit
-  `bb43baa` que archivó el log de 189 también es ancestro del tag, pero
-  es anterior a `5340b71` en el mismo árbol de commits.
+  commit histórico `0d5cd52` con el comando ejecutado en su momento
+  (`git merge-base --is-ancestor 5340b71 v1.0.0`, cuando `v1.0.0` apuntaba
+  todavía a `0d5cd52`; equivalente a `git merge-base --is-ancestor 5340b71 0d5cd52`);
+  el commit `bb43baa` que archivó el log de 189 también es ancestro de
+  `0d5cd52`, pero es anterior a `5340b71` en el mismo árbol de commits.
 
 Esto es una comparación demostrada por clase (no una cercanía numérica):
 el conjunto de clases del log de 189 más esas dos clases nuevas es,
@@ -106,10 +114,11 @@ exactamente, el conjunto de clases de esta reproducción.
 
 ## Objetivo de esta carpeta
 
-Demostrar que el estado de código publicado bajo el tag `v1.0.0` es
-reproducible de forma independiente y que el total de pruebas que ese
-estado ejecuta con `mvn clean verify` es 205, sin alterar ni sustituir la
-evidencia histórica de agosto. Ver también
+Demostrar que el estado de código del commit histórico `0d5cd52`
+(al que apuntó el tag `v1.0.0` durante el cierre de la Entrega Final
+original) es reproducible de forma independiente y que el total de
+pruebas que ese estado ejecuta con `mvn clean verify` es 205, sin
+alterar ni sustituir la evidencia histórica de agosto. Ver también
 [`docs/mediciones/TEST-COUNT-PROVENANCE.md`](../../TEST-COUNT-PROVENANCE.md)
 para la trazabilidad completa de todas las cifras de pruebas del
 proyecto.

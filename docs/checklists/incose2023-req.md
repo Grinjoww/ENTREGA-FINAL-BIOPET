@@ -12,6 +12,19 @@ REQ-NF) contra cada característica y regla aplicable. No se evaluaron
 requisitos que no existen todavía en el documento. Los hallazgos citan el
 identificador del requisito y, cuando aplica, la línea de `SRS.md`.
 
+> **Nota de vigencia (agregada en el cierre de la recalificación).**
+> Todas las cifras de este documento — incluidas las menciones a "los 38
+> requisitos" — son el estado del corpus **en la fecha de esta revisión
+> (2026-08-16)**, sobre el SRS `v0.9.0-rc`. En la revisión del SRS del
+> **2026-09-11** el corpus creció a **44 requisitos** (se agregaron
+> `REQ-F-026` y `REQ-NF-014` a `REQ-NF-018`). **Esta checklist INCOSE no
+> se volvió a ejecutar sobre esos 6 requisitos nuevos**, por lo que sus
+> veredictos C1–C15 y R1–R42 cubren únicamente los 38 originales y no
+> deben leerse como una declaración de conformidad del corpus actual. El
+> estado vigente del corpus es el que validan
+> [`docs/trazabilidad/matriz.csv`](../trazabilidad/matriz.csv) y
+> `scripts/validate-traceability.sh` (44 requisitos, 44 filas).
+
 ---
 
 ## 1. Resumen cuantitativo de partida

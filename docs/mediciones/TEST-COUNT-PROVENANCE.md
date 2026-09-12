@@ -2,10 +2,11 @@
 
 Este documento existe porque distintos archivos del repositorio citan
 totales distintos de pruebas del backend a lo largo del tiempo (**109,
-166, 189, 205**). El objetivo es dejar trazabilidad explícita de dónde
-sale cada número — con commit, fecha y archivo de evidencia — y, ahora
-que el tag histórico `v1.0.0` fue reproducido de forma independiente,
-dejar establecido cuál es el resultado final verificado.
+166, 189, 205**, y el inventario estático actual de **217**). El objetivo
+es dejar trazabilidad explícita de dónde sale cada número — con commit,
+fecha y archivo de evidencia — distinguiendo siempre entre evidencia de
+ejecución real (Maven/Surefire) y un simple conteo de anotaciones
+`@Test` en el código fuente.
 
 Ver también [`DATA-PROVENANCE.md`](DATA-PROVENANCE.md) (procedencia de
 los datos de medición en general) y
@@ -18,8 +19,9 @@ informe, que cita la cifra vigente en `secciones-final/`).
 |---:|---|---|---|---|
 | 109 | `docs/mediciones/sec/raw/historical-2026-08-01/mvn-clean-verify.txt` (línea `[INFO] Tests run: 109, Failures: 0, Errors: 0, Skipped: 0`) | 2026-08-01 (commit `13300a8`, 2026-07-31, "test(security): automatiza evidencias OWASP reales"; archivo movido a subcarpeta `historical-2026-08-01/` en el commit `bb43baa`, 2026-08-16) | Log crudo archivado en el repositorio, íntegro | **Histórica — verificada en log archivado.** Corrida baseline de la Tercera Entrega (`v0.9.0-rc`). Coincide con `docs/mediciones/DATA-DICTIONARY.md` y con `docs/informe/secciones/` (capítulos de `informe-entrega-3.tex`, ver [histórico en `docs/informe/README.md`](../informe/README.md#histórico--tercera-entrega)). |
 | 166 | `docs/checklists/incose2023-req.md` (línea 55, "166 tests verdes"); `docs/u4/informe/secciones/06-revision-cruzada.tex` y `08-conclusiones.tex`; `docs/u4/revisiones/REVISION-FAJARDO.md`; `docs/mediciones/DATA-PROVENANCE.md` (histórico, antes de la corrección aplicada en esta auditoría) | `docs/u4/` y `REVISION-FAJARDO.md`: commits del 2026-08-10. `incose2023-req.md`: commit `5bc4c9f`, 2026-08-16. Aparición en `DATA-PROVENANCE.md`: commit `10a165c`, 2026-08-17 | **No se localizó ningún log crudo (`Tests run: 166` o equivalente) archivado en el repositorio.** Solo aparece en texto narrativo/tablas. `docs/u4/` es un informe de una entrega distinta (Unidad IV, revisión cruzada entre pares), no el informe final de BIOPET. | **Narrativa/intermedia, sin log crudo localizado — no se presenta como cifra final.** Es consistente cronológicamente como punto intermedio entre 109 (2026-08-01) y 189 (2026-08-16), pero no hay evidencia cruda que la confirme de forma independiente. No se convierte en 205 ni en ninguna otra cifra: se deja documentada tal como aparece en cada fuente, marcada como no verificada con log crudo. |
-| 189 | `docs/mediciones/sec/raw/mvn-clean-verify.txt` (línea `[INFO] Tests run: 189, Failures: 0, Errors: 0, Skipped: 0`) | 2026-08-16 22:34:30 -0500 (commit `bb43baa`, "docs: archivar evidencias OWASP ZAP y analisis estatico") | Log crudo archivado en el repositorio, íntegro. Citado también en `docs/mediciones/sec/jacoco-summary.md`, `docs/mediciones/sec/static-analysis/README.md`, `docs/arquitectura/ISO-25010.md`, `docs/observaciones/OBSERVACIONES.md`, `docs/informe/borradores/jaime/metodologia-y-amenazas.md` | **Evidencia histórica válida — pero de un estado del código anterior al commit del tag `v1.0.0`, no del resultado final.** El commit `bb43baa` es ancestro de `v1.0.0` (verificado con `git merge-base --is-ancestor`), pero 25 minutos después el commit `5340b71` (2026-08-16 22:59:34) agregó dos clases de prueba nuevas que **sí** quedaron incluidas en el tag `v1.0.0`. El log de 189 nunca se volvió a archivar después de ese commit. Se conserva sin modificar como evidencia histórica de ese punto exacto en el tiempo — no se borra ni se sobrescribe. |
-| 205 | `docs/informe/secciones-final/*.tex` (Informe Final); ahora también `docs/mediciones/sec/reproduccion-v1.0.0/mvn-clean-verify.txt` (reproducción de auditoría) | Cifra integrada al Informe Final en el commit `ba41e11`, 2026-08-18. **Reproducción verificada el 2026-08-31** sobre el commit exacto del tag `v1.0.0` (`0d5cd525ce648cca7219da204e16fa622e671a87`), en worktree independiente, sin modificar código ni tests | `docs/mediciones/sec/reproduccion-v1.0.0/mvn-clean-verify.txt` + `docs/mediciones/sec/reproduccion-v1.0.0/README.md` (detalle completo, SHA-256, comparación clase por clase) | **RESULTADO FINAL REPRODUCIBLE de `v1.0.0` — verificado de forma independiente por tres vías coincidentes: consola Maven (`Tests run: 205, Failures: 0, Errors: 0, Skipped: 0`), suma manual de las 22 líneas por clase, y suma de los atributos `tests` de los 22 `target/surefire-reports/TEST-*.xml` generados en esa misma corrida. BUILD SUCCESS.** |
+| 189 | `docs/mediciones/sec/raw/mvn-clean-verify.txt` (línea `[INFO] Tests run: 189, Failures: 0, Errors: 0, Skipped: 0`) | 2026-08-16 22:34:30 -0500 (commit `bb43baa`, "docs: archivar evidencias OWASP ZAP y analisis estatico") | Log crudo archivado en el repositorio, íntegro. Citado también en `docs/mediciones/sec/jacoco-summary.md`, `docs/mediciones/sec/static-analysis/README.md`, `docs/arquitectura/ISO-25010.md`, `docs/observaciones/OBSERVACIONES.md`, `docs/informe/borradores/jaime/metodologia-y-amenazas.md` | **Evidencia histórica válida — pero de un estado del código anterior al commit histórico `0d5cd52`, no del resultado final.** El commit `bb43baa` es ancestro de `0d5cd52` (verificado con `git merge-base --is-ancestor`, ejecutado en su momento como `git merge-base --is-ancestor bb43baa v1.0.0`, cuando `v1.0.0` apuntaba todavía a `0d5cd52`), pero 25 minutos después el commit `5340b71` (2026-08-16 22:59:34) agregó dos clases de prueba nuevas que **sí** quedaron incluidas en el árbol de `0d5cd52`. El log de 189 nunca se volvió a archivar después de ese commit. Se conserva sin modificar como evidencia histórica de ese punto exacto en el tiempo — no se borra ni se sobrescribe. |
+| 205 | `docs/informe/secciones-final/*.tex` (Informe Final); ahora también `docs/mediciones/sec/reproduccion-v1.0.0/mvn-clean-verify.txt` (reproducción de auditoría) | Cifra integrada al Informe Final en el commit `ba41e11`, 2026-08-18. **Reproducción verificada el 2026-08-31** sobre el commit histórico `0d5cd525ce648cca7219da204e16fa622e671a87` (al que apuntó `v1.0.0` durante el cierre original, 2026-08-18), en worktree independiente, sin modificar código ni tests | `docs/mediciones/sec/reproduccion-v1.0.0/mvn-clean-verify.txt` + `docs/mediciones/sec/reproduccion-v1.0.0/README.md` (detalle completo, SHA-256, comparación clase por clase) | **RESULTADO HISTÓRICO REPRODUCIBLE sobre el commit `0d5cd52` — verificado de forma independiente por tres vías coincidentes: consola Maven (`Tests run: 205, Failures: 0, Errors: 0, Skipped: 0`), suma manual de las 22 líneas por clase, y suma de los atributos `tests` de los 22 `target/surefire-reports/TEST-*.xml` generados en esa misma corrida. BUILD SUCCESS.** Este identificador no representa necesariamente el commit final al que apunta `v1.0.0` tras el cierre de la recalificación — ver fila 217 más abajo para el inventario del HEAD vigente. |
+| 217 (inventario estático, no una corrida) | Conteo directo de anotaciones `@Test` sobre `Backend/src/test/java/com/biopet/**` en el HEAD de la rama de recalificación | Verificable en cualquier checkout con `grep -roE "@Test\b" Backend/src/test --include=*.java | wc -l` | Ninguno — no existe log de Maven/Surefire archivado para esta cifra en este repositorio | **NO ES UNA CIFRA DE EJECUCIÓN.** En el HEAD de la recalificación se contabilizan estáticamente 217 anotaciones `@Test` (24 clases). Esta cifra describe el inventario actual de pruebas y **no sustituye** la evidencia de ejecución histórica de 205 pruebas archivada para `0d5cd52`. No debe presentarse como "217 pruebas ejecutadas correctamente": para eso hace falta una corrida real de `mvn clean verify` sobre el commit final evaluado, archivada de la misma forma que se hizo para 205 (ver `docs/mediciones/sec/reproduccion-v1.0.0/`). |
 
 ## Explicación verificada de la diferencia 189 → 205
 
@@ -47,14 +49,23 @@ real de Maven/Surefire y no requiere apoyo adicional. Una versión previa
 de este documento estimaba la diferencia en 18 pruebas mediante un
 conteo estático de `@Test` sobre la rama de correcciones (no sobre el
 tag); esa estimación queda descartada porque la reproducción real sobre
-el commit exacto del tag demuestra que son 16, no 18, y el conteo
+el commit histórico `0d5cd52` demuestra que son 16, no 18, y el conteo
 estático de anotaciones no debe usarse para justificar el resultado real
 de una corrida de Maven/Surefire.
 
 ## Qué queda cerrado y qué sigue pendiente
 
-- **Cerrado:** el total reproducible de pruebas para el tag `v1.0.0` es
+- **Cerrado:** el total reproducible de pruebas para el commit histórico
+  `0d5cd52` (al que apuntó `v1.0.0` durante el cierre original) es
   **205**, con evidencia archivada y verificable de forma independiente.
+- **Abierto:** el HEAD de la rama de recalificación contabiliza
+  estáticamente **217** anotaciones `@Test`, sin una corrida de
+  Maven/Surefire archivada que lo respalde. Cuando exista el commit
+  final evaluado (una vez mergeadas las ramas de corrección de los tres
+  integrantes), corresponde ejecutar `mvn clean verify` sobre ese commit
+  y archivar el log crudo del mismo modo que se hizo para 205, para que
+  la cifra final de pruebas del cierre quede reproducible y no solo
+  contada estáticamente.
 - **Pendiente (fuera del alcance de esta auditoría):** reconciliar el
   texto de `docs/mediciones/DATA-PROVENANCE.md` §4 y la cifra 166 citada
   en documentos de etapas intermedias — ya marcados como históricos/no

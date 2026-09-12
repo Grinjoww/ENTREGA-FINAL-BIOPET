@@ -10,16 +10,23 @@ este archivo es el registro formal, fila por requisito, exigido por A.3.4.
 > SRS, no etiquetas de Git.** Una entrada fechada bajo `[v1.0.0]` describe una
 > revisión del documento hecha mientras la versión documental seguía siendo
 > v1.0.0; **no** significa que el tag Git `v1.0.0` se haya creado, movido ni
-> reemitido en esa fecha. El tag Git `v1.0.0` es inmutable y apunta desde su
-> creación al commit `0d5cd525ce648cca7219da204e16fa622e671a87`
-> (2026-08-18); puede comprobarse con `git rev-parse v1.0.0^{}`. Cada entrada
-> indica, cuando aplica, el commit real sobre el que se hizo la revisión.
+> reemitido en esa fecha. Durante la revisión original del SRS y las
+> revisiones documentales posteriores, el tag Git `v1.0.0` permaneció
+> asociado al commit histórico `0d5cd525ce648cca7219da204e16fa622e671a87`
+> (2026-08-18), que se conserva como referencia de procedencia de la
+> evidencia correspondiente a aquel cierre. Durante el cierre de la
+> recalificación, `v1.0.0` se actualizará para identificar el commit final
+> evaluado, sin cambiar su nombre; el commit al que apunte en cada momento
+> puede comprobarse con `git rev-parse v1.0.0^{}`. Cada entrada indica,
+> cuando aplica, el commit real sobre el que se hizo la revisión.
 
 ## [v1.0.0 — revisión documental] - 2026-09-11 (corrección integral del SRS tras la retroalimentación del docente-director)
 
 > Revisión del documento sobre el commit `8130ee00b0083808fc60567018589e38302b375d`.
-> **No se creó, movió ni reemitió ninguna etiqueta de Git en esta fecha.** El tag
-> histórico `v1.0.0` sigue apuntando a `0d5cd525ce648cca7219da204e16fa622e671a87`.
+> **No se creó, movió ni reemitió ninguna etiqueta de Git en esta fecha.** En el
+> momento de esta revisión, el tag `v1.0.0` seguía asociado al commit histórico
+> `0d5cd525ce648cca7219da204e16fa622e671a87`; su actualización al commit final
+> evaluado corresponde al cierre de la recalificación, posterior a esta entrada.
 
 Revisión documental completa del SRS previa a la firma, hecha sobre el commit
 `8130ee00b0083808fc60567018589e38302b375d` y verificada requisito por

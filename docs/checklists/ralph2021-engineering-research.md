@@ -1,5 +1,22 @@
 # Checklist — Ralph et al. (2021), estándar "Engineering Research" — BIOPET
 
+> **Nota de vigencia (agregada en el cierre de la recalificación).**
+> Este documento es una **fotografía fechada**: todas sus cifras
+> corresponden al estado del repositorio en su fecha de revisión
+> (**2026-08-17**, ver sección 4), no al estado del cierre. En particular,
+> las menciones a "38 requisitos" (secciones 2, 5.1/E1, 6 y 7) describen
+> el corpus de esa fecha; en la revisión del SRS del **2026-09-11** el
+> corpus creció a **44 requisitos** (`REQ-F-026` y `REQ-NF-014` a
+> `REQ-NF-018`), y **los ítems de esta checklist no se re-evaluaron sobre
+> esos 6 requisitos nuevos**. Por el mismo motivo, otras cifras de este
+> documento también son de esa fecha y han sido superadas (por ejemplo
+> "k6, 6 corridas" en la sección 2: hoy hay 20 corridas archivadas, 10 de
+> `v0.9.0-rc` y 10 de la Entrega Final). El estado vigente del corpus de
+> requisitos es el que validan
+> [`docs/trazabilidad/matriz.csv`](../trazabilidad/matriz.csv) y
+> `scripts/validate-traceability.sh` (44 requisitos, 44 filas); las cifras
+> vigentes de evidencia empírica están en `docs/mediciones/`.
+
 ## 1. Estándar seleccionado y por qué aplica
 
 **Estándar:** *Engineering Research* (también conocido como *Design Science*),
