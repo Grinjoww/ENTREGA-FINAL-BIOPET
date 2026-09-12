@@ -65,11 +65,22 @@ los tres integrantes del proyecto
 (\texttt{docs/etica/regularizacion-sus/CONSTANCIA-REGULARIZACION-SUS-BIOPET-2026-08-31.pdf}),
 que \textbf{no sustituye} consentimientos individuales ni incorpora
 firmas de participantes. Los resultados agregados se identifican
-\'unicamente por c\'odigo de participante (P01--P18). Ning\'un documento
-de este informe ni sus figuras
-reproducen contrase\~nas con valor, JWT completos, valores de cookies,
-encabezados \texttt{Authorization} con valor real, claves privadas ni el
-identificador \texttt{jti} de un token real.
+\'unicamente por c\'odigo de participante (P01--P18). En este informe no
+se reproducen credenciales reales de producci\'on, claves privadas ni
+JWT vigentes de producci\'on: no hay valores de cookies de
+producci\'on, encabezados \texttt{Authorization} con valor real de
+producci\'on ni identificadores \texttt{jti} de tokens reales vigentes.
+Las \'unicas credenciales visibles en el repositorio y sus evidencias
+son ficticias y de desarrollo, ya documentadas como tales: la cuenta
+semilla \texttt{admin@biopet.ec} / \texttt{Admin123*}
+(\rutalarga{db/seed.sql}, \texttt{README.md},
+\rutalarga{docs/etica/ETHICS.md},
+\rutalarga{docs/mediciones/sec/owasp/README.md}); y los fragmentos
+truncos de tokens visibles en capturas de desarrollo
+(p.~ej.\ valores \texttt{eyJhbGci...} truncos en \texttt{localhost},
+como en \rutalarga{docs/informe/figuras/zaida/token_refresh.png})
+corresponden a sesiones locales expiradas, no a tokens de producci\'on
+vigentes.
 
 \section{Disponibilidad de datos}
 
