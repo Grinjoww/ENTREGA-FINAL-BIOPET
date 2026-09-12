@@ -206,33 +206,41 @@ correspondientes más abajo).
 Las cifras de pruebas y cobertura se reportan en **dos columnas** porque
 corresponden a dos puntos distintos del proyecto, y mezclarlas sería
 engañoso: la columna *histórico* es la evidencia de la Entrega Final
-original (commit `0d5cd52`, 18 de agosto de 2026), y la columna *HEAD
-recalificación* es la ejecución real de la rama de recalificación, que
-añade pruebas nuevas sobre aquella base. Ninguna sustituye a la otra.
+original, reproducida sobre el commit histórico `0d5cd52` (al que apuntó
+`v1.0.0` durante el cierre original, 18 de agosto de 2026) y respaldada
+por una corrida real de Maven/Surefire archivada en el repositorio. La
+columna *HEAD de recalificación* describe el estado del código en la
+rama de correcciones vigente; sus cifras de pruebas provienen de un
+**conteo estático de anotaciones**, no de una corrida archivada, y así
+se marcan explícitamente. Ninguna columna sustituye a la otra.
 
-| Validación | Histórico — commit `0d5cd52` (18-ago-2026) | HEAD de recalificación |
+| Validación | Histórico — commit `0d5cd52` (cierre original) | HEAD de recalificación |
 |---|---|---|
-| Tests backend | 205 / 205 | **217 / 217** |
-| Failures | 0 | 0 |
-| Errors | 0 | 0 |
-| Skipped | 0 | 0 |
-| Resultado | `BUILD SUCCESS` | `BUILD SUCCESS` |
-| JaCoCo LINE | 91.80 % | **90.22 %** (876/971) |
-| JaCoCo BRANCH | 79.39 % | **76.27 %** (180/236) |
+| Tests backend | 205 / 205 (ejecutados, Surefire) | **217** anotaciones `@Test` (conteo estático, no ejecutado en este repositorio) |
+| Failures | 0 | *(no aplica — sin corrida archivada)* |
+| Errors | 0 | *(no aplica — sin corrida archivada)* |
+| Skipped | 0 | *(no aplica — sin corrida archivada)* |
+| Resultado | `BUILD SUCCESS` | *(pendiente de una corrida real archivada sobre el commit final)* |
+| JaCoCo LINE | 91.80 % (885/964, `docs/mediciones/jacoco/jacoco.csv`) | **sin artefacto archivado en este repositorio** — cualquier cifra de LINE/BRANCH para el HEAD de recalificación debe generarse con `mvn clean verify` sobre el commit final y archivarse antes de citarse aquí |
+| JaCoCo BRANCH | 79.39 % (181/228, `docs/mediciones/jacoco/jacoco.csv`) | **sin artefacto archivado en este repositorio** (ver nota de la fila anterior) |
 
-Ambas columnas superan el gate obligatorio de JaCoCo (≥ 70 % LINE y BRANCH,
-`Backend/pom.xml`). Las diferencias entre columnas corresponden al estado
-actual del código y de su suite de pruebas respecto del corte histórico
-del commit `0d5cd52`; la diferencia está medida, no estimada. Las 12 pruebas
-adicionales (205 → 217) provienen de las clases incorporadas durante la
-recalificación. Reproducción exacta del HEAD:
+La columna histórica supera el gate obligatorio de JaCoCo (≥ 70 % LINE y
+BRANCH, `Backend/pom.xml`), con evidencia archivada y verificable en
+`docs/mediciones/jacoco/`. Las 12 anotaciones `@Test` adicionales
+(205 → 217) corresponden a clases incorporadas durante la recalificación
+(detalle y método de conteo reproducible en
+[`docs/mediciones/TEST-COUNT-PROVENANCE.md`](docs/mediciones/TEST-COUNT-PROVENANCE.md));
+esa cifra describe el inventario de pruebas, no un resultado de
+ejecución. Reproducción exacta del HEAD:
 `cd frontend && npm ci && npm run build` y después `cd Backend && mvn clean verify`
-(ese orden importa: ver [Reproducibilidad](#reproducibilidad)).
+(ese orden importa: ver [Reproducibilidad](#reproducibilidad)); esa
+corrida, una vez archivada con su log crudo y su reporte JaCoCo,
+reemplazará las celdas marcadas arriba como pendientes.
 
 | Otras validaciones | Resultado |
 |---|---|
 | Flyway | V1 → V6 |
-| Trazabilidad | 38 / 38 |
+| Trazabilidad | 44 / 44 |
 | SQL dinámico inseguro | 0 hallazgos |
 | SpotBugs `SQL_*` | 0 hallazgos |
 | ZAP High | 0 |

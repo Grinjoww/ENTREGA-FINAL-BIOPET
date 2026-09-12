@@ -5,8 +5,22 @@ informes:
 
 | Informe | `.tex` | `.pdf` | Estado |
 |---|---|---|---|
-| **Informe Final (canónico)** | `informe-final-v1.0.0.tex` | `informe-final-v1.0.0.pdf` (**102 páginas**, verificado con `pdfinfo`) | Vigente — es el que se evalúa en la Entrega Final |
-| Tercera Entrega (histórico) | `informe-entrega-3.tex` | `informe-entrega-3.pdf` (50 páginas) | Congelado — se conserva sin modificar como registro histórico, ver [sección dedicada](#histórico--tercera-entrega) |
+| **Informe Final (canónico)** | `informe-final-v1.0.0.tex` | `informe-final-v1.0.0.pdf` — **generado, no versionado** (ver nota abajo) | Vigente — es el que se evalúa en la Entrega Final |
+| Tercera Entrega (histórico) | `informe-entrega-3.tex` | `informe-entrega-3.pdf` (50 páginas, versionado) | Congelado — se conserva sin modificar como registro histórico, ver [sección dedicada](#histórico--tercera-entrega) |
+
+> **`informe-final-v1.0.0.pdf` no se versiona.** Su portada incrusta el
+> hash corto y la fecha del commit `HEAD` real en el momento de compilar
+> (ver más abajo). Si ese PDF se versionara, cada commit que lo
+> actualizara quedaría automáticamente un commit por detrás de sí mismo
+> — el PDF commiteado siempre mostraría el hash del `HEAD` *anterior* a
+> ese propio commit, nunca el correcto; no hay forma de mantener
+> sincronizado un artefacto versionado que incluye el hash del commit
+> que lo versiona. La combinación correcta y estable es: fuente `.tex`
+> versionada + generador de hash versionado
+> (`scripts/gen-informe-commit-info.py`) + PDF **generado bajo demanda**,
+> no versionado (ver `docs/informe/.gitignore`). Para obtener el PDF
+> evaluable de cualquier checkout o tag, regenéralo con los pasos de la
+> siguiente sección.
 
 **Este README documenta, en primer lugar, cómo compilar el Informe
 Final.** Las instrucciones equivalentes de la Tercera Entrega se
@@ -65,6 +79,9 @@ estable, además de la primera pasada.)
 El resultado (`informe-final-v1.0.0.pdf`) se genera **directamente en
 `docs/informe/`** — a diferencia del flujo de la Tercera Entrega, aquí
 no hace falta copiarlo a ningún otro nivel del árbol de directorios.
+Este PDF **no se versiona** (ver `.gitignore` de esta carpeta y la nota
+al inicio de este documento): queda solo en el árbol de trabajo local,
+listo para revisión, pero no se hace `git add`/`git commit` de él.
 
 ### Limpieza de auxiliares
 
@@ -79,16 +96,19 @@ ningún `.tex`.
 
 ### Comprobación del PDF generado
 
-El Informe Final esperado tiene **102 páginas**. Para comprobarlo tras
-compilar (requiere `pdfinfo`, incluido en TeX Live/MiKTeX):
+La compilación debe finalizar sin errores LaTeX (`! ...`), sin
+`Emergency stop`, y sin referencias o citas indefinidas en el log de la
+**última** pasada (`Reference ... undefined` / `Citation ... undefined`
+en la primera pasada son normales; deben desaparecer tras `bibtex` y las
+pasadas siguientes). El número de páginas **no es un valor contractual**:
+puede variar de una compilación a otra según las correcciones de
+contenido incorporadas, la versión de TeX Live/MiKTeX/`microtype`
+instalada y el sistema operativo. Para verlo (informativo, no un
+criterio de éxito):
 
 ```bash
 pdfinfo informe-final-v1.0.0.pdf | grep Pages
 ```
-
-Salida esperada: `Pages:           102`. Esta cifra fue verificada
-directamente sobre el PDF versionado en este repositorio (no es una
-estimación).
 
 ---
 
@@ -130,7 +150,7 @@ docs/informe/
 ├── informe-entrega-3.tex      # documento maestro histórico (Tercera Entrega, no modificar)
 ├── referencias.bib            # bibliografia IEEE compartida por ambos documentos (BibTeX clasico, bibliographystyle{ieeetr})
 ├── README.md                  # este archivo
-├── .gitignore                 # auxiliares de compilacion (.aux/.log/.toc/...), no el PDF final
+├── .gitignore                 # auxiliares (.aux/.log/.toc/...) + informe-final-v1.0.0.pdf (generado, no versionado; informe-entrega-3.pdf SI se versiona)
 ├── secciones-final/           # capitulos del Informe Final (18 archivos, ver tabla)
 ├── secciones/                 # capitulos historicos de la Tercera Entrega (13 archivos)
 └── figuras/                   # evidencia compartida por ambos documentos
@@ -216,8 +236,9 @@ resultado hardcodeada. Fuentes que consume:
 - `docs/mediciones/sus/sus-raw.csv` (18 participantes SUS) →
   `figuras/jaime/06-sus-resultados-final.png`
 - `docs/mediciones/sec/reproduccion-v1.0.0/mvn-clean-verify.txt` (log
-  crudo de `mvn clean verify` reproducido sobre el commit del tag
-  `v1.0.0`) → `figuras/jaime/07-maven-verify-final.png`
+  crudo de `mvn clean verify` reproducido sobre el commit histórico
+  `0d5cd52`, al que apuntó `v1.0.0` durante el cierre original) →
+  `figuras/jaime/07-maven-verify-final.png`
 - `docs/mediciones/jacoco/jacoco.csv` (reporte JaCoCo por clase) →
   `figuras/jaime/08-jacoco-resumen-final.png`
 

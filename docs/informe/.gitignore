@@ -1,11 +1,23 @@
 # Auxiliares de compilacion LaTeX (locales, no versionados).
-# Los PDF finales SI se versionan, directamente en esta carpeta:
-# docs/informe/informe-final-v1.0.0.pdf (vigente) y
-# docs/informe/informe-entrega-3.pdf (historico, Tercera Entrega).
+#
+# informe-entrega-3.pdf (historico, Tercera Entrega) SI se versiona: es un
+# documento congelado que no se recompila y no depende del checkout.
+#
+# informe-final-v1.0.0.pdf (vigente) DEJA DE VERSIONARSE a partir de esta
+# correccion: su portada incrusta el hash/fecha dinamicos del checkout
+# evaluado (ver commit-info.tex mas abajo y scripts/gen-informe-commit-info.py).
+# Si se versionara, cada commit que lo actualice quedaria un commit por
+# detras de si mismo (el PDF commiteado siempre mostraria el HEAD anterior
+# a ese propio commit) -- es matematicamente imposible mantenerlo
+# sincronizado versionado. El artefacto correcto es: fuente .tex versionada
+# + generador dinamico versionado (scripts/gen-informe-commit-info.py) +
+# PDF generado bajo demanda, no versionado. Para obtener el PDF evaluable
+# de cualquier checkout/tag, regenerarlo siguiendo docs/informe/README.md.
+informe-final-v1.0.0.pdf
 
 # Generado por scripts/gen-informe-commit-info.py (commit/fecha del HEAD
-# real usados por caratula-entrega-final.tex); depende del checkout, no
-# se versiona.
+# real usados por caratula-entrega-final.tex e informe-final-v1.0.0.tex);
+# depende del checkout, no se versiona.
 commit-info.tex
 *.aux
 *.log

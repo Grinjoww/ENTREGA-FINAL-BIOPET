@@ -75,7 +75,7 @@ datos que ya existen en el repositorio, verificado contra su origen real.
 |---|---|
 | Generado por | `mvn clean verify` (fase `verify`, plugin `jacoco-maven-plugin`, regla `BUNDLE` con umbral LINE ≥70%, BRANCH ≥70%, COMPLEXITY ≥60%, según `Backend/pom.xml`) |
 | Responsable | Jaime Mariscal Cabrera |
-| Entrada | Suite de pruebas JUnit 5 + MockMvc/Testcontainers reales (`Backend/src/test/java/com/biopet/**`). **Total canónico para la Entrega Final (tag `v1.0.0`): 205 pruebas, 0 fallos, 0 errores, 0 omitidas** — verificado por reproducción independiente de `mvn clean verify` sobre el commit exacto del tag (`0d5cd525ce648cca7219da204e16fa622e671a87`), archivada en [`docs/mediciones/sec/reproduccion-v1.0.0/`](sec/reproduccion-v1.0.0/) y detallada en [`TEST-COUNT-PROVENANCE.md`](TEST-COUNT-PROVENANCE.md). **Nota histórica:** esta fila decía "166 pruebas" (cifra narrativa, sin log crudo localizado que la respalde — ver clasificación en `TEST-COUNT-PROVENANCE.md`); el log crudo archivado el mismo día que se generó `jacoco-summary.md` (commit `bb43baa`, 2026-08-16) reportaba 189, correcto para ese commit pero anterior a dos clases de prueba (16 casos) que ya forman parte del tag `v1.0.0` — ese log de 189 se conserva sin modificar como evidencia histórica de ese punto exacto del proyecto, no como el resultado final. |
+| Entrada | Suite de pruebas JUnit 5 + MockMvc/Testcontainers reales (`Backend/src/test/java/com/biopet/**`). **Total canónico para la Entrega Final original: 205 pruebas, 0 fallos, 0 errores, 0 omitidas** — verificado por reproducción independiente de `mvn clean verify` sobre el commit histórico `0d5cd525ce648cca7219da204e16fa622e671a87` (al que apuntó `v1.0.0` durante el cierre original, 2026-08-18; ese mismo tag se actualizará durante el cierre de esta recalificación para identificar el commit final evaluado — ver `TEST-COUNT-PROVENANCE.md` para el inventario estático del HEAD vigente), archivada en [`docs/mediciones/sec/reproduccion-v1.0.0/`](sec/reproduccion-v1.0.0/) y detallada en [`TEST-COUNT-PROVENANCE.md`](TEST-COUNT-PROVENANCE.md). **Nota histórica:** esta fila decía "166 pruebas" (cifra narrativa, sin log crudo localizado que la respalde — ver clasificación en `TEST-COUNT-PROVENANCE.md`); el log crudo archivado el mismo día que se generó `jacoco-summary.md` (commit `bb43baa`, 2026-08-16) reportaba 189, correcto para ese commit pero anterior a dos clases de prueba (16 casos) que ya forman parte del árbol de ese commit histórico — ese log de 189 se conserva sin modificar como evidencia histórica de ese punto exacto del proyecto, no como el resultado final. |
 | Transformación aplicada | Ninguna manual — `jacoco-summary.md` resume el reporte HTML/XML que genera JaCoCo en `Backend/target/site/jacoco/`, no versionado por ser artefacto regenerable en cada build |
 | Reproducibilidad | Se regenera localmente ejecutando `cd Backend && mvn clean verify`. La cobertura vigente de la Entrega Final (91.80% LINE / 79.39% BRANCH) está en `docs/mediciones/sec/jacoco-summary.md`, sección "Cobertura actual (real, Entrega Final)". El baseline histórico (87.45% LINE, 67.98% BRANCH, 71.81% COMPLEXITY) corresponde a la Tercera Entrega y **ya no describe el estado actual**; se conserva en `jacoco-summary.md` solo como referencia histórica |
 
@@ -161,7 +161,7 @@ archivo crudo, script/notebook de generación y commit de verificación.
 | tab:ci-jobs | `.github/workflows/ci.yml` | — | histórico |
 | tab:ghcr-final | `.github/workflows/ghcr-publish.yml` | — | histórico |
 | tab:zenodo-final | `CITATION.cff` / `README.md` | — | `20671b6` |
-| tab:jacoco-final | `Backend/target/site/jacoco/jacoco.xml` | `mvn clean verify` | `0d5cd52` (tag v1.0.0) |
+| tab:jacoco-final | `Backend/target/site/jacoco/jacoco.xml` | `mvn clean verify` | `0d5cd52` (commit histórico al que apuntó v1.0.0 durante el cierre original) |
 | tab:lighthouse-final | `docs/mediciones/lighthouse/raw/*.json` | `scripts/run-lighthouse.sh` | histórico / `lhci-20260818` |
 | fig:lighthouse-final | `docs/mediciones/lighthouse/raw/*.html` | `scripts/run-lighthouse.sh` | histórico / `lhci-20260818` |
 | fig:bd-reproducible-final | `docs/informe/figuras/fred/Bd-reproducible.png` | — (captura pgAdmin) | histórico |
@@ -171,15 +171,19 @@ archivo crudo, script/notebook de generación y commit de verificación.
 Todos los commits listados fueron verificados con `git cat-file -t <hash>` (devuelve `commit`). Los marcados como "histórico" corresponden a evidencia generada en fases anteriores del proyecto; los commits exactos se pueden rastrear mediante `git log --oneline -- <archivo>`.
 
 **Nota sobre la línea histórica del repositorio.** Determinadas
-referencias de commit de esta tabla (incluido `0d5cd52`, el commit del
-tag `v1.0.0`) documentan la línea histórica del historial de Git previa
-a una corrección posterior de sus metadatos, y se conservan aquí como
+referencias de commit de esta tabla (incluido `0d5cd52`, el commit
+histórico al que apuntó `v1.0.0` durante el cierre de la Entrega Final
+original) documentan la línea histórica del historial de Git previa a
+una corrección posterior de sus metadatos, y se conservan aquí como
 referencias históricas mientras sigan siendo resolubles con
 `git cat-file -t <hash>` — no se sustituyen ni se reescriben. El
 estado actual verificable del proyecto debe contrastarse contra el
 `HEAD` de `main`/`origin/main`, no contra estas referencias históricas.
-El tag `v1.0.0` permanece como referencia histórica inmutable y no se
-mueve ni se recrea.
+Conforme a la rúbrica de esta recalificación, el tag `v1.0.0` se
+actualizará una única vez al cierre (cuando las ramas de corrección de
+los tres integrantes estén mergeadas) para identificar el commit final
+evaluado, sin cambiar su nombre ni crear un tag adicional; hasta
+entonces no se mueve.
 
 ---
 
@@ -197,15 +201,20 @@ mueve ni se recrea.
 
 ## 9. Pendientes de procedencia (no se inventa lo que falta)
 
-- **Número total de pruebas del backend — RESUELTO (2026-08-31):** el
-  repositorio contiene cuatro cifras distintas a lo largo del tiempo
-  (109, 166, 189, 205), clasificadas por fecha, commit y evidencia en
+- **Número total de pruebas del backend — RESUELTO para el commit
+  histórico (2026-08-31):** el repositorio contiene cuatro cifras
+  distintas a lo largo del tiempo (109, 166, 189, 205), clasificadas por
+  fecha, commit y evidencia en
   [`TEST-COUNT-PROVENANCE.md`](TEST-COUNT-PROVENANCE.md). La cifra 205,
-  usada como resultado final en `docs/informe/secciones-final/*.tex`,
+  usada como evidencia histórica en `docs/informe/secciones-final/*.tex`,
   quedó verificada mediante reproducción independiente de
-  `mvn clean verify` sobre el commit exacto del tag `v1.0.0`, archivada
-  en [`docs/mediciones/sec/reproduccion-v1.0.0/`](sec/reproduccion-v1.0.0/).
-  Ya no es una cifra pendiente.
+  `mvn clean verify` sobre el commit histórico `0d5cd52` (al que apuntó
+  `v1.0.0` durante el cierre original), archivada en
+  [`docs/mediciones/sec/reproduccion-v1.0.0/`](sec/reproduccion-v1.0.0/).
+  El HEAD de la rama de recalificación contabiliza estáticamente 217
+  anotaciones `@Test`, sin corrida archivada todavía — ver
+  `TEST-COUNT-PROVENANCE.md` para el detalle y la advertencia sobre no
+  confundir un conteo estático con una ejecución real.
 - **Hit ratio de Redis:** no hay todavía una captura de `INFO stats`
   (`keyspace_hits`/`keyspace_misses`) con procedencia documentada; solo
   existe evidencia de TTL y `DBSIZE`. Sigue siendo la única brecha real

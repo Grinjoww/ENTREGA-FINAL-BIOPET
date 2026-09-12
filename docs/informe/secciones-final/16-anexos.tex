@@ -291,7 +291,7 @@ D6 & Eval\'ua en contexto relevante para la industria & No cumple (fuera de alca
 \label{sec:anexo-matriz-completa}
 
 La tabla~\ref{tab:anexo-matriz-completa} reproduce \'integramente
-\texttt{docs/trazabilidad/matriz.csv} (38~requisitos), validada por
+\texttt{docs/trazabilidad/matriz.csv} (44~requisitos), validada por
 \texttt{scripts/validate-traceability.sh}. Columnas de endpoint y
 evidencia emp\'irica cruda se omiten aqu\'i por espacio; est\'an
 disponibles en el CSV original.
@@ -317,7 +317,7 @@ REQ-F-002 & funcional & Must & HU-001 & CU-01 & \texttt{GlobalExceptionHandler} 
 REQ-F-003 & funcional & Must & HU-002 & CU-02 & \rutalarga{AuthController/JwtService} & \texttt{AuthControllerTest}\allowbreak+\texttt{JwtServiceTest} & verificado \\
 REQ-F-004 & funcional & Must & HU-003 & CU-03 & \rutalarga{AuthController/AuthService} & \texttt{AuthControllerTest} & verificado \\
 REQ-F-005 & funcional & Must & HU-004 & CU-04 & \rutalarga{AuthController/TokenBlacklistService} & \texttt{AuthControllerTest} & verificado \\
-REQ-F-006 & funcional & Must & HU-005 & CU-05 & \rutalarga{SecurityConfig/MascotaController} & \texttt{MascotaControllerTest} & verificado \\
+REQ-F-006 & funcional & Must & HU-005 & CU-05 & \rutalarga{SecurityConfig/MascotaController} & \texttt{MascotaControllerTest} & implementado \\
 REQ-F-007 & funcional & Should & HU-006 & CU-06 & \rutalarga{UsuarioController/AuthService} & \texttt{UsuarioControllerTest} & verificado \\
 REQ-F-008 & funcional & Must & HU-007 & CU-07 & \rutalarga{MascotaController/MascotaService} & \texttt{MascotaControllerTest} & verificado \\
 REQ-F-009 & funcional & Must & HU-008 & CU-08 & \rutalarga{MascotaController/MascotaService} & \texttt{MascotaControllerTest} & verificado \\
@@ -331,25 +331,31 @@ REQ-F-016 & funcional & Could & HU-015 & CU-15 & --- & --- & pendiente \\
 REQ-F-017 & funcional & Could & HU-016 & CU-16 & --- & --- & pendiente \\
 REQ-F-018 & funcional & Should & HU-017 & CU-17 & --- & --- & pendiente \\
 REQ-F-019 & funcional & Could & HU-018 & CU-18 & --- & --- & pendiente \\
-REQ-F-020 & funcional & Should & HU-019 & CU-19 & --- & --- & pendiente \\
+REQ-F-020 & funcional & Should & HU-019 & CU-19 & \texttt{Authentication\allowbreak AuditService} & \texttt{Authentication\allowbreak AuditServiceTest} & implementado \\
 REQ-F-021 & funcional & Should & HU-020 & CU-20 & \rutalarga{MascotaController/MascotaRepository} & \texttt{Resumen\allowbreak Especies\allowbreak IntegrationTest} & verificado \\
 REQ-F-022 & funcional & Could & HU-021 & CU-21 & --- & --- & pendiente \\
 REQ-F-023 & funcional & Should & HU-022 & CU-22 & \rutalarga{UsuarioController/UsuarioService} & \texttt{UsuarioControllerTest} & verificado \\
 REQ-F-024 & funcional & Should & HU-023 & CU-23 & \rutalarga{VacunaController/VacunaService} & \texttt{VacunaControllerTest} (parcial) & verificado \\
-REQ-F-025 & funcional & Could & HU-024 & CU-24 & \rutalarga{ExternalApiController/ExternalApiService} & sin prueba dedicada & implementado \\
+REQ-F-025 & funcional & Could & HU-024 & CU-24 & \rutalarga{ExternalApiController/ExternalApiService} & \texttt{External\allowbreak ApiServiceTest} (6 pruebas) & verificado \\
+REQ-F-026 & funcional & Should & --- & --- & --- & Prevista (\texttt{MockMvc}); no implementada & pendiente \\
 REQ-NF-001 & no funcional & Must & --- & --- & Cach\'e Redis (listado mascotas) & k6 v2.1.0 (10 corridas) & verificado \\
 REQ-NF-002 & no funcional & Must & --- & --- & \rutalarga{SecurityConfig/Tomcat\allowbreak DualConnectorConfig} & \texttt{SecurityHeadersTest} & verificado \\
 REQ-NF-003 & no funcional & Must & --- & --- & \texttt{JwtService} & \texttt{JwtServiceTest} & verificado \\
 REQ-NF-004 & no funcional & Must & --- & --- & \texttt{JwtService} & \texttt{JwtServiceTest} (6 pruebas) & verificado \\
-REQ-NF-005 & no funcional & Must & --- & --- & Frontend Angular & Lighthouse (12 corridas, mobile+desktop) & verificado \\
+REQ-NF-005 & no funcional & Must & --- & --- & Frontend Angular (\texttt{styles.css}) & \texttt{Frontend\allowbreak ResponsivenessTest} (7 pruebas) & verificado \\
 REQ-NF-006 & no funcional & Should & --- & --- & Frontend Angular & Manual (pendiente) & pendiente \\
 REQ-NF-007 & no funcional & Must & --- & --- & \rutalarga{Makefile/docker-compose.yml} & \emph{healthcheck} Docker Compose & implementado \\
 REQ-NF-008 & no funcional & Must & --- & --- & \texttt{SecurityConfig} (BCrypt) & \texttt{AuthControllerTest} & verificado \\
 REQ-NF-009 & no funcional & Must & --- & --- & Logging de autenticaci\'on & \texttt{Authentication\allowbreak AuditServiceTest} & verificado \\
 REQ-NF-010 & no funcional & Must & --- & --- & \texttt{LoginRate\allowbreak LimiterService} & \texttt{LoginRate\allowbreak LimiterServiceTest} & verificado \\
 REQ-NF-011 & no funcional & Must & --- & --- & Estructura de paquetes backend & Revisi\'on de c\'odigo & verificado \\
-REQ-NF-012 & no funcional & Should & --- & --- & Cach\'e Redis (TTL configurable) & Inspecci\'on + medici\'on Redis & verificado \\
+REQ-NF-012 & no funcional & Should & --- & --- & Cach\'e Redis (TTL configurable) & Inspecci\'on + medici\'on Redis & implementado \\
 REQ-NF-013 & no funcional & Must & --- & --- & \texttt{MascotaRepository} (\texttt{fn\_resumen\_...}) & \texttt{Resumen\allowbreak Especies\allowbreak IntegrationTest} & verificado \\
+REQ-NF-014 & no funcional & Must & --- & --- & \rutalarga{TokenBlacklistService/JwtAuthenticationFilter} (cach\'e Redis) & Prevista; no implementada & pendiente \\
+REQ-NF-015 & no funcional & Must & --- & --- & \rutalarga{MascotaService/CitaService/VacunaService/ConsultaService} & \texttt{MascotaControllerTest}\allowbreak+\texttt{CitaControllerTest}\allowbreak+\texttt{VacunaControllerTest}\allowbreak+\texttt{ConsultaControllerTest} & implementado \\
+REQ-NF-016 & no funcional & Must & --- & --- & \rutalarga{RegistroRequest/UsuarioRequest/UsuarioService} & \texttt{AuthControllerTest}\allowbreak+\texttt{UsuarioControllerTest} & implementado \\
+REQ-NF-017 & no funcional & Should & --- & --- & Procedimiento operativo (\texttt{pg\_dump}/\texttt{psql}) & Inspecci\'on documental + restauraci\'on real (no automatizada) & implementado \\
+REQ-NF-018 & no funcional & Should & --- & --- & Frontend Angular (\texttt{login}/\texttt{mascotas}) & Lighthouse CI (\emph{Accessibility} $\geq$ 0{,}90) & verificado \\
 \end{longtable}
 \end{landscape}
 

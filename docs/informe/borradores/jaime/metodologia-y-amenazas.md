@@ -9,6 +9,19 @@ que no se modifica en esta fase.
 (checklist Ralph et al. 2021, estándar *Engineering Research*, ya
 completado ítem por ítem antes de este documento).
 
+> **Nota de vigencia (agregada en el cierre de la recalificación).**
+> Los valores de la columna "Valor de evidencia" y de las secciones de
+> diseño de evaluación son los de la **fecha de esta revisión
+> (2026-08-17)**. En concreto, las dos menciones a "38 requisitos / 38
+> filas" (sección *Questions y Metrics* y sección 4.x de trazabilidad)
+> describen el corpus de esa fecha: en la revisión del SRS del
+> **2026-09-11** pasó a **44 requisitos / 44 filas**, que es lo que valida
+> hoy `scripts/validate-traceability.sh`. Este borrador no se re-ejecutó
+> sobre el corpus ampliado. Para el estado vigente, ver
+> [`docs/trazabilidad/matriz.csv`](../../../trazabilidad/matriz.csv) y el
+> capítulo de trazabilidad del Informe Final
+> (`docs/informe/secciones-final/10-trazabilidad.tex` y su Anexo F).
+
 ## Cómo usar este borrador
 
 Este archivo consolida, en prosa académica y en formato Markdown fácilmente
@@ -219,7 +232,7 @@ ejecutado en un entorno de desarrollo local con Docker.
 | Dimensión | Pregunta | Métrica(s) | Valor de evidencia (fecha de esta revisión) | Fuente |
 |---|---|---|---|---|
 | Calidad funcional | ¿Los requisitos funcionales declarados están respaldados por al menos una historia, caso de uso o prueba automatizada? | Resultado de `scripts/validate-traceability.sh`; # requisitos vs. # filas en matriz | 38 requisitos, 38 filas consistentes | `docs/trazabilidad/matriz.csv`, `scripts/validate-traceability.sh` |
-| Calidad funcional | ¿La suite de pruebas automatizadas del backend pasa consistentemente? | Resultado de `mvn clean verify` (pruebas totales, fallos, errores) | 205 pruebas, 0 fallos, 0 errores — verificado por reproducción sobre el commit exacto del tag `v1.0.0` (`docs/mediciones/sec/reproduccion-v1.0.0/`); el log de 189 archivado en `docs/mediciones/sec/raw/mvn-clean-verify.txt` es evidencia histórica de un commit anterior (`bb43baa`, 2026-08-16), previo a dos clases de prueba de integración que ya forman parte del tag final | `docs/mediciones/sec/reproduccion-v1.0.0/`, `docs/mediciones/TEST-COUNT-PROVENANCE.md` |
+| Calidad funcional | ¿La suite de pruebas automatizadas del backend pasa consistentemente? | Resultado de `mvn clean verify` (pruebas totales, fallos, errores) | 205 pruebas, 0 fallos, 0 errores — verificado por reproducción sobre el commit histórico `0d5cd52` (al que apuntó `v1.0.0` durante el cierre original; `docs/mediciones/sec/reproduccion-v1.0.0/`); el log de 189 archivado en `docs/mediciones/sec/raw/mvn-clean-verify.txt` es evidencia histórica de un commit anterior (`bb43baa`, 2026-08-16), previo a dos clases de prueba de integración que ya forman parte del árbol de ese commit histórico | `docs/mediciones/sec/reproduccion-v1.0.0/`, `docs/mediciones/TEST-COUNT-PROVENANCE.md` |
 | Mantenibilidad | ¿Qué proporción del código backend se ejercita por la suite de pruebas? | JaCoCo LINE / BRANCH (%), umbral configurado | LINE 91.80 % / BRANCH 79.39 %, umbral `pom.xml` ≥ 70 % ambos | `docs/mediciones/jacoco/METRICS.md` |
 | Mantenibilidad | ¿El proceso de construcción/verificación es reproducible y automatizado? | Existencia y jobs del pipeline de CI | Workflow con jobs `backend-test`, `frontend-build`, `traceability`, `sql-audit`, `security-static`, `zap-baseline` | `.github/workflows/ci.yml` (no modificado en esta fase; solo citado como evidencia) |
 | Rendimiento | ¿Cuál es la latencia y tasa de error del endpoint cacheado de mascotas bajo carga moderada? | k6: p50/p90/p95/p99 (ms), tasa de error (%), throughput (req/s) | Ejemplo (corrida 3, caliente): p95 = 10.62 ms, error 0.0 %, ~92.34 req/s — **valor actual de evidencia; sujeto a actualización en cierre final** (mediciones de rendimiento a cargo de Fred) | `docs/mediciones/perf/REPORT.md` |
@@ -254,7 +267,8 @@ estimaron.
   contra PostgreSQL (repartidas en 4 clases).
 - **Métrica principal:** número de pruebas, fallos, errores.
 - **Evidencia:** 205 pruebas, 0 fallos, 0 errores, verificado por
-  reproducción sobre el commit exacto del tag `v1.0.0`
+  reproducción sobre el commit histórico `0d5cd52` (al que apuntó
+  `v1.0.0` durante el cierre original)
   (`docs/mediciones/sec/reproduccion-v1.0.0/mvn-clean-verify.txt`). El log
   de 189 archivado el 2026-08-16
   (`docs/mediciones/sec/raw/mvn-clean-verify.txt`) es evidencia histórica

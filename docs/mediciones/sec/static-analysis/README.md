@@ -24,7 +24,8 @@ enlazarlo a ninguna fase del ciclo de vida** (`<executions>` vacío
 deliberadamente): así `mvn clean verify` sigue comportándose exactamente
 igual que antes de esta fase (mismos 189 tests que en el commit de esa
 fecha — 2026-08-16 —, mismo JaCoCo, mismo resultado; el total verificado
-para el commit del tag `v1.0.0` es 205, ver
+para el commit histórico `0d5cd52` (al que apuntó `v1.0.0` durante el
+cierre original) es 205, ver
 [`docs/mediciones/TEST-COUNT-PROVENANCE.md`](../../TEST-COUNT-PROVENANCE.md)),
 y el análisis estático se ejecuta solo cuando se invoca
 explícitamente. Esto es intencional: introducir un nuevo gate en el build

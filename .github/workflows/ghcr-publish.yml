@@ -8,15 +8,18 @@ name: Publicar imagen backend en GHCR
 #
 # Dos modos, exactamente como pide la Entrega Final:
 #
-#   1. ANTES DEL RELEASE (tag v1.0.0 ya existe en 0d5cd52): disparo manual
-#      (workflow_dispatch) desde la pestana Actions de GitHub. Publica
-#      SOLO una etiqueta tecnica basada en el SHA corto del commit
-#      (ej. "sha-abc1234"), nunca "latest" ni un numero de version --
-#      asi no se puede confundir con un release real.
+#   1. ANTES DEL RELEASE: disparo manual (workflow_dispatch) desde la
+#      pestana Actions de GitHub. Publica SOLO una etiqueta tecnica
+#      basada en el SHA corto del commit (ej. "sha-abc1234"), nunca
+#      "latest" ni un numero de version -- asi no se puede confundir con
+#      un release real. Nota: v1.0.0 fue creado originalmente durante el
+#      cierre anterior; al cierre de la recalificacion se actualizara al
+#      commit final evaluado (ver README.md, "Versiones del proyecto").
 #
-#   2. RELEASE FINAL (cuando exista y se publique el tag v1.0.0 -- esta
-#      tarea NO crea ese tag): el push del tag "v*" dispara el workflow
-#      automaticamente y publica ADEMAS las etiquetas "1.0.0" y "latest".
+#   2. RELEASE FINAL (cuando se publique o republique el tag v1.0.0 --
+#      esta tarea NO crea ni mueve ese tag): el push del tag "v*" dispara
+#      el workflow automaticamente y publica ADEMAS las etiquetas
+#      "1.0.0" y "latest".
 #
 # Requiere unicamente el GITHUB_TOKEN que GitHub Actions provee
 # automaticamente en cada corrida (sin secretos nuevos que configurar),

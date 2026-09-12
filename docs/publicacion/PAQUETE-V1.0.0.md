@@ -68,14 +68,18 @@ automáticamente).
   guion entre "entrega" y "final" — nombre ya fijado en este documento
   antes de automatizar la publicación; no se cambió).
 - **Publicación automatizada (ya lista, workflow nuevo, `.github/workflows/ghcr-publish.yml`)**:
-  - **Estado actual (verificado):** el tag Git `v1.0.0` ya fue creado y
-    publicado, apunta al commit `0d5cd52` (creado el 2026-08-18) y se
-    conserva inmutable como referencia histórica del cierre de la Entrega
-    Final; las correcciones posteriores de retroalimentación/recalificación
-    se aplican sobre `main`, sin mover, borrar ni recrear ese tag. **No debe
-    confundirse con un GitHub Release**: a la fecha de esta nota, ningún
-    GitHub Release ha sido publicado en la página *Releases* del
-    repositorio — son dos artefactos distintos de GitHub.
+  - **Estado actual (verificado):** el tag Git `v1.0.0` fue creado
+    originalmente el 2026-08-18 sobre el commit histórico `0d5cd52`, cierre
+    de la Entrega Final original. Durante el cierre de esta recalificación,
+    ese mismo tag se actualizará para identificar el commit final evaluado,
+    sin cambiar su nombre ni crear un tag adicional (ver `README.md`,
+    sección "Versiones del proyecto", y
+    `docs/informe/secciones-final/09-despliegue-reproducibilidad.tex`,
+    sección "Estado de publicación del tag"). **No debe confundirse con
+    un GitHub Release**: a la
+    fecha de esta nota, ningún GitHub Release ha sido publicado en la
+    página *Releases* del repositorio — son dos artefactos distintos de
+    GitHub.
   - **Procedimiento previo a la creación del tag `v1.0.0`** (aplicable
     durante la fase pre-release histórica, cuando el tag todavía no
     existía): disparo manual desde GitHub → pestaña *Actions* →
@@ -91,11 +95,16 @@ automáticamente).
   - El workflow usa `GITHUB_TOKEN` (automático, sin secretos que
     configurar) con permisos `contents: read` + `packages: write`, ya
     declarados en el propio archivo del workflow.
-  - **No se ejecutó todavía ninguna corrida real de este workflow ni
-    existe hoy ningún digest real** — ejecutarlo y copiar aquí el digest
-    real (`sha256:...`, visible en el resumen de la corrida o con
-    `docker buildx imagetools inspect`) es la acción manual pendiente,
-    descrita en la sección 6.
+  - **Actualización:** el workflow ya se ejecutó al menos una vez de
+    forma manual y produjo un digest real, documentado en `README.md`
+    (sección "GHCR"): imagen `ghcr.io/grinjoww/entregafinal-biopet-backend`,
+    etiqueta `sha-fe2f033`, digest
+    `sha256:ef1e857a95a307a115ebe01599a41506eab824808b70a3c8e317dcc55bef5163`.
+    Ese digest también está registrado en `CITATION.cff` como
+    `identifier` de tipo `other`. **Pendiente sin confirmar en este
+    entorno:** que la publicación automática de las etiquetas `1.0.0` y
+    `latest`, disparada por el propio tag `v1.0.0`, ya haya terminado
+    (README.md lo señala explícitamente como no verificado localmente).
 - **Requisitos ya cubiertos por el workflow**: `GITHUB_TOKEN` con scope
   equivalente a `write:packages` (vía el bloque `permissions:` del propio
   YAML, no un PAT manual); repositorio/paquete público para que terceros
@@ -104,16 +113,22 @@ automáticamente).
 
 ## 5. Datos necesarios para Zenodo
 
-- **Tag**: ya **creado y publicado** (`v1.0.0`, apunta al commit
-  `0d5cd52`, 2026-08-18); se conserva inmutable como referencia histórica
-  del cierre de la Entrega Final — no requiere ninguna acción adicional.
-  Nota: esto es distinto de un **GitHub Release**, que a la fecha de esta
-  actualización todavía no ha sido publicado.
-- **Conexión**: conectar `Grinjoww/ENTREGA-FINAL-BIOPET` a Zenodo
-  (zenodo.org → GitHub → activar el repo). Lo hace el dueño del repo.
-- **Al archivar**, Zenodo toma `CITATION.cff` automáticamente y asigna el DOI.
-- **Después**: pegar el DOI en `CITATION.cff` (campo `doi:`), `README.md` y
-  `docs/checklists/fair.md` (ítem F1).
+- **Tag**: `v1.0.0` fue creado originalmente el 2026-08-18 sobre el commit
+  histórico `0d5cd52`; durante el cierre de esta recalificación se
+  actualizará para identificar el commit final evaluado (ver
+  `README.md`, sección "Versiones del proyecto"). Nota: esto es distinto
+  de un **GitHub Release**, que a la fecha de esta actualización todavía
+  no ha sido publicado.
+- **Conexión y archivado**: **actualización posterior a la redacción
+  original de esta sección** — el repositorio ya fue archivado en Zenodo
+  y ambos DOI ya fueron asignados: software
+  (`10.5281/zenodo.21988746`) y dataset de evidencias
+  (`10.5281/zenodo.21988785`), ambos presentes en `CITATION.cff`. No hay
+  en este entorno evidencia directa de si el archivado se disparó desde
+  un GitHub Release o desde una carga manual a Zenodo.
+- **DOI ya pegado** en `CITATION.cff` (campo `identifiers`), `README.md`
+  y `docs/checklists/fair.md` (ítem F1) — verificado por búsqueda directa
+  en los tres archivos.
 
 ## 6. Checklist final "listo para publicar manualmente"
 
@@ -125,25 +140,46 @@ Marcar TODOS antes de publicar (los 3 primeros son de esta rama y ya están):
 - [x] Paquete de release preparado (este documento, F18)
 - [x] `CITATION.cff` corregido: `version: 1.0.0`, `repository-code` =
       `https://github.com/Grinjoww/ENTREGA-FINAL-BIOPET`, 3 autores reales
-      con correo institucional, `orcid` de los tres, y `date-released:
-      2026-08-18` (fecha real de creación del tag `v1.0.0`, ver el propio
-      archivo)
+      con correo institucional, `orcid` de los tres. `date-released` debe
+      leerse siempre directamente del propio archivo (hoy no es
+      `2026-08-18`: ese valor quedó obsoleto en cuanto `CITATION.cff` se
+      actualizó a la fecha de cierre vigente de la recalificación; no se
+      reproduce aquí un valor fijo para no quedar desactualizado de nuevo
+      con el próximo commit).
 - [x] Workflow de publicación GHCR listo
-      (`.github/workflows/ghcr-publish.yml`) — falta EJECUTARLO
-      (disparo manual, ver sección 4) y copiar aquí el digest real
-- [x] Tag `v1.0.0` creado y pusheado (apunta a `0d5cd52`, 2026-08-18;
-      verificable con `git rev-list -n 1 v1.0.0`). **Distinto de un
-      GitHub Release**, que sigue sin publicarse en la página *Releases*
-      del repositorio — ver ítem de abajo si corresponde gestionarlo.
-- [ ] CI en verde sobre el tag (6 jobs: backend-test, frontend-build,
-      traceability, sql-audit, security-static, zap-baseline)
-- [ ] Repo conectado a Zenodo por el owner; release archivado; DOI obtenido
-- [ ] DOI pegado en `CITATION.cff`, `README.md`, `docs/checklists/fair.md`
-- [ ] Imagen backend publicada en GHCR (workflow ejecutado con éxito) y
-      verificada con `docker pull` usando el digest real
+      (`.github/workflows/ghcr-publish.yml`) y ya ejecutado al menos una
+      vez con éxito: existe un digest real (ver sección 4 y `README.md`,
+      sección "GHCR"). Pendiente sin confirmar en este entorno: que la
+      publicación automática de `1.0.0`/`latest` disparada por el tag ya
+      haya terminado.
+- [ ] Tag `v1.0.0` actualizado para identificar el commit final evaluado
+      de esta recalificación. **Estado real a la fecha de esta revisión:**
+      el tag fue creado originalmente el 2026-08-18 sobre el commit
+      histórico `0d5cd52` y **todavía no se ha movido** (verificable con
+      `git rev-parse v1.0.0^{}` y comparando contra `git rev-parse HEAD`
+      de `main`); se moverá una sola vez, al cierre, cuando las tres
+      ramas de corrección estén mergeadas. **Distinto de un GitHub
+      Release**, que tampoco se ha publicado en la página *Releases* del
+      repositorio.
+- [ ] CI en verde sobre el tag ya movido al commit final (6 jobs:
+      backend-test, frontend-build, traceability, sql-audit,
+      security-static, zap-baseline) — no confirmable hasta que el tag
+      se mueva
+- [ ] Confirmar si el archivado en Zenodo se disparó desde un GitHub
+      Release o desde una carga manual (ver sección 5); el DOI en sí ya
+      existe
+- [x] DOI pegado en `CITATION.cff`, `README.md` y
+      `docs/checklists/fair.md` — verificado por búsqueda directa en los
+      tres archivos (ver sección 5)
+- [x] Imagen backend publicada en GHCR con digest real documentado
+      (ver sección 4 y `README.md`, sección "GHCR"). **No verificado en
+      este entorno:** ejecución real de `docker pull` contra ese digest
+      (sin acceso a Internet saliente desde este entorno de auditoría)
 - [ ] URL real de Render registrada en `docs/despliegue/DEPLOYMENT.md`
-      (Paso 7: `curl -I https://<url-real>/actuator/health`) — la conecta el
-      owner; evidencia final pendiente
+      (ya está registrada — ver esa sección 5.1/5.3 de ese documento) y
+      healthcheck verificado en vivo con `curl -I .../actuator/health`
+      — esta segunda parte sigue pendiente, tal como el propio
+      `DEPLOYMENT.md` lo declara
 - [ ] Notificar a Jaime (ADRs) y Zaida (matriz + provenance + DATA-PROVENANCE.md)
 
 ## 7. Fuera de alcance de esta rama (no inventar aquí)

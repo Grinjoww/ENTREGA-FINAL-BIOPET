@@ -24,7 +24,8 @@ Fuentes de entrada (las unicas leidas; todas versionadas en Git):
 
     2. docs/mediciones/sec/reproduccion-v1.0.0/mvn-clean-verify.txt
        Log RAW de `mvn clean verify` reproducido de forma independiente
-       sobre el commit exacto del tag v1.0.0 (0d5cd525ce...). Se elige
+       sobre el commit historico 0d5cd525ce... (al que apunto v1.0.0
+       durante el cierre original de la Entrega Final). Se elige
        este archivo (y no Backend/target/, que no existe tras un clone
        limpio) porque es evidencia archivada y versionada. Se parsea la
        linea agregada final "[INFO] Tests run: N, Failures: F, Errors: E,
