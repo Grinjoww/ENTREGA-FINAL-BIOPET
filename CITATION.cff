@@ -23,9 +23,9 @@ authors:
 # proceso (verificable con "git rev-list -n 1 v1.0.0").
 version: 1.0.0
 # date-released: fecha de cierre de la Entrega Final/Recalificacion
-# (2026-09-11), fecha a la que se actualiza el tag anotado "v1.0.0" al
+# (2026-09-12), fecha a la que se actualiza el tag anotado "v1.0.0" al
 # commit final evaluado.
-date-released: "2026-09-11"
+date-released: "2026-09-12"
 license: MIT
 repository-code: "https://github.com/Grinjoww/ENTREGA-FINAL-BIOPET"
 keywords:
